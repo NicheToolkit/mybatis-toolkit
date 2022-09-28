@@ -55,6 +55,18 @@
     <dependencies>
 
         <dependency>
+            <groupId>tk.mybatis</groupId>
+            <artifactId>mapper</artifactId>
+            <version>${tk-mybatis-mapper.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>tk.mybatis</groupId>
+            <artifactId>mapper-spring-boot-starter</artifactId>
+            <version>${tk-mybatis-starter.version}</version>
+        </dependency>
+
+        <dependency>
             <groupId>io.github.nichetoolkit</groupId>
             <artifactId>mybatis-toolkit-core</artifactId>
             <version>${mybatis-toolkit.version}</version>

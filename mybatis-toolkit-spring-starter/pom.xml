@@ -4,26 +4,23 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>io.github.nichetoolkit</groupId>
-        <artifactId>rice-toolkit-parent</artifactId>
-        <version>1.0.4-SNAPSHOT</version>
+        <artifactId>mybatis-toolkit-parent</artifactId>
+        <version>1.0.1-SNAPSHOT</version>
     </parent>
 
-    <artifactId>mybatis-toolkit-parent</artifactId>
+    <artifactId>mybatis-toolkit-spring-starter</artifactId>
     <version>1.0.1-SNAPSHOT</version>
+    <name>mybatis-toolkit-spring-starter</name>
+    <packaging>jar</packaging>
+    <description>mybatis toolkit spring starter project for Spring Boot</description>
+    <url>https://github.com/NicheToolkit/mybatis-toolkit/tree/master/mybatis-toolkit-spring-starter</url>
 
-    <modules>
-        <module>mybatis-toolkit-core</module>
-        <module>mybatis-toolkit-starter</module>
-        <module>mybatis-toolkit-tk-starter</module>
-        <module>mybatis-toolkit-plus-starter</module>
-        <module>mybatis-toolkit-spring-starter</module>
-        <module>mybatis-toolkit-test-web</module>
-    </modules>
+    <properties>
+        <java.version>1.8</java.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    </properties>
 
-    <name>mybatis-toolkit-parent</name>
-    <packaging>pom</packaging>
-    <description>Mybatis toolkit project for Spring Boot</description>
-    <url>https://github.com/NicheToolkit/mybatis-toolkit</url>
     <licenses>
         <license>
             <name>The Apache License (Apache-2.0)</name>
@@ -55,35 +52,23 @@
         </repository>
     </distributionManagement>
 
+    <dependencies>
 
-    <properties>
-        <java.version>1.8</java.version>
-        <jdk.version>1.8</jdk.version>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <maven.compiler.encoding>UTF-8</maven.compiler.encoding>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
-        <spring-boot.version>2.6.0</spring-boot.version>
-        <mybatis-toolkit.version>1.0.1-SNAPSHOT</mybatis-toolkit.version>
+        <dependency>
+            <groupId>io.github.nichetoolkit</groupId>
+            <artifactId>mybatis-toolkit-core</artifactId>
+            <version>${mybatis-toolkit.version}</version>
+        </dependency>
 
-        <source-plugin.version>2.2.1</source-plugin.version>
-        <javadoc-plugin.version>2.9.1</javadoc-plugin.version>
-        <gpg-plugin.version>1.5</gpg-plugin.version>
-        <nexus-staging-plugin.version>1.6.7</nexus-staging-plugin.version>
-        <compiler-plugin.version>3.3</compiler-plugin.version>
-        <release-plugin.version>2.5.3</release-plugin.version>
-
-        <persistence.version>1.0</persistence.version>
-        <pagehelper.version>1.3.0</pagehelper.version>
-        <mybatis.version>4.1.5</mybatis.version>
-        <HikariCP.version>3.4.5</HikariCP.version>
-        <postgresql.version>42.2.23</postgresql.version>
-    </properties>
+    </dependencies>
 
     <build>
         <finalName>${project.artifactId}</finalName>
         <resources>
+            <resource>
+                <filtering>false</filtering>
+                <directory>src/main/resources</directory>
+            </resource>
             <resource>
                 <directory>src/main/java</directory>
                 <includes>
@@ -169,15 +154,13 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>${compiler-plugin.version}</version>
                 <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
+                    <source>8</source>
+                    <target>8</target>
                     <encoding>utf-8</encoding>
                 </configuration>
             </plugin>
         </plugins>
     </build>
-
 
 </project>
