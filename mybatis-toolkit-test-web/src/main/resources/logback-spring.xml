@@ -196,8 +196,7 @@
     -->
     <!--默认环境:打印控制台-->
     <springProfile name="default">
-        <logger name="io.github.nichetoolkit.rest" level="debug"/>
-        <logger name="io.github.nichetoolkit.rice" level="debug"/>
+        <logger name="io.github.nichetoolkit" level="debug"/>
         <root level="info" >
             <appender-ref ref="CONSOLE" />
             <appender-ref ref="LOGS_FILE" />
@@ -210,8 +209,7 @@
 
     <!--开发环境:打印控制台-->
     <springProfile name="dev">
-        <logger name="io.github.nichetoolkit.rest" level="debug"/>
-        <logger name="io.github.nichetoolkit.rice" level="debug"/>
+        <logger name="io.github.nichetoolkit" level="debug"/>
         <root level="info" >
             <appender-ref ref="CONSOLE" />
             <appender-ref ref="LOGS_FILE" />
@@ -224,8 +222,7 @@
 
     <!--生产环境:输出到文件-->
     <springProfile name="pro">
-        <logger name="io.github.nichetoolkit.rest" level="debug"/>
-        <logger name="io.github.nichetoolkit.rice" level="debug"/>
+        <logger name="io.github.nichetoolkit" level="debug"/>
         <root level="info">
             <appender-ref ref="CONSOLE" />
             <appender-ref ref="LOGS_FILE" />
