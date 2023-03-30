@@ -2,12 +2,8 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <parent>
-        <groupId>io.github.nichetoolkit</groupId>
-        <artifactId>rice-toolkit-parent</artifactId>
-        <version>1.0.4-SNAPSHOT</version>
-    </parent>
 
+    <groupId>io.github.nichetoolkit</groupId>
     <artifactId>mybatis-toolkit-parent</artifactId>
     <version>1.0.1-SNAPSHOT</version>
 
@@ -44,13 +40,20 @@
         <url>git@github.com:NicheToolkit/mybatis-toolkit.git</url>
     </scm>
 
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.7.7</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
+
     <distributionManagement>
         <snapshotRepository>
             <id>sonatype-nexus-snapshot</id>
             <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
         </snapshotRepository>
         <repository>
-            <id>sonatype-nexus-release</id>
+            <id>sonatype-nexus-deploy</id>
             <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
         </repository>
     </distributionManagement>
@@ -64,7 +67,9 @@
         <maven.compiler.encoding>UTF-8</maven.compiler.encoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
-        <spring-boot.version>2.6.0</spring-boot.version>
+        <spring-boot.version>2.7.7</spring-boot.version>
+        <rest-toolkit.version>1.0.6-SNAPSHOT</rest-toolkit.version>
+        <rice-toolkit.version>1.0.5-SNAPSHOT</rice-toolkit.version>
         <mybatis-toolkit.version>1.0.1-SNAPSHOT</mybatis-toolkit.version>
 
         <source-plugin.version>2.2.1</source-plugin.version>
@@ -74,12 +79,67 @@
         <compiler-plugin.version>3.3</compiler-plugin.version>
         <release-plugin.version>2.5.3</release-plugin.version>
 
+        <pagehelper.version>1.4.6</pagehelper.version>
+        <mybatis-plus.version>3.5.2</mybatis-plus.version>
+        <mybatis-spring-starter.version>2.3.0</mybatis-spring-starter.version>
+
+        <!--<mybatis.version>4.1.5</mybatis.version>-->
+
+        <mybatis.version>3.5.12</mybatis.version>
+
         <persistence.version>1.0</persistence.version>
-        <pagehelper.version>1.3.0</pagehelper.version>
-        <mybatis.version>4.1.5</mybatis.version>
+        <tk-mybatis-mapper.version>4.1.5</tk-mybatis-mapper.version>
+        <tk-mybatis-starter.version>2.1.5</tk-mybatis-starter.version>
+
         <HikariCP.version>3.4.5</HikariCP.version>
         <postgresql.version>42.2.23</postgresql.version>
     </properties>
+
+    <repositories>
+
+        <repository>
+            <id>sonatype-nexus-central</id>
+            <name>sonatype maven centrals</name>
+            <url>https://oss.sonatype.org/content/repositories/releases/</url>
+            <releases>
+                <enabled>true</enabled>
+                <updatePolicy>always</updatePolicy>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+                <updatePolicy>daily</updatePolicy>
+            </snapshots>
+        </repository>
+
+        <repository>
+            <id>sonatype-nexus-release</id>
+            <name>sonatype maven releases</name>
+            <url>https://s01.oss.sonatype.org/content/repositories/releases/</url>
+            <releases>
+                <enabled>true</enabled>
+                <updatePolicy>always</updatePolicy>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+                <updatePolicy>daily</updatePolicy>
+            </snapshots>
+        </repository>
+
+        <repository>
+            <id>sonatype-nexus-snapshot</id>
+            <name>sonatype maven snapshots</name>
+            <url>https://s01.oss.sonatype.org/content/repositories/snapshots/</url>
+            <releases>
+                <enabled>false</enabled>
+                <updatePolicy>daily</updatePolicy>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>always</updatePolicy>
+            </snapshots>
+        </repository>
+
+    </repositories>
 
     <build>
         <finalName>${project.artifactId}</finalName>
