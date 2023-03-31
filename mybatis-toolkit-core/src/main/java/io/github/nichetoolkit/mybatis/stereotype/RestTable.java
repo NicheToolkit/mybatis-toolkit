@@ -2,11 +2,11 @@ package io.github.nichetoolkit.mybatis.stereotype;
 
 import io.github.nichetoolkit.mybatis.MybatisStyle;
 import io.github.nichetoolkit.mybatis.enums.StyleType;
+import io.github.nichetoolkit.mybatis.stereotype.column.RestExclude;
+import io.github.nichetoolkit.mybatis.stereotype.table.*;
+import org.springframework.core.annotation.AliasFor;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import java.lang.annotation.*;
 
 /**
  * <p>RestTable</p>
@@ -14,75 +14,112 @@ import java.lang.annotation.Target;
  * @version v1.0.0
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.TYPE, ElementType.METHOD})
+@Target({ElementType.TYPE})
+@Documented
+@RestEntity
+@RestStyle
+@RestResultMap
+@RestProperties
+@RestExcludes
+@RestIdentities
 public @interface RestTable {
-
     /**
      * 表名，默认空时使用对象名
      */
+    @AliasFor(annotation = RestEntity.class, attribute = "name")
     String value() default "";
 
     /**
      * 备注，仅用于在注解上展示，不用于任何其他处理
      */
+    @AliasFor(annotation = RestEntity.class, attribute = "remark")
     String remark() default "";
+
+    /**
+     * 备注，仅用于在注解上展示，不用于任何其他处理
+     */
+    @AliasFor(annotation = RestEntity.class, attribute = "entity")
+    Class<?> entity() default Object.class;
+
+    /**
+     * 联合主键的字段名称
+     */
+    @AliasFor(annotation = RestIdentities.class, attribute = "identities")
+    String[] identities() default {};
+
+    /**
+     * 是否将主键注解添加到联合主键
+     */
+    @AliasFor(annotation = RestIdentities.class, attribute = "unionIdentity")
+    boolean unionIdentity() default false;
 
     /**
      * catalog 名称，配置后，会在表名前面加上 catalog名称
      * 默认使用 全局配置
      */
+    @AliasFor(annotation = RestStyle.class, attribute = "catalog")
     String catalog() default "";
 
     /**
      * schema 名称，配置后，会在表名前面加上 schema 名称
      * 默认使用 全局配置
      */
+    @AliasFor(annotation = RestStyle.class, attribute = "schema")
     String schema() default "";
 
     /**
      * 名称规则样式 默认小写加下划线 支持自定义
      * 默认使用 全局配置 LOWER_UNDERSCORE
      */
+    @AliasFor(annotation = RestStyle.class, attribute = "name")
     String styleName() default MybatisStyle.LOWER_UNDERLINE;
 
     /**
      * 名称规则样式 默认小写加下划线
      * 默认使用 全局配置 LOWER_UNDERSCORE
      */
+    @AliasFor(annotation = RestStyle.class, attribute = "type")
     StyleType styleType() default StyleType.LOWER_UNDERLINE;
-
-    /**
-     * 是否将主键注解添加到联合主键
-     */
-    boolean unionPrimaryKey() default false;
 
     /**
      * 使用指定的 <resultMap>
      */
+    @AliasFor(annotation = RestResultMap.class, attribute = "name")
     String resultMap() default "";
 
     /**
      * 自动根据字段生成 <resultMap>
      */
+    @AliasFor(annotation = RestResultMap.class, attribute = "autoResultMap")
     boolean autoResultMap() default true;
 
     /**
      * 属性配置
      */
+    @AliasFor(annotation = RestProperties.class, attribute = "properties")
     RestProperty[] properties() default {};
-
-    /**
-     * 排除指定父类的所有字段
-     */
-    Class<?>[] excludeSuperClasses() default {};
-
-    /**
-     * 排除指定类型的字段
-     */
-    Class<?>[] excludeFieldTypes() default {};
 
     /**
      * 排除指定字段名的字段
      */
+    @AliasFor(annotation = RestExcludes.class, attribute = "fields")
     String[] excludeFields() default {};
+
+    /**
+     * 排除指定类型的字段
+     */
+    @AliasFor(annotation = RestExcludes.class, attribute = "fieldTypes")
+    Class<?>[] excludeFieldTypes() default {};
+
+    /**
+     * 排除指定父类的所有字段
+     */
+    @AliasFor(annotation = RestExcludes.class, attribute = "superClasses")
+    Class<?>[] excludeSuperClasses() default {};
+
+    /**
+     * 排除指定注解的字段
+     */
+    @AliasFor(annotation = RestExcludes.class, attribute = "excludes")
+    RestExclude[] excludes() default {};
 }

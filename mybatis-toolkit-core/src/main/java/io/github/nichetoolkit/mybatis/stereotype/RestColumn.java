@@ -1,14 +1,14 @@
 package io.github.nichetoolkit.mybatis.stereotype;
 
+import io.github.nichetoolkit.mybatis.stereotype.column.*;
 import io.github.nichetoolkit.rice.enums.SortType;
 import org.apache.ibatis.type.JdbcType;
 import org.apache.ibatis.type.TypeHandler;
 import org.apache.ibatis.type.UnknownTypeHandler;
+import org.springframework.core.annotation.AliasFor;
+import org.springframework.stereotype.Indexed;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import java.lang.annotation.*;
 
 /**
  * <p>RestColumn</p>
@@ -16,69 +16,104 @@ import java.lang.annotation.Target;
  * @version v1.0.0
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.FIELD, ElementType.METHOD})
+@Target({ElementType.FIELD})
+@Documented
+@Indexed
+@RestAlias
+@RestExclude
+@RestPrimaryKey
+@RestUnionKey
+@RestOrderBy
+@RestJdbcType
+@RestProperties
 public @interface RestColumn {
     /**
      * 列名，默认空时使用字段名
      */
+    @AliasFor(annotation = RestAlias.class, attribute = "name")
     String value() default "";
 
     /**
      * 备注，仅用于在注解上展示，不用于任何其他处理
      */
+    @AliasFor(annotation = RestAlias.class, attribute = "remark")
     String remark() default "";
 
     /**
      * 标记字段是否 用于主键字段
      */
+    @AliasFor(annotation = RestPrimaryKey.class, attribute = "value")
     boolean primaryKey() default false;
 
     /**
      * 标记字段是否 用于联合主键字段
      */
+    @AliasFor(annotation = RestUnionKey.class, attribute = "value")
     boolean unionKey() default false;
 
     /**
      * 排序方式
      */
+    @AliasFor(annotation = RestOrderBy.class, attribute = "value")
     String orderBy() default "";
 
     /**
      * 排序方式
      */
+    @AliasFor(annotation = RestOrderBy.class, attribute = "type")
     SortType sortType() default SortType.NONE;
 
     /**
      * 排序的优先级，数值越小优先级越高
      */
+    @AliasFor(annotation = RestOrderBy.class, attribute = "priority")
     int priority() default 0;
 
-    /** 可查询 */
-    boolean selectable() default true;
+    /**
+     * 排除字段 选项
+     */
+    @AliasFor(annotation = RestExclude.class, attribute = "value")
+    boolean exclude() default false;
 
-    /** 可插入 */
-    boolean insertable() default true;
+    /**
+     * 可查询
+     */
+    @AliasFor(annotation = RestExclude.class, attribute = "select")
+    boolean select() default true;
 
-    /** 可更新 */
-    boolean updatable() default true;
+    /**
+     * 可插入
+     */
+    @AliasFor(annotation = RestExclude.class, attribute = "insert")
+    boolean insert() default true;
+
+    /**
+     * 可更新
+     */
+    @AliasFor(annotation = RestExclude.class, attribute = "update")
+    boolean update() default true;
 
     /**
      * 数据库类型 {, jdbcType=VARCHAR}
      */
+    @AliasFor(annotation = RestJdbcType.class, attribute = "jdbcType")
     JdbcType jdbcType() default JdbcType.UNDEFINED;
 
     /**
      * 类型处理器 {, typeHandler=XXTypeHandler}
      */
+    @AliasFor(annotation = RestJdbcType.class, attribute = "typeHandler")
     Class<? extends TypeHandler> typeHandler() default UnknownTypeHandler.class;
 
     /**
      * 小数位数 {, numericScale=2}
      */
+    @AliasFor(annotation = RestJdbcType.class, attribute = "numericScale")
     String numericScale() default "";
 
     /**
      * 属性配置
      */
+    @AliasFor(annotation = RestProperties.class, attribute = "properties")
     RestProperty[] properties() default {};
 }

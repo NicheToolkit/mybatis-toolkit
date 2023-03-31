@@ -1,12 +1,10 @@
-package io.github.nichetoolkit.mybatis.stereotype;
+package io.github.nichetoolkit.mybatis.stereotype.column;
 
 
 import org.springframework.core.annotation.AliasFor;
+import org.springframework.stereotype.Indexed;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import java.lang.annotation.*;
 
 /**
  * <p>RestAlias</p>
@@ -15,15 +13,17 @@ import java.lang.annotation.Target;
  * @version v1.0.0
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.TYPE, ElementType.METHOD})
+@Target({ElementType.FIELD, ElementType.ANNOTATION_TYPE})
+@Documented
+@Indexed
 public @interface RestAlias {
     /**
-     * 别名
+     * 列名，默认空时使用字段名
      */
     @AliasFor("value")
     String name() default "";
     /**
-     * 别名
+     * 列名，默认空时使用字段名
      */
     @AliasFor("name")
     String value() default "";

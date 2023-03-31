@@ -33,11 +33,11 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
     /** 排序的优先级，数值越小优先级越高 */
     protected int priority;
     /** 是否查询字段 */
-    protected boolean selectable = true;
+    protected boolean select = true;
     /** 是否插入字段 */
-    protected boolean insertable = true;
+    protected boolean insert = true;
     /** 是否更新字段 */
-    protected boolean updatable = true;
+    protected boolean update = true;
     /** jdbc类型 */
     protected JdbcType jdbcType;
     /** 类型处理器 */
@@ -45,8 +45,8 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
     /** 精度 */
     protected String numericScale;
 
-    protected MybatisColumn(MybatisField mybatisField) {
-        this.field = mybatisField;
+    protected MybatisColumn(MybatisField field) {
+        this.field = field;
     }
 
     public static MybatisColumn of(MybatisField field) {

@@ -1,12 +1,10 @@
-package io.github.nichetoolkit.mybatis.stereotype;
+package io.github.nichetoolkit.mybatis.stereotype.column;
 
 
 import io.github.nichetoolkit.rice.enums.SortType;
+import org.springframework.stereotype.Indexed;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import java.lang.annotation.*;
 
 /**
  * <p>RestOrderBy</p>
@@ -14,17 +12,19 @@ import java.lang.annotation.Target;
  * @version v1.0.0
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.TYPE, ElementType.METHOD})
+@Target({ElementType.FIELD, ElementType.ANNOTATION_TYPE})
+@Documented
+@Indexed
 public @interface RestOrderBy {
     /**
      * 排序方式
      */
-    String orderBy() default "";
+    String value() default "";
 
     /**
      * 排序方式
      */
-    SortType SortType() default SortType.NONE;
+    SortType type() default SortType.NONE;
 
     /**
      * 排序的优先级，数值越小优先级越高

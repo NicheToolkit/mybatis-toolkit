@@ -20,9 +20,9 @@ public interface MybatisSqlSourceCustomize {
         private final List<MybatisSqlSourceCustomize> sqlSourceCustomizes = ServiceLoaderHelper.instances(MybatisSqlSourceCustomize.class);
 
         @Override
-        public SqlSource customize(SqlSource sqlSource, MybatisTable table, MappedStatement mappedStatement, ProviderContext context) {
+        public SqlSource customize(SqlSource sqlSource, MybatisTable table, MappedStatement statement, ProviderContext context) {
             for (MybatisSqlSourceCustomize sqlSourceCustomize : sqlSourceCustomizes) {
-                sqlSource = sqlSourceCustomize.customize(sqlSource, table, mappedStatement, context);
+                sqlSource = sqlSourceCustomize.customize(sqlSource, table, statement, context);
             }
             return sqlSource;
         }

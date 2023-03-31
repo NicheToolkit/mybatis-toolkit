@@ -2,7 +2,7 @@ package io.github.nichetoolkit.mybatis.defaults;
 
 import io.github.nichetoolkit.mybatis.*;
 import io.github.nichetoolkit.mybatis.stereotype.RestColumn;
-import io.github.nichetoolkit.mybatis.stereotype.RestExclude;
+import io.github.nichetoolkit.mybatis.stereotype.column.RestExclude;
 import io.github.nichetoolkit.mybatis.stereotype.RestProperty;
 import org.apache.ibatis.type.JdbcType;
 
@@ -25,9 +25,9 @@ public class DefaultColumnFactory implements MybatisColumnFactory {
                     .column(restColumn.value().isEmpty() ? MybatisStyle.style(table.styleName()).columnName(table, field) : restColumn.value())
                     .orderBy(restColumn.orderBy())
                     .priority(restColumn.priority())
-                    .selectable(restColumn.selectable())
-                    .insertable(restColumn.insertable())
-                    .updatable(restColumn.updatable())
+                    .select(restColumn.select())
+                    .insert(restColumn.insert())
+                    .update(restColumn.update())
                     .jdbcType(restColumn.jdbcType())
                     .typeHandler(restColumn.typeHandler())
                     .numericScale(restColumn.numericScale());

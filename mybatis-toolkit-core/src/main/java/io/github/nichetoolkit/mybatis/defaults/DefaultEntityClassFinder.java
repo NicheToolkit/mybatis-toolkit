@@ -1,6 +1,6 @@
 package io.github.nichetoolkit.mybatis.defaults;
 
-import io.github.nichetoolkit.mybatis.stereotype.RestEntity;
+import io.github.nichetoolkit.mybatis.stereotype.table.RestEntity;
 import io.github.nichetoolkit.mybatis.stereotype.RestTable;
 
 import java.lang.reflect.Method;

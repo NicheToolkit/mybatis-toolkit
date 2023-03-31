@@ -30,7 +30,7 @@ public class MybatisField {
         this.field.setAccessible(true);
     }
 
-    public Class<?> getDeclaringClass() {
+    public Class<?> declaringClass() {
         return field.getDeclaringClass();
     }
 

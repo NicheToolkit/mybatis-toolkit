@@ -1,11 +1,8 @@
 package io.github.nichetoolkit.mybatis.stereotype;
 
-import org.springframework.core.annotation.AliasFor;
+import org.springframework.stereotype.Indexed;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import java.lang.annotation.*;
 
 /**
  * <p>RestProperty</p>
@@ -13,19 +10,14 @@ import java.lang.annotation.Target;
  * @version v1.0.0
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.FIELD, ElementType.METHOD})
+@Target({ElementType.ANNOTATION_TYPE})
+@Documented
+@Indexed
 public @interface RestProperty {
     /**
-     * 属性key
+     * 属性名
      */
-    @AliasFor("key")
-    String name() default "";
-
-    /**
-     * 属性key
-     */
-    @AliasFor("name")
-    String key() default "";
+    String name();
 
     /**
      * 属性值
