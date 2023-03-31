@@ -14,8 +14,9 @@ import java.lang.annotation.Target;
  * @version v1.0.0
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.TYPE)
+@Target({ElementType.TYPE, ElementType.METHOD})
 public @interface RestTable {
+
     /**
      * 表名，默认空时使用对象名
      */

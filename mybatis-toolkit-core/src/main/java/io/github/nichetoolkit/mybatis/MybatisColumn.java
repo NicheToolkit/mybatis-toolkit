@@ -28,8 +28,6 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
     protected MybatisTable table;
     /** 列名 */
     protected String column;
-    /** 是否为主键 */
-    protected boolean pkable;
     /** 排序方式 */
     protected String orderBy;
     /** 排序的优先级，数值越小优先级越高 */

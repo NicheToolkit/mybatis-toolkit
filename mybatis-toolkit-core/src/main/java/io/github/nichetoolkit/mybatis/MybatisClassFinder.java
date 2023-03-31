@@ -17,14 +17,13 @@ public interface MybatisClassFinder extends MybatisOrder {
 
     /**
      * 查找当前方法对应的实体类
-     *
      * @param mapperType   Mapper 接口，不能为空
      * @param mapperMethod Mapper 接口方法，可以为空
-     * @return Optional<Class<?>>
+     * @return Optional<Class < ?>>
      */
-    static Optional<Class<?>> find(Class<?> mapperType, Method mapperMethod) {
+    static Optional<Class<?>> findClass(Class<?> mapperType, Method mapperMethod) {
         Objects.requireNonNull(mapperType);
-        for (MybatisClassFinder instance : MybatisClassFinderInstance.getInstances()) {
+        for (MybatisClassFinder instance : ClassFinderInstance.instances()) {
             Optional<Class<?>> optionalClass = instance.findEntity(mapperType, mapperMethod);
             if (optionalClass.isPresent()) {
                 return optionalClass;
@@ -35,16 +34,14 @@ public interface MybatisClassFinder extends MybatisOrder {
 
     /**
      * 查找当前方法对应的实体类
-     *
      * @param mapperType   Mapper 接口，不能为空
      * @param mapperMethod Mapper 接口方法，可以为空
-     * @return Optional<Class<?>> 实体类类型
+     * @return Optional<Class < ?>> 实体类类型
      */
     Optional<Class<?>> findEntity(Class<?> mapperType, Method mapperMethod);
 
     /**
      * 指定的类型是否为定义的实体类类型
-     *
      * @param clazz 类型
      * @return 是否为实体类类型
      */
@@ -53,15 +50,14 @@ public interface MybatisClassFinder extends MybatisOrder {
     /**
      * 实例
      */
-    class MybatisClassFinderInstance {
+    class ClassFinderInstance {
         private static volatile List<MybatisClassFinder> INSTANCES;
 
         /**
          * 通过 SPI 获取扩展的实现或使用默认实现
-         *
          * @return 实例
          */
-        public static List<MybatisClassFinder> getInstances() {
+        public static List<MybatisClassFinder> instances() {
             if (INSTANCES == null) {
                 synchronized (MybatisClassFinder.class) {
                     if (INSTANCES == null) {

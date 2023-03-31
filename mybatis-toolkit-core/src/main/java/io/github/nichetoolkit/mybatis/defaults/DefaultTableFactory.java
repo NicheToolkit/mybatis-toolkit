@@ -6,17 +6,16 @@ import io.github.nichetoolkit.mybatis.MybatisTableFactory;
 import io.github.nichetoolkit.mybatis.helper.MybatisHelper;
 import io.github.nichetoolkit.mybatis.stereotype.RestProperty;
 import io.github.nichetoolkit.mybatis.stereotype.RestTable;
-import io.github.nichetoolkit.rest.RestException;
 
 /**
  * <p>DefaultMybatisTableFactory</p>
  * @author Cyan (snow22314@outlook.com)
  * @version v1.0.0
  */
-public class DefaultMybatisTableFactory implements MybatisTableFactory {
+public class DefaultTableFactory implements MybatisTableFactory {
 
     @Override
-    public MybatisTable createMybatisTable(Class<?> clazz, Chain chain) throws RestException {
+    public MybatisTable createTable(Class<?> clazz, Chain chain) {
         if (clazz.isAnnotationPresent(RestTable.class)) {
             RestTable table = clazz.getAnnotation(RestTable.class);
             MybatisTable mybatisTable = MybatisTable.of(clazz)

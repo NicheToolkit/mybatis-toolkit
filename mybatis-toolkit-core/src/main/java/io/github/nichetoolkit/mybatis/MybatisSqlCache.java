@@ -11,7 +11,7 @@ import java.util.function.Supplier;
  */
 public class MybatisSqlCache {
     /** 空对象 */
-    public static final MybatisSqlCache NULL_CACHE = new MybatisSqlCache(null, null, null);
+    public static final MybatisSqlCache NULL_SQL_CACHE = new MybatisSqlCache(null, null, null);
     /** 执行方法上下文 */
     private final ProviderContext context;
     /** 实体类信息 */

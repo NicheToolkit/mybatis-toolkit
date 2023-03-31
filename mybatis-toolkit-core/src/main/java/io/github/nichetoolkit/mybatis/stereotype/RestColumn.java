@@ -16,7 +16,7 @@ import java.lang.annotation.Target;
  * @version v1.0.0
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.FIELD)
+@Target({ElementType.FIELD, ElementType.METHOD})
 public @interface RestColumn {
     /**
      * 列名，默认空时使用字段名
@@ -42,6 +42,11 @@ public @interface RestColumn {
      * 排序方式
      */
     String orderBy() default "";
+
+    /**
+     * 排序方式
+     */
+    SortType sortType() default SortType.NONE;
 
     /**
      * 排序的优先级，数值越小优先级越高

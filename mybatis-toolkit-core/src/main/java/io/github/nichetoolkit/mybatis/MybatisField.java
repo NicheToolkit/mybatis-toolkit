@@ -2,7 +2,6 @@ package io.github.nichetoolkit.mybatis;
 
 import io.github.nichetoolkit.mybatis.defaults.MybatisGenericTypeResolver;
 import io.github.nichetoolkit.rest.error.lack.AccessibleLackError;
-import io.github.nichetoolkit.rest.error.natives.UnsupportedErrorException;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
@@ -34,7 +33,6 @@ public class MybatisField {
     public Class<?> getDeclaringClass() {
         return field.getDeclaringClass();
     }
-
 
     public String getName() {
         return field.getName();

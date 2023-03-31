@@ -1,7 +1,6 @@
 package io.github.nichetoolkit.mybatis;
 
 import io.github.nichetoolkit.mybatis.helper.ServiceLoaderHelper;
-import io.github.nichetoolkit.rest.RestException;
 import org.apache.ibatis.builder.annotation.ProviderContext;
 import org.apache.ibatis.mapping.MappedStatement;
 
@@ -18,22 +17,22 @@ public interface MybatisCustomize {
     /**
      * 支持 SPI 扩展的默认实现
      */
-    MybatisCustomize MYBATIS_CUSTOMIZE = new MybatisCustomize() {
+    MybatisCustomize DEFAULT_CUSTOMIZE = new MybatisCustomize() {
         private final List<MybatisCustomize> customizes = ServiceLoaderHelper.instances(MybatisCustomize.class);
 
         @Override
-        public void customize(MybatisTable mybatisTable, MappedStatement mappedStatement, ProviderContext context){
+        public void customize(MybatisTable table, MappedStatement statement, ProviderContext context) {
             for (MybatisCustomize customize : customizes) {
-                customize.customize(mybatisTable, mappedStatement, context);
+                customize.customize(table, statement, context);
             }
         }
     };
 
     /**
      * 定制化
-     * @param mybatisTable    MybatisTable
-     * @param mappedStatement MappedStatement
-     * @param context         ProviderContext
+     * @param table     MybatisTable
+     * @param statement MappedStatement
+     * @param context   ProviderContext
      */
-    void customize(MybatisTable mybatisTable, MappedStatement mappedStatement, ProviderContext context);
+    void customize(MybatisTable table, MappedStatement statement, ProviderContext context);
 }

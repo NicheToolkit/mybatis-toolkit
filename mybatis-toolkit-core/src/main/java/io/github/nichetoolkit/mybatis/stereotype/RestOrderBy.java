@@ -1,6 +1,7 @@
 package io.github.nichetoolkit.mybatis.stereotype;
 
-import org.springframework.core.annotation.AliasFor;
+
+import io.github.nichetoolkit.rice.enums.SortType;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -8,27 +9,25 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * <p>RestProperty</p>
+ * <p>RestOrderBy</p>
  * @author Cyan (snow22314@outlook.com)
  * @version v1.0.0
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.FIELD, ElementType.METHOD})
-public @interface RestProperty {
+@Target({ElementType.TYPE, ElementType.METHOD})
+public @interface RestOrderBy {
     /**
-     * 属性key
+     * 排序方式
      */
-    @AliasFor("key")
-    String name() default "";
+    String orderBy() default "";
 
     /**
-     * 属性key
+     * 排序方式
      */
-    @AliasFor("name")
-    String key() default "";
+    SortType SortType() default SortType.NONE;
 
     /**
-     * 属性值
+     * 排序的优先级，数值越小优先级越高
      */
-    String value();
+    int priority() default 0;
 }

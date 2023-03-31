@@ -11,12 +11,12 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * <p>RestColumn</p>
+ * <p>RestPrimaryKey</p>
  * @author Cyan (snow22314@outlook.com)
  * @version v1.0.0
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.FIELD)
+@Target({ElementType.FIELD, ElementType.METHOD})
 public @interface RestPrimaryKey {
     /**
      * 列名，默认空时使用字段名

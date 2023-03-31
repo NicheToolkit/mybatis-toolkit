@@ -1,16 +1,17 @@
 package io.github.nichetoolkit.mybatis.stereotype;
 
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * <p>RestOrder</p>
+ * <p>RestIgnore</p>
  * @author Cyan (snow22314@outlook.com)
  * @version v1.0.0
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE, ElementType.METHOD})
-public @interface RestOrder {
+public @interface RestIgnore {
 }

@@ -1,5 +1,6 @@
 package io.github.nichetoolkit.mybatis.stereotype;
 
+
 import org.springframework.core.annotation.AliasFor;
 
 import java.lang.annotation.ElementType;
@@ -8,27 +9,27 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * <p>RestProperty</p>
+ * <p>RestAlias</p>
+ * 属性或列别名 优先级 RestProperty > RestAlias > RestColumn
  * @author Cyan (snow22314@outlook.com)
  * @version v1.0.0
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.FIELD, ElementType.METHOD})
-public @interface RestProperty {
+@Target({ElementType.TYPE, ElementType.METHOD})
+public @interface RestAlias {
     /**
-     * 属性key
+     * 别名
      */
-    @AliasFor("key")
+    @AliasFor("value")
     String name() default "";
-
     /**
-     * 属性key
+     * 别名
      */
     @AliasFor("name")
-    String key() default "";
+    String value() default "";
 
     /**
-     * 属性值
+     * 备注
      */
-    String value();
+    String remark() default "";
 }

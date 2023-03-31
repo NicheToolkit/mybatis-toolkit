@@ -1,7 +1,5 @@
 package io.github.nichetoolkit.mybatis;
 
-import io.github.nichetoolkit.rest.RestException;
-
 /**
  * <p>MybatisTableFactory</p>
  * 体类信息工厂
@@ -16,7 +14,7 @@ public interface MybatisTableFactory extends MybatisOrder {
      * @param chain 调用下一个
      * @return 实体类信息
      */
-    MybatisTable createMybatisTable(Class<?> clazz, Chain chain);
+    MybatisTable createTable(Class<?> clazz, Chain chain);
 
     /**
      * 工厂链
@@ -28,6 +26,6 @@ public interface MybatisTableFactory extends MybatisOrder {
          * @param clazz 实体类类型
          * @return 实体类信息
          */
-        MybatisTable createMybatisTable(Class<?> clazz);
+        MybatisTable createTable(Class<?> clazz);
     }
 }

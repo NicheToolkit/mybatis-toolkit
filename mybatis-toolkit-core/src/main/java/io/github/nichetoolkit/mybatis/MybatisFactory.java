@@ -1,9 +1,9 @@
 package io.github.nichetoolkit.mybatis;
 
-import io.github.nichetoolkit.mybatis.defaults.DefaultMybatisColumnFactoryChain;
-import io.github.nichetoolkit.mybatis.defaults.DefaultMybatisTableFactoryChain;
+import io.github.nichetoolkit.mybatis.defaults.DefaultColumnFactoryChain;
+import io.github.nichetoolkit.mybatis.defaults.DefaultTableFactoryChain;
 import io.github.nichetoolkit.mybatis.helper.ServiceLoaderHelper;
-import io.github.nichetoolkit.rest.RestException;
+import io.github.nichetoolkit.rest.error.lack.InterfaceLackError;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -23,12 +23,12 @@ public abstract class MybatisFactory {
      * @param mapperMethod 方法
      * @return 实体类信息
      */
-    public static MybatisTable create(Class<?> mapperType, Method mapperMethod) throws RestException {
-        Optional<Class<?>> optionalClass = MybatisClassFinder.find(mapperType, mapperMethod);
+    public static MybatisTable createTable(Class<?> mapperType, Method mapperMethod) {
+        Optional<Class<?>> optionalClass = MybatisClassFinder.findClass(mapperType, mapperMethod);
         if (optionalClass.isPresent()) {
-            return create(optionalClass.get());
+            return createTable(optionalClass.get());
         }
-        throw new RuntimeException("Can't obtain " + (mapperMethod != null ?
+        throw new InterfaceLackError("Can't obtain " + (mapperMethod != null ?
                 mapperMethod.getName() + " method" : mapperType.getSimpleName() + " interface") + " corresponding mybatis class");
     }
 
@@ -37,20 +37,20 @@ public abstract class MybatisFactory {
      * @param clazz 实体类类型
      * @return 实体类信息
      */
-    public static MybatisTable create(Class<?> clazz) throws RestException {
+    public static MybatisTable createTable(Class<?> clazz) {
         /** 处理MybatisTable */
-        MybatisTableFactory.Chain mybatisTableFactoryChain = Instance.getMybatisTableFactoryChain();
+        MybatisTableFactory.Chain tableFactoryChain = Instance.tableFactoryChain();
         /** 创建 MybatisTable，不处理列（字段），此时返回的 MybatisTable 已经经过了所有处理链的加工 */
-        MybatisTable mybatisTable = mybatisTableFactoryChain.createMybatisTable(clazz);
-        if (mybatisTable == null) {
+        MybatisTable table = tableFactoryChain.createTable(clazz);
+        if (table == null) {
             throw new NullPointerException("Unable to get " + clazz.getName() + " mybatis class information");
         }
         /** 如果实体表已经处理好，直接返回 */
-        if (!mybatisTable.ready()) {
+        if (!table.ready()) {
             synchronized (clazz) {
-                if (!mybatisTable.ready()) {
+                if (!table.ready()) {
                     /** 处理MybatisColumn */
-                    MybatisColumnFactory.Chain mybatisColumnFactoryChain = Instance.getMybatisColumnFactoryChain();
+                    MybatisColumnFactory.Chain columnFactoryChain = Instance.columnFactoryChain();
                     /** 未处理的需要获取字段 */
                     Class<?> declaredClass = clazz;
                     boolean isSuperclass = false;
@@ -59,33 +59,33 @@ public abstract class MybatisFactory {
                         if (isSuperclass) {
                             reverse(declaredFields);
                         }
-                        for (Field field : declaredFields) {
-                            int modifiers = field.getModifiers();
+                        for (Field declaredField : declaredFields) {
+                            int modifiers = declaredField.getModifiers();
                             /** 排除 static 和 transient 修饰的字段 */
                             if (!Modifier.isStatic(modifiers) && !Modifier.isTransient(modifiers)) {
-                                MybatisField mybatisField = new MybatisField(clazz, field);
+                                MybatisField field = new MybatisField(clazz, declaredField);
                                 /** 是否需要排除字段 */
-                                if (mybatisTable.isExcludeField(mybatisField)) {
+                                if (table.isExcludeField(field)) {
                                     continue;
                                 }
-                                Optional<List<MybatisColumn>> optionalMybatisColumns = mybatisColumnFactoryChain.createMybatisColumn(mybatisTable, mybatisField);
-                                optionalMybatisColumns.ifPresent(columns -> columns.forEach(mybatisTable::addColumn));
+                                Optional<List<MybatisColumn>> optionalColumns = columnFactoryChain.createColumn(table, field);
+                                optionalColumns.ifPresent(columns -> columns.forEach(table::addColumn));
                             }
                         }
                         /** 迭代获取父类 */
                         declaredClass = declaredClass.getSuperclass();
                         /** 排除父类 */
-                        while (mybatisTable.isExcludeSuperClass(declaredClass) && declaredClass != Object.class) {
+                        while (table.isExcludeSuperClass(declaredClass) && declaredClass != Object.class) {
                             declaredClass = declaredClass.getSuperclass();
                         }
                         isSuperclass = true;
                     }
                     /** 标记处理完成 */
-                    mybatisTable.ready(true);
+                    table.ready(true);
                 }
             }
         }
-        return mybatisTable;
+        return table;
     }
 
     /**
@@ -104,39 +104,39 @@ public abstract class MybatisFactory {
      * 实例
      */
     static class Instance {
-        private static volatile MybatisTableFactory.Chain mybatisTableFactoryChain;
-        private static volatile MybatisColumnFactory.Chain mybatisColumnFactoryChain;
+        private static volatile MybatisTableFactory.Chain TABLE_FACTORY_CHAIN;
+        private static volatile MybatisColumnFactory.Chain COLUMN_FACTORY_CHAIN;
 
         /**
          * 获取处理实体的工厂链
          * @return 实例
          */
-        public static MybatisTableFactory.Chain getMybatisTableFactoryChain() {
-            if (mybatisTableFactoryChain == null) {
+        public static MybatisTableFactory.Chain tableFactoryChain() {
+            if (TABLE_FACTORY_CHAIN == null) {
                 synchronized (MybatisFactory.class) {
-                    if (mybatisTableFactoryChain == null) {
+                    if (TABLE_FACTORY_CHAIN == null) {
                         List<MybatisTableFactory> mybatisTableFactories = ServiceLoaderHelper.instances(MybatisTableFactory.class);
-                        mybatisTableFactoryChain = new DefaultMybatisTableFactoryChain(mybatisTableFactories);
+                        TABLE_FACTORY_CHAIN = new DefaultTableFactoryChain(mybatisTableFactories);
                     }
                 }
             }
-            return mybatisTableFactoryChain;
+            return TABLE_FACTORY_CHAIN;
         }
 
         /**
          * 获取处理列的工厂链
          * @return 实例
          */
-        public static MybatisColumnFactory.Chain getMybatisColumnFactoryChain() {
-            if (mybatisColumnFactoryChain == null) {
+        public static MybatisColumnFactory.Chain columnFactoryChain() {
+            if (COLUMN_FACTORY_CHAIN == null) {
                 synchronized (MybatisFactory.class) {
-                    if (mybatisColumnFactoryChain == null) {
+                    if (COLUMN_FACTORY_CHAIN == null) {
                         List<MybatisColumnFactory> mybatisColumnFactories = ServiceLoaderHelper.instances(MybatisColumnFactory.class);
-                        mybatisColumnFactoryChain = new DefaultMybatisColumnFactoryChain(mybatisColumnFactories);
+                        COLUMN_FACTORY_CHAIN = new DefaultColumnFactoryChain(mybatisColumnFactories);
                     }
                 }
             }
-            return mybatisColumnFactoryChain;
+            return COLUMN_FACTORY_CHAIN;
         }
     }
 }
