@@ -72,7 +72,7 @@ public @interface RestTable {
      * 默认使用 全局配置 LOWER_UNDERSCORE
      */
     @AliasFor(annotation = RestStyle.class, attribute = "name")
-    String styleName() default MybatisStyle.LOWER_UNDERLINE;
+    String styleName() default "";
 
     /**
      * 名称规则样式 默认小写加下划线

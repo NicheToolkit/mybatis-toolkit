@@ -27,7 +27,7 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
     /** 所在实体类 */
     protected MybatisTable table;
     /** 列名 */
-    protected String column;
+    protected String columnName;
     /** 排序方式 */
     protected String orderBy;
     /** 排序的优先级，数值越小优先级越高 */
@@ -135,15 +135,15 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
     public String columnAsProperty(String prefix) {
         /** 这里的column 和 property 的比较 应该是需要忽略界定符之后再比较 */
         /** mysql 中 【`order`】 应该认为是 和 field 的 【order】 相同 */
-        String column = this.column;
-        Matcher matcher = DELIMITER.matcher(this.column);
+        String column = this.columnName;
+        Matcher matcher = DELIMITER.matcher(this.columnName);
         if (matcher.find()) {
             column = matcher.group(1);
         }
         if (!Objects.equals(column, property(prefix))) {
-            return this.column + " AS " + property(prefix);
+            return this.columnName + " AS " + property(prefix);
         }
-        return this.column;
+        return this.columnName;
     }
 
     /**
@@ -158,7 +158,7 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
      * @param prefix 指定前缀，需要自己提供"."
      */
     public String columnEqualsProperty(String prefix) {
-        return this.column + " = " + variables(prefix);
+        return this.columnName + " = " + variables(prefix);
     }
 
     /**
@@ -201,12 +201,12 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
         if (this == o) return true;
         if (!(o instanceof MybatisColumn)) return false;
         MybatisColumn that = (MybatisColumn) o;
-        return this.column.equals(that.column);
+        return this.columnName.equals(that.columnName);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.column);
+        return Objects.hash(this.columnName);
     }
 
     @Override

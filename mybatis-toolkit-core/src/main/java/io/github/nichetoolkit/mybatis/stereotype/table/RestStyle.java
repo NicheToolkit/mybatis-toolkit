@@ -21,14 +21,14 @@ public @interface RestStyle {
      * 表名，默认空时使用对象名
      */
     @AliasFor("name")
-    String value() default MybatisStyle.LOWER_UNDERLINE;
+    String value() default "";
 
     /**
      * 名称规则样式 默认小写加下划线 支持自定义
      * 默认使用 全局配置 LOWER_UNDERSCORE
      */
     @AliasFor("value")
-    String name() default MybatisStyle.LOWER_UNDERLINE;
+    String name() default "";
 
     /**
      * 名称规则样式 默认小写加下划线

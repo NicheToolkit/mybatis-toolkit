@@ -1,4 +1,4 @@
-package io.github.nichetoolkit.mybatis.stereotype;
+package io.github.nichetoolkit.mybatis.stereotype.table;
 
 import org.springframework.core.annotation.AliasFor;
 import org.springframework.stereotype.Indexed;

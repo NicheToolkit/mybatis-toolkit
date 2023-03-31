@@ -7,7 +7,7 @@ import io.github.nichetoolkit.mybatis.enums.StyleType;
 import io.github.nichetoolkit.rest.util.GeneralUtils;
 
 /**
- * <p>DefaultLowerUnderlineStyle</p>
+ * <p>DefaultUpperUnderlineStyle</p>
  * @author Cyan (snow22314@outlook.com)
  * @version v1.0.0
  */
