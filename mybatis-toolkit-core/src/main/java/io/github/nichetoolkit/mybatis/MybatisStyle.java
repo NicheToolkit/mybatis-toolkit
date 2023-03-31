@@ -75,16 +75,16 @@ public interface MybatisStyle {
 
     /**
      * 转换表名
-     * @param entityClass 实体类
+     * @param clazz 实体类
      * @return 对应的表名 String
      */
-    String tableName(Class<?> entityClass);
+    String tableName(Class<?> clazz);
 
     /**
      * 转换列名
-     * @param mybatisTable 表
-     * @param mybatisField 属性
+     * @param table 表
+     * @param field 属性
      * @return String
      */
-    String columnName(MybatisTable mybatisTable, MybatisField mybatisField);
+    String columnName(MybatisTable table, MybatisField field);
 }
