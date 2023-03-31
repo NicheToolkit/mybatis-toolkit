@@ -1,6 +1,7 @@
 package io.github.nichetoolkit.mybatis;
 
 import io.github.nichetoolkit.rest.util.GeneralUtils;
+import io.github.nichetoolkit.rice.enums.SortType;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import org.apache.ibatis.type.JdbcType;
@@ -28,16 +29,24 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
     protected MybatisTable table;
     /** 列名 */
     protected String columnName;
+    /** 是否主键 */
+    protected boolean primaryKey;
+    /** 是否联合主键 */
+    protected boolean unionKey;
     /** 排序方式 */
     protected String orderBy;
-    /** 排序的优先级，数值越小优先级越高 */
+    /** 排序方式 */
+    protected SortType sortType;
+    /** 排序的优先级 */
     protected int priority;
+    /** 是否排除字段 */
+    protected boolean exclude;
     /** 是否查询字段 */
-    protected boolean select = true;
+    protected boolean select;
     /** 是否插入字段 */
-    protected boolean insert = true;
+    protected boolean insert;
     /** 是否更新字段 */
-    protected boolean update = true;
+    protected boolean update;
     /** jdbc类型 */
     protected JdbcType jdbcType;
     /** 类型处理器 */
@@ -55,7 +64,7 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
 
     /** Java 类型 */
     public Class<?> javaType() {
-        return field().getType();
+        return field().fieldType();
     }
 
     /**
@@ -70,7 +79,7 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
      * @param prefix 指定前缀，需要自己提供"."
      */
     public String property(String prefix) {
-        return prefix + field().getName();
+        return prefix + field().fieldName();
     }
 
     /**
@@ -185,12 +194,12 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
     }
 
     /**
-     * 当字段类型为 String 时，返回 prefixproperty != null and prefixproperty != '' 形式的字符串.
+     * 当字段类型为 String 时，返回 prefix property != null and prefix property != '' 形式的字符串.
      * 其他类型时和 {@link #notNullTest()} 方法一样.
      * @param prefix 指定前缀，需要自己提供"."
      */
     public String notEmptyTest(String prefix) {
-        if (this.field.getType() == String.class) {
+        if (this.field.fieldType() == String.class) {
             return notNullTest(prefix) + " and " + property(prefix) + " != '' ";
         }
         return notNullTest();

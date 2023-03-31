@@ -34,11 +34,11 @@ public class MybatisField {
         return field.getDeclaringClass();
     }
 
-    public String getName() {
+    public String fieldName() {
         return field.getName();
     }
 
-    public Class<?> getType() {
+    public Class<?> fieldType() {
         return MybatisGenericTypeResolver.resolveFieldClass(field, clazz);
     }
 

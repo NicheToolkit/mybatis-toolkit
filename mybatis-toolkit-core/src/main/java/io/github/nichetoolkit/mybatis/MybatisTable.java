@@ -464,7 +464,7 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
      */
     public boolean isExcludeField(MybatisField field) {
         if (excludeFieldTypes != null) {
-            Class<?> fieldType = field.getType();
+            Class<?> fieldType = field.fieldType();
             for (Class<?> clazz : excludeFieldTypes) {
                 if (clazz == fieldType) {
                     return true;
@@ -472,7 +472,7 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
             }
         }
         if (excludeFields != null) {
-            String fieldName = field.getName();
+            String fieldName = field.fieldName();
             for (String excludeField : excludeFields) {
                 if (excludeField.equals(fieldName)) {
                     return true;
