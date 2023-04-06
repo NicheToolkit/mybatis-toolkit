@@ -26,10 +26,10 @@
       "description": "mybatis table schema."
     },
     {
-      "name": "nichetoolkit.mybatis.table.entity.style-type",
+      "name": "nichetoolkit.mybatis.table.style-type",
       "type": "java.lang.String",
       "sourceType": "java.lang.String",
-      "description": "mybatis table entity style type."
+      "description": "mybatis table style type."
     },
     {
       "name": "nichetoolkit.mybatis.table.entity.properties",

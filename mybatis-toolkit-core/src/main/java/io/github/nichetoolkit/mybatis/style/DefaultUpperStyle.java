@@ -23,6 +23,6 @@ public class DefaultUpperStyle implements MybatisStyle {
 
     @Override
     public String columnName(MybatisTable table, MybatisField field) {
-        return field.getName().toUpperCase();
+        return field.fieldName().toUpperCase();
     }
 }

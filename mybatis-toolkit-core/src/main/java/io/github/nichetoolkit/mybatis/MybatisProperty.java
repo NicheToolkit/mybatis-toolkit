@@ -6,8 +6,10 @@ import io.github.nichetoolkit.mybatis.stereotype.RestProperty;
 import io.github.nichetoolkit.rest.util.GeneralUtils;
 import io.github.nichetoolkit.rice.helper.PropertyHelper;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * <p>MybatisProperty</p>
@@ -81,6 +83,15 @@ public class MybatisProperty<P extends MybatisProperty<P>> {
     public P setProperties(Map<String, String> properties) {
         if (GeneralUtils.isNotEmpty(properties)) {
             this.properties.putAll(properties);
+        }
+        return (P) this;
+    }
+
+    @SuppressWarnings(value = "unchecked")
+    public P setProperties(RestProperty... properties) {
+        if (GeneralUtils.isNotEmpty(properties)) {
+            Map<String, String> propertiesMap = Arrays.stream(properties).collect(Collectors.toMap(RestProperty::name, RestProperty::value));
+            this.properties.putAll(propertiesMap);
         }
         return (P) this;
     }

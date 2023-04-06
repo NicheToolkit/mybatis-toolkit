@@ -21,6 +21,8 @@ public class MybatisTableProperties {
     private String catalog;
     /** 数据库 schema名 全局配置 */
     private String schema;
+    /** 默认样式 */
+    private StyleType styleType = StyleType.LOWER_UNDERLINE;
     @NestedConfigurationProperty
     private Entity entity = new Entity();
     @NestedConfigurationProperty
@@ -29,22 +31,10 @@ public class MybatisTableProperties {
     public MybatisTableProperties() {
     }
 
-
     public static class Entity {
-        /** 默认样式 */
-        private StyleType styleType = StyleType.LOWER_UNDERLINE;
-        /** 默认样式 */
         private Map<String, String> properties = new HashMap<>();
 
         public Entity() {
-        }
-
-        public StyleType getStyleType() {
-            return styleType;
-        }
-
-        public void setStyleType(StyleType styleType) {
-            this.styleType = styleType;
         }
 
         public Map<String, String> getProperties() {
@@ -80,6 +70,14 @@ public class MybatisTableProperties {
         public void setUseOnce(boolean useOnce) {
             this.useOnce = useOnce;
         }
+    }
+
+    public StyleType getStyleType() {
+        return styleType;
+    }
+
+    public void setStyleType(StyleType styleType) {
+        this.styleType = styleType;
     }
 
     public Entity getEntity() {

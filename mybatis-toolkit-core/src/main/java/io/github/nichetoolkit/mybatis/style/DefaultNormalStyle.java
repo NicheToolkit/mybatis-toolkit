@@ -23,6 +23,6 @@ public class DefaultNormalStyle implements MybatisStyle {
 
     @Override
     public String columnName(MybatisTable table, MybatisField field) {
-        return field.getName();
+        return field.fieldName();
     }
 }

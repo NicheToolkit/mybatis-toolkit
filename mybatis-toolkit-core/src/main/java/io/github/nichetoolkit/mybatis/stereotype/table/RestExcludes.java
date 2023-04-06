@@ -1,6 +1,5 @@
 package io.github.nichetoolkit.mybatis.stereotype.table;
 
-import io.github.nichetoolkit.mybatis.stereotype.column.RestExclude;
 import org.springframework.core.annotation.AliasFor;
 import org.springframework.stereotype.Indexed;
 
@@ -38,9 +37,4 @@ public @interface RestExcludes {
      * 排除指定父类的所有字段
      */
     Class<?>[] superClasses() default {};
-
-    /**
-     * 排除指定注解的字段
-     */
-    RestExclude[] excludes() default {};
 }

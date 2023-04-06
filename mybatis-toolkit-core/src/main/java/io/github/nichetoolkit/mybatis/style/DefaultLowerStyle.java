@@ -23,6 +23,6 @@ public class DefaultLowerStyle implements MybatisStyle {
 
     @Override
     public String columnName(MybatisTable table, MybatisField field) {
-        return field.getName().toLowerCase();
+        return field.fieldName().toLowerCase();
     }
 }

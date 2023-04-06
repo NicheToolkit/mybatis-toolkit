@@ -23,4 +23,6 @@ public @interface RestProperty {
      * 属性值
      */
     String value();
+
+
 }

@@ -24,6 +24,6 @@ public class DefaultLowerUnderlineStyle implements MybatisStyle {
 
     @Override
     public String columnName(MybatisTable table, MybatisField field) {
-        return GeneralUtils.underline(field.getName());
+        return GeneralUtils.underline(field.fieldName());
     }
 }

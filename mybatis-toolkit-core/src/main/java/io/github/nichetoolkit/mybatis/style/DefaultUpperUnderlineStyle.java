@@ -24,7 +24,7 @@ public class DefaultUpperUnderlineStyle implements MybatisStyle {
 
     @Override
     public String columnName(MybatisTable table, MybatisField field) {
-        return GeneralUtils.underline(field.getName()).toUpperCase();
+        return GeneralUtils.underline(field.fieldName()).toUpperCase();
     }
 
 }

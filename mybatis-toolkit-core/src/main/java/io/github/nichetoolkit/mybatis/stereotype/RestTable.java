@@ -116,10 +116,4 @@ public @interface RestTable {
      */
     @AliasFor(annotation = RestExcludes.class, attribute = "superClasses")
     Class<?>[] excludeSuperClasses() default {};
-
-    /**
-     * 排除指定注解的字段
-     */
-    @AliasFor(annotation = RestExcludes.class, attribute = "excludes")
-    RestExclude[] excludes() default {};
 }

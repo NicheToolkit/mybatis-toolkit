@@ -18,14 +18,12 @@ public class DefaultEntityClassFinder extends MybatisEntityClassFinder {
         if (mapperMethod != null) {
             /** 首先是接口方法 */
             if (mapperMethod.isAnnotationPresent(RestEntity.class)) {
-                RestEntity entity = mapperMethod.getAnnotation(RestEntity.class);
-                return Optional.of(entity.value());
+                return Optional.of(mapperMethod.getDeclaringClass());
             }
         }
         /** 其次是接口上 */
         if (mapperType.isAnnotationPresent(RestEntity.class)) {
-            RestEntity entity = mapperType.getAnnotation(RestEntity.class);
-            return Optional.of(entity.value());
+            return Optional.of(mapperType);
         }
         /** 没有明确指名的情况下，通过泛型获取 */
         return super.findEntity(mapperType, mapperMethod);
@@ -33,6 +31,6 @@ public class DefaultEntityClassFinder extends MybatisEntityClassFinder {
 
     @Override
     public boolean isEntity(Class<?> clazz) {
-        return clazz.isAnnotationPresent(RestTable.class);
+        return clazz.isAnnotationPresent(RestEntity.class);
     }
 }

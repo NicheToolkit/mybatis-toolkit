@@ -64,7 +64,7 @@ public interface MybatisStyle {
 
     static MybatisStyle style(String styleName) {
         if (GeneralUtils.isEmpty(styleName)) {
-            styleName = MybatisHelper.getTableProperties().getEntity().getStyleType().getKey();
+            styleName = MybatisHelper.getTableProperties().getStyleType().getKey();
         }
         if (STYLE_MAP.containsKey(styleName)) {
             return STYLE_MAP.get(styleName);
