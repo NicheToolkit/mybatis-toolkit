@@ -6,6 +6,8 @@ import io.github.nichetoolkit.mybatis.MybatisTableFactory;
 import io.github.nichetoolkit.mybatis.helper.MybatisHelper;
 import io.github.nichetoolkit.mybatis.stereotype.RestProperty;
 import io.github.nichetoolkit.mybatis.stereotype.RestTable;
+import io.github.nichetoolkit.mybatis.stereotype.table.RestEntity;
+import io.github.nichetoolkit.rest.util.GeneralUtils;
 
 /**
  * <p>DefaultMybatisTableFactory</p>
@@ -15,24 +17,28 @@ import io.github.nichetoolkit.mybatis.stereotype.RestTable;
 public class DefaultTableFactory implements MybatisTableFactory {
 
     @Override
+    public boolean supports(Class<?> clazz) {
+        RestEntity restEntity = clazz.getAnnotation(RestEntity.class);
+        return GeneralUtils.isNotEmpty(restEntity) && Object.class != restEntity.entity();
+    }
+
+    @Override
     public MybatisTable createTable(Class<?> clazz, Chain chain) {
-        if (clazz.isAnnotationPresent(RestTable.class)) {
-            RestTable table = clazz.getAnnotation(RestTable.class);
-            MybatisTable mybatisTable = MybatisTable.of(clazz)
-                    .table(table.value().isEmpty() ? MybatisStyle.style(table.styleName()).tableName(clazz) : table.value())
-                    .catalog(table.catalog().isEmpty() ? MybatisHelper.getTableProperties().getCatalog() : table.catalog())
-                    .schema(table.schema().isEmpty() ? MybatisHelper.getTableProperties().getSchema() : table.schema())
-                    .styleName(table.styleName())
-                    .resultMap(table.resultMap())
-                    .autoResultMap(table.autoResultMap())
-                    .excludeSuperClasses(table.excludeSuperClasses())
-                    .excludeFieldTypes(table.excludeFieldTypes())
-                    .excludeFields(table.excludeFields());
-            for (RestProperty property : table.properties()) {
-                mybatisTable.setProperty(property);
-            }
-            return mybatisTable;
+        RestEntity restEntity = clazz.getAnnotation(RestEntity.class);
+
+        MybatisTable mybatisTable = MybatisTable.of(clazz)
+                .table(table.value().isEmpty() ? MybatisStyle.style(table.styleName()).tableName(clazz) : table.value())
+                .catalog(table.catalog().isEmpty() ? MybatisHelper.getTableProperties().getCatalog() : table.catalog())
+                .schema(table.schema().isEmpty() ? MybatisHelper.getTableProperties().getSchema() : table.schema())
+                .styleName(table.styleName())
+                .resultMap(table.resultMap())
+                .autoResultMap(table.autoResultMap())
+                .excludeSuperClasses(table.excludeSuperClasses())
+                .excludeFieldTypes(table.excludeFieldTypes())
+                .excludeFields(table.excludeFields());
+        for (RestProperty property : table.properties()) {
+            mybatisTable.setProperty(property);
         }
-        return null;
+        return mybatisTable;
     }
 }

@@ -7,6 +7,13 @@ package io.github.nichetoolkit.mybatis;
  * @version v1.0.0
  */
 public interface MybatisTableFactory extends MybatisOrder {
+
+    /**
+     * 根据注解判断是否支持 创建 MybatisTable 对象
+     * @param clazz 实体类类型
+     * @return 实体类信息
+     */
+    boolean supports(Class<?> clazz);
     /**
      * 根据实体类创建 MybatisTable，可以使用自己的注解来实现，
      * 这一步只返回 MybatisTable，不处理其中的字段
