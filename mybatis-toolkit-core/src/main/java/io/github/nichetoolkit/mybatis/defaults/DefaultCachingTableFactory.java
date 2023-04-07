@@ -18,13 +18,18 @@ public class DefaultCachingTableFactory implements MybatisTableFactory {
     private final Map<Class<?>, MybatisTable> CLASS_TABLE_MAP = new ConcurrentHashMap<>();
 
     @Override
+    public boolean supports(Class<?> clazz) {
+        return true;
+    }
+
+    @Override
     public MybatisTable createTable(Class<?> clazz, Chain chain) {
         if (CLASS_TABLE_MAP.get(clazz) == null) {
             synchronized (clazz) {
                 if (CLASS_TABLE_MAP.get(clazz) == null) {
-                    MybatisTable entityTable = chain.createTable(clazz);
-                    if (entityTable != null) {
-                        CLASS_TABLE_MAP.put(clazz, entityTable);
+                    MybatisTable mybatisTable = chain.createTable(clazz);
+                    if (mybatisTable != null) {
+                        CLASS_TABLE_MAP.put(clazz, mybatisTable);
                     } else {
                         return null;
                     }

@@ -6,7 +6,7 @@ import io.github.nichetoolkit.mybatis.MybatisTableFactory;
 import java.util.List;
 
 /**
- * <p>DefaultMybatisTableFactoryChain</p>
+ * <p>DefaultTableFactoryChain</p>
  * @author Cyan (snow22314@outlook.com)
  * @version v1.0.0
  */
@@ -32,7 +32,10 @@ public class DefaultTableFactoryChain implements MybatisTableFactory.Chain {
     @Override
     public MybatisTable createTable(Class<?> clazz) {
         if (index < factories.size()) {
-            return factories.get(index).createTable(clazz, next);
+            MybatisTableFactory mybatisTableFactory = factories.get(index);
+            if (mybatisTableFactory.supports(clazz)) {
+                return mybatisTableFactory.createTable(clazz, next);
+            }
         }
         return null;
     }

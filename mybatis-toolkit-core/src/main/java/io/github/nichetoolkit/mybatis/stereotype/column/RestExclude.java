@@ -1,5 +1,6 @@
 package io.github.nichetoolkit.mybatis.stereotype.column;
 
+import org.springframework.core.annotation.AliasFor;
 import org.springframework.stereotype.Indexed;
 
 import java.lang.annotation.*;
@@ -11,12 +12,15 @@ import java.lang.annotation.*;
  * @version v1.0.0
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.FIELD,ElementType.ANNOTATION_TYPE})
+@Target({ElementType.FIELD, ElementType.ANNOTATION_TYPE})
 @Documented
 @Indexed
 public @interface RestExclude {
-
+    @AliasFor("exclude")
     boolean value() default true;
+
+    @AliasFor("value")
+    boolean exclude() default true;
 
     /** 可查询 */
     boolean select() default false;

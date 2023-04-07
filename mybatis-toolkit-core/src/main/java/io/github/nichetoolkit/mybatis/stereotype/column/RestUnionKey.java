@@ -20,4 +20,9 @@ public @interface RestUnionKey {
      */
     boolean value() default true;
 
+    /**
+     * 用于联合主键的顺序
+     */
+    int index() default 0;
+
 }

@@ -33,8 +33,8 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
     protected boolean primaryKey;
     /** 是否联合主键 */
     protected boolean unionKey;
-    /** 排序方式 */
-    protected String orderBy;
+    /** 联合主键顺序 */
+    protected int unionIndex;
     /** 排序方式 */
     protected SortType sortType;
     /** 排序的优先级 */

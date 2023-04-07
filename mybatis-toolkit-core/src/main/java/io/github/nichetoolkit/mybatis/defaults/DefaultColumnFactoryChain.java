@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * <p>DefaultMybatisColumnFactoryChain</p>
+ * <p>DefaultColumnFactoryChain</p>
  * @author Cyan (snow22314@outlook.com)
  * @version v1.0.0
  */
@@ -35,7 +35,10 @@ public class DefaultColumnFactoryChain implements MybatisColumnFactory.Chain {
     @Override
     public Optional<List<MybatisColumn>> createColumn(MybatisTable mybatisTable, MybatisField mybatisField) {
         if (index < factories.size()) {
-            return factories.get(index).createColumn(mybatisTable, mybatisField, next);
+            MybatisColumnFactory mybatisColumnFactory = factories.get(index);
+            if (mybatisColumnFactory.supports(mybatisTable,mybatisField)) {
+                return mybatisColumnFactory.createColumn(mybatisTable, mybatisField, next);
+            }
         }
         return Optional.empty();
     }

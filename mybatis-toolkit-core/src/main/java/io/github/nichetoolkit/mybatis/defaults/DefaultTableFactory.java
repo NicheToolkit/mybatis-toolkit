@@ -47,9 +47,7 @@ public class DefaultTableFactory implements MybatisTableFactory {
         /** restIdentities 注解处理 */
         RestIdentities restIdentities = clazz.getAnnotation(RestIdentities.class);
         if (GeneralUtils.isNotEmpty(restIdentities)) {
-            String[] identities = restIdentities.identities();
-            boolean unionIdentity = restIdentities.unionIdentity();
-            mybatisTable.identities(identities).unionIdentity(unionIdentity);
+            mybatisTable.identities(restIdentities.identities()).unionIdentity(restIdentities.unionIdentity());
         }
     }
 

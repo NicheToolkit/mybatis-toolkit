@@ -2,6 +2,7 @@ package io.github.nichetoolkit.mybatis.stereotype.column;
 
 
 import io.github.nichetoolkit.rice.enums.SortType;
+import org.springframework.core.annotation.AliasFor;
 import org.springframework.stereotype.Indexed;
 
 import java.lang.annotation.*;
@@ -15,15 +16,17 @@ import java.lang.annotation.*;
 @Target({ElementType.FIELD, ElementType.ANNOTATION_TYPE})
 @Documented
 @Indexed
-public @interface RestOrderBy {
+public @interface RestSortType {
     /**
      * 排序方式
      */
-    String value() default "";
+    @AliasFor("type")
+    SortType value() default SortType.NONE;
 
     /**
      * 排序方式
      */
+    @AliasFor("value")
     SortType type() default SortType.NONE;
 
     /**

@@ -81,7 +81,7 @@ public class AnnotationSqlScriptWrapper implements MybatisSqlScriptWrapper {
      */
     public <T> T newInstance(Class<T> instanceClass, Object target, ElementType type, Annotation[] annotations) {
         try {
-            return (T) instanceClass.getConstructor(Object.class, ElementType.class, Annotation[].class).newInstance(target, type, annotations);
+            return instanceClass.getConstructor(Object.class, ElementType.class, Annotation[].class).newInstance(target, type, annotations);
         } catch (Exception e) {
             throw new RuntimeException("instance [ " + instanceClass + " ] error", e);
         }

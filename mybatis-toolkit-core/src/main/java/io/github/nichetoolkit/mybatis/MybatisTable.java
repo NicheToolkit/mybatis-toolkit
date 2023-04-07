@@ -5,6 +5,7 @@ import io.github.nichetoolkit.mybatis.enums.StyleType;
 import io.github.nichetoolkit.rest.error.lack.ConfigureLackError;
 import io.github.nichetoolkit.rest.error.supply.ResourceNotFoundException;
 import io.github.nichetoolkit.rest.util.GeneralUtils;
+import io.github.nichetoolkit.rice.enums.SortType;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import org.apache.ibatis.annotations.SelectProvider;
@@ -347,7 +348,7 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
      */
     public Optional<List<MybatisColumn>> orderByColumns() {
         List<MybatisColumn> orderByColumns = columns().stream()
-                .filter(column -> GeneralUtils.isNotEmpty(column.orderBy()))
+                .filter(column -> GeneralUtils.isNotEmpty(column.sortType()) && SortType.NONE != column.sortType())
                 .sorted(Comparator.comparing(MybatisColumn::priority))
                 .collect(Collectors.toList());
         if (orderByColumns.size() > 0) {
@@ -427,7 +428,7 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
     public Optional<String> orderByColumnList() {
         Optional<List<MybatisColumn>> orderByColumns = orderByColumns();
         return orderByColumns.map(mybatisColumns -> mybatisColumns.stream()
-                .map(column -> column.columnName() + " " + column.orderBy())
+                .map(column -> column.columnName() + " " + column.sortType().getKey())
                 .collect(Collectors.joining(",")));
     }
 

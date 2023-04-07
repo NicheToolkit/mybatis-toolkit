@@ -10,6 +10,15 @@ import java.util.Optional;
  * @version v1.0.0
  */
 public interface MybatisColumnFactory extends MybatisOrder {
+
+    /**
+     * 根据注解判断是否支持 创建 MybatisTable 对象
+     * @param table 表实体
+     * @param field 字段信息
+     * @return 实体类信息
+     */
+    boolean supports(MybatisTable table, MybatisField field);
+
     /**
      * 创建列信息，一个字段可能不是列，也可能是列，还有可能对应多个列（例如 ValueObject对象）
      * @param table 表实体

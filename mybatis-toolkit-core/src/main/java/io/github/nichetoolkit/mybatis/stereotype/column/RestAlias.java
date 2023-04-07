@@ -20,13 +20,14 @@ public @interface RestAlias {
     /**
      * 列名，默认空时使用字段名
      */
-    @AliasFor("value")
-    String name() default "";
+    @AliasFor("name")
+    String value() default "";
+
     /**
      * 列名，默认空时使用字段名
      */
-    @AliasFor("name")
-    String value() default "";
+    @AliasFor("value")
+    String name() default "";
 
     /**
      * 备注

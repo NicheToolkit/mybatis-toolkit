@@ -23,7 +23,7 @@ import java.lang.annotation.*;
 @RestExclude
 @RestPrimaryKey
 @RestUnionKey
-@RestOrderBy
+@RestSortType
 @RestJdbcType
 @RestProperties
 public @interface RestColumn {
@@ -52,27 +52,27 @@ public @interface RestColumn {
     boolean unionKey() default false;
 
     /**
-     * 排序方式
+     * 用于联合主键的顺序，数值越小优先级越高
      */
-    @AliasFor(annotation = RestOrderBy.class, attribute = "value")
-    String orderBy() default "";
+    @AliasFor(annotation = RestUnionKey.class, attribute = "index")
+    int unionIndex() default 0;
 
     /**
      * 排序方式
      */
-    @AliasFor(annotation = RestOrderBy.class, attribute = "type")
+    @AliasFor(annotation = RestSortType.class, attribute = "type")
     SortType sortType() default SortType.NONE;
 
     /**
      * 排序的优先级，数值越小优先级越高
      */
-    @AliasFor(annotation = RestOrderBy.class, attribute = "priority")
+    @AliasFor(annotation = RestSortType.class, attribute = "priority")
     int priority() default 0;
 
     /**
      * 排除字段 选项
      */
-    @AliasFor(annotation = RestExclude.class, attribute = "value")
+    @AliasFor(annotation = RestExclude.class, attribute = "exclude")
     boolean exclude() default false;
 
     /**
