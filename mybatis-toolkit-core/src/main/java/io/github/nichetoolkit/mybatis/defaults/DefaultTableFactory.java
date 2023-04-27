@@ -9,6 +9,7 @@ import io.github.nichetoolkit.mybatis.stereotype.RestProperties;
 import io.github.nichetoolkit.mybatis.stereotype.table.*;
 import io.github.nichetoolkit.rest.util.GeneralUtils;
 
+import java.util.Arrays;
 import java.util.Map;
 
 /**
@@ -33,21 +34,31 @@ public class DefaultTableFactory implements MybatisTableFactory {
         } else {
             mybatisTable = MybatisTable.of(clazz);
         }
-        restIdentities(clazz, mybatisTable);
+        restUnionKeys(clazz, mybatisTable);
+        restLinkKeys(clazz, mybatisTable);
         MybatisStyle mybatisStyle = restStyle(clazz, mybatisTable);
-        mybatisTable.styleName(mybatisStyle.getStyleName());
-        mybatisTable.table(GeneralUtils.isEmpty(restEntity.name()) ? mybatisStyle.tableName(clazz) : restEntity.name());
+        mybatisTable.setStyleName(mybatisStyle.getStyleName());
+        mybatisTable.setTable(GeneralUtils.isEmpty(restEntity.name()) ? mybatisStyle.tableName(clazz) : restEntity.name());
         restResultMap(clazz, mybatisTable);
         restProperties(clazz, mybatisTable);
         restExcludes(clazz, mybatisTable);
         return mybatisTable;
     }
 
-    public void restIdentities(Class<?> clazz, MybatisTable mybatisTable) {
-        /** restIdentities 注解处理 */
-        RestIdentities restIdentities = clazz.getAnnotation(RestIdentities.class);
-        if (GeneralUtils.isNotEmpty(restIdentities)) {
-            mybatisTable.identities(restIdentities.identities()).unionIdentity(restIdentities.unionIdentity());
+    public void restUnionKeys(Class<?> clazz, MybatisTable mybatisTable) {
+        /** restUnionKeys 注解处理 */
+        RestUnionKeys restUnionKeys = clazz.getAnnotation(RestUnionKeys.class);
+        if (GeneralUtils.isNotEmpty(restUnionKeys)) {
+            mybatisTable.setUnionKeys(Arrays.asList(restUnionKeys.unionKeys()));
+            mybatisTable.setUnionIdentity(restUnionKeys.unionIdentity());
+        }
+    }
+
+    public void restLinkKeys(Class<?> clazz, MybatisTable mybatisTable) {
+        /** restLinkKeys 注解处理 */
+        RestLinkKeys restLinkKeys = clazz.getAnnotation(RestLinkKeys.class);
+        if (GeneralUtils.isNotEmpty(restLinkKeys)) {
+            mybatisTable.setLinkKeys(Arrays.asList(restLinkKeys.linkKeys()));
         }
     }
 
@@ -60,12 +71,12 @@ public class DefaultTableFactory implements MybatisTableFactory {
             StyleType styleType = restStyle.type();
             String catalog = restStyle.catalog();
             String schema = restStyle.schema();
-            mybatisTable.catalog(GeneralUtils.isEmpty(catalog) ? MybatisHelper.getTableProperties().getCatalog() : catalog);
-            mybatisTable.schema(GeneralUtils.isEmpty(schema) ? MybatisHelper.getTableProperties().getSchema() : schema);
+            mybatisTable.setCatalog(GeneralUtils.isEmpty(catalog) ? MybatisHelper.getTableProperties().getCatalog() : catalog);
+            mybatisTable.setSchema(GeneralUtils.isEmpty(schema) ? MybatisHelper.getTableProperties().getSchema() : schema);
             if (GeneralUtils.isNotEmpty(styleName)) {
                 mybatisStyle = MybatisStyle.style(styleName);
             } else if (GeneralUtils.isNotEmpty(styleType)) {
-                mybatisTable.styleName(styleType.getKey());
+                mybatisTable.setStyleName(styleType.getKey());
                 mybatisStyle = MybatisStyle.style(styleType);
             } else {
                 StyleType defaultStyleType = MybatisHelper.getTableProperties().getStyleType();
@@ -82,7 +93,8 @@ public class DefaultTableFactory implements MybatisTableFactory {
         /** restResultMap 注解处理 */
         RestResultMap restResultMap = clazz.getAnnotation(RestResultMap.class);
         if (GeneralUtils.isNotEmpty(restResultMap)) {
-            mybatisTable.resultMap(restResultMap.name()).autoResultMap(restResultMap.autoResultMap());
+            mybatisTable.setResultMap(restResultMap.name());
+            mybatisTable.setAutoResultMap(restResultMap.autoResultMap());
         }
     }
 
@@ -103,11 +115,11 @@ public class DefaultTableFactory implements MybatisTableFactory {
         RestExcludes restExcludes = clazz.getAnnotation(RestExcludes.class);
         if (GeneralUtils.isNotEmpty(restExcludes)) {
             String[] fields = restExcludes.fields();
-            mybatisTable.excludeFields(fields);
+            mybatisTable.setExcludeFields(Arrays.asList(fields));
             Class<?>[] classes = restExcludes.fieldTypes();
-            mybatisTable.excludeFieldTypes(classes);
+            mybatisTable.setExcludeFieldTypes(Arrays.asList(classes));
             Class<?>[] superClasses = restExcludes.superClasses();
-            mybatisTable.excludeSuperClasses(superClasses);
+            mybatisTable.setExcludeSuperClasses(Arrays.asList(superClasses));
         }
     }
 }

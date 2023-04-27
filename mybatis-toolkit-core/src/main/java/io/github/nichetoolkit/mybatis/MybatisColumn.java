@@ -3,7 +3,6 @@ package io.github.nichetoolkit.mybatis;
 import io.github.nichetoolkit.rest.util.GeneralUtils;
 import io.github.nichetoolkit.rice.enums.SortType;
 import lombok.Data;
-import lombok.experimental.Accessors;
 import org.apache.ibatis.type.JdbcType;
 import org.apache.ibatis.type.TypeHandler;
 import org.apache.ibatis.type.UnknownTypeHandler;
@@ -21,7 +20,6 @@ import static io.github.nichetoolkit.mybatis.MybatisTable.DELIMITER;
  * @version v1.0.0
  */
 @Data
-@Accessors(fluent = true)
 public class MybatisColumn extends MybatisProperty<MybatisColumn> {
     /** 实体类字段 */
     protected final MybatisField field;
@@ -30,7 +28,11 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
     /** 列名 */
     protected String columnName;
     /** 是否主键 */
+    protected boolean identity;
+    /** 是否主键 */
     protected boolean primaryKey;
+    /** 是否联合主键 */
+    protected boolean linkKey;
     /** 是否联合主键 */
     protected boolean unionKey;
     /** 联合主键顺序 */
@@ -64,7 +66,7 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
 
     /** Java 类型 */
     public Class<?> javaType() {
-        return field().fieldType();
+        return this.field.fieldType();
     }
 
     /**
@@ -79,7 +81,7 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
      * @param prefix 指定前缀，需要自己提供"."
      */
     public String property(String prefix) {
-        return prefix + field().fieldName();
+        return prefix + this.field.fieldName();
     }
 
     /**
@@ -105,7 +107,7 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
      */
     public Optional<String> jdbcTypeVariables() {
         if (this.jdbcType != null && this.jdbcType != JdbcType.UNDEFINED) {
-            return Optional.of(", jdbcType=" + jdbcType);
+            return Optional.of(", jdbcType=" + this.jdbcType);
         }
         return Optional.empty();
     }
@@ -115,7 +117,7 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
      */
     public Optional<String> typeHandlerVariables() {
         if (this.typeHandler != null && this.typeHandler != UnknownTypeHandler.class) {
-            return Optional.of(", typeHandler=" + typeHandler.getName());
+            return Optional.of(", typeHandler=" + this.typeHandler.getName());
         }
         return Optional.empty();
     }
@@ -125,7 +127,7 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
      */
     public Optional<String> numericScaleVariables() {
         if (GeneralUtils.isNotEmpty(this.numericScale)) {
-            return Optional.of(", numericScale=" + numericScale);
+            return Optional.of(", numericScale=" + this.numericScale);
         }
         return Optional.empty();
     }

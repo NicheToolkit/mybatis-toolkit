@@ -4,6 +4,8 @@ import io.github.nichetoolkit.mybatis.MybatisOrder;
 import io.github.nichetoolkit.mybatis.MybatisSqlScript;
 import io.github.nichetoolkit.mybatis.MybatisSqlScriptWrapper;
 import io.github.nichetoolkit.mybatis.MybatisTable;
+import io.github.nichetoolkit.rest.error.lack.BeanLackError;
+import io.github.nichetoolkit.rest.error.lack.InterfaceLackError;
 import org.apache.ibatis.builder.annotation.ProviderContext;
 
 import java.lang.annotation.Annotation;
@@ -83,7 +85,7 @@ public class AnnotationSqlScriptWrapper implements MybatisSqlScriptWrapper {
         try {
             return instanceClass.getConstructor(Object.class, ElementType.class, Annotation[].class).newInstance(target, type, annotations);
         } catch (Exception e) {
-            throw new RuntimeException("instance [ " + instanceClass + " ] error", e);
+            throw new BeanLackError("instance [ " + instanceClass + " ] error", e);
         }
     }
 }

@@ -1,6 +1,5 @@
 package io.github.nichetoolkit.mybatis.stereotype.column;
 
-import org.springframework.core.annotation.AliasFor;
 import org.springframework.stereotype.Indexed;
 
 import java.lang.annotation.*;
@@ -16,16 +15,9 @@ import java.lang.annotation.*;
 @Indexed
 public @interface RestLinkKey {
     /**
-     * 默认空时使用字段名
+     * 标记字段是否 用于联合主键字段
      */
-    @AliasFor("name")
-    String value() default "";
-
-    /**
-     * 默认空时使用字段名
-     */
-    @AliasFor("value")
-    String name() default "";
+    boolean value() default true;
 
 }
 

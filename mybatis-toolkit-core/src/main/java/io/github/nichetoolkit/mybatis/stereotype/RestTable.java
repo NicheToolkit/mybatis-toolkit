@@ -1,8 +1,6 @@
 package io.github.nichetoolkit.mybatis.stereotype;
 
-import io.github.nichetoolkit.mybatis.MybatisStyle;
 import io.github.nichetoolkit.mybatis.enums.StyleType;
-import io.github.nichetoolkit.mybatis.stereotype.column.RestExclude;
 import io.github.nichetoolkit.mybatis.stereotype.table.*;
 import org.springframework.core.annotation.AliasFor;
 
@@ -21,7 +19,8 @@ import java.lang.annotation.*;
 @RestResultMap
 @RestProperties
 @RestExcludes
-@RestIdentities
+@RestUnionKeys
+@RestLinkKeys
 public @interface RestTable {
     /**
      * 表名，默认空时使用对象名
@@ -44,14 +43,20 @@ public @interface RestTable {
     /**
      * 联合主键的字段名称
      */
-    @AliasFor(annotation = RestIdentities.class, attribute = "identities")
-    String[] identities() default {};
+    @AliasFor(annotation = RestUnionKeys.class, attribute = "unionKeys")
+    String[] unionKeys() default {};
 
     /**
      * 是否将主键注解添加到联合主键
      */
-    @AliasFor(annotation = RestIdentities.class, attribute = "unionIdentity")
+    @AliasFor(annotation = RestUnionKeys.class, attribute = "unionIdentity")
     boolean unionIdentity() default false;
+
+    /**
+     * 联合主键的字段名称
+     */
+    @AliasFor(annotation = RestLinkKeys.class, attribute = "linkKeys")
+    String[] linkKeys() default {};
 
     /**
      * catalog 名称，配置后，会在表名前面加上 catalog名称

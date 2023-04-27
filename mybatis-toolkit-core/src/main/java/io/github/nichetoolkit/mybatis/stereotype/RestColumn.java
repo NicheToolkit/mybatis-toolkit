@@ -52,6 +52,12 @@ public @interface RestColumn {
     boolean unionKey() default false;
 
     /**
+     * 标记字段是否 用于联合主键字段
+     */
+    @AliasFor(annotation = RestLinkKey.class, attribute = "value")
+    boolean linkKey() default false;
+
+    /**
      * 用于联合主键的顺序，数值越小优先级越高
      */
     @AliasFor(annotation = RestUnionKey.class, attribute = "index")

@@ -1,14 +1,12 @@
 package io.github.nichetoolkit.mybatis.defaults;
 
 import io.github.nichetoolkit.mybatis.*;
-import io.github.nichetoolkit.mybatis.stereotype.RestColumn;
-import io.github.nichetoolkit.mybatis.stereotype.RestProperties;
-import io.github.nichetoolkit.mybatis.stereotype.column.*;
 import io.github.nichetoolkit.mybatis.stereotype.RestProperty;
+import io.github.nichetoolkit.mybatis.stereotype.column.*;
 import io.github.nichetoolkit.rest.util.GeneralUtils;
+import io.github.nichetoolkit.rice.stereotype.mybatis.RestIdentity;
 import org.apache.ibatis.type.JdbcType;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -31,26 +29,26 @@ public class DefaultColumnFactory implements MybatisColumnFactory {
             }
         }
         String fieldName = field.fieldName();
-        String[] excludeFields = table.excludeFields();
+        List<String> excludeFields = table.getExcludeFields();
         if (GeneralUtils.isNotEmpty(excludeFields)) {
             /** 当前字段属于 需要排除的字段名称 返回 false */
-            if (Arrays.asList(excludeFields).contains(fieldName)) {
+            if (excludeFields.contains(fieldName)) {
                 return false;
             }
         }
         Class<?> fieldType = field.fieldType();
-        Class<?>[] excludeFieldTypes = table.excludeFieldTypes();
+        List<Class<?>> excludeFieldTypes = table.getExcludeFieldTypes();
         if (GeneralUtils.isNotEmpty(excludeFieldTypes)) {
             /** 当前字段属于 需要排除的字段类型 返回 false */
-            if (Arrays.asList(excludeFieldTypes).contains(fieldType)) {
+            if (excludeFieldTypes.contains(fieldType)) {
                 return false;
             }
         }
         Class<?> declaringClass = field.declaringClass();
-        Class<?>[] excludeSuperClasses = table.excludeSuperClasses();
+        List<Class<?>> excludeSuperClasses = table.getExcludeSuperClasses();
         if (GeneralUtils.isNotEmpty(excludeSuperClasses)) {
             /** 当前字段属于 需要排除的父类字段 返回 false  */
-            if (Arrays.asList(excludeSuperClasses).contains(declaringClass)) {
+            if (excludeSuperClasses.contains(declaringClass)) {
                 return false;
             }
         }
@@ -62,37 +60,47 @@ public class DefaultColumnFactory implements MybatisColumnFactory {
         /** 默认针对 entity 实体中的所有字段构建 column 数据 */
         MybatisColumn mybatisColumn = MybatisColumn.of(field);
         RestAlias restAlias = field.getAnnotation(RestAlias.class);
-        MybatisStyle mybatisStyle = MybatisStyle.style(table.styleName());
+        MybatisStyle mybatisStyle = MybatisStyle.style(table.getStyleName());
         if (GeneralUtils.isNotEmpty(restAlias)) {
-            mybatisColumn.columnName(GeneralUtils.isEmpty(restAlias.name()) ? mybatisStyle.columnName(table, field) : restAlias.name());
+            mybatisColumn.setColumnName(GeneralUtils.isEmpty(restAlias.name()) ? mybatisStyle.columnName(table, field) : restAlias.name());
         } else {
-            mybatisColumn.columnName(mybatisStyle.columnName(table, field));
+            mybatisColumn.setColumnName(mybatisStyle.columnName(table, field));
         }
         RestIdentity restIdentity = field.getAnnotation(RestIdentity.class);
         if (GeneralUtils.isNotEmpty(restIdentity)) {
-
+            mybatisColumn.setIdentity(true);
         }
         RestPrimaryKey restPrimaryKey = field.getAnnotation(RestPrimaryKey.class);
         if (GeneralUtils.isNotEmpty(restPrimaryKey)) {
-            mybatisColumn.primaryKey(restPrimaryKey.value());
+            mybatisColumn.setPrimaryKey(restPrimaryKey.value());
         }
         RestUnionKey restUnionKey = field.getAnnotation(RestUnionKey.class);
         if (GeneralUtils.isNotEmpty(restUnionKey)) {
-            mybatisColumn.unionKey(restUnionKey.value()).unionIndex(restUnionKey.index());
+            mybatisColumn.setUnionKey(restUnionKey.value());
+            mybatisColumn.setUnionIndex(restUnionKey.index());
+        }
+        RestLinkKey restLinkKey = field.getAnnotation(RestLinkKey.class);
+        if (GeneralUtils.isNotEmpty(restLinkKey)) {
+            mybatisColumn.setLinkKey(restLinkKey.value());
         }
         RestSortType restSortType = field.getAnnotation(RestSortType.class);
         if (GeneralUtils.isNotEmpty(restSortType)) {
-            mybatisColumn.sortType(restSortType.type()).priority(restSortType.priority());
+            mybatisColumn.setSortType(restSortType.type());
+            mybatisColumn.setPriority(restSortType.priority());
         }
         RestExclude restExclude = field.getAnnotation(RestExclude.class);
         if (GeneralUtils.isNotEmpty(restExclude)) {
-            mybatisColumn.select(restExclude.select()).insert(restExclude.insert()).update(restExclude.update());
+            mybatisColumn.setSelect(restExclude.select());
+            mybatisColumn.setInsert(restExclude.insert());
+            mybatisColumn.setUpdate(restExclude.update());
         }
         RestJdbcType restJdbcType = field.getAnnotation(RestJdbcType.class);
         if (GeneralUtils.isNotEmpty(restJdbcType)) {
-            mybatisColumn.jdbcType(restJdbcType.jdbcType()).typeHandler(restJdbcType.typeHandler()).numericScale(restJdbcType.numericScale());
+            mybatisColumn.setJdbcType(restJdbcType.jdbcType());
+            mybatisColumn.setTypeHandler(restJdbcType.typeHandler());
+            mybatisColumn.setNumericScale(restJdbcType.numericScale());
         } else {
-            mybatisColumn.jdbcType(JdbcType.UNDEFINED);
+            mybatisColumn.setJdbcType(JdbcType.UNDEFINED);
         }
         /** restProperty 注解处理 */
         RestProperty restProperty = field.getAnnotation(RestProperty.class);

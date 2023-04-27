@@ -46,9 +46,9 @@ public abstract class MybatisFactory {
             throw new NullPointerException("Unable to get " + clazz.getName() + " mybatis class information");
         }
         /** 如果实体表已经处理好，直接返回 */
-        if (!table.ready()) {
+        if (!table.isReady()) {
             synchronized (clazz) {
-                if (!table.ready()) {
+                if (!table.isReady()) {
                     /** 处理MybatisColumn */
                     MybatisColumnFactory.Chain columnFactoryChain = Instance.columnFactoryChain();
                     /** 未处理的需要获取字段 */
@@ -81,7 +81,7 @@ public abstract class MybatisFactory {
                         isSuperclass = true;
                     }
                     /** 标记处理完成 */
-                    table.ready(true);
+                    table.setReady(true);
                 }
             }
         }

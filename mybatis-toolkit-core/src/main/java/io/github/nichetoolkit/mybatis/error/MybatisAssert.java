@@ -15,9 +15,9 @@ public class MybatisAssert {
      * @param expression 布尔值
      * @param message    异常消息
      */
-    public static void isTrue(boolean expression, String message) {
+    public static void isTrue(boolean expression, String message) throws MybatisAssertException {
         if (!expression) {
-            throw new AssertException(message);
+            throw new MybatisAssertException(message);
         }
     }
 
@@ -26,9 +26,9 @@ public class MybatisAssert {
      * @param expression 布尔值
      * @param message    异常消息
      */
-    public static void isFalse(boolean expression, String message) {
+    public static void isFalse(boolean expression, String message) throws MybatisAssertException {
         if (expression) {
-            throw new AssertException(message);
+            throw new MybatisAssertException(message);
         }
     }
 
@@ -37,9 +37,9 @@ public class MybatisAssert {
      * @param object  被检查的对象
      * @param message 异常消息
      */
-    public static void isNull(Object object, String message) {
+    public static void isNull(Object object, String message) throws MybatisAssertException {
         if (object != null) {
-            throw new AssertException(message);
+            throw new MybatisAssertException(message);
         }
     }
 
@@ -48,9 +48,9 @@ public class MybatisAssert {
      * @param object  被检查的对象
      * @param message 异常消息
      */
-    public static void notNull(Object object, String message) {
+    public static void notNull(Object object, String message) throws MybatisAssertException {
         if (object == null) {
-            throw new AssertException(message);
+            throw new MybatisAssertException(message);
         }
     }
 
@@ -59,9 +59,9 @@ public class MybatisAssert {
      * @param text    字符串类型
      * @param message 异常消息
      */
-    public static <T extends CharSequence> void isEmpty(T text, String message) {
+    public static <T extends CharSequence> void isEmpty(T text, String message) throws MybatisAssertException {
         if (GeneralUtils.isNotEmpty(text)) {
-            throw new AssertException(message);
+            throw new MybatisAssertException(message);
         }
     }
 
@@ -70,9 +70,9 @@ public class MybatisAssert {
      * @param text    字符串类型
      * @param message 异常消息
      */
-    public static <T extends CharSequence> void notEmpty(T text, String message) {
+    public static <T extends CharSequence> void notEmpty(T text, String message) throws MybatisAssertException {
         if (GeneralUtils.isEmpty(text)) {
-            throw new AssertException(message);
+            throw new MybatisAssertException(message);
         }
     }
 
@@ -81,9 +81,9 @@ public class MybatisAssert {
      * @param text    字符串类型
      * @param message 异常消息
      */
-    public static <T extends CharSequence> void isBlank(T text, String message) {
+    public static <T extends CharSequence> void isBlank(T text, String message) throws MybatisAssertException {
         if (GeneralUtils.isNotEmpty(text)) {
-            throw new AssertException(message);
+            throw new MybatisAssertException(message);
         }
     }
 
@@ -92,9 +92,9 @@ public class MybatisAssert {
      * @param text    字符串类型
      * @param message 异常消息
      */
-    public static <T extends CharSequence> void notBlank(T text, String message) {
+    public static <T extends CharSequence> void notBlank(T text, String message) throws MybatisAssertException {
         if (GeneralUtils.isEmpty(text)) {
-            throw new AssertException(message);
+            throw new MybatisAssertException(message);
         }
     }
 
@@ -103,9 +103,9 @@ public class MybatisAssert {
      * @param array   数组
      * @param message 异常消息
      */
-    public static <T> void isEmpty(T[] array, String message) {
+    public static <T> void isEmpty(T[] array, String message) throws MybatisAssertException {
         if (GeneralUtils.isNotEmpty(array)) {
-            throw new AssertException(message);
+            throw new MybatisAssertException(message);
         }
     }
 
@@ -114,9 +114,9 @@ public class MybatisAssert {
      * @param array   数组
      * @param message 异常消息
      */
-    public static <T> void notEmpty(T[] array, String message) {
+    public static <T> void notEmpty(T[] array, String message) throws MybatisAssertException {
         if (GeneralUtils.isEmpty(array)) {
-            throw new AssertException(message);
+            throw new MybatisAssertException(message);
         }
     }
 
@@ -125,9 +125,9 @@ public class MybatisAssert {
      * @param collection 集合
      * @param message    异常消息
      */
-    public static <T> void isEmpty(Collection<T> collection, String message) {
+    public static <T> void isEmpty(Collection<T> collection, String message) throws MybatisAssertException {
         if (GeneralUtils.isNotEmpty(collection)) {
-            throw new AssertException(message);
+            throw new MybatisAssertException(message);
         }
     }
 
@@ -136,9 +136,9 @@ public class MybatisAssert {
      * @param collection 集合
      * @param message    异常消息
      */
-    public static <T> void notEmpty(Collection<T> collection, String message) {
+    public static <T> void notEmpty(Collection<T> collection, String message) throws MybatisAssertException {
         if (GeneralUtils.isEmpty(collection)) {
-            throw new AssertException(message);
+            throw new MybatisAssertException(message);
         }
     }
 }
