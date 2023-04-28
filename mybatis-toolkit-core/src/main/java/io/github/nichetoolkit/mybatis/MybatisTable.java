@@ -417,6 +417,13 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
     }
 
     /**
+     * 所有 主键或联合主键 用到的字段，当插入列时，必须使用当前方法返回的列
+     */
+    public String identityColumnList() {
+        return identityColumns().stream().map(MybatisColumn::getColumnName).collect(Collectors.joining(","));
+    }
+
+    /**
      * 所有 order by 字段，默认空，字段来源 {@link #groupByColumns()} 参考值: column1, column2, ...
      * <p>
      * 默认重写 {@link #groupByColumns()} 方法即可，当前方法不需要重写

@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * <p>MybatisTableProperties</p>
+ * <p>MybatisMapperProperties</p>
  * @author Cyan (snow22314@outlook.com)
  * @version v1.0.0
  */

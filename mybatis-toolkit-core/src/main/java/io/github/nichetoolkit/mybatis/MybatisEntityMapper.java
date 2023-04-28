@@ -11,14 +11,14 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author Cyan (snow22314@outlook.com)
  * @version v1.0.0
  */
-public interface MybatisEntityMapper<M> {
+public interface MybatisEntityMapper<E> {
     /**
      * 获取当前接口对应的实体类类型
      * @return 当前接口对应的实体类类型
      */
     @SuppressWarnings(value = "unchecked")
-    default Class<M> clazz() {
-        return (Class<M>) CachingMybatisClass.clazz(getClass());
+    default Class<E> clazz() {
+        return (Class<E>) CachingMybatisClass.clazz(getClass());
     }
 
     /**
