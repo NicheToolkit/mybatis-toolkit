@@ -1,10 +1,10 @@
 package io.github.nichetoolkit.mybatis.defaults;
 
 import io.github.nichetoolkit.mybatis.*;
-import io.github.nichetoolkit.mybatis.stereotype.RestProperty;
-import io.github.nichetoolkit.mybatis.stereotype.column.*;
 import io.github.nichetoolkit.rest.util.GeneralUtils;
 import io.github.nichetoolkit.rice.stereotype.mybatis.RestIdentity;
+import io.github.nichetoolkit.rice.stereotype.mybatis.RestProperty;
+import io.github.nichetoolkit.rice.stereotype.mybatis.column.*;
 import org.apache.ibatis.type.JdbcType;
 
 import java.util.Collections;
@@ -59,10 +59,10 @@ public class DefaultColumnFactory implements MybatisColumnFactory {
     public Optional<List<MybatisColumn>> createColumn(MybatisTable table, MybatisField field, Chain chain) {
         /** 默认针对 entity 实体中的所有字段构建 column 数据 */
         MybatisColumn mybatisColumn = MybatisColumn.of(field);
-        RestAlias restAlias = field.getAnnotation(RestAlias.class);
+        RestName restName = field.getAnnotation(RestName.class);
         MybatisStyle mybatisStyle = MybatisStyle.style(table.getStyleName());
-        if (GeneralUtils.isNotEmpty(restAlias)) {
-            mybatisColumn.setColumnName(GeneralUtils.isEmpty(restAlias.name()) ? mybatisStyle.columnName(table, field) : restAlias.name());
+        if (GeneralUtils.isNotEmpty(restName)) {
+            mybatisColumn.setColumnName(GeneralUtils.isEmpty(restName.name()) ? mybatisStyle.columnName(table, field) : restName.name());
         } else {
             mybatisColumn.setColumnName(mybatisStyle.columnName(table, field));
         }
@@ -88,11 +88,23 @@ public class DefaultColumnFactory implements MybatisColumnFactory {
             mybatisColumn.setSortType(restSortType.type());
             mybatisColumn.setPriority(restSortType.priority());
         }
-        RestExclude restExclude = field.getAnnotation(RestExclude.class);
-        if (GeneralUtils.isNotEmpty(restExclude)) {
-            mybatisColumn.setSelect(restExclude.select());
-            mybatisColumn.setInsert(restExclude.insert());
-            mybatisColumn.setUpdate(restExclude.update());
+        RestInsert restInsert = field.getAnnotation(RestInsert.class);
+        if (GeneralUtils.isNotEmpty(restInsert)) {
+            mybatisColumn.setInsert(restInsert.insert());
+        }
+        RestUpdate restUpdate = field.getAnnotation(RestUpdate.class);
+        if (GeneralUtils.isNotEmpty(restUpdate)) {
+            mybatisColumn.setUpdate(restUpdate.update());
+        }
+        RestForce restForce = field.getAnnotation(RestForce.class);
+        if (GeneralUtils.isNotEmpty(restForce)) {
+            mybatisColumn.setForce(true);
+            mybatisColumn.setForceValue(restForce.value());
+            mybatisColumn.setUpdate(false);
+        }
+        RestSelect restSelect = field.getAnnotation(RestSelect.class);
+        if (GeneralUtils.isNotEmpty(restSelect)) {
+            mybatisColumn.setSelect(restSelect.select());
         }
         RestJdbcType restJdbcType = field.getAnnotation(RestJdbcType.class);
         if (GeneralUtils.isNotEmpty(restJdbcType)) {

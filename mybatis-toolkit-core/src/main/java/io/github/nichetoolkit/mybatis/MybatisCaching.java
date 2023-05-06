@@ -9,6 +9,9 @@ import org.apache.ibatis.mapping.MappedStatement;
 import org.apache.ibatis.mapping.SqlSource;
 import org.apache.ibatis.scripting.xmltags.XMLLanguageDriver;
 import org.apache.ibatis.session.Configuration;
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
 import java.util.HashMap;
@@ -23,23 +26,38 @@ import java.util.function.Supplier;
  * @version v1.0.0
  */
 @Slf4j
-public class MybatisCaching extends XMLLanguageDriver {
-    
+@Component
+public class MybatisCaching extends XMLLanguageDriver implements InitializingBean {
+
+    @Override
+    public void afterPropertiesSet() throws Exception {
+
+    }
+
     /**
      * 缓存方法对应的 MybatisSqlCache，预设1024约等于30个实体，每个实体25个方法
      * 当存在一个数据源时，当前缓存是可以最终清空的，但是多个数据源时，就必须保留，因为不清楚什么时候可以清理
      */
-    private static final Map<String, MybatisSqlCache> CACHE_SQL = new ConcurrentHashMap<>(MybatisHelper.getTableProperties().getCache().getInitSize());
+    private static Map<String, MybatisSqlCache> CACHE_SQL;
     /**
      * 多数据源，多配置的情况下（甚至单元测试时），同一个方法会在不同的 Configuration 中出现，如果不做处理就会出现不一致
      */
-    private static final Map<Configuration, Map<String, SqlSource>> CONFIGURATION_CACHE_KEY_MAP = new ConcurrentHashMap<>(4);
+    private static Map<Configuration, Map<String, SqlSource>> CONFIGURATION_CACHE_KEY_MAP;
     /**
      * 是否只使用一次，默认 false，设置为 true 后，当使用过一次后，就会取消引用，可以被后续的GC清理
      * 当使用SqlSessionFactory配置多数据源时，不能设置为 true，设置true被GC清理后，新的数据源就无法正常使用
      * 当从DataSource层面做多数据源时，只有一个SqlSessionFactory时，可以设置为true
      */
-    private static final boolean USE_ONCE = MybatisHelper.getTableProperties().getCache().isUseOnce();
+    private static boolean USE_ONCE;
+
+    @Autowired
+    public MybatisCaching() {
+        CACHE_SQL = new ConcurrentHashMap<>(MybatisHelper.getTableProperties().getCache().getInitSize());
+        CONFIGURATION_CACHE_KEY_MAP = new ConcurrentHashMap<>(4);
+        USE_ONCE = MybatisHelper.getTableProperties().getCache().isUseOnce();
+    }
+
+
 
     /**
      * 根据接口和方法生成缓存 key
@@ -136,5 +154,6 @@ public class MybatisCaching extends XMLLanguageDriver {
         }
     }
 
-    
+
+
 }

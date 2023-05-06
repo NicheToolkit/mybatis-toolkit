@@ -3,11 +3,11 @@ package io.github.nichetoolkit.mybatis.defaults;
 import io.github.nichetoolkit.mybatis.MybatisStyle;
 import io.github.nichetoolkit.mybatis.MybatisTable;
 import io.github.nichetoolkit.mybatis.MybatisTableFactory;
-import io.github.nichetoolkit.mybatis.enums.StyleType;
 import io.github.nichetoolkit.mybatis.helper.MybatisHelper;
-import io.github.nichetoolkit.mybatis.stereotype.RestProperties;
-import io.github.nichetoolkit.mybatis.stereotype.table.*;
 import io.github.nichetoolkit.rest.util.GeneralUtils;
+import io.github.nichetoolkit.rice.enums.StyleType;
+import io.github.nichetoolkit.rice.stereotype.mybatis.RestProperties;
+import io.github.nichetoolkit.rice.stereotype.mybatis.table.*;
 
 import java.util.Arrays;
 import java.util.Map;

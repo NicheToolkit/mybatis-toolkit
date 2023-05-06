@@ -2,9 +2,9 @@ package io.github.nichetoolkit.mybatis;
 
 import io.github.nichetoolkit.mybatis.configure.MybatisTableProperties;
 import io.github.nichetoolkit.mybatis.helper.MybatisHelper;
-import io.github.nichetoolkit.mybatis.stereotype.RestProperty;
 import io.github.nichetoolkit.rest.util.GeneralUtils;
 import io.github.nichetoolkit.rice.helper.PropertyHelper;
+import io.github.nichetoolkit.rice.stereotype.mybatis.RestProperty;
 
 import java.util.Arrays;
 import java.util.HashMap;

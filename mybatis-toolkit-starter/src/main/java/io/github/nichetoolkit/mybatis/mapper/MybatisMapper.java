@@ -5,9 +5,7 @@ import io.github.nichetoolkit.mybatis.MybatisEntityMapper;
 import io.github.nichetoolkit.mybatis.provider.MybatisProvider;
 import io.github.nichetoolkit.rice.IdEntity;
 import io.github.nichetoolkit.rice.mapper.SuperMapper;
-import org.apache.ibatis.annotations.InsertProvider;
-import org.apache.ibatis.annotations.Lang;
-import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.*;
 
 import java.util.Collection;
 import java.util.List;
@@ -25,62 +23,77 @@ public interface MybatisMapper<E extends IdEntity<I>, I> extends MybatisEntityMa
     Integer save(@Param("entity") E entity);
 
     @Override
+    @Lang(MybatisCaching.class)
     @InsertProvider(type = MybatisProvider.class, method = "save")
     Integer save(@Param("tablename") String tablename, @Param("entity") E entity);
 
     @Override
+    @Lang(MybatisCaching.class)
     @InsertProvider(type = MybatisProvider.class, method = "saveAll")
     Integer saveAll(@Param("entityList") Collection<E> entityList);
 
     @Override
+    @Lang(MybatisCaching.class)
     @InsertProvider(type = MybatisProvider.class, method = "saveAll")
     Integer saveAll(@Param("tablename") String tablename, @Param("entityList") Collection<E> entityList);
 
     @Override
-    @InsertProvider(type = MybatisProvider.class, method = "deleteById")
+    @Lang(MybatisCaching.class)
+    @DeleteProvider(type = MybatisProvider.class, method = "deleteById")
     Integer deleteById(@Param("id") I id);
 
     @Override
-    @InsertProvider(type = MybatisProvider.class, method = "deleteById")
+    @Lang(MybatisCaching.class)
+    @DeleteProvider(type = MybatisProvider.class, method = "deleteById")
     Integer deleteById(@Param("tablename") String tablename, @Param("id") I id);
 
     @Override
-    @InsertProvider(type = MybatisProvider.class, method = "deleteByAll")
+    @Lang(MybatisCaching.class)
+    @DeleteProvider(type = MybatisProvider.class, method = "deleteByAll")
     Integer deleteAll(@Param("idList") Collection<I> idList);
 
     @Override
-    @InsertProvider(type = MybatisProvider.class, method = "deleteByAll")
+    @Lang(MybatisCaching.class)
+    @DeleteProvider(type = MybatisProvider.class, method = "deleteByAll")
     Integer deleteAll(@Param("tablename") String tablename, @Param("idList") Collection<I> idList);
 
     @Override
+    @Lang(MybatisCaching.class)
     @InsertProvider(type = MybatisProvider.class, method = "findById")
     E findById(@Param("id") I id);
 
     @Override
-    @InsertProvider(type = MybatisProvider.class, method = "findById")
+    @Lang(MybatisCaching.class)
+    @SelectProvider(type = MybatisProvider.class, method = "findById")
     E findById(@Param("tablename") String tablename, @Param("id") I id);
 
     @Override
-    @InsertProvider(type = MybatisProvider.class, method = "findByAll")
+    @Lang(MybatisCaching.class)
+    @SelectProvider(type = MybatisProvider.class, method = "findByAll")
     List<E> findAll(@Param("idList") Collection<I> idList);
 
     @Override
-    @InsertProvider(type = MybatisProvider.class, method = "findByAll")
+    @Lang(MybatisCaching.class)
+    @SelectProvider(type = MybatisProvider.class, method = "findByAll")
     List<E> findAll(@Param("tablename") String tablename, @Param("idList") Collection<I> idList);
 
     @Override
-    @InsertProvider(type = MybatisProvider.class, method = "findAllByWhere")
+    @Lang(MybatisCaching.class)
+    @SelectProvider(type = MybatisProvider.class, method = "findAllByWhere")
     List<E> findAllByWhere(@Param("whereSql") String whereSql);
 
     @Override
-    @InsertProvider(type = MybatisProvider.class, method = "findAllByWhere")
+    @Lang(MybatisCaching.class)
+    @SelectProvider(type = MybatisProvider.class, method = "findAllByWhere")
     List<E> findAllByWhere(@Param("tablename") String tablename, @Param("whereSql") String whereSql);
 
     @Override
-    @InsertProvider(type = MybatisProvider.class, method = "deleteAllByWhere")
+    @Lang(MybatisCaching.class)
+    @DeleteProvider(type = MybatisProvider.class, method = "deleteAllByWhere")
     Integer deleteAllByWhere(@Param("whereSql") String whereSql);
 
     @Override
-    @InsertProvider(type = MybatisProvider.class, method = "deleteAllByWhere")
+    @Lang(MybatisCaching.class)
+    @DeleteProvider(type = MybatisProvider.class, method = "deleteAllByWhere")
     Integer deleteAllByWhere(@Param("tablename") String tablename, @Param("whereSql") String whereSql);
 }

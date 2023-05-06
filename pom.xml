@@ -10,9 +10,6 @@
     <modules>
         <module>mybatis-toolkit-core</module>
         <module>mybatis-toolkit-starter</module>
-        <module>mybatis-toolkit-tk-starter</module>
-        <module>mybatis-toolkit-plus-starter</module>
-        <module>mybatis-toolkit-spring-starter</module>
         <module>mybatis-toolkit-test-web</module>
     </modules>
 
@@ -80,16 +77,10 @@
         <release-plugin.version>2.5.3</release-plugin.version>
 
         <pagehelper.version>1.4.6</pagehelper.version>
-        <mybatis-plus.version>3.5.2</mybatis-plus.version>
         <mybatis-spring-starter.version>2.3.0</mybatis-spring-starter.version>
 
-        <!--<mybatis.version>4.1.5</mybatis.version>-->
-
-        <mybatis.version>3.5.12</mybatis.version>
-
-        <persistence.version>1.0</persistence.version>
-        <tk-mybatis-mapper.version>4.1.5</tk-mybatis-mapper.version>
-        <tk-mybatis-starter.version>2.1.5</tk-mybatis-starter.version>
+        <mybatis.version>3.5.11</mybatis.version>
+        <mybatis-spring.version>2.1.0</mybatis-spring.version>
 
         <HikariCP.version>3.4.5</HikariCP.version>
         <postgresql.version>42.2.23</postgresql.version>

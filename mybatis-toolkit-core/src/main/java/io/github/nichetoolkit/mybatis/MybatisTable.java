@@ -1,13 +1,11 @@
 package io.github.nichetoolkit.mybatis;
 
 import io.github.nichetoolkit.mybatis.defaults.MybatisGenericTypeResolver;
-import io.github.nichetoolkit.mybatis.enums.StyleType;
 import io.github.nichetoolkit.rest.error.lack.ConfigureLackError;
-import io.github.nichetoolkit.rest.error.supply.ResourceNotFoundException;
 import io.github.nichetoolkit.rest.util.GeneralUtils;
 import io.github.nichetoolkit.rice.enums.SortType;
+import io.github.nichetoolkit.rice.enums.StyleType;
 import lombok.Data;
-import lombok.experimental.Accessors;
 import org.apache.ibatis.annotations.SelectProvider;
 import org.apache.ibatis.builder.annotation.ProviderContext;
 import org.apache.ibatis.mapping.MappedStatement;
@@ -361,6 +359,13 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
      */
     public List<MybatisColumn> updateColumns() {
         return this.columns.stream().filter(MybatisColumn::isUpdate).collect(Collectors.toList());
+    }
+
+    /**
+     * 所有 update 用到的字段，当更新列时，必须使用当前方法返回的列
+     */
+    public List<MybatisColumn> forceColumns() {
+        return this.columns.stream().filter(MybatisColumn::isForce).collect(Collectors.toList());
     }
 
     /**

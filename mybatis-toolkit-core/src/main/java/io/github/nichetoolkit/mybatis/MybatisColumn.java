@@ -43,6 +43,10 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
     protected int priority;
     /** 是否排除字段 */
     protected boolean exclude;
+    /** 强制更新值 */
+    protected String forceValue;
+    /** 是否查询字段 */
+    protected boolean force;
     /** 是否查询字段 */
     protected boolean select;
     /** 是否插入字段 */
@@ -87,25 +91,34 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
     /**
      * 返回 xml 变量形式 #{property}
      */
-    public String variables() {
-        return variables("");
+    public String variable() {
+        return variable("");
     }
 
     /**
      * 返回带前缀的 xml 变量形式 #{prefix property}
      * @param prefix 指定前缀，需要自己提供"."
      */
-    public String variables(String prefix) {
+    public String variable(String prefix) {
         return "#{" + property(prefix)
-                + jdbcTypeVariables().orElse("")
-                + typeHandlerVariables().orElse("")
-                + numericScaleVariables().orElse("") + "}";
+                + jdbcTypeVariable().orElse("")
+                + typeHandlerVariable().orElse("")
+                + numericScaleVariable().orElse("") + "}";
+    }
+
+    public String excluded() {
+        if (this.force) {
+            return this.columnName + " = " + this.forceValue;
+        } else {
+            return this.columnName + " = CASE WHEN EXCLUDED." + this.columnName + " IS NOT NULL THEN EXCLUDED." +
+                    this.columnName + " ELSE " + this.table.tableName() + "." + this.columnName + " END";
+        }
     }
 
     /**
      * 数据库类型 {, jdbcType=VARCHAR}
      */
-    public Optional<String> jdbcTypeVariables() {
+    public Optional<String> jdbcTypeVariable() {
         if (this.jdbcType != null && this.jdbcType != JdbcType.UNDEFINED) {
             return Optional.of(", jdbcType=" + this.jdbcType);
         }
@@ -115,7 +128,7 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
     /**
      * 类型处理器 {, typeHandler=XXTypeHandler}
      */
-    public Optional<String> typeHandlerVariables() {
+    public Optional<String> typeHandlerVariable() {
         if (this.typeHandler != null && this.typeHandler != UnknownTypeHandler.class) {
             return Optional.of(", typeHandler=" + this.typeHandler.getName());
         }
@@ -125,7 +138,7 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
     /**
      * 小数位数 {, numericScale=2}
      */
-    public Optional<String> numericScaleVariables() {
+    public Optional<String> numericScaleVariable() {
         if (GeneralUtils.isNotEmpty(this.numericScale)) {
             return Optional.of(", numericScale=" + this.numericScale);
         }
@@ -169,7 +182,7 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
      * @param prefix 指定前缀，需要自己提供"."
      */
     public String columnEqualsProperty(String prefix) {
-        return this.columnName + " = " + variables(prefix);
+        return this.columnName + " = " + variable(prefix);
     }
 
     /**

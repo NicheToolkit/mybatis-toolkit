@@ -1,12 +1,11 @@
 package io.github.nichetoolkit.mybatis;
 
-import io.github.nichetoolkit.mybatis.enums.StyleType;
 import io.github.nichetoolkit.mybatis.helper.MybatisHelper;
 import io.github.nichetoolkit.mybatis.helper.ServiceLoaderHelper;
-import io.github.nichetoolkit.rest.error.lack.ConfigureLackError;
 import io.github.nichetoolkit.rest.error.lack.InterfaceLackError;
-import io.github.nichetoolkit.rest.error.natives.UnsupportedErrorException;
 import io.github.nichetoolkit.rest.util.GeneralUtils;
+import io.github.nichetoolkit.rice.consts.StyleConst;
+import io.github.nichetoolkit.rice.enums.StyleType;
 import org.springframework.lang.NonNull;
 
 import java.util.HashMap;
@@ -20,15 +19,15 @@ import java.util.Map;
  */
 public interface MybatisStyle {
     /** 默认驼峰 */
-    String NORMAL = "normal";
+    String NORMAL = StyleConst.NORMAL;
     /** 小写加下划线 */
-    String LOWER_UNDERLINE = "lowerUnderline";
+    String LOWER_UNDERLINE = StyleConst.LOWER_UNDERLINE;
     /** 小写 */
-    String LOWER = "lower";
+    String LOWER = StyleConst.LOWER;
     /** 大写 */
-    String UPPER = "upper";
+    String UPPER = StyleConst.UPPER;
     /** 大写加下划线 */
-    String UPPER_UNDERLINE = "upperUnderline";
+    String UPPER_UNDERLINE = StyleConst.UPPER_UNDERLINE;
 
 
     Map<String, MybatisStyle> STYLE_MAP = new HashMap<String, MybatisStyle>() {

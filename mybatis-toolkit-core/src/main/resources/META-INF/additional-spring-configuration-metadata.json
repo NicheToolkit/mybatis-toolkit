@@ -27,8 +27,8 @@
     },
     {
       "name": "nichetoolkit.mybatis.table.style-type",
-      "type": "java.lang.String",
-      "sourceType": "java.lang.String",
+      "type": "io.github.nichetoolkit.mybatis.enums.StyleType",
+      "sourceType": "io.github.nichetoolkit.mybatis.enums.StyleType",
       "description": "mybatis table style type."
     },
     {

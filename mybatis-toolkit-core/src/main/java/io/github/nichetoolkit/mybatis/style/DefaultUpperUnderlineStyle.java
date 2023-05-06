@@ -3,8 +3,8 @@ package io.github.nichetoolkit.mybatis.style;
 import io.github.nichetoolkit.mybatis.MybatisField;
 import io.github.nichetoolkit.mybatis.MybatisStyle;
 import io.github.nichetoolkit.mybatis.MybatisTable;
-import io.github.nichetoolkit.mybatis.enums.StyleType;
 import io.github.nichetoolkit.rest.util.GeneralUtils;
+import io.github.nichetoolkit.rice.enums.StyleType;
 
 /**
  * <p>DefaultUpperUnderlineStyle</p>
