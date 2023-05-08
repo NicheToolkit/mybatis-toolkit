@@ -1,7 +1,5 @@
 package io.github.nichetoolkit.mybatis;
 
-import io.github.nichetoolkit.mybatis.configure.MybatisTableProperties;
-import io.github.nichetoolkit.mybatis.helper.MybatisHelper;
 import io.github.nichetoolkit.rest.util.GeneralUtils;
 import io.github.nichetoolkit.rice.helper.PropertyHelper;
 import io.github.nichetoolkit.rice.stereotype.mybatis.RestProperty;
@@ -36,12 +34,7 @@ public class MybatisProperty<P extends MybatisProperty<P>> {
         if (GeneralUtils.isEmpty(property) || GeneralUtils.isEmpty(this.properties)) {
             return null;
         }
-        String value = this.properties.get(property);
-        if (GeneralUtils.isEmpty(value)) {
-            MybatisTableProperties tableProperties = MybatisHelper.getTableProperties();
-            value = tableProperties.getEntity().getProperties().get(property);
-        }
-        return value;
+        return this.properties.get(property);
     }
 
     public String getProperty(String property, String defaultValue) {

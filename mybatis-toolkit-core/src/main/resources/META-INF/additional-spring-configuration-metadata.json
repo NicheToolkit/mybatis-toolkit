@@ -4,15 +4,14 @@
       "name": "nichetoolkit.mybatis.table",
       "sourceType": "io.github.nichetoolkit.mybatis.configure.MybatisTableProperties",
       "type": "io.github.nichetoolkit.mybatis.configure.MybatisTableProperties"
+    },
+    {
+      "name": "nichetoolkit.mybatis.cache",
+      "sourceType": "io.github.nichetoolkit.mybatis.configure.MybatisCacheProperties",
+      "type": "io.github.nichetoolkit.mybatis.configure.MybatisCacheProperties"
     }
   ],
   "properties": [
-    {
-      "name": "nichetoolkit.mybatis.table.enabled",
-      "type": "java.lang.Boolean",
-      "sourceType": "java.lang.Boolean",
-      "description": "mybatis table enabled."
-    },
     {
       "name": "nichetoolkit.mybatis.table.catalog",
       "type": "java.lang.String",
@@ -26,43 +25,34 @@
       "description": "mybatis table schema."
     },
     {
+      "name": "nichetoolkit.mybatis.table.database-type",
+      "type": "io.github.nichetoolkit.rice.enums.DatabaseType",
+      "sourceType": "io.github.nichetoolkit.rice.enums.DatabaseType",
+      "description": "mybatis table database type."
+    },
+    {
       "name": "nichetoolkit.mybatis.table.style-type",
-      "type": "io.github.nichetoolkit.mybatis.enums.StyleType",
-      "sourceType": "io.github.nichetoolkit.mybatis.enums.StyleType",
+      "type": "io.github.nichetoolkit.rice.enums.StyleType",
+      "sourceType": "io.github.nichetoolkit.rice.enums.StyleType",
       "description": "mybatis table style type."
     },
     {
-      "name": "nichetoolkit.mybatis.table.entity.properties",
+      "name": "nichetoolkit.mybatis.table.properties",
       "type": "java.util.Map",
       "sourceType": "java.util.Map",
-      "description": "mybatis table entity properties."
+      "description": "mybatis table properties."
     },
     {
-      "name": "nichetoolkit.mybatis.table.cache.init-size",
+      "name": "nichetoolkit.mybatis.cache.init-size",
       "type": "java.lang.String",
       "sourceType": "java.lang.String",
       "description": "mybatis table cache init size."
     },
     {
-      "name": "nichetoolkit.mybatis.table.cache.use-once",
+      "name": "nichetoolkit.mybatis.cache.use-once",
       "type": "java.lang.String",
       "sourceType": "java.lang.String",
       "description": "mybatis table cache use once."
-    }
-  ],
-  "hints": [
-    {
-      "name": "nichetoolkit.mybatis.table.enabled",
-      "values": [
-        {
-          "value": false,
-          "description": "mybatis table enabled close."
-        },
-        {
-          "value": true,
-          "description": "mybatis table enabled open."
-        }
-      ]
     }
   ]
 }

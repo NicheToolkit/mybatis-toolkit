@@ -3,11 +3,12 @@ package io.github.nichetoolkit.mybatis.defaults;
 import io.github.nichetoolkit.mybatis.MybatisStyle;
 import io.github.nichetoolkit.mybatis.MybatisTable;
 import io.github.nichetoolkit.mybatis.MybatisTableFactory;
-import io.github.nichetoolkit.mybatis.helper.MybatisHelper;
+import io.github.nichetoolkit.mybatis.configure.MybatisTableProperties;
 import io.github.nichetoolkit.rest.util.GeneralUtils;
 import io.github.nichetoolkit.rice.enums.StyleType;
 import io.github.nichetoolkit.rice.stereotype.mybatis.RestProperties;
 import io.github.nichetoolkit.rice.stereotype.mybatis.table.*;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Arrays;
 import java.util.Map;
@@ -18,6 +19,13 @@ import java.util.Map;
  * @version v1.0.0
  */
 public class DefaultTableFactory implements MybatisTableFactory {
+
+    private MybatisTableProperties tableProperties;
+
+    @Autowired
+    public DefaultTableFactory(MybatisTableProperties tableProperties) {
+        this.tableProperties = tableProperties;
+    }
 
     @Override
     public boolean supports(Class<?> clazz) {
@@ -30,9 +38,9 @@ public class DefaultTableFactory implements MybatisTableFactory {
         Class<?> entity = restEntity.entity();
         MybatisTable mybatisTable;
         if (GeneralUtils.isNotEmpty(entity)) {
-            mybatisTable = MybatisTable.of(entity);
+            mybatisTable = MybatisTable.of(entity, tableProperties.getProperties());
         } else {
-            mybatisTable = MybatisTable.of(clazz);
+            mybatisTable = MybatisTable.of(clazz, tableProperties.getProperties());
         }
         restUnionKeys(clazz, mybatisTable);
         restLinkKeys(clazz, mybatisTable);
@@ -71,19 +79,19 @@ public class DefaultTableFactory implements MybatisTableFactory {
             StyleType styleType = restStyle.type();
             String catalog = restStyle.catalog();
             String schema = restStyle.schema();
-            mybatisTable.setCatalog(GeneralUtils.isEmpty(catalog) ? MybatisHelper.getTableProperties().getCatalog() : catalog);
-            mybatisTable.setSchema(GeneralUtils.isEmpty(schema) ? MybatisHelper.getTableProperties().getSchema() : schema);
+            mybatisTable.setCatalog(GeneralUtils.isEmpty(catalog) ? tableProperties.getCatalog() : catalog);
+            mybatisTable.setSchema(GeneralUtils.isEmpty(schema) ? tableProperties.getSchema() : schema);
             if (GeneralUtils.isNotEmpty(styleName)) {
                 mybatisStyle = MybatisStyle.style(styleName);
             } else if (GeneralUtils.isNotEmpty(styleType)) {
                 mybatisTable.setStyleName(styleType.getKey());
                 mybatisStyle = MybatisStyle.style(styleType);
             } else {
-                StyleType defaultStyleType = MybatisHelper.getTableProperties().getStyleType();
+                StyleType defaultStyleType = tableProperties.getStyleType();
                 mybatisStyle = MybatisStyle.style(defaultStyleType);
             }
         } else {
-            StyleType defaultStyleType = MybatisHelper.getTableProperties().getStyleType();
+            StyleType defaultStyleType = tableProperties.getStyleType();
             mybatisStyle = MybatisStyle.style(defaultStyleType);
         }
         return mybatisStyle;
@@ -104,7 +112,7 @@ public class DefaultTableFactory implements MybatisTableFactory {
         if (GeneralUtils.isNotEmpty(restProperties) && GeneralUtils.isNotEmpty(restProperties.properties())) {
             mybatisTable.setProperties(restProperties.properties());
         }
-        Map<String, String> properties = MybatisHelper.getTableProperties().getEntity().getProperties();
+        Map<String, String> properties = tableProperties.getProperties();
         if (GeneralUtils.isNotEmpty(properties)) {
             mybatisTable.setProperties(properties);
         }

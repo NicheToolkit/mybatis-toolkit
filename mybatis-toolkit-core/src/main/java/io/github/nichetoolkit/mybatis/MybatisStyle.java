@@ -1,9 +1,7 @@
 package io.github.nichetoolkit.mybatis;
 
-import io.github.nichetoolkit.mybatis.helper.MybatisHelper;
 import io.github.nichetoolkit.mybatis.helper.ServiceLoaderHelper;
 import io.github.nichetoolkit.rest.error.lack.InterfaceLackError;
-import io.github.nichetoolkit.rest.util.GeneralUtils;
 import io.github.nichetoolkit.rice.consts.StyleConst;
 import io.github.nichetoolkit.rice.enums.StyleType;
 import org.springframework.lang.NonNull;
@@ -54,17 +52,14 @@ public interface MybatisStyle {
 
 
     static MybatisStyle defaultStyle() {
-        return style(((String) null));
+        return style(NORMAL);
     }
 
     static MybatisStyle style(@NonNull StyleType styleType) {
         return style(styleType.getKey());
     }
 
-    static MybatisStyle style(String styleName) {
-        if (GeneralUtils.isEmpty(styleName)) {
-            styleName = MybatisHelper.getTableProperties().getStyleType().getKey();
-        }
+    static MybatisStyle style(@NonNull String styleName) {
         if (STYLE_MAP.containsKey(styleName)) {
             return STYLE_MAP.get(styleName);
         } else {

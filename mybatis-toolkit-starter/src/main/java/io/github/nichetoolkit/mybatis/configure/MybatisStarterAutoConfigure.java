@@ -1,8 +1,13 @@
 package io.github.nichetoolkit.mybatis.configure;
 
+import io.github.nichetoolkit.mybatis.MybatisCaches;
+import io.github.nichetoolkit.mybatis.provider.MybatisProvider;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 
 /**
  * <p>MybatisStarterAutoConfigure</p>
@@ -16,5 +21,12 @@ public class MybatisStarterAutoConfigure {
 
     public MybatisStarterAutoConfigure() {
         log.debug("================= mybatis-starter-auto-config initiated ！ ===================");
+    }
+
+    @Bean
+    @Primary
+    @ConditionalOnMissingBean(MybatisProvider.class)
+    public MybatisProvider mybatisProvider(MybatisTableProperties tableProperties) {
+        return new MybatisProvider(tableProperties);
     }
 }

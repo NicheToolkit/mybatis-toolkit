@@ -1,11 +1,13 @@
 package io.github.nichetoolkit.mybatis.defaults;
 
 import io.github.nichetoolkit.mybatis.*;
+import io.github.nichetoolkit.mybatis.configure.MybatisTableProperties;
 import io.github.nichetoolkit.rest.util.GeneralUtils;
 import io.github.nichetoolkit.rice.stereotype.mybatis.RestIdentity;
 import io.github.nichetoolkit.rice.stereotype.mybatis.RestProperty;
 import io.github.nichetoolkit.rice.stereotype.mybatis.column.*;
 import org.apache.ibatis.type.JdbcType;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Collections;
 import java.util.List;
@@ -17,6 +19,13 @@ import java.util.Optional;
  * @version v1.0.0
  */
 public class DefaultColumnFactory implements MybatisColumnFactory {
+
+    private MybatisTableProperties tableProperties;
+
+    @Autowired
+    public DefaultColumnFactory(MybatisTableProperties tableProperties) {
+        this.tableProperties = tableProperties;
+    }
 
     @Override
     public boolean supports(MybatisTable table, MybatisField field) {
@@ -58,7 +67,7 @@ public class DefaultColumnFactory implements MybatisColumnFactory {
     @Override
     public Optional<List<MybatisColumn>> createColumn(MybatisTable table, MybatisField field, Chain chain) {
         /** 默认针对 entity 实体中的所有字段构建 column 数据 */
-        MybatisColumn mybatisColumn = MybatisColumn.of(field);
+        MybatisColumn mybatisColumn = MybatisColumn.of(field,tableProperties.getProperties());
         RestName restName = field.getAnnotation(RestName.class);
         MybatisStyle mybatisStyle = MybatisStyle.style(table.getStyleName());
         if (GeneralUtils.isNotEmpty(restName)) {

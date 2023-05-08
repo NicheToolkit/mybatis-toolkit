@@ -11,6 +11,7 @@ import java.util.function.Supplier;
  * @version v1.0.0
  */
 public interface MybatisSqlScript {
+
     /**
      * 换行符
      */

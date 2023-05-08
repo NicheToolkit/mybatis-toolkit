@@ -7,6 +7,7 @@ import org.apache.ibatis.type.JdbcType;
 import org.apache.ibatis.type.TypeHandler;
 import org.apache.ibatis.type.UnknownTypeHandler;
 
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.regex.Matcher;
@@ -64,8 +65,21 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
         this.field = field;
     }
 
+    protected MybatisColumn(Map<String, String> properties, MybatisField field) {
+        super(properties);
+        this.field = field;
+    }
+
     public static MybatisColumn of(MybatisField field) {
         return new MybatisColumn(field);
+    }
+
+    public static MybatisColumn of(MybatisField field, Map<String, String> properties) {
+        if (GeneralUtils.isNotEmpty(properties)) {
+            return new MybatisColumn(properties, field);
+        } else {
+            return new MybatisColumn(field);
+        }
     }
 
     /** Java 类型 */

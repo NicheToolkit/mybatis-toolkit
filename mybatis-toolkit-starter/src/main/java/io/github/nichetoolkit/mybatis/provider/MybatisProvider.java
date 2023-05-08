@@ -1,15 +1,15 @@
 package io.github.nichetoolkit.mybatis.provider;
 
+import io.github.nichetoolkit.mybatis.MybatisCaches;
 import io.github.nichetoolkit.mybatis.MybatisColumn;
 import io.github.nichetoolkit.mybatis.MybatisSqlScript;
 import io.github.nichetoolkit.mybatis.MybatisTable;
-import io.github.nichetoolkit.mybatis.configure.MybatisMapperProperties;
+import io.github.nichetoolkit.mybatis.configure.MybatisTableProperties;
 import io.github.nichetoolkit.rest.util.GeneralUtils;
 import io.github.nichetoolkit.rice.enums.DatabaseType;
 import org.apache.ibatis.builder.annotation.ProviderContext;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import java.util.stream.Collectors;
 
@@ -18,11 +18,14 @@ import java.util.stream.Collectors;
  * @author Cyan (snow22314@outlook.com)
  * @version v1.0.0
  */
-@Component
 public class MybatisProvider implements InitializingBean {
 
+    private MybatisTableProperties tableProperties;
+
     @Autowired
-    private MybatisMapperProperties mapperProperties;
+    public MybatisProvider(MybatisTableProperties tableProperties) {
+        this.tableProperties = tableProperties;
+    }
 
     private static MybatisProvider INSTANCE = null;
 
@@ -37,8 +40,8 @@ public class MybatisProvider implements InitializingBean {
 
     public static DatabaseType databaseType() {
         DatabaseType databaseType = DatabaseType.POSTGRESQL;
-        if (GeneralUtils.isNotEmpty(INSTANCE) && GeneralUtils.isNotEmpty(INSTANCE.mapperProperties)) {
-            databaseType = INSTANCE.mapperProperties.getDatabaseType();
+        if (GeneralUtils.isNotEmpty(INSTANCE) && GeneralUtils.isNotEmpty(INSTANCE.tableProperties)) {
+            databaseType = INSTANCE.tableProperties.getDatabaseType();
         }
         return databaseType;
     }
@@ -60,7 +63,6 @@ public class MybatisProvider implements InitializingBean {
     }
 
     public static String save(ProviderContext providerContext) {
-
         return MybatisSqlScript.caching(providerContext, entity -> {
             return "INSERT INTO " + entity.tableName()
                     + "(" + entity.insertColumnList() + ")"

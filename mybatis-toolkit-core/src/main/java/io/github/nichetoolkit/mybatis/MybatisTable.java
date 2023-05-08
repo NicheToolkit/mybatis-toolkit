@@ -96,8 +96,16 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
         return new MybatisTable(clazz);
     }
 
+    public static MybatisTable of(Class<?> clazz, Map<String, String> properties) {
+        if (GeneralUtils.isNotEmpty(properties)) {
+            return new MybatisTable(properties, clazz);
+        } else {
+            return new MybatisTable(clazz);
+        }
+    }
+
     public String tableName() {
-        return Stream.of(this.catalog, this.schema,this.table)
+        return Stream.of(this.catalog, this.schema, this.table)
                 .filter(GeneralUtils::isNotEmpty)
                 .collect(Collectors.joining("."));
     }
@@ -139,7 +147,7 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
         }
         /** 如果是联合主键 */
         String fieldName = column.getField().fieldName();
-        if (column.isUnionKey() || (GeneralUtils.isNotEmpty(this.unionKeys) &&  this.unionKeys.contains(fieldName))) {
+        if (column.isUnionKey() || (GeneralUtils.isNotEmpty(this.unionKeys) && this.unionKeys.contains(fieldName))) {
             column.setUnionKey(true);
             if (!this.identities.contains(column)) {
                 this.identities.add(column);

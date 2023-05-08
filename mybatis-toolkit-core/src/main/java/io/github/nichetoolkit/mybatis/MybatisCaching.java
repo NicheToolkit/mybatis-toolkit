@@ -1,6 +1,5 @@
 package io.github.nichetoolkit.mybatis;
 
-import io.github.nichetoolkit.mybatis.helper.MybatisHelper;
 import io.github.nichetoolkit.rest.error.lack.ConfigureLackError;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.annotations.Lang;
@@ -9,55 +8,20 @@ import org.apache.ibatis.mapping.MappedStatement;
 import org.apache.ibatis.mapping.SqlSource;
 import org.apache.ibatis.scripting.xmltags.XMLLanguageDriver;
 import org.apache.ibatis.session.Configuration;
-import org.springframework.beans.factory.InitializingBean;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Supplier;
 
 /**
- * <p>MybatisCaching</p>
+ * <p>MybatisCache</p>
  * @author Cyan (snow22314@outlook.com)
  * @version v1.0.0
  */
 @Slf4j
-@Component
-public class MybatisCaching extends XMLLanguageDriver implements InitializingBean {
-
-    @Override
-    public void afterPropertiesSet() throws Exception {
-
-    }
-
-    /**
-     * 缓存方法对应的 MybatisSqlCache，预设1024约等于30个实体，每个实体25个方法
-     * 当存在一个数据源时，当前缓存是可以最终清空的，但是多个数据源时，就必须保留，因为不清楚什么时候可以清理
-     */
-    private static Map<String, MybatisSqlCache> CACHE_SQL;
-    /**
-     * 多数据源，多配置的情况下（甚至单元测试时），同一个方法会在不同的 Configuration 中出现，如果不做处理就会出现不一致
-     */
-    private static Map<Configuration, Map<String, SqlSource>> CONFIGURATION_CACHE_KEY_MAP;
-    /**
-     * 是否只使用一次，默认 false，设置为 true 后，当使用过一次后，就会取消引用，可以被后续的GC清理
-     * 当使用SqlSessionFactory配置多数据源时，不能设置为 true，设置true被GC清理后，新的数据源就无法正常使用
-     * 当从DataSource层面做多数据源时，只有一个SqlSessionFactory时，可以设置为true
-     */
-    private static boolean USE_ONCE;
-
-    @Autowired
-    public MybatisCaching() {
-        CACHE_SQL = new ConcurrentHashMap<>(MybatisHelper.getTableProperties().getCache().getInitSize());
-        CONFIGURATION_CACHE_KEY_MAP = new ConcurrentHashMap<>(4);
-        USE_ONCE = MybatisHelper.getTableProperties().getCache().isUseOnce();
-    }
-
-
+public class MybatisCaching extends XMLLanguageDriver {
 
     /**
      * 根据接口和方法生成缓存 key
@@ -93,11 +57,11 @@ public class MybatisCaching extends XMLLanguageDriver implements InitializingBea
      */
     public static String cache(ProviderContext providerContext, MybatisTable entity, Supplier<String> sqlScriptSupplier) {
         String cacheKey = cacheKey(providerContext);
-        if (!CACHE_SQL.containsKey(cacheKey)) {
+        if (!MybatisCaches.CACHE_SQL.containsKey(cacheKey)) {
             isPresentLang(providerContext);
             synchronized (cacheKey) {
-                if (!CACHE_SQL.containsKey(cacheKey)) {
-                    CACHE_SQL.put(cacheKey, new MybatisSqlCache(
+                if (!MybatisCaches.CACHE_SQL.containsKey(cacheKey)) {
+                    MybatisCaches.CACHE_SQL.put(cacheKey, new MybatisSqlCache(
                             Objects.requireNonNull(providerContext),
                             Objects.requireNonNull(entity),
                             Objects.requireNonNull(sqlScriptSupplier)));
@@ -114,21 +78,21 @@ public class MybatisCaching extends XMLLanguageDriver implements InitializingBea
          * 没有调用过 MybatisCaching.cache 方法的，属于默认方式，可能是误加 @Lang(MybatisCaching.class) 注解，这里执行 else 中默认的方式
          * 先判断 CACHE_SQL 中是否有此 script，有就是调用过 MybatisCaching.cache 方法后的 cacheKey
          */
-        if (CACHE_SQL.containsKey(script)) {
+        if (MybatisCaches.CACHE_SQL.containsKey(script)) {
             /** 为了容易理解，使用 cacheKey 变量代替 script */
             String cacheKey = script;
             /** 判断是否已经解析过 */
-            if (!(CONFIGURATION_CACHE_KEY_MAP.containsKey(configuration) && CONFIGURATION_CACHE_KEY_MAP.get(configuration).containsKey(cacheKey))) {
+            if (!(MybatisCaches.CONFIGURATION_CACHE_KEY_MAP.containsKey(configuration) && MybatisCaches.CONFIGURATION_CACHE_KEY_MAP.get(configuration).containsKey(cacheKey))) {
                 synchronized (cacheKey) {
-                    if (!(CONFIGURATION_CACHE_KEY_MAP.containsKey(configuration) && CONFIGURATION_CACHE_KEY_MAP.get(configuration).containsKey(cacheKey))) {
+                    if (!(MybatisCaches.CONFIGURATION_CACHE_KEY_MAP.containsKey(configuration) && MybatisCaches.CONFIGURATION_CACHE_KEY_MAP.get(configuration).containsKey(cacheKey))) {
                         /** 取出缓存的信息 */
-                        MybatisSqlCache sqlCache = CACHE_SQL.get(cacheKey);
+                        MybatisSqlCache sqlCache = MybatisCaches.CACHE_SQL.get(cacheKey);
                         if (sqlCache == MybatisSqlCache.NULL_SQL_CACHE) {
                             throw new RuntimeException(script + " => CACHE_SQL is NULL, you need to configure nichetoolkit.mybatis.table.cache-sql.use-once=false");
                         }
                         /** 初始化 MybatisTable，每个方法执行一次，可以利用 configuration 进行一些特殊操作 */
                         sqlCache.table().initContext(configuration, sqlCache.context(), cacheKey);
-                        Map<String, SqlSource> cacheKeyMap = CONFIGURATION_CACHE_KEY_MAP.computeIfAbsent(configuration, k -> new HashMap<>());
+                        Map<String, SqlSource> cacheKeyMap = MybatisCaches.CONFIGURATION_CACHE_KEY_MAP.computeIfAbsent(configuration, k -> new HashMap<>());
                         /** 定制化处理 mappedStatement */
                         MappedStatement mappedStatement = configuration.getMappedStatement(cacheKey);
                         MybatisCustomize.DEFAULT_CUSTOMIZE.customize(sqlCache.table(), mappedStatement, sqlCache.context());
@@ -142,13 +106,13 @@ public class MybatisCaching extends XMLLanguageDriver implements InitializingBea
                         sqlSource = MybatisSqlSourceCustomize.DEFAULT_SQL_SOURCE_CUSTOMIZE.customize(sqlSource, sqlCache.table(), mappedStatement, sqlCache.context());
                         cacheKeyMap.put(cacheKey, sqlSource);
                         /** 取消cache对象的引用，减少内存占用 */
-                        if (USE_ONCE) {
-                            CACHE_SQL.put(cacheKey, MybatisSqlCache.NULL_SQL_CACHE);
+                        if (MybatisCaches.USE_ONCE) {
+                            MybatisCaches.CACHE_SQL.put(cacheKey, MybatisSqlCache.NULL_SQL_CACHE);
                         }
                     }
                 }
             }
-            return CONFIGURATION_CACHE_KEY_MAP.get(configuration).get(cacheKey);
+            return MybatisCaches.CONFIGURATION_CACHE_KEY_MAP.get(configuration).get(cacheKey);
         } else {
             return super.createSqlSource(configuration, script, parameterType);
         }
