@@ -408,7 +408,7 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
      * 所有查询列，形如 column1, column2, ...
      */
     public String baseColumnList() {
-        return selectColumns().stream().map(MybatisColumn::getColumnName).collect(Collectors.joining(","));
+        return selectColumns().stream().map(MybatisColumn::getColumnName).collect(Collectors.joining(", "));
     }
 
     /**
@@ -419,21 +419,28 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
         if (useResultMaps()) {
             return baseColumnList();
         }
-        return selectColumns().stream().map(MybatisColumn::columnAsProperty).collect(Collectors.joining(","));
+        return selectColumns().stream().map(MybatisColumn::columnAsProperty).collect(Collectors.joining(", "));
+    }
+
+    /**
+     * 所有 select 列，形如 column1, column2, ...，字段来源 {@link #selectColumns()}
+     */
+    public String selectColumnList() {
+        return selectColumns().stream().map(MybatisColumn::getColumnName).distinct().collect(Collectors.joining(", "));
     }
 
     /**
      * 所有 insert 列，形如 column1, column2, ...，字段来源 {@link #insertColumns()}
      */
     public String insertColumnList() {
-        return insertColumns().stream().map(MybatisColumn::getColumnName).collect(Collectors.joining(","));
+        return insertColumns().stream().map(MybatisColumn::getColumnName).distinct().collect(Collectors.joining(", "));
     }
 
     /**
      * 所有 主键或联合主键 用到的字段，当插入列时，必须使用当前方法返回的列
      */
     public String identityColumnList() {
-        return identityColumns().stream().map(MybatisColumn::getColumnName).collect(Collectors.joining(","));
+        return identityColumns().stream().map(MybatisColumn::getColumnName).distinct().collect(Collectors.joining(", "));
     }
 
     /**
@@ -444,7 +451,7 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
     public Optional<String> groupByColumnList() {
         Optional<List<MybatisColumn>> groupByColumns = groupByColumns();
         return groupByColumns.map(mybatisColumns -> mybatisColumns.stream().map(MybatisColumn::getColumnName)
-                .collect(Collectors.joining(",")));
+                .collect(Collectors.joining(", ")));
     }
 
     /**
@@ -463,7 +470,7 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
     public Optional<String> havingColumnList() {
         Optional<List<MybatisColumn>> havingColumns = havingColumns();
         return havingColumns.map(mybatisColumns -> mybatisColumns.stream().map(MybatisColumn::getColumnName)
-                .collect(Collectors.joining(",")));
+                .collect(Collectors.joining(", ")));
     }
 
     /**
@@ -483,7 +490,7 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
         Optional<List<MybatisColumn>> orderByColumns = orderByColumns();
         return orderByColumns.map(mybatisColumns -> mybatisColumns.stream()
                 .map(column -> column.getColumnName() + " " + column.getSortType().getKey())
-                .collect(Collectors.joining(",")));
+                .collect(Collectors.joining(", ")));
     }
 
     /**

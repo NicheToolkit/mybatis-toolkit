@@ -50,10 +50,10 @@ public interface MybatisSqlScript {
 
     /**
      * 生成对应的 SQL，支持动态标签
-     * @param entity 实体类信息
+     * @param table 实体类信息
      * @return xml sql 脚本
      */
-    String sql(MybatisTable entity);
+    String sql(MybatisTable table);
 
     /**
      * 生成 choose 标签包装的 xml 结构

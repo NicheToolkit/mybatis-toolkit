@@ -31,18 +31,4 @@ public class MybatisCoreAutoConfigure {
         return new MybatisCaches(cacheProperties);
     }
 
-    @Bean
-    @Primary
-    @ConditionalOnMissingBean(DefaultTableFactory.class)
-    public DefaultTableFactory defaultTableFactory(MybatisTableProperties tableProperties) {
-        return new DefaultTableFactory(tableProperties);
-    }
-
-    @Bean
-    @Primary
-    @ConditionalOnMissingBean(DefaultColumnFactory.class)
-    public DefaultColumnFactory defaultColumnFactory(MybatisTableProperties tableProperties) {
-        return new DefaultColumnFactory(tableProperties);
-    }
-
 }

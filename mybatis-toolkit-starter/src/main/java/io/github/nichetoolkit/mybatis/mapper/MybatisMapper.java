@@ -24,8 +24,8 @@ public interface MybatisMapper<E extends IdEntity<I>, I> extends MybatisEntityMa
 
     @Override
     @Lang(MybatisCaching.class)
-    @InsertProvider(type = MybatisProvider.class, method = "save")
-    Integer save(@Param("tablename") String tablename, @Param("entity") E entity);
+    @InsertProvider(type = MybatisProvider.class, method = "saveDynamic")
+    Integer saveDynamic(@Param("tablename") String tablename, @Param("entity") E entity);
 
     @Override
     @Lang(MybatisCaching.class)
@@ -34,8 +34,8 @@ public interface MybatisMapper<E extends IdEntity<I>, I> extends MybatisEntityMa
 
     @Override
     @Lang(MybatisCaching.class)
-    @InsertProvider(type = MybatisProvider.class, method = "saveAll")
-    Integer saveAll(@Param("tablename") String tablename, @Param("entityList") Collection<E> entityList);
+    @InsertProvider(type = MybatisProvider.class, method = "saveDynamicAll")
+    Integer saveDynamicAll(@Param("tablename") String tablename, @Param("entityList") Collection<E> entityList);
 
     @Override
     @Lang(MybatisCaching.class)
@@ -44,8 +44,8 @@ public interface MybatisMapper<E extends IdEntity<I>, I> extends MybatisEntityMa
 
     @Override
     @Lang(MybatisCaching.class)
-    @DeleteProvider(type = MybatisProvider.class, method = "deleteById")
-    Integer deleteById(@Param("tablename") String tablename, @Param("id") I id);
+    @DeleteProvider(type = MybatisProvider.class, method = "deleteDynamicById")
+    Integer deleteDynamicById(@Param("tablename") String tablename, @Param("id") I id);
 
     @Override
     @Lang(MybatisCaching.class)
@@ -54,18 +54,18 @@ public interface MybatisMapper<E extends IdEntity<I>, I> extends MybatisEntityMa
 
     @Override
     @Lang(MybatisCaching.class)
-    @DeleteProvider(type = MybatisProvider.class, method = "deleteByAll")
-    Integer deleteAll(@Param("tablename") String tablename, @Param("idList") Collection<I> idList);
-
-    @Override
-    @Lang(MybatisCaching.class)
-    @InsertProvider(type = MybatisProvider.class, method = "findById")
-    E findById(@Param("id") I id);
+    @DeleteProvider(type = MybatisProvider.class, method = "deleteDynamicByAll")
+    Integer deleteDynamicAll(@Param("tablename") String tablename, @Param("idList") Collection<I> idList);
 
     @Override
     @Lang(MybatisCaching.class)
     @SelectProvider(type = MybatisProvider.class, method = "findById")
-    E findById(@Param("tablename") String tablename, @Param("id") I id);
+    E findById(@Param("id") I id);
+
+    @Override
+    @Lang(MybatisCaching.class)
+    @SelectProvider(type = MybatisProvider.class, method = "findDynamicById")
+    E findDynamicById(@Param("tablename") String tablename, @Param("id") I id);
 
     @Override
     @Lang(MybatisCaching.class)
@@ -74,8 +74,8 @@ public interface MybatisMapper<E extends IdEntity<I>, I> extends MybatisEntityMa
 
     @Override
     @Lang(MybatisCaching.class)
-    @SelectProvider(type = MybatisProvider.class, method = "findByAll")
-    List<E> findAll(@Param("tablename") String tablename, @Param("idList") Collection<I> idList);
+    @SelectProvider(type = MybatisProvider.class, method = "findDynamicByAll")
+    List<E> findDynamicAll(@Param("tablename") String tablename, @Param("idList") Collection<I> idList);
 
     @Override
     @Lang(MybatisCaching.class)
@@ -84,8 +84,8 @@ public interface MybatisMapper<E extends IdEntity<I>, I> extends MybatisEntityMa
 
     @Override
     @Lang(MybatisCaching.class)
-    @SelectProvider(type = MybatisProvider.class, method = "findAllByWhere")
-    List<E> findAllByWhere(@Param("tablename") String tablename, @Param("whereSql") String whereSql);
+    @SelectProvider(type = MybatisProvider.class, method = "findDynamicAllByWhere")
+    List<E> findDynamicAllByWhere(@Param("tablename") String tablename, @Param("whereSql") String whereSql);
 
     @Override
     @Lang(MybatisCaching.class)
@@ -94,6 +94,6 @@ public interface MybatisMapper<E extends IdEntity<I>, I> extends MybatisEntityMa
 
     @Override
     @Lang(MybatisCaching.class)
-    @DeleteProvider(type = MybatisProvider.class, method = "deleteAllByWhere")
-    Integer deleteAllByWhere(@Param("tablename") String tablename, @Param("whereSql") String whereSql);
+    @DeleteProvider(type = MybatisProvider.class, method = "deleteDynamicAllByWhere")
+    Integer deleteDynamicAllByWhere(@Param("tablename") String tablename, @Param("whereSql") String whereSql);
 }

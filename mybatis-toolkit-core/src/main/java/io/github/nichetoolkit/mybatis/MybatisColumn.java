@@ -49,11 +49,11 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
     /** 是否查询字段 */
     protected boolean force;
     /** 是否查询字段 */
-    protected boolean select;
+    protected boolean select = true;
     /** 是否插入字段 */
-    protected boolean insert;
+    protected boolean insert = true;
     /** 是否更新字段 */
-    protected boolean update;
+    protected boolean update = true;
     /** jdbc类型 */
     protected JdbcType jdbcType;
     /** 类型处理器 */

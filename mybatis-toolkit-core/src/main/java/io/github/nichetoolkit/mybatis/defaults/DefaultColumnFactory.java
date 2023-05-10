@@ -2,6 +2,7 @@ package io.github.nichetoolkit.mybatis.defaults;
 
 import io.github.nichetoolkit.mybatis.*;
 import io.github.nichetoolkit.mybatis.configure.MybatisTableProperties;
+import io.github.nichetoolkit.rest.util.ContextUtils;
 import io.github.nichetoolkit.rest.util.GeneralUtils;
 import io.github.nichetoolkit.rice.stereotype.mybatis.RestIdentity;
 import io.github.nichetoolkit.rice.stereotype.mybatis.RestProperty;
@@ -22,9 +23,8 @@ public class DefaultColumnFactory implements MybatisColumnFactory {
 
     private MybatisTableProperties tableProperties;
 
-    @Autowired
-    public DefaultColumnFactory(MybatisTableProperties tableProperties) {
-        this.tableProperties = tableProperties;
+    public DefaultColumnFactory() {
+        this.tableProperties = ContextUtils.getBean(MybatisTableProperties.class);
     }
 
     @Override
