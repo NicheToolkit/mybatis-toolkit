@@ -93,7 +93,7 @@ public class MybatisProvider implements InitializingBean {
                 return "INSERT INTO " + Optional.ofNullable(tablename).orElse(table.tableName())
                         + " (" + table.insertColumnList() + ") VALUES "
                         + foreach("entityList", "entity", ", ", () ->
-                        " (" +  table.insertColumns().stream().map(column -> column.variable("entity.")).collect(Collectors.joining(", "))) + " )"
+                        " (" +  table.insertColumns().stream().map(column -> column.variable("entity.")).collect(Collectors.joining(", ")) + " )")
                         + upset(table) + table.updateColumns().stream().map(MybatisColumn::excluded).collect(Collectors.joining(", "));
             }
         });
