@@ -44,4 +44,20 @@ class SimpleServiceTest extends MybatisToolkitTestWebApplicationTests {
         System.out.println(JsonUtils.parseJson(save));
     }
 
+    @Test
+    public void saveAll() throws RestException {
+        SimpleModel simpleModel1 = new SimpleModel();
+        simpleModel1.setName("名称1_" + GeneralUtils.uuid());
+        simpleModel1.setDescription("描述1_" + GeneralUtils.uuid());
+        simpleModel1.setTime(new Date());
+
+        SimpleModel simpleModel2 = new SimpleModel();
+        simpleModel2.setName("名称2_" + GeneralUtils.uuid());
+        simpleModel2.setDescription("描述2_" + GeneralUtils.uuid());
+        simpleModel2.setTime(new Date());
+
+        List<SimpleModel> simpleModels = simpleService.saveAll(Arrays.asList(simpleModel1, simpleModel2));
+        System.out.println(JsonUtils.parseJson(simpleModels));
+    }
+
 }
