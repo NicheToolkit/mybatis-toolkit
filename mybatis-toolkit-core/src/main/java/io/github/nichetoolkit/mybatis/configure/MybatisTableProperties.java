@@ -1,12 +1,12 @@
 package io.github.nichetoolkit.mybatis.configure;
 
+import io.github.nichetoolkit.rest.util.GeneralUtils;
 import io.github.nichetoolkit.rice.enums.DatabaseType;
 import io.github.nichetoolkit.rice.enums.StyleType;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * <p>MybatisTableProperties</p>
@@ -26,6 +26,8 @@ public class MybatisTableProperties {
     private StyleType styleType = StyleType.LOWER_UNDERLINE;
     /** 默认全局属性 */
     private Map<String, String> properties = new HashMap<>();
+    /** 默认全局排除属性 */
+    private String[] excludes;
 
     public MybatisTableProperties() {
     }
@@ -68,5 +70,16 @@ public class MybatisTableProperties {
 
     public void setProperties(Map<String, String> properties) {
         this.properties = properties;
+    }
+
+    public List<String> getExcludes() {
+        if (GeneralUtils.isNotEmpty(this.excludes)) {
+            return new ArrayList<>(Arrays.asList(this.excludes));
+        }
+        return null;
+    }
+
+    public void setExcludes(String... excludes) {
+        this.excludes = excludes;
     }
 }

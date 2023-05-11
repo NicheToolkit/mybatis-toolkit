@@ -21,6 +21,7 @@ import org.apache.ibatis.type.UnknownTypeHandler;
 
 import java.lang.reflect.Constructor;
 import java.util.*;
+import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -48,6 +49,10 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
     protected boolean unionIdentity;
     /** 连接键 */
     protected List<String> linkKeys;
+    /** 唯一键 */
+    protected List<String> uniqueKeys;
+    /** 唯一键忽略 */
+    protected List<String> ignoreKeys;
     /** catalog 名称 */
     protected String catalog;
     /** schema 名称 */
@@ -72,6 +77,12 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
     protected List<MybatisColumn> columns;
     /** 主键字段 */
     protected MybatisColumn identity;
+    /** 逻辑删除字段 */
+    protected MybatisColumn logic;
+    /** 数据操作字段 */
+    protected MybatisColumn operate;
+    /** 联合主键字段 */
+    protected List<MybatisColumn> uniques;
     /** 联合主键字段 */
     protected List<MybatisColumn> identities;
     /** 连接字段 */
@@ -80,16 +91,24 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
     protected boolean ready;
     /** 已经初始化的配置 */
     protected Set<Configuration> initiates = new HashSet<>();
+    /** 字段名称 */
+    protected Map<String, MybatisColumn> fieldColumns  = new HashMap<>();
 
     public MybatisTable(Class<?> entity) {
         this.entity = entity;
         this.columns = new ArrayList<>();
+        this.uniques = new ArrayList<>();
+        this.identities = new ArrayList<>();
+        this.linkages = new ArrayList<>();
     }
 
     public MybatisTable(Map<String, String> properties, Class<?> entity) {
         super(properties);
         this.entity = entity;
         this.columns = new ArrayList<>();
+        this.uniques = new ArrayList<>();
+        this.identities = new ArrayList<>();
+        this.linkages = new ArrayList<>();
     }
 
     public static MybatisTable of(Class<?> clazz) {
@@ -145,6 +164,14 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
             column.setPrimaryKey(true);
             this.identity = column;
         }
+        if (column.isLogic()) {
+            column.setLogic(true);
+            this.logic = column;
+        }
+        if (column.isOperate()) {
+            column.setOperate(true);
+            this.operate = column;
+        }
         /** 如果是联合主键 */
         String fieldName = column.getField().fieldName();
         if (column.isUnionKey() || (GeneralUtils.isNotEmpty(this.unionKeys) && this.unionKeys.contains(fieldName))) {
@@ -163,6 +190,17 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
             if (!this.linkages.contains(column)) {
                 this.linkages.add(column);
             }
+        }
+        /** 如果是链接外键 */
+        if (column.isUnique() || (GeneralUtils.isNotEmpty(this.uniqueKeys) && this.uniqueKeys.contains(fieldName))) {
+            column.setUnique(true);
+            if (!this.uniques.contains(column)) {
+                this.uniques.add(column);
+            }
+        }
+        if (column.isUnique() && GeneralUtils.isNotEmpty(this.ignoreKeys) && this.ignoreKeys.contains(fieldName)) {
+            column.setUnique(false);
+            this.uniques.remove(column);
         }
     }
 
@@ -318,6 +356,24 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
     }
 
     /**
+     * 返回查询列，默认所有列，当使用查询条件列时，必须使用当前方法返回的列
+     */
+    public List<MybatisColumn> allColumns() {
+        return this.columns;
+    }
+
+
+    /**
+     * 返回查询列，默认所有列，当使用查询条件列时，必须使用当前方法返回的列
+     */
+    public MybatisColumn fieldColumn(String fieldName) {
+        if (GeneralUtils.isEmpty(this.fieldColumns)) {
+            this.fieldColumns = this.columns.stream().collect(Collectors.toMap(MybatisColumn::fieldName, Function.identity()));
+        }
+        return this.fieldColumns.get(fieldName);
+    }
+
+    /**
      * 返回主键列，不会为空，当根据主键作为条件时，必须使用当前方法返回的列，没有设置主键时，当前方法返回所有列
      */
     public List<MybatisColumn> identityColumns() {
@@ -338,7 +394,8 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
      * 返回普通列，排除主键字段，当根据非主键作为条件时，必须使用当前方法返回的列
      */
     public List<MybatisColumn> normalColumns() {
-        return this.columns.stream().filter(column -> !column.isIdentity() && !column.isPrimaryKey() && !column.isUnionKey()).collect(Collectors.toList());
+        return this.columns.stream().filter(column -> !column.isIdentity() && !column.isPrimaryKey()
+                && !column.isUnionKey() && !column.isLogic() && !column.isOperate()).collect(Collectors.toList());
     }
 
     /**
@@ -353,6 +410,10 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
      */
     public List<MybatisColumn> whereColumns() {
         return this.columns;
+    }
+
+    public List<MybatisColumn> uniqueColumns() {
+        return this.uniques;
     }
 
     /**
@@ -370,10 +431,16 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
     }
 
     /**
+     * 所有 insert 用到的字段，当更新列时，必须使用当前方法返回的列
+     */
+    public List<MybatisColumn> forceInsertColumns() {
+        return this.columns.stream().filter(MybatisColumn::isForceInsert).collect(Collectors.toList());
+    }
+    /**
      * 所有 update 用到的字段，当更新列时，必须使用当前方法返回的列
      */
-    public List<MybatisColumn> forceColumns() {
-        return this.columns.stream().filter(MybatisColumn::isForce).collect(Collectors.toList());
+    public List<MybatisColumn> forceUpdateColumns() {
+        return this.columns.stream().filter(MybatisColumn::isForceUpdate).collect(Collectors.toList());
     }
 
     /**

@@ -44,10 +44,20 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
     protected int priority;
     /** 是否排除字段 */
     protected boolean exclude;
+    /** 是否强制插入 */
+    protected boolean forceInsert;
+    /** 强制插入值 */
+    protected String forceInsertValue;
+    /** 是否强制更新 */
+    protected boolean forceUpdate;
     /** 强制更新值 */
-    protected String forceValue;
+    protected String forceUpdateValue;
+    /** 是否唯一性字段 */
+    protected boolean unique;
     /** 是否查询字段 */
-    protected boolean force;
+    protected boolean logic;
+    /** 是否查询字段 */
+    protected boolean operate;
     /** 是否查询字段 */
     protected boolean select = true;
     /** 是否插入字段 */
@@ -82,6 +92,13 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
         }
     }
 
+    /**
+     * 属性名
+     */
+    public String fieldName() {
+        return this.field.fieldName();
+    }
+
     /** Java 类型 */
     public Class<?> javaType() {
         return this.field.fieldType();
@@ -114,15 +131,19 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
      * @param prefix 指定前缀，需要自己提供"."
      */
     public String variable(String prefix) {
-        return "#{" + property(prefix)
-                + jdbcTypeVariable().orElse("")
-                + typeHandlerVariable().orElse("")
-                + numericScaleVariable().orElse("") + "}";
+        if (this.forceInsert) {
+            return this.forceInsertValue;
+        } else {
+            return "#{" + property(prefix)
+                    + jdbcTypeVariable().orElse("")
+                    + typeHandlerVariable().orElse("")
+                    + numericScaleVariable().orElse("") + "}";
+        }
     }
 
     public String excluded() {
-        if (this.force) {
-            return this.columnName + " = " + this.forceValue;
+        if (this.forceUpdate) {
+            return this.columnName + " = " + this.forceUpdateValue;
         } else {
             return this.columnName + " = CASE WHEN EXCLUDED." + this.columnName + " IS NOT NULL THEN EXCLUDED." +
                     this.columnName + " ELSE " + this.table.tableName() + "." + this.columnName + " END";
@@ -187,8 +208,22 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
     /**
      * 返回 column = #{property} 形式的字符串
      */
+    public String columnEqualsSign() {
+        return this.columnName + " = " + "${sign}";
+    }
+
+    /**
+     * 返回 column = #{property} 形式的字符串
+     */
     public String columnEqualsProperty() {
         return columnEqualsProperty("");
+    }
+
+    /**
+     * 返回 column = #{property} 形式的字符串
+     */
+    public String columnNotEqualsProperty() {
+        return columnNotEqualsProperty("");
     }
 
     /**
@@ -197,6 +232,14 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
      */
     public String columnEqualsProperty(String prefix) {
         return this.columnName + " = " + variable(prefix);
+    }
+
+    /**
+     * 返回带前缀的 column = #{prefix property} 形式的字符串
+     * @param prefix 指定前缀，需要自己提供"."
+     */
+    public String columnNotEqualsProperty(String prefix) {
+        return this.columnName + " != " + variable(prefix);
     }
 
     /**

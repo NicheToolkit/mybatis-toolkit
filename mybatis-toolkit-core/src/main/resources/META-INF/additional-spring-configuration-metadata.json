@@ -43,6 +43,12 @@
       "description": "mybatis table properties."
     },
     {
+      "name": "nichetoolkit.mybatis.table.excludes",
+      "type": "java.lang.String[]",
+      "sourceType": "java.lang.String[]",
+      "description": "mybatis table excludes."
+    },
+    {
       "name": "nichetoolkit.mybatis.cache.init-size",
       "type": "java.lang.String",
       "sourceType": "java.lang.String",

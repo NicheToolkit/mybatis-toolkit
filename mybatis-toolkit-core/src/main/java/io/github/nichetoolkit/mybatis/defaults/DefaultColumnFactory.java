@@ -45,6 +45,13 @@ public class DefaultColumnFactory implements MybatisColumnFactory {
                 return false;
             }
         }
+        List<String> excludeGlobals = tableProperties.getExcludes();
+        if (GeneralUtils.isNotEmpty(excludeGlobals)) {
+            /** 当前字段属于 需要排除的字段名称 返回 false */
+            if (excludeGlobals.contains(fieldName)) {
+                return false;
+            }
+        }
         Class<?> fieldType = field.fieldType();
         List<Class<?>> excludeFieldTypes = table.getExcludeFieldTypes();
         if (GeneralUtils.isNotEmpty(excludeFieldTypes)) {
@@ -88,6 +95,10 @@ public class DefaultColumnFactory implements MybatisColumnFactory {
             mybatisColumn.setUnionKey(restUnionKey.value());
             mybatisColumn.setUnionIndex(restUnionKey.index());
         }
+        RestUnique restUnique = field.getAnnotation(RestUnique.class);
+        if (GeneralUtils.isNotEmpty(restUnique)) {
+            mybatisColumn.setUnique(true);
+        }
         RestLinkKey restLinkKey = field.getAnnotation(RestLinkKey.class);
         if (GeneralUtils.isNotEmpty(restLinkKey)) {
             mybatisColumn.setLinkKey(restLinkKey.value());
@@ -105,11 +116,25 @@ public class DefaultColumnFactory implements MybatisColumnFactory {
         if (GeneralUtils.isNotEmpty(restUpdate)) {
             mybatisColumn.setUpdate(restUpdate.update());
         }
-        RestForce restForce = field.getAnnotation(RestForce.class);
-        if (GeneralUtils.isNotEmpty(restForce)) {
-            mybatisColumn.setForce(true);
-            mybatisColumn.setForceValue(restForce.value());
+        RestForceInsert restForceInsert = field.getAnnotation(RestForceInsert.class);
+        if (GeneralUtils.isNotEmpty(restForceInsert)) {
+            mybatisColumn.setForceInsert(true);
+            mybatisColumn.setForceInsertValue(restForceInsert.value());
             mybatisColumn.setUpdate(false);
+        }
+        RestForceUpdate restForceUpdate = field.getAnnotation(RestForceUpdate.class);
+        if (GeneralUtils.isNotEmpty(restForceUpdate)) {
+            mybatisColumn.setForceUpdate(true);
+            mybatisColumn.setForceUpdateValue(restForceUpdate.value());
+            mybatisColumn.setUpdate(true);
+        }
+        RestLogic restLogic = field.getAnnotation(RestLogic.class);
+        if (GeneralUtils.isNotEmpty(restLogic)) {
+            mybatisColumn.setLogic(true);
+        }
+        RestOperate restOperate = field.getAnnotation(RestOperate.class);
+        if (GeneralUtils.isNotEmpty(restOperate)) {
+            mybatisColumn.setOperate(true);
         }
         RestSelect restSelect = field.getAnnotation(RestSelect.class);
         if (GeneralUtils.isNotEmpty(restSelect)) {

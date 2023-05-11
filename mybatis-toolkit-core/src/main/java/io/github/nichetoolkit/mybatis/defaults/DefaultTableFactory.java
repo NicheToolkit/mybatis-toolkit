@@ -43,6 +43,7 @@ public class DefaultTableFactory implements MybatisTableFactory {
         } else {
             mybatisTable = MybatisTable.of(clazz, tableProperties.getProperties());
         }
+        restUniques(clazz, mybatisTable);
         restUnionKeys(clazz, mybatisTable);
         restLinkKeys(clazz, mybatisTable);
         MybatisStyle mybatisStyle = restStyle(clazz, mybatisTable);
@@ -52,6 +53,19 @@ public class DefaultTableFactory implements MybatisTableFactory {
         restProperties(clazz, mybatisTable);
         restExcludes(clazz, mybatisTable);
         return mybatisTable;
+    }
+
+    public void restUniques(Class<?> clazz, MybatisTable mybatisTable) {
+        /** restUniques 注解处理 */
+        RestUniques restUniques = clazz.getAnnotation(RestUniques.class);
+        if (GeneralUtils.isNotEmpty(restUniques)) {
+            if (GeneralUtils.isNotEmpty(restUniques.uniques())) {
+                mybatisTable.setUniqueKeys(Arrays.asList(restUniques.uniques()));
+            }
+            if (GeneralUtils.isNotEmpty(restUniques.ignores())) {
+                mybatisTable.setIgnoreKeys(Arrays.asList(restUniques.ignores()));
+            }
+        }
     }
 
     public void restUnionKeys(Class<?> clazz, MybatisTable mybatisTable) {

@@ -1,11 +1,8 @@
 package io.github.nichetoolkit.mybatis.simple;
 
-import io.github.nichetoolkit.rice.OperateEntity;
 import io.github.nichetoolkit.rice.RiceInfoEntity;
 import io.github.nichetoolkit.rice.stereotype.mybatis.table.RestEntity;
-import io.github.nichetoolkit.rice.stereotype.mybatis.table.RestExcludes;
 
-import javax.persistence.Table;
 import java.util.Date;
 
 
@@ -15,7 +12,6 @@ import java.util.Date;
  * @version v1.0.0
  */
 @RestEntity(name = "ntr_simple")
-@RestExcludes(superClasses = {OperateEntity.class})
 public class SimpleEntity extends RiceInfoEntity<SimpleEntity, SimpleModel> {
 
     private Date time;

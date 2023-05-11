@@ -57,11 +57,11 @@ public class MybatisProvider implements InitializingBean {
         switch (databaseType) {
             case OPENGAUSS:
             case MYSQL:
-                upsetSql = "ON DUPLICATE KEY UPDATE";
+                upsetSql = " ON DUPLICATE KEY UPDATE ";
                 break;
             case POSTGRESQL:
             default:
-                upsetSql = "ON CONFLICT (" + table.identityColumnList() + ") DO UPDATE SET";
+                upsetSql = " ON CONFLICT (" + table.identityColumnList() + ") DO UPDATE SET ";
                 break;
         }
         return upsetSql;
@@ -74,9 +74,9 @@ public class MybatisProvider implements InitializingBean {
     public static String saveDynamic(ProviderContext providerContext, @Param("tablename") String tablename, @Param("entity") Object entity) throws RestException {
         OptionalHelper.falseable(GeneralUtils.isNotEmpty(entity), "entity cannot be empty!", ParamErrorException::new);
         return MybatisSqlScript.caching(providerContext, table -> "INSERT INTO " + Optional.ofNullable(tablename).orElse(table.tableName())
-                + "(" + table.insertColumnList() + ")"
+                + " (" + table.insertColumnList() + ")"
                 + " VALUES (" + table.insertColumns().stream()
-                .map(MybatisColumn::variable).collect(Collectors.joining(", "))
+                .map(column -> column.variable("entity.")).collect(Collectors.joining(", "))
                 + ")" + upset(table) + table.updateColumns().stream()
                 .map(MybatisColumn::excluded).collect(Collectors.joining(", ")));
     }
@@ -91,7 +91,7 @@ public class MybatisProvider implements InitializingBean {
             @Override
             public String sql(MybatisTable table) {
                 return "INSERT INTO " + Optional.ofNullable(tablename).orElse(table.tableName())
-                        + "(" + table.insertColumnList() + ") VALUES "
+                        + " (" + table.insertColumnList() + ") VALUES "
                         + foreach("entityList", "entity", ",", () ->
                         trimSuffixOverrides("(", ")", ",", () ->
                                 table.insertColumns().stream().map(column -> column.variable("entity.")).collect(Collectors.joining(","))))
@@ -120,7 +120,7 @@ public class MybatisProvider implements InitializingBean {
             @Override
             public String sql(MybatisTable table) {
                 return "DELETE FROM " + Optional.ofNullable(tablename).orElse(table.tableName())
-                        + " WHERE " + table.getIdentity().getColumnName() + " IN " + foreach("idList", "id", "(", ",", ")", () -> "#{id}");
+                        + " WHERE " + table.getIdentity().getColumnName() + " IN " + foreach("idList", "id", ", ", "(", ")", () -> table.getIdentity().variable());
             }
         });
     }
@@ -131,14 +131,9 @@ public class MybatisProvider implements InitializingBean {
 
     public static String findDynamicById(ProviderContext providerContext, @Param("tablename") String tablename, @Param("id") Object id) throws RestException {
         OptionalHelper.falseable(GeneralUtils.isNotEmpty(id), "id cannot be empty!", ParamErrorException::new);
-        return MybatisSqlScript.caching(providerContext, new MybatisSqlScript() {
-            @Override
-            public String sql(MybatisTable table) {
-                return "SELECT " + table.selectColumnList()
-                        + " FROM " + Optional.ofNullable(tablename).orElse(table.tableName())
-                        + " WHERE " + table.getIdentity().columnEqualsProperty();
-            }
-        });
+        return MybatisSqlScript.caching(providerContext, table -> "SELECT " + table.selectColumnList()
+                + " FROM " + Optional.ofNullable(tablename).orElse(table.tableName())
+                + " WHERE " + table.getIdentity().columnEqualsProperty());
     }
 
     public static String findByAll(ProviderContext providerContext, @Param("idList") Collection<?> idList) throws RestException {
@@ -152,7 +147,7 @@ public class MybatisProvider implements InitializingBean {
             public String sql(MybatisTable table) {
                 return "SELECT " + table.selectColumnList()
                         + " FROM " + Optional.ofNullable(tablename).orElse(table.tableName())
-                        + " WHERE " + table.getIdentity().getColumnName() + " IN " + foreach("idList", "id", "(", ",", ")", () -> "#{id}");
+                        + " WHERE " + table.getIdentity().getColumnName() + " IN " + foreach("idList", "id", ", ","(", ")", () -> table.getIdentity().variable());
 
             }
         });

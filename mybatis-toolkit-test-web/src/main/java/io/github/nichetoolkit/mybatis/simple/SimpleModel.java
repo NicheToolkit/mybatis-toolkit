@@ -43,9 +43,10 @@ public class SimpleModel extends RiceInfoModel<SimpleModel,SimpleEntity> impleme
     @Override
     public SimpleEntity toEntity() {
         SimpleEntity entity = new SimpleEntity();
-        entity.setId(this.getId());
-        entity.setName(this.getName());
-        entity.setDescription(this.getDescription());
+        entity.setId(this.id);
+        entity.setName(this.name);
+        entity.setDescription(this.description);
+        entity.setTime(this.time);
         return entity;
     }
 
