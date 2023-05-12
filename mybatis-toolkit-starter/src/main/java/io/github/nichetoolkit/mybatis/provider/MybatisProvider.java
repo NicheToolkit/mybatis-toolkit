@@ -163,6 +163,7 @@ public class MybatisProvider implements InitializingBean {
             public String sql(MybatisTable table) {
                 return "SELECT " + table.selectColumnList()
                         + " FROM " + Optional.ofNullable(tablename).orElse(table.tableName())
+                        + " WHERE 1=1 "
                         + ifTest("whereSql!=null", () -> "${whereSql}");
             }
         });
@@ -177,7 +178,8 @@ public class MybatisProvider implements InitializingBean {
         return MybatisSqlScript.caching(providerContext, new MybatisSqlScript() {
             @Override
             public String sql(MybatisTable table) {
-                return "DELETE FROM" + Optional.ofNullable(tablename).orElse(table.tableName())
+                return "DELETE FROM " + Optional.ofNullable(tablename).orElse(table.tableName())
+                        + " WHERE 1=1 "
                         + ifTest("whereSql!=null", () -> "${whereSql}");
             }
         });

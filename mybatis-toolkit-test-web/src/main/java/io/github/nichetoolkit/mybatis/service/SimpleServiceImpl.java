@@ -34,6 +34,6 @@ public class SimpleServiceImpl extends RiceInfoService<SimpleModel, SimpleEntity
 
     @Override
     public String queryWhereSql(SimpleFilter filter) throws RestException {
-        return filter.toTimeSql("time").addSorts("id").toSql();
+        return filter.toTimeSql("time").toIdSql("id").addSorts("id").toSql();
     }
 }

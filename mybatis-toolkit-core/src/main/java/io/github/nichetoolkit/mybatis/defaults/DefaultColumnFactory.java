@@ -120,13 +120,11 @@ public class DefaultColumnFactory implements MybatisColumnFactory {
         if (GeneralUtils.isNotEmpty(restForceInsert)) {
             mybatisColumn.setForceInsert(true);
             mybatisColumn.setForceInsertValue(restForceInsert.value());
-            mybatisColumn.setUpdate(false);
         }
         RestForceUpdate restForceUpdate = field.getAnnotation(RestForceUpdate.class);
         if (GeneralUtils.isNotEmpty(restForceUpdate)) {
             mybatisColumn.setForceUpdate(true);
             mybatisColumn.setForceUpdateValue(restForceUpdate.value());
-            mybatisColumn.setUpdate(true);
         }
         RestLogic restLogic = field.getAnnotation(RestLogic.class);
         if (GeneralUtils.isNotEmpty(restLogic)) {
