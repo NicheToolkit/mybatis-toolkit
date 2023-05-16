@@ -6,7 +6,10 @@ import io.github.nichetoolkit.mybatis.MybatisSqlScriptWrapper;
 import io.github.nichetoolkit.mybatis.MybatisTable;
 import io.github.nichetoolkit.rest.error.lack.BeanLackError;
 import io.github.nichetoolkit.rest.error.lack.InterfaceLackError;
+import io.github.nichetoolkit.rest.util.GeneralUtils;
+import io.github.nichetoolkit.rice.stereotype.mybatis.table.RestExcludes;
 import org.apache.ibatis.builder.annotation.ProviderContext;
+import org.springframework.core.annotation.AnnotationUtils;
 
 import java.lang.annotation.Annotation;
 import java.lang.annotation.ElementType;
@@ -64,8 +67,10 @@ public class AnnotationSqlScriptWrapper implements MybatisSqlScriptWrapper {
             if (annotationType == RestSqlWrapper.class) {
                 classes.addAll(Arrays.asList(((RestSqlWrapper) annotation).value()));
             } else if (annotationType.isAnnotationPresent(RestSqlWrapper.class)) {
-                RestSqlWrapper annotationTypeAnnotation = annotationType.getAnnotation(RestSqlWrapper.class);
-                classes.addAll(Arrays.asList(annotationTypeAnnotation.value()));
+                RestSqlWrapper annotationTypeAnnotation = AnnotationUtils.getAnnotation(annotationType, RestSqlWrapper.class);
+                if (GeneralUtils.isNotEmpty(annotationTypeAnnotation) && GeneralUtils.isNotEmpty(annotationTypeAnnotation.value())) {
+                    classes.addAll(Arrays.asList(annotationTypeAnnotation.value()));
+                }
             }
         }
         return classes.stream().map(c -> (AnnotationSqlWrapper) newInstance(c, target, type, annotations))
