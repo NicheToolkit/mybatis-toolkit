@@ -1,8 +1,12 @@
 package io.github.nichetoolkit.mybatis;
 
+import io.github.nichetoolkit.mybatis.error.MybatisAssertErrorException;
+import io.github.nichetoolkit.rest.RestException;
+import io.github.nichetoolkit.rest.actuator.SupplierActuator;
+import io.github.nichetoolkit.rest.helper.OptionalHelper;
+import io.github.nichetoolkit.rest.util.GeneralUtils;
+import io.github.nichetoolkit.rice.helper.PropertyHelper;
 import org.apache.ibatis.builder.annotation.ProviderContext;
-
-import java.util.function.Supplier;
 
 /**
  * <p>MybatisSqlScript</p>
@@ -23,10 +27,13 @@ public interface MybatisSqlScript {
      * @param sqlScript       xml sql 脚本实现
      * @return 缓存key
      */
-    static String caching(ProviderContext providerContext, MybatisSqlScript sqlScript) {
+    static String caching(ProviderContext providerContext, MybatisSqlScript sqlScript) throws RestException {
         MybatisTable table = MybatisFactory.createTable(providerContext.getMapperType(), providerContext.getMapperMethod());
-        return MybatisCaching.cache(providerContext, table, () -> String.format("<script>\n%s\n</script>",
-                MybatisSqlScriptWrapper.wrapSqlScript(providerContext, table, sqlScript).sql(table)));
+        return MybatisCaching.cache(providerContext, table, () -> {
+            MybatisSqlScript mybatisSqlScript = MybatisSqlScriptWrapper.wrapSqlScript(providerContext, table, sqlScript);
+            String sql = mybatisSqlScript.sql(table);
+            return String.format("<script>\n%s\n</script>", sql);
+        });
     }
 
     /**
@@ -35,7 +42,7 @@ public interface MybatisSqlScript {
      * @param sqlScript       xml sql 脚本实现
      * @return 缓存key
      */
-    static String cachingSimple(ProviderContext providerContext, SimpleSqlScript sqlScript) {
+    static String cachingSimple(ProviderContext providerContext, SimpleSqlScript sqlScript) throws RestException {
         return caching(providerContext, sqlScript);
     }
 
@@ -44,7 +51,7 @@ public interface MybatisSqlScript {
      * @param content 标签中的内容
      * @return where 标签包装的 xml 结构
      */
-    default String where(LinefeedSupplier content) {
+    default String where(LinefeedSupplier content) throws RestException {
         return String.format("\n<where>%s\n</where> ", content.withLinefeed());
     }
 
@@ -53,14 +60,14 @@ public interface MybatisSqlScript {
      * @param table 实体类信息
      * @return xml sql 脚本
      */
-    String sql(MybatisTable table);
+    String sql(MybatisTable table) throws RestException;
 
     /**
      * 生成 choose 标签包装的 xml 结构
      * @param content 标签中的内容
      * @return choose 标签包装的 xml 结构
      */
-    default String choose(LinefeedSupplier content) {
+    default String choose(LinefeedSupplier content) throws RestException {
         return String.format("\n<choose>%s\n</choose> ", content.withLinefeed());
     }
 
@@ -69,7 +76,7 @@ public interface MybatisSqlScript {
      * @param content 标签中的内容
      * @return otherwise 标签包装的 xml 结构
      */
-    default String otherwise(LinefeedSupplier content) {
+    default String otherwise(LinefeedSupplier content) throws RestException {
         return String.format("\n<otherwise>%s\n</otherwise> ", content.withLinefeed());
     }
 
@@ -78,7 +85,7 @@ public interface MybatisSqlScript {
      * @param content 标签中的内容
      * @return set 标签包装的 xml 结构
      */
-    default String set(LinefeedSupplier content) {
+    default String set(LinefeedSupplier content) throws RestException {
         return String.format("\n<set>%s\n</set> ", content.withLinefeed());
     }
 
@@ -88,7 +95,7 @@ public interface MybatisSqlScript {
      * @param content 标签中的内容
      * @return if 标签包装的 xml 结构
      */
-    default String ifTest(String test, LinefeedSupplier content) {
+    default String ifTest(String test, LinefeedSupplier content) throws RestException {
         return String.format("<if test=\"%s\">%s\n</if> ", test, content.withLinefeed());
     }
 
@@ -98,7 +105,7 @@ public interface MybatisSqlScript {
      * @param content 标签中的内容
      * @return &lt;if test="_parameter != null"&gt; 标签包装的 xml 结构
      */
-    default String ifParameterNotNull(LinefeedSupplier content) {
+    default String ifParameterNotNull(LinefeedSupplier content) throws RestException {
         return String.format("<if test=\"_parameter != null\">%s\n</if> ", content.withLinefeed());
     }
 
@@ -107,7 +114,7 @@ public interface MybatisSqlScript {
      * @param message 提示信息
      * @return 在代码基础上增加一段校验
      */
-    default String parameterNotNull(String message) {
+    default String parameterNotNull(String message) throws RestException {
         return variableNotNull("_parameter", message);
     }
 
@@ -117,8 +124,9 @@ public interface MybatisSqlScript {
      * @param message  提示信息
      * @return 在代码基础上增加一段校验
      */
-    default String variableIsTrue(String variable, String message) {
-        return "\n${@io.github.nichetoolkit.mybatis.error.MybatisAssert@isTrue(" + variable + ", '" + message + "')}\n";
+    default String variableIsTrue(String variable, String message) throws RestException {
+        OptionalHelper.falseable(Boolean.parseBoolean(variable), message, error -> new MybatisAssertErrorException("isTrue","variable",error));
+        return variable;
     }
 
     /**
@@ -127,8 +135,9 @@ public interface MybatisSqlScript {
      * @param message  提示信息
      * @return 在代码基础上增加一段校验
      */
-    default String variableIsFalse(String variable, String message) {
-        return "\n${@io.github.nichetoolkit.mybatis.error.MybatisAssert@isFalse(" + variable + ", '" + message + "')}\n";
+    default String variableIsFalse(String variable, String message) throws RestException {
+        OptionalHelper.trueable(Boolean.parseBoolean(variable), message, error -> new MybatisAssertErrorException("isFalse","variable",error));
+        return variable;
     }
 
     /**
@@ -137,8 +146,9 @@ public interface MybatisSqlScript {
      * @param message  提示信息
      * @return 在代码基础上增加一段校验
      */
-    default String variableNotNull(String variable, String message) {
-        return "\n${@io.github.nichetoolkit.mybatis.error.MybatisAssert@notNull(" + variable + ", '" + message + "')}\n";
+    default String variableNotNull(String variable, String message) throws RestException {
+        OptionalHelper.falseable(variable != null, message, error -> new MybatisAssertErrorException("notNull","variable",error));
+        return variable;
     }
 
     /**
@@ -146,8 +156,9 @@ public interface MybatisSqlScript {
      * @param message 提示信息
      * @return 在代码基础上增加一段校验
      */
-    default String variableNotEmpty(String variable, String message) {
-        return "\n${@io.github.nichetoolkit.mybatis.error.MybatisAssert@notEmpty(" + variable + ", '" + message + "')}\n";
+    default String variableNotEmpty(String variable, String message) throws RestException {
+        OptionalHelper.falseable(GeneralUtils.isNotEmpty(variable), message, error -> new MybatisAssertErrorException("notEmpty","variable",error));
+        return variable;
     }
 
     /**
@@ -156,7 +167,7 @@ public interface MybatisSqlScript {
      * @param content 标签中的内容
      * @return when 标签包装的 xml 结构
      */
-    default String whenTest(String test, LinefeedSupplier content) {
+    default String whenTest(String test, LinefeedSupplier content) throws RestException {
         return String.format("\n<when test=\"%s\">%s\n</when> ", test, content.withLinefeed());
     }
 
@@ -169,7 +180,7 @@ public interface MybatisSqlScript {
      * @param content         标签中的内容
      * @return trim 标签包装的 xml 结构
      */
-    default String trim(String prefix, String suffix, String prefixOverrides, String suffixOverrides, LinefeedSupplier content) {
+    default String trim(String prefix, String suffix, String prefixOverrides, String suffixOverrides, LinefeedSupplier content) throws RestException {
         return String.format("\n<trim prefix=\"%s\" prefixOverrides=\"%s\" suffixOverrides=\"%s\" suffix=\"%s\">%s\n</trim> "
                 , prefix, prefixOverrides, suffixOverrides, suffix, content.withLinefeed());
     }
@@ -182,7 +193,7 @@ public interface MybatisSqlScript {
      * @param content         标签中的内容
      * @return trim 标签包装的 xml 结构
      */
-    default String trimPrefixOverrides(String prefix, String suffix, String prefixOverrides, LinefeedSupplier content) {
+    default String trimPrefixOverrides(String prefix, String suffix, String prefixOverrides, LinefeedSupplier content) throws RestException {
         return String.format("\n<trim prefix=\"%s\" prefixOverrides=\"%s\" suffix=\"%s\">%s\n</trim> ", prefix, prefixOverrides, suffix, content.withLinefeed());
     }
 
@@ -194,7 +205,7 @@ public interface MybatisSqlScript {
      * @param content         标签中的内容
      * @return trim 标签包装的 xml 结构
      */
-    default String trimSuffixOverrides(String prefix, String suffix, String suffixOverrides, LinefeedSupplier content) {
+    default String trimSuffixOverrides(String prefix, String suffix, String suffixOverrides, LinefeedSupplier content) throws RestException {
         return String.format("\n<trim prefix=\"%s\" suffixOverrides=\"%s\" suffix=\"%s\">%s\n</trim> ", prefix, suffixOverrides, suffix, content.withLinefeed());
     }
 
@@ -205,7 +216,7 @@ public interface MybatisSqlScript {
      * @param content    标签中的内容
      * @return foreach 标签包装的 xml 结构
      */
-    default String foreach(String collection, String item, LinefeedSupplier content) {
+    default String foreach(String collection, String item, LinefeedSupplier content) throws RestException {
         return String.format("\n<foreach collection=\"%s\" item=\"%s\">%s\n</foreach> ", collection, item, content.withLinefeed());
     }
 
@@ -217,7 +228,7 @@ public interface MybatisSqlScript {
      * @param content    标签中的内容
      * @return foreach 标签包装的 xml 结构
      */
-    default String foreach(String collection, String item, String separator, LinefeedSupplier content) {
+    default String foreach(String collection, String item, String separator, LinefeedSupplier content) throws RestException {
         return String.format("\n<foreach collection=\"%s\" item=\"%s\" separator=\"%s\">%s\n</foreach> "
                 , collection, item, separator, content.withLinefeed());
     }
@@ -232,7 +243,7 @@ public interface MybatisSqlScript {
      * @param content    标签中的内容
      * @return foreach 标签包装的 xml 结构
      */
-    default String foreach(String collection, String item, String separator, String open, String close, LinefeedSupplier content) {
+    default String foreach(String collection, String item, String separator, String open, String close, LinefeedSupplier content) throws RestException {
         return String.format("\n<foreach collection=\"%s\" item=\"%s\" open=\"%s\" close=\"%s\" separator=\"%s\">%s\n</foreach> "
                 , collection, item, open, close, separator, content.withLinefeed());
     }
@@ -248,7 +259,7 @@ public interface MybatisSqlScript {
      * @param content    标签中的内容
      * @return foreach 标签包装的 xml 结构
      */
-    default String foreach(String collection, String item, String separator, String open, String close, String index, LinefeedSupplier content) {
+    default String foreach(String collection, String item, String separator, String open, String close, String index, LinefeedSupplier content) throws RestException {
         return String.format("\n<foreach collection=\"%s\" item=\"%s\" index=\"%s\" open=\"%s\" close=\"%s\" separator=\"%s\">%s\n</foreach> "
                 , collection, item, index, open, close, separator, content.withLinefeed());
     }
@@ -266,9 +277,9 @@ public interface MybatisSqlScript {
     /**
      * 保证所有字符串前面都有换行符
      */
-    interface LinefeedSupplier extends Supplier<String> {
+    interface LinefeedSupplier extends SupplierActuator<String> {
 
-        default String withLinefeed() {
+        default String withLinefeed() throws RestException {
             String linefeed = get();
             if (!linefeed.isEmpty() && linefeed.charAt(0) == LINEFEED.charAt(0)) {
                 return linefeed;
@@ -284,7 +295,7 @@ public interface MybatisSqlScript {
     interface SimpleSqlScript extends MybatisSqlScript {
 
         @Override
-        default String sql(MybatisTable table) {
+        default String sql(MybatisTable table) throws RestException {
             return sql(table, this);
         }
 
@@ -294,7 +305,7 @@ public interface MybatisSqlScript {
          * @param sqlScript 当前对象的引用，可以在 lambda 中使用当前对象的方法
          * @return 对应的 SQL，支持动态标签
          */
-        String sql(MybatisTable table, MybatisSqlScript sqlScript);
+        String sql(MybatisTable table, MybatisSqlScript sqlScript) throws RestException;
 
     }
 }

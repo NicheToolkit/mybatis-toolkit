@@ -47,6 +47,8 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
     protected List<String> unionKeys;
     /** 是否将主键添加到联合主键 */
     protected boolean unionIdentity;
+    /** 是否将主键添加到联合主键 */
+    protected boolean useUnionKey;
     /** 连接键 */
     protected List<String> linkKeys;
     /** 唯一键 */
@@ -76,11 +78,11 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
     /** 字段集合 */
     protected List<MybatisColumn> columns;
     /** 主键字段 */
-    protected MybatisColumn identity;
+    protected MybatisColumn identityColumn;
     /** 逻辑删除字段 */
-    protected MybatisColumn logic;
+    protected MybatisColumn logicColumn;
     /** 数据操作字段 */
-    protected MybatisColumn operate;
+    protected MybatisColumn operateColumn;
     /** 联合主键字段 */
     protected List<MybatisColumn> uniques;
     /** 联合主键字段 */
@@ -92,7 +94,7 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
     /** 已经初始化的配置 */
     protected Set<Configuration> initiates = new HashSet<>();
     /** 字段名称 */
-    protected Map<String, MybatisColumn> fieldColumns  = new HashMap<>();
+    protected Map<String, MybatisColumn> fieldColumns = new HashMap<>();
 
     public MybatisTable(Class<?> entity) {
         this.entity = entity;
@@ -141,66 +143,114 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
         return this.columns.stream().map(MybatisColumn::property).collect(Collectors.toList());
     }
 
+    public void readyColumns() {
+        List<MybatisColumn> identityColumns = new ArrayList<>();
+        List<MybatisColumn> primaryKeyColumns = new ArrayList<>();
+        List<MybatisColumn> logicColumns = new ArrayList<>();
+        List<MybatisColumn> operateColumns = new ArrayList<>();
+        this.columns.forEach(column -> {
+            if (column.isIdentity()) {
+                identityColumns.add(0,column);
+            }
+            if (column.isPrimaryKey()) {
+                primaryKeyColumns.add(0,column);
+            }
+            if (column.isLogic()) {
+                logicColumns.add(0,column);
+            }
+            if (column.isOperate()) {
+                operateColumns.add(0,column);
+            }
+            /** 如果是联合主键 */
+            String fieldName = column.getField().fieldName();
+            if (column.isUnionKey() || (GeneralUtils.isNotEmpty(this.unionKeys) && this.unionKeys.contains(fieldName))) {
+                column.setUnionKey(true);
+                if (!this.identities.contains(column)) {
+                    refreshColumn(this.identities,column);
+                } else {
+                    this.identities.remove(column);
+                    refreshColumn(this.identities,column);
+                }
+            }
+            /** 如果是链接外键 */
+            if (column.isLinkKey() || (GeneralUtils.isNotEmpty(this.linkKeys) && this.linkKeys.contains(fieldName))) {
+                column.setLinkKey(true);
+                if (!this.linkages.contains(column)) {
+                    refreshColumn(this.linkages,column);
+                } else {
+                    this.linkages.remove(column);
+                    refreshColumn(this.linkages,column);
+                }
+            }
+            /** 如果是链接外键 */
+            if (column.isUnique() || (GeneralUtils.isNotEmpty(this.uniqueKeys) && this.uniqueKeys.contains(fieldName))) {
+                column.setUnique(true);
+                if (!this.uniques.contains(column)) {
+                    refreshColumn(this.uniques,column);
+                } else {
+                    this.uniques.remove(column);
+                    refreshColumn(this.uniques,column);
+                }
+            }
+            if (column.isUnique() && GeneralUtils.isNotEmpty(this.ignoreKeys) && this.ignoreKeys.contains(fieldName)) {
+                column.setUnique(false);
+                this.uniques.remove(column);
+            }
+        });
+        Optional<MybatisColumn> firstIdentity = identityColumns.stream().findFirst();
+        if (firstIdentity.isPresent() && GeneralUtils.isEmpty(this.identityColumn)) {
+            this.identityColumn = firstIdentity.get();
+        }
+        Optional<MybatisColumn> firstPrimaryKey = primaryKeyColumns.stream().findFirst();
+        if (firstPrimaryKey.isPresent() && GeneralUtils.isNotEmpty(this.identityColumn)) {
+            this.identityColumn = firstPrimaryKey.get();
+        }
+        Optional<MybatisColumn> firstLogic = logicColumns.stream().findFirst();
+        firstLogic.ifPresent(logicColumn -> this.logicColumn = logicColumn);
+        Optional<MybatisColumn> firstOperate = operateColumns.stream().findFirst();
+        firstOperate.ifPresent(operateColumn -> this.operateColumn = operateColumn);
+        if (GeneralUtils.isNotEmpty(this.identityColumn) && this.unionIdentity && !this.identities.contains(this.identityColumn)) {
+            this.identities.add(0, this.identityColumn);
+        }
+    }
+
     public void addColumn(MybatisColumn column) {
         /** 不重复添加同名的列 */
         if (!this.columns.contains(column)) {
             if (column.getField().declaringClass() != this.entity) {
-                this.columns.add(0, column);
+                if (column.isForceInsert() || column.isForceUpdate() || column.isLogic() || column.isOperate()) {
+                    this.columns.add(column);
+                } else if (column.isUnionKey() || column.isLinkKey()) {
+                    this.columns.add(1, column);
+                } else {
+                    this.columns.add(0, column);
+                }
             } else {
-                this.columns.add(column);
+                if (GeneralUtils.isValid(column.getOrder())) {
+                    this.columns.add(column.getOrder(), column);
+                } else {
+                    this.columns.add(column);
+                }
             }
             column.setTable(this);
         } else {
             /** 同名列在父类存在时，说明是子类覆盖的，字段的顺序应该更靠前 */
             MybatisColumn existsColumn = this.columns.remove(this.columns.indexOf(column));
-            this.columns.add(0, existsColumn);
-        }
-        if (column.isIdentity()) {
-            column.setIdentity(true);
-            this.identity = column;
-        }
-        if (column.isPrimaryKey()) {
-            column.setIdentity(true);
-            column.setPrimaryKey(true);
-            this.identity = column;
-        }
-        if (column.isLogic()) {
-            column.setLogic(true);
-            this.logic = column;
-        }
-        if (column.isOperate()) {
-            column.setOperate(true);
-            this.operate = column;
-        }
-        /** 如果是联合主键 */
-        String fieldName = column.getField().fieldName();
-        if (column.isUnionKey() || (GeneralUtils.isNotEmpty(this.unionKeys) && this.unionKeys.contains(fieldName))) {
-            column.setUnionKey(true);
-            if (!this.identities.contains(column)) {
-                this.identities.add(column);
-            }
-            if (GeneralUtils.isNotEmpty(this.identity) && this.unionIdentity && !this.identities.contains(this.identity)) {
-                this.identities.add(this.identity);
-            }
-            this.identities.sort(Comparator.comparing(MybatisColumn::getUnionIndex));
-        }
-        /** 如果是链接外键 */
-        if (column.isLinkKey() || (GeneralUtils.isNotEmpty(this.linkKeys) && this.linkKeys.contains(fieldName))) {
-            column.setLinkKey(true);
-            if (!this.linkages.contains(column)) {
-                this.linkages.add(column);
+            if (GeneralUtils.isValid(column.getOrder())) {
+                this.columns.add(column.getOrder(), existsColumn);
+            } else {
+                this.columns.add(0, existsColumn);
             }
         }
-        /** 如果是链接外键 */
-        if (column.isUnique() || (GeneralUtils.isNotEmpty(this.uniqueKeys) && this.uniqueKeys.contains(fieldName))) {
-            column.setUnique(true);
-            if (!this.uniques.contains(column)) {
-                this.uniques.add(column);
-            }
-        }
-        if (column.isUnique() && GeneralUtils.isNotEmpty(this.ignoreKeys) && this.ignoreKeys.contains(fieldName)) {
-            column.setUnique(false);
-            this.uniques.remove(column);
+    }
+
+    protected void refreshColumn(List<MybatisColumn> columns, MybatisColumn column) {
+        if (GeneralUtils.isValid(column.getUnionIndex())) {
+            columns.add(column.getUnionIndex(),column);
+        } else if (GeneralUtils.isValid(column.getOrder())) {
+            columns.add(column.getOrder(),column);
+        } else {
+            columns.add(column);
         }
     }
 
@@ -380,7 +430,7 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
         if (GeneralUtils.isNotEmpty(this.identities) && this.identities.size() > 1) {
             return this.identities;
         }
-        return Collections.singletonList(this.identity);
+        return Collections.singletonList(this.identityColumn);
     }
 
     public List<MybatisColumn> linkageColumns() {
@@ -436,6 +486,7 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
     public List<MybatisColumn> forceInsertColumns() {
         return this.columns.stream().filter(MybatisColumn::isForceInsert).collect(Collectors.toList());
     }
+
     /**
      * 所有 update 用到的字段，当更新列时，必须使用当前方法返回的列
      */

@@ -28,6 +28,8 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
     protected MybatisTable table;
     /** 列名 */
     protected String columnName;
+    /** 排序的优先级 */
+    protected Integer order;
     /** 是否主键 */
     protected boolean identity;
     /** 是否主键 */
@@ -37,7 +39,7 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
     /** 是否联合主键 */
     protected boolean unionKey;
     /** 联合主键顺序 */
-    protected int unionIndex;
+    protected Integer unionIndex;
     /** 排序方式 */
     protected SortType sortType;
     /** 排序的优先级 */

@@ -8,7 +8,12 @@ import io.github.nichetoolkit.rest.RestStatus;
  * @version v1.0.0
  */
 public enum MybatisErrorStatus implements RestStatus {
-    MYBATIS_ASSERT_ERROR(21101,"mybatis assert error"),
+    MYBATIS_ERROR(21100, "mybatis error"),
+    MYBATIS_PARAM_ERROR(21101, "mybatis param error"),
+    MYBATIS_COLUMN_ERROR(21102, "mybatis column error"),
+    MYBATIS_TABLE_ERROR(21103, "mybatis column error"),
+    MYBATIS_UNSUPPORTED_ERROR(21104, "mybatis unsupported error"),
+    MYBATIS_ASSERT_ERROR(21199,"mybatis assert error"),
     ;
 
     private final Integer status;

@@ -10,9 +10,11 @@ import io.github.nichetoolkit.rice.enums.StyleType;
 import io.github.nichetoolkit.rice.stereotype.mybatis.RestProperties;
 import io.github.nichetoolkit.rice.stereotype.mybatis.table.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.annotation.AnnotationUtils;
 
 import java.util.Arrays;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * <p>DefaultMybatisTableFactory</p>
@@ -35,10 +37,11 @@ public class DefaultTableFactory implements MybatisTableFactory {
 
     @Override
     public MybatisTable createTable(Class<?> clazz, Chain chain) {
-        RestEntity restEntity = clazz.getAnnotation(RestEntity.class);
-        Class<?> entity = restEntity.entity();
+        RestEntity restEntity = AnnotationUtils.getAnnotation(clazz, RestEntity.class);
+        Class<?> entity = Optional.ofNullable(restEntity).map(RestEntity::entity).orElse(null);
+        String tableName = Optional.ofNullable(restEntity).map(RestEntity::name).orElse(null);
         MybatisTable mybatisTable;
-        if (GeneralUtils.isNotEmpty(entity)) {
+        if (GeneralUtils.isNotEmpty(entity) && entity != Object.class) {
             mybatisTable = MybatisTable.of(entity, tableProperties.getProperties());
         } else {
             mybatisTable = MybatisTable.of(clazz, tableProperties.getProperties());
@@ -48,7 +51,7 @@ public class DefaultTableFactory implements MybatisTableFactory {
         restLinkKeys(clazz, mybatisTable);
         MybatisStyle mybatisStyle = restStyle(clazz, mybatisTable);
         mybatisTable.setStyleName(mybatisStyle.getStyleName());
-        mybatisTable.setTable(GeneralUtils.isEmpty(restEntity.name()) ? mybatisStyle.tableName(clazz) : restEntity.name());
+        mybatisTable.setTable(GeneralUtils.isEmpty(tableName) ? mybatisStyle.tableName(clazz) : restEntity.name());
         restResultMap(clazz, mybatisTable);
         restProperties(clazz, mybatisTable);
         restExcludes(clazz, mybatisTable);
@@ -57,7 +60,7 @@ public class DefaultTableFactory implements MybatisTableFactory {
 
     public void restUniques(Class<?> clazz, MybatisTable mybatisTable) {
         /** restUniques 注解处理 */
-        RestUniques restUniques = clazz.getAnnotation(RestUniques.class);
+        RestUniques restUniques = AnnotationUtils.getAnnotation(clazz, RestUniques.class);
         if (GeneralUtils.isNotEmpty(restUniques)) {
             if (GeneralUtils.isNotEmpty(restUniques.uniques())) {
                 mybatisTable.setUniqueKeys(Arrays.asList(restUniques.uniques()));
@@ -70,8 +73,9 @@ public class DefaultTableFactory implements MybatisTableFactory {
 
     public void restUnionKeys(Class<?> clazz, MybatisTable mybatisTable) {
         /** restUnionKeys 注解处理 */
-        RestUnionKeys restUnionKeys = clazz.getAnnotation(RestUnionKeys.class);
+        RestUnionKeys restUnionKeys = AnnotationUtils.getAnnotation(clazz, RestUnionKeys.class);
         if (GeneralUtils.isNotEmpty(restUnionKeys)) {
+            mybatisTable.setUseUnionKey(true);
             mybatisTable.setUnionKeys(Arrays.asList(restUnionKeys.unionKeys()));
             mybatisTable.setUnionIdentity(restUnionKeys.unionIdentity());
         }
@@ -79,7 +83,7 @@ public class DefaultTableFactory implements MybatisTableFactory {
 
     public void restLinkKeys(Class<?> clazz, MybatisTable mybatisTable) {
         /** restLinkKeys 注解处理 */
-        RestLinkKeys restLinkKeys = clazz.getAnnotation(RestLinkKeys.class);
+        RestLinkKeys restLinkKeys = AnnotationUtils.getAnnotation(clazz, RestLinkKeys.class);
         if (GeneralUtils.isNotEmpty(restLinkKeys)) {
             mybatisTable.setLinkKeys(Arrays.asList(restLinkKeys.linkKeys()));
         }
@@ -88,7 +92,7 @@ public class DefaultTableFactory implements MybatisTableFactory {
     public MybatisStyle restStyle(Class<?> clazz, MybatisTable mybatisTable) {
         /** restStyle 注解处理 */
         MybatisStyle mybatisStyle;
-        RestStyle restStyle = clazz.getAnnotation(RestStyle.class);
+        RestStyle restStyle = AnnotationUtils.getAnnotation(clazz, RestStyle.class);
         if (GeneralUtils.isNotEmpty(restStyle)) {
             String styleName = restStyle.name();
             StyleType styleType = restStyle.type();
@@ -114,7 +118,7 @@ public class DefaultTableFactory implements MybatisTableFactory {
 
     public void restResultMap(Class<?> clazz, MybatisTable mybatisTable) {
         /** restResultMap 注解处理 */
-        RestResultMap restResultMap = clazz.getAnnotation(RestResultMap.class);
+        RestResultMap restResultMap = AnnotationUtils.getAnnotation(clazz, RestResultMap.class);
         if (GeneralUtils.isNotEmpty(restResultMap)) {
             mybatisTable.setResultMap(restResultMap.name());
             mybatisTable.setAutoResultMap(restResultMap.autoResultMap());
@@ -123,7 +127,7 @@ public class DefaultTableFactory implements MybatisTableFactory {
 
     public void restProperties(Class<?> clazz, MybatisTable mybatisTable) {
         /** restResultMap 注解处理 */
-        RestProperties restProperties = clazz.getAnnotation(RestProperties.class);
+        RestProperties restProperties = AnnotationUtils.getAnnotation(clazz, RestProperties.class);
         if (GeneralUtils.isNotEmpty(restProperties) && GeneralUtils.isNotEmpty(restProperties.properties())) {
             mybatisTable.setProperties(restProperties.properties());
         }
@@ -135,7 +139,7 @@ public class DefaultTableFactory implements MybatisTableFactory {
 
     public void restExcludes(Class<?> clazz, MybatisTable mybatisTable) {
         /** restExcludes 注解处理 */
-        RestExcludes restExcludes = clazz.getAnnotation(RestExcludes.class);
+        RestExcludes restExcludes = AnnotationUtils.getAnnotation(clazz, RestExcludes.class);
         if (GeneralUtils.isNotEmpty(restExcludes)) {
             String[] fields = restExcludes.fields();
             mybatisTable.setExcludeFields(Arrays.asList(fields));

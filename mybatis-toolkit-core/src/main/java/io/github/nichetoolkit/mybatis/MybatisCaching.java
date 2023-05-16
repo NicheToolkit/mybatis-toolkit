@@ -1,6 +1,10 @@
 package io.github.nichetoolkit.mybatis;
 
+import io.github.nichetoolkit.rest.RestException;
+import io.github.nichetoolkit.rest.actuator.SupplierActuator;
 import io.github.nichetoolkit.rest.error.lack.ConfigureLackError;
+import io.github.nichetoolkit.rest.error.lack.MethodLackError;
+import io.github.nichetoolkit.rest.util.GeneralUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.annotations.Lang;
 import org.apache.ibatis.builder.annotation.ProviderContext;
@@ -13,10 +17,9 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import java.util.function.Supplier;
 
 /**
- * <p>MybatisCache</p>
+ * <p>MybatisCaching</p>
  * @author Cyan (snow22314@outlook.com)
  * @version v1.0.0
  */
@@ -38,13 +41,10 @@ public class MybatisCaching extends XMLLanguageDriver {
      */
     private static void isPresentLang(ProviderContext providerContext) {
         Method mapperMethod = providerContext.getMapperMethod();
-        if (mapperMethod.isAnnotationPresent(Lang.class)) {
-            Lang lang = mapperMethod.getAnnotation(Lang.class);
-            if (lang.value() == MybatisCaching.class) {
-                return;
-            }
+        Lang lang = mapperMethod.getAnnotation(Lang.class);
+        if (GeneralUtils.isEmpty(lang) || !lang.value().isAssignableFrom(MybatisCaching.class)) {
+            throw new ConfigureLackError(mapperMethod + " need to configure @Lang(MybatisCaching.class) to use the MybatisCaching.cache method for caching");
         }
-        throw new ConfigureLackError(mapperMethod + " need to configure @Lang(MybatisCaching.class) to use the MybatisCaching.cache method for caching");
     }
 
 
@@ -55,7 +55,7 @@ public class MybatisCaching extends XMLLanguageDriver {
      * @param sqlScriptSupplier sql脚本提供者
      * @return 缓存的 key
      */
-    public static String cache(ProviderContext providerContext, MybatisTable entity, Supplier<String> sqlScriptSupplier) {
+    public static String cache(ProviderContext providerContext, MybatisTable entity, SupplierActuator<String> sqlScriptSupplier) throws RestException {
         String cacheKey = cacheKey(providerContext);
         if (!MybatisCaches.CACHE_SQL.containsKey(cacheKey)) {
             isPresentLang(providerContext);
@@ -88,7 +88,7 @@ public class MybatisCaching extends XMLLanguageDriver {
                         /** 取出缓存的信息 */
                         MybatisSqlCache sqlCache = MybatisCaches.CACHE_SQL.get(cacheKey);
                         if (sqlCache == MybatisSqlCache.NULL_SQL_CACHE) {
-                            throw new RuntimeException(script + " => CACHE_SQL is NULL, you need to configure nichetoolkit.mybatis.table.cache-sql.use-once=false");
+                            throw new ConfigureLackError(script + " => CACHE_SQL is NULL, you need to configure nichetoolkit.mybatis.table.cache-sql.use-once=false");
                         }
                         /** 初始化 MybatisTable，每个方法执行一次，可以利用 configuration 进行一些特殊操作 */
                         sqlCache.table().initContext(configuration, sqlCache.context(), cacheKey);
@@ -97,7 +97,12 @@ public class MybatisCaching extends XMLLanguageDriver {
                         MappedStatement mappedStatement = configuration.getMappedStatement(cacheKey);
                         MybatisCustomize.DEFAULT_CUSTOMIZE.customize(sqlCache.table(), mappedStatement, sqlCache.context());
                         /** 下面的方法才会真正生成最终的 XML SQL，生成的时候可以用到上面的 configuration 和 ProviderContext 参数 */
-                        String sqlScript = sqlCache.sqlScript();
+                        String sqlScript;
+                        try {
+                            sqlScript = sqlCache.sqlScript();
+                        } catch (RestException exception) {
+                            throw new MethodLackError("the sql script has error, you need to configure entity with annotation, " + exception.getMessage(),exception);
+                        }
                         if (log.isTraceEnabled()) {
                             log.trace("cacheKey - " + cacheKey + " :\n" + sqlScript + "\n");
                         }

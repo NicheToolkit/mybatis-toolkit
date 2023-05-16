@@ -8,7 +8,6 @@ import io.github.nichetoolkit.rice.stereotype.mybatis.RestIdentity;
 import io.github.nichetoolkit.rice.stereotype.mybatis.RestProperty;
 import io.github.nichetoolkit.rice.stereotype.mybatis.column.*;
 import org.apache.ibatis.type.JdbcType;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Collections;
 import java.util.List;
@@ -72,15 +71,21 @@ public class DefaultColumnFactory implements MybatisColumnFactory {
     }
 
     @Override
-    public Optional<List<MybatisColumn>> createColumn(MybatisTable table, MybatisField field, Chain chain) {
+    public Optional<List<MybatisColumn>> createColumn(MybatisTable mybatisTable, MybatisField field, Chain chain) {
         /** 默认针对 entity 实体中的所有字段构建 column 数据 */
         MybatisColumn mybatisColumn = MybatisColumn.of(field,tableProperties.getProperties());
         RestName restName = field.getAnnotation(RestName.class);
-        MybatisStyle mybatisStyle = MybatisStyle.style(table.getStyleName());
+        MybatisStyle mybatisStyle = MybatisStyle.style(mybatisTable.getStyleName());
         if (GeneralUtils.isNotEmpty(restName)) {
-            mybatisColumn.setColumnName(GeneralUtils.isEmpty(restName.name()) ? mybatisStyle.columnName(table, field) : restName.name());
+            mybatisColumn.setColumnName(GeneralUtils.isEmpty(restName.name()) ? mybatisStyle.columnName(mybatisTable, field) : restName.name());
         } else {
-            mybatisColumn.setColumnName(mybatisStyle.columnName(table, field));
+            mybatisColumn.setColumnName(mybatisStyle.columnName(mybatisTable, field));
+        }
+        RestOrder restOrder = field.getAnnotation(RestOrder.class);
+        if (GeneralUtils.isNotEmpty(restOrder)) {
+            if (GeneralUtils.isNotEmpty(restOrder.order())) {
+                mybatisColumn.setOrder(restOrder.order());
+            }
         }
         RestIdentity restIdentity = field.getAnnotation(RestIdentity.class);
         if (GeneralUtils.isNotEmpty(restIdentity)) {
@@ -92,8 +97,11 @@ public class DefaultColumnFactory implements MybatisColumnFactory {
         }
         RestUnionKey restUnionKey = field.getAnnotation(RestUnionKey.class);
         if (GeneralUtils.isNotEmpty(restUnionKey)) {
+            mybatisTable.setUseUnionKey(true);
             mybatisColumn.setUnionKey(restUnionKey.value());
-            mybatisColumn.setUnionIndex(restUnionKey.index());
+            if (GeneralUtils.isNotEmpty(restUnionKey.index())) {
+                mybatisColumn.setUnionIndex(restUnionKey.index());
+            }
         }
         RestUnique restUnique = field.getAnnotation(RestUnique.class);
         if (GeneralUtils.isNotEmpty(restUnique)) {

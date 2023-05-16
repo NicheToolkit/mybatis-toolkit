@@ -1,5 +1,7 @@
 package io.github.nichetoolkit.mybatis;
 
+import io.github.nichetoolkit.rest.RestException;
+import io.github.nichetoolkit.rest.actuator.SupplierActuator;
 import org.apache.ibatis.builder.annotation.ProviderContext;
 
 import java.util.function.Supplier;
@@ -17,9 +19,9 @@ public class MybatisSqlCache {
     /** 实体类信息 */
     private final MybatisTable table;
     /** sql 提供者 */
-    private final Supplier<String> supplier;
+    private final SupplierActuator<String> supplier;
 
-    MybatisSqlCache(ProviderContext context, MybatisTable table, Supplier<String> supplier) {
+    MybatisSqlCache(ProviderContext context, MybatisTable table, SupplierActuator<String> supplier) {
         this.context = context;
         this.table = table;
         this.supplier = supplier;
@@ -28,7 +30,7 @@ public class MybatisSqlCache {
     /**
      * 该方法延迟到最终生成 SqlSource 时才执行
      */
-    public String sqlScript() {
+    public String sqlScript() throws RestException {
         return supplier.get();
     }
 

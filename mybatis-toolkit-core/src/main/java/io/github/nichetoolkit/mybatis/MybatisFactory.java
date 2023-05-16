@@ -80,6 +80,7 @@ public abstract class MybatisFactory {
                         }
                         isSuperclass = true;
                     }
+                    table.readyColumns();
                     /** 标记处理完成 */
                     table.setReady(true);
                 }

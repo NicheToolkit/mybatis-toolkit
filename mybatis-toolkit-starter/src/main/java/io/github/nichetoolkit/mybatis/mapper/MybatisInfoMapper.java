@@ -1,16 +1,13 @@
 package io.github.nichetoolkit.mybatis.mapper;
 
 import io.github.nichetoolkit.mybatis.MybatisCaching;
-import io.github.nichetoolkit.mybatis.MybatisEntityMapper;
 import io.github.nichetoolkit.mybatis.provider.MybatisInfoProvider;
-import io.github.nichetoolkit.mybatis.provider.MybatisProvider;
-import io.github.nichetoolkit.rice.IdEntity;
 import io.github.nichetoolkit.rice.InfoEntity;
 import io.github.nichetoolkit.rice.mapper.InfoMapper;
-import io.github.nichetoolkit.rice.mapper.SuperMapper;
-import org.apache.ibatis.annotations.*;
+import org.apache.ibatis.annotations.Lang;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.SelectProvider;
 
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -18,7 +15,7 @@ import java.util.List;
  * @author Cyan (snow22314@outlook.com)
  * @version v1.0.0
  */
-public interface MybatisInfoMapper<E extends InfoEntity<I>, I> extends MybatisMapper<E, I>, InfoMapper<E, I> {
+public interface MybatisInfoMapper<E extends InfoEntity<I>, I> extends MybatisSuperMapper<E, I>, InfoMapper<E, I> {
 
     @Override
     @Lang(MybatisCaching.class)

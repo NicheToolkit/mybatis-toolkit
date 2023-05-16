@@ -2,8 +2,10 @@ package io.github.nichetoolkit.mybatis;
 
 import io.github.nichetoolkit.mybatis.defaults.MybatisGenericTypeResolver;
 import io.github.nichetoolkit.rest.error.lack.AccessibleLackError;
+import io.github.nichetoolkit.rice.stereotype.mybatis.column.RestName;
 import lombok.Data;
 import lombok.experimental.Accessors;
+import org.springframework.core.annotation.AnnotationUtils;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -48,7 +50,7 @@ public class MybatisField {
      * @return 注解信息
      */
     public <T extends Annotation> T getAnnotation(Class<T> annotationClass) {
-        return field.getAnnotation(annotationClass);
+        return AnnotationUtils.getAnnotation(this.field, annotationClass);
     }
 
     /**
@@ -57,15 +59,6 @@ public class MybatisField {
      */
     public Annotation[] getAnnotations() {
         return field.getAnnotations();
-    }
-
-    /**
-     * 字段上是否配置了指定的注解
-     * @param annotationClass 注解类型
-     * @return 字段上是否配置了指定的注解
-     */
-    public boolean isAnnotationPresent(Class<? extends Annotation> annotationClass) {
-        return field.isAnnotationPresent(annotationClass);
     }
 
     /**

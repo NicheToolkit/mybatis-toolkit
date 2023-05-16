@@ -74,12 +74,12 @@ public class AnnotationSqlScriptWrapper implements MybatisSqlScriptWrapper {
 
     /**
      * 实例化 AbstractSqlScriptWrapper 对象
-     * @param instanceClass
-     * @param target
-     * @param type
-     * @param annotations
-     * @param <T>
-     * @return
+     * @param instanceClass 实例类型
+     * @param target        对象目标
+     * @param type          类型
+     * @param annotations   注解
+     * @param <T>           实例泛型
+     * @return T 实例对象
      */
     public <T> T newInstance(Class<T> instanceClass, Object target, ElementType type, Annotation[] annotations) {
         try {
