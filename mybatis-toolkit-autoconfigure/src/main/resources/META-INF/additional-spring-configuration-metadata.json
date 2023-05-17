@@ -1,0 +1,23 @@
+{
+  "groups": [
+    {
+      "name": "nichetoolkit.mybatis.mapper",
+      "sourceType": "io.github.nichetoolkit.mybatis.configure.MybatisMapperProperties",
+      "type": "io.github.nichetoolkit.mybatis.configure.MybatisMapperProperties"
+    }
+  ],
+  "properties": [
+    {
+      "name": "nichetoolkit.mybatis.mapper.enabled",
+      "type": "java.lang.Boolean",
+      "sourceType": "java.lang.Boolean",
+      "description": "mybatis mapper enabled."
+    },
+    {
+      "name": "nichetoolkit.mybatis.mapper.datasource.enabled",
+      "type": "java.lang.Boolean",
+      "sourceType": "java.lang.Boolean",
+      "description": "mybatis mapper datasource enabled."
+    }
+  ]
+}
