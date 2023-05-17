@@ -8,6 +8,8 @@ import io.github.nichetoolkit.rest.util.ContextUtils;
 import io.github.nichetoolkit.rest.util.GeneralUtils;
 import io.github.nichetoolkit.rice.enums.StyleType;
 import io.github.nichetoolkit.rice.stereotype.mybatis.RestProperties;
+import io.github.nichetoolkit.rice.stereotype.mybatis.column.RestAlertKey;
+import io.github.nichetoolkit.rice.stereotype.mybatis.column.RestUniqueKey;
 import io.github.nichetoolkit.rice.stereotype.mybatis.table.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.AnnotationUtils;
@@ -46,9 +48,10 @@ public class DefaultTableFactory implements MybatisTableFactory {
         } else {
             mybatisTable = MybatisTable.of(clazz, tableProperties.getProperties());
         }
-        restUniques(clazz, mybatisTable);
+        restUniqueKeys(clazz, mybatisTable);
         restUnionKeys(clazz, mybatisTable);
         restLinkKeys(clazz, mybatisTable);
+        restAlertKeys(clazz, mybatisTable);
         MybatisStyle mybatisStyle = restStyle(clazz, mybatisTable);
         mybatisTable.setStyleName(mybatisStyle.getStyleName());
         mybatisTable.setTable(GeneralUtils.isEmpty(tableName) ? mybatisStyle.tableName(clazz) : restEntity.name());
@@ -58,15 +61,15 @@ public class DefaultTableFactory implements MybatisTableFactory {
         return mybatisTable;
     }
 
-    public void restUniques(Class<?> clazz, MybatisTable mybatisTable) {
-        /** restUniques 注解处理 */
-        RestUniques restUniques = AnnotationUtils.getAnnotation(clazz, RestUniques.class);
-        if (GeneralUtils.isNotEmpty(restUniques)) {
-            if (GeneralUtils.isNotEmpty(restUniques.uniques())) {
-                mybatisTable.setUniqueKeys(Arrays.asList(restUniques.uniques()));
+    public void restUniqueKeys(Class<?> clazz, MybatisTable mybatisTable) {
+        /** restUniqueKeys 注解处理 */
+        RestUniqueKeys restUniqueKeys = AnnotationUtils.getAnnotation(clazz, RestUniqueKeys.class);
+        if (GeneralUtils.isNotEmpty(restUniqueKeys)) {
+            if (GeneralUtils.isNotEmpty(restUniqueKeys.uniqueKeys())) {
+                mybatisTable.setUniqueKeys(Arrays.asList(restUniqueKeys.uniqueKeys()));
             }
-            if (GeneralUtils.isNotEmpty(restUniques.ignores())) {
-                mybatisTable.setIgnoreKeys(Arrays.asList(restUniques.ignores()));
+            if (GeneralUtils.isNotEmpty(restUniqueKeys.ignores())) {
+                mybatisTable.setUniqueIgnoreKeys(Arrays.asList(restUniqueKeys.ignores()));
             }
         }
     }
@@ -75,9 +78,13 @@ public class DefaultTableFactory implements MybatisTableFactory {
         /** restUnionKeys 注解处理 */
         RestUnionKeys restUnionKeys = AnnotationUtils.getAnnotation(clazz, RestUnionKeys.class);
         if (GeneralUtils.isNotEmpty(restUnionKeys)) {
-            mybatisTable.setUseUnionKey(true);
-            mybatisTable.setUnionKeys(Arrays.asList(restUnionKeys.unionKeys()));
             mybatisTable.setUnionIdentity(restUnionKeys.unionIdentity());
+            if (GeneralUtils.isNotEmpty(restUnionKeys.unionKeys())) {
+                mybatisTable.setUnionKeys(Arrays.asList(restUnionKeys.unionKeys()));
+            }
+            if (GeneralUtils.isNotEmpty(restUnionKeys.ignores())) {
+                mybatisTable.setUniqueIgnoreKeys(Arrays.asList(restUnionKeys.ignores()));
+            }
         }
     }
 
@@ -85,7 +92,25 @@ public class DefaultTableFactory implements MybatisTableFactory {
         /** restLinkKeys 注解处理 */
         RestLinkKeys restLinkKeys = AnnotationUtils.getAnnotation(clazz, RestLinkKeys.class);
         if (GeneralUtils.isNotEmpty(restLinkKeys)) {
-            mybatisTable.setLinkKeys(Arrays.asList(restLinkKeys.linkKeys()));
+            if (GeneralUtils.isNotEmpty(restLinkKeys.linkKeys())) {
+                mybatisTable.setLinkKeys(Arrays.asList(restLinkKeys.linkKeys()));
+            }
+            if (GeneralUtils.isNotEmpty(restLinkKeys.ignores())) {
+                mybatisTable.setLinkIgnoreKeys(Arrays.asList(restLinkKeys.ignores()));
+            }
+        }
+    }
+
+    public void restAlertKeys(Class<?> clazz, MybatisTable mybatisTable) {
+        /** restAlertKeys 注解处理 */
+        RestAlertKeys restAlertKeys = AnnotationUtils.getAnnotation(clazz, RestAlertKeys.class);
+        if (GeneralUtils.isNotEmpty(restAlertKeys)) {
+            if (GeneralUtils.isNotEmpty(restAlertKeys.alertKeys())) {
+                mybatisTable.setAlertKeys(Arrays.asList(restAlertKeys.alertKeys()));
+            }
+            if (GeneralUtils.isNotEmpty(restAlertKeys.ignores())) {
+                mybatisTable.setAlertIgnoreKeys(Arrays.asList(restAlertKeys.ignores()));
+            }
         }
     }
 
@@ -141,12 +166,18 @@ public class DefaultTableFactory implements MybatisTableFactory {
         /** restExcludes 注解处理 */
         RestExcludes restExcludes = AnnotationUtils.getAnnotation(clazz, RestExcludes.class);
         if (GeneralUtils.isNotEmpty(restExcludes)) {
-            String[] fields = restExcludes.fields();
-            mybatisTable.setExcludeFields(Arrays.asList(fields));
-            Class<?>[] classes = restExcludes.fieldTypes();
-            mybatisTable.setExcludeFieldTypes(Arrays.asList(classes));
-            Class<?>[] superClasses = restExcludes.superClasses();
-            mybatisTable.setExcludeSuperClasses(Arrays.asList(superClasses));
+            if (GeneralUtils.isNotEmpty(restExcludes.fields())) {
+                mybatisTable.setExcludeFields(Arrays.asList(restExcludes.fields()));
+            }
+            if (GeneralUtils.isNotEmpty(restExcludes.fieldTypes())) {
+                mybatisTable.setExcludeFieldTypes(Arrays.asList(restExcludes.fieldTypes()));
+            }
+            if (GeneralUtils.isNotEmpty(restExcludes.superClasses())) {
+                mybatisTable.setExcludeSuperClasses(Arrays.asList(restExcludes.superClasses()));
+            }
+            if (GeneralUtils.isNotEmpty(restExcludes.ignores())) {
+                mybatisTable.setExcludeIgnoreKeys(Arrays.asList(restExcludes.ignores()));
+            }
         }
     }
 }

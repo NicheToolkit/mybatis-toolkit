@@ -40,6 +40,8 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
     protected boolean unionKey;
     /** 联合主键顺序 */
     protected Integer unionIndex;
+    /** 是否联合主键 */
+    protected boolean alertKey;
     /** 排序方式 */
     protected SortType sortType;
     /** 排序的优先级 */
@@ -208,10 +210,31 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
     }
 
     /**
-     * 返回 column = #{property} 形式的字符串
+     * 返回 column = ${key} 形式的字符串
+     */
+    public String columnEqualsKey() {
+        return this.columnName + " = " + "${key}";
+    }
+
+    /**
+     * 返回 column = ${sign} 形式的字符串
      */
     public String columnEqualsSign() {
         return this.columnName + " = " + "${sign}";
+    }
+
+    /**
+     * 返回 column = ${operate} 形式的字符串
+     */
+    public String columnEqualsOperate() {
+        return this.columnName + " = " + "${operate}";
+    }
+
+    /**
+     * 返回 column = #{linkId} 形式的字符串
+     */
+    public String columnEqualsLink() {
+        return this.columnName + " = " + "#{linkId}";
     }
 
     /**

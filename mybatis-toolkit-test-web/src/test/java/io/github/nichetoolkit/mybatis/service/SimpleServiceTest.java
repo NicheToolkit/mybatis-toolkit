@@ -88,4 +88,23 @@ class SimpleServiceTest extends MybatisToolkitTestWebApplicationTests {
         simpleFilter.setIds("1656552882444701696","1656553293033508864");
         simpleService.deleteAllWithFilter(simpleFilter);
     }
+
+    @Test
+    public void removeById() throws RestException {
+        simpleService.deleteById("1658395890546905088");
+    }
+
+    @Test
+    public void removeAll() throws RestException {
+        simpleService.deleteAll(Arrays.asList("1656551617199345664","1656552404394708992"));
+    }
+
+    @Test
+    public void removeAllByWhere() throws RestException {
+        SimpleFilter simpleFilter = new SimpleFilter();
+        simpleFilter.setIds("1656552882444701696","1656553293033508864");
+        simpleService.deleteAllWithFilter(simpleFilter);
+    }
+
+
 }

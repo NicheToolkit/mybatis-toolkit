@@ -2,7 +2,6 @@ package io.github.nichetoolkit.mybatis.mapper;
 
 import io.github.nichetoolkit.mybatis.MybatisCaching;
 import io.github.nichetoolkit.mybatis.provider.MybatisRemoveProvider;
-import io.github.nichetoolkit.rice.IdEntity;
 import io.github.nichetoolkit.rice.mapper.RemoveMapper;
 import org.apache.ibatis.annotations.Lang;
 import org.apache.ibatis.annotations.Param;
@@ -11,11 +10,11 @@ import org.apache.ibatis.annotations.UpdateProvider;
 import java.util.Collection;
 
 /**
- * <p>MybatisMapper</p>
+ * <p>MybatisRemoveMapper</p>
  * @author Cyan (snow22314@outlook.com)
  * @version v1.0.0
  */
-public interface MybatisRemoveMapper<E extends IdEntity<I>, I> extends RemoveMapper<I> {
+public interface MybatisRemoveMapper<I> extends RemoveMapper<I> {
 
     @Override
     @Lang(MybatisCaching.class)

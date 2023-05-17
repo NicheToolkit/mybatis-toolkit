@@ -30,13 +30,20 @@ public class DefaultColumnFactory implements MybatisColumnFactory {
     public boolean supports(MybatisTable table, MybatisField field) {
         /** 排除RestExclude 注解的字段 以及 RestExcludes 注解的字段 */
         RestExclude restExclude = field.getAnnotation(RestExclude.class);
+        String fieldName = field.fieldName();
+        List<String> excludeIgnoreKeys= table.getExcludeIgnoreKeys();
+        if (GeneralUtils.isNotEmpty(excludeIgnoreKeys)) {
+            /** 当前字段属于 需要排除的字段类型 返回 false */
+            if (excludeIgnoreKeys.contains(fieldName)) {
+                return true;
+            }
+        }
         if (GeneralUtils.isNotEmpty(restExclude)) {
             /** 当前字段被 RestExclude 修饰 且 exclude值为 true 时 返回 false */
             if (restExclude.exclude()) {
                 return false;
             }
         }
-        String fieldName = field.fieldName();
         List<String> excludeFields = table.getExcludeFields();
         if (GeneralUtils.isNotEmpty(excludeFields)) {
             /** 当前字段属于 需要排除的字段名称 返回 false */
@@ -97,19 +104,22 @@ public class DefaultColumnFactory implements MybatisColumnFactory {
         }
         RestUnionKey restUnionKey = field.getAnnotation(RestUnionKey.class);
         if (GeneralUtils.isNotEmpty(restUnionKey)) {
-            mybatisTable.setUseUnionKey(true);
             mybatisColumn.setUnionKey(restUnionKey.value());
             if (GeneralUtils.isNotEmpty(restUnionKey.index())) {
                 mybatisColumn.setUnionIndex(restUnionKey.index());
             }
         }
-        RestUnique restUnique = field.getAnnotation(RestUnique.class);
-        if (GeneralUtils.isNotEmpty(restUnique)) {
+        RestUniqueKey restUniqueKey = field.getAnnotation(RestUniqueKey.class);
+        if (GeneralUtils.isNotEmpty(restUniqueKey)) {
             mybatisColumn.setUnique(true);
         }
         RestLinkKey restLinkKey = field.getAnnotation(RestLinkKey.class);
         if (GeneralUtils.isNotEmpty(restLinkKey)) {
             mybatisColumn.setLinkKey(restLinkKey.value());
+        }
+        RestAlertKey restAlertKey = field.getAnnotation(RestAlertKey.class);
+        if (GeneralUtils.isNotEmpty(restAlertKey)) {
+            mybatisColumn.setAlertKey(restAlertKey.value());
         }
         RestSortType restSortType = field.getAnnotation(RestSortType.class);
         if (GeneralUtils.isNotEmpty(restSortType)) {

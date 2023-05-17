@@ -11,7 +11,7 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * <p>MybatisMapper</p>
+ * <p>MybatisSuperMapper</p>
  * @author Cyan (snow22314@outlook.com)
  * @version v1.0.0
  */

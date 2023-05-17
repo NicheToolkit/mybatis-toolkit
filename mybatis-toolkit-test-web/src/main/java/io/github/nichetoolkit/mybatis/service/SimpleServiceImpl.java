@@ -17,7 +17,6 @@ import java.util.Date;
  * @version v1.0.0
  */
 @Service
-//@RestService(mapper = SimpleMapper.class)
 public class SimpleServiceImpl extends RiceInfoService<SimpleModel, SimpleEntity, SimpleFilter> implements SimpleService {
 
     @Override

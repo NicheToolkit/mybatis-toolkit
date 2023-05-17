@@ -9,5 +9,5 @@ import org.springframework.stereotype.Component;
  * @version v1.0.0
  */
 @Component
-public interface SimpleMapper extends MybatisInfoMapper<SimpleEntity,String> {
+public interface SimpleMapper extends MybatisInfoMapper<SimpleEntity,String>, MybatisRemoveMapper<String> {
 }
