@@ -76,8 +76,8 @@ class SimpleServiceTest extends MybatisToolkitTestWebApplicationTests {
     public void findAllByWhere() throws RestException {
         SimpleFilter simpleFilter = new SimpleFilter();
         simpleFilter.setPageSize(10);
-        simpleFilter.setStartTime(DateUtils.parseDateTime("2023-05-10 00:00:00"));
-        simpleFilter.setEndTime(DateUtils.parseDateTime("2023-05-13 00:00:00"));
+        simpleFilter.setStartTime(DateUtils.parseTime("2023-05-10 00:00:00"));
+        simpleFilter.setEndTime(DateUtils.parseTime("2023-05-13 00:00:00"));
         RestPage<SimpleModel> restPage = simpleService.queryAllWithFilter(simpleFilter);
         System.out.println(JsonUtils.parseJson(restPage));
     }

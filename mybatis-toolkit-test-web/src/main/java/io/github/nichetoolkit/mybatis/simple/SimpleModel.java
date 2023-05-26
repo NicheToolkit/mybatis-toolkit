@@ -55,7 +55,7 @@ public class SimpleModel extends RiceInfoModel<SimpleModel,SimpleEntity> impleme
         return "_dynamic";
     }
 
-    public static class Builder extends RiceInfoModel.Builder {
+    public static class Builder extends RiceInfoModel.Builder<SimpleModel,SimpleEntity> {
         protected Date time;
 
         public Builder() {
