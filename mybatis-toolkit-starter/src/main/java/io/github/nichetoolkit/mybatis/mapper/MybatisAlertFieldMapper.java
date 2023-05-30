@@ -1,7 +1,7 @@
 package io.github.nichetoolkit.mybatis.mapper;
 
 import io.github.nichetoolkit.mybatis.MybatisCaching;
-import io.github.nichetoolkit.mybatis.provider.MybatisAlertProvider;
+import io.github.nichetoolkit.mybatis.provider.MybatisAlertFieldProvider;
 import io.github.nichetoolkit.rice.mapper.AlertFieldMapper;
 import io.github.nichetoolkit.rice.mapper.AlertMapper;
 import org.apache.ibatis.annotations.Lang;
@@ -19,22 +19,22 @@ public interface MybatisAlertFieldMapper<I> extends AlertFieldMapper<I> {
 
     @Override
     @Lang(MybatisCaching.class)
-    @SelectProvider(type = MybatisAlertProvider.class, method = "alertFieldById")
+    @SelectProvider(type = MybatisAlertFieldProvider.class, method = "alertFieldById")
     Integer alertFieldById(@Param("id") I id, @Param("field") String field, @Param("key") Integer key);
 
     @Override
     @Lang(MybatisCaching.class)
-    @SelectProvider(type = MybatisAlertProvider.class, method = "alertDynamicFieldById")
+    @SelectProvider(type = MybatisAlertFieldProvider.class, method = "alertDynamicFieldById")
     Integer alertDynamicFieldById(@Param("tablename") String tablename, @Param("id") I id, @Param("field") String field, @Param("key") Integer key);
 
     @Override
     @Lang(MybatisCaching.class)
-    @SelectProvider(type = MybatisAlertProvider.class, method = "alertFieldAll")
+    @SelectProvider(type = MybatisAlertFieldProvider.class, method = "alertFieldAll")
     Integer alertFieldAll(@Param("idList") Collection<I> idList, @Param("field") String field, @Param("key") Integer key);
 
     @Override
     @Lang(MybatisCaching.class)
-    @SelectProvider(type = MybatisAlertProvider.class, method = "alertDynamicFieldAll")
+    @SelectProvider(type = MybatisAlertFieldProvider.class, method = "alertDynamicFieldAll")
     Integer alertDynamicFieldAll(@Param("tablename") String tablename, @Param("idList") Collection<I> idList, @Param("field") String field, @Param("key") Integer key);
 
 }
