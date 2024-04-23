@@ -1,7 +1,7 @@
 package io.github.nichetoolkit.mybatis;
 
+import io.github.nichetoolkit.mybatis.error.MybatisProviderLackError;
 import io.github.nichetoolkit.mybatis.mapper.MybatisSuperMapper;
-import io.github.nichetoolkit.rest.error.lack.BeanLackError;
 import io.github.nichetoolkit.rest.util.GeneralUtils;
 import io.github.nichetoolkit.rice.IdEntity;
 import org.apache.ibatis.binding.MapperRegistry;
@@ -86,7 +86,7 @@ public class MybatisMapperProvider<M extends MybatisSuperMapper<E, I>, E extends
         if (SUPER_MAPPER_CACHE.containsKey(entityClazz)) {
             return (M) SUPER_MAPPER_CACHE.get(entityClazz);
         }
-        throw new BeanLackError(entityClazz.getName() + " Mapper interface not found");
+        throw new MybatisProviderLackError(entityClazz.getName() + " Mapper interface not found");
     }
 
     public void registerAsDefault() {
@@ -99,7 +99,7 @@ public class MybatisMapperProvider<M extends MybatisSuperMapper<E, I>, E extends
         @SuppressWarnings(value = "unchecked")
         private static <M extends MybatisSuperMapper<E, I>, E extends IdEntity<I>, I> MybatisMapperProvider<M, E, I> instance() {
             if (INSTANCE == null) {
-                throw new BeanLackError("MybatisMapperProvider default instance not found");
+                throw new MybatisProviderLackError("MybatisMapperProvider default instance not found");
             }
             return INSTANCE;
         }

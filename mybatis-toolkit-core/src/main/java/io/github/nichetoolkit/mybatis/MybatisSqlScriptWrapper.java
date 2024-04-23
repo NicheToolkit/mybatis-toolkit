@@ -14,11 +14,10 @@ import java.util.List;
 public interface MybatisSqlScriptWrapper extends MybatisOrder {
     /**
      * 包装 SQL
-     *
      * @param context   当前接口和方法信息
-     * @param table    实体类
+     * @param table     实体类
      * @param sqlScript sql脚本
-     * @return
+     * @return sqlScript sql脚本
      */
     static MybatisSqlScript wrapSqlScript(ProviderContext context, MybatisTable table, MybatisSqlScript sqlScript) {
         for (MybatisSqlScriptWrapper wrapper : Instance.sqlScriptWrapperChain()) {
@@ -29,9 +28,8 @@ public interface MybatisSqlScriptWrapper extends MybatisOrder {
 
     /**
      * 对 script 包装中的 SQL 进行加工处理
-     *
      * @param context   当前接口和方法信息
-     * @param table    实体类
+     * @param table     实体类
      * @param sqlScript sql脚本
      * @return MybatisSqlScript
      */
@@ -45,7 +43,6 @@ public interface MybatisSqlScriptWrapper extends MybatisOrder {
 
         /**
          * 获取处理实体的工厂链
-         *
          * @return 实例
          */
         public static List<MybatisSqlScriptWrapper> sqlScriptWrapperChain() {

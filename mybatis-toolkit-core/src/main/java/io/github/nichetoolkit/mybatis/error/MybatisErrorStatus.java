@@ -14,6 +14,10 @@ public enum MybatisErrorStatus implements RestStatus {
     MYBATIS_TABLE_ERROR(21103, "mybatis column error"),
     MYBATIS_UNSUPPORTED_ERROR(21104, "mybatis unsupported error"),
     MYBATIS_ASSERT_ERROR(21199,"mybatis assert error"),
+
+    MYBATIS_UNREALIZED_LACK_ERROR(21200, "mybatis unrealized lack error"),
+    MYBATIS_PROVIDER_LACK_ERROR(21201, "mybatis provider lack error"),
+    MYBATIS_SQL_SCRIPT_LACK_ERROR(21202, "mybatis sql script lack error"),
     ;
 
     private final Integer status;

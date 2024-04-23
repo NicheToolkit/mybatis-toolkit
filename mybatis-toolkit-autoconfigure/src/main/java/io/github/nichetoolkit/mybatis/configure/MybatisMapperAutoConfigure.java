@@ -19,9 +19,8 @@ import org.springframework.context.annotation.Configuration;
  */
 @Slf4j
 @Configuration
-@ConditionalOnProperty(prefix = "nichetoolkit.mybatis.mapper", name = "enabled", matchIfMissing = true)
 @ComponentScan(basePackages = {"io.github.nichetoolkit.mybatis"})
-@ImportAutoConfiguration(value = {DatasourceAutoConfigure.class})
+@ConditionalOnProperty(prefix = "nichetoolkit.mybatis.mapper.enabled", havingValue = "true", matchIfMissing = true)
 public class MybatisMapperAutoConfigure {
 
     public MybatisMapperAutoConfigure() {

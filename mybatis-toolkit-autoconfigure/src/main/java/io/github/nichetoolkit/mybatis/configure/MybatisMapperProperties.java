@@ -15,26 +15,7 @@ public class MybatisMapperProperties {
     /** 是否开启自动注入 */
     private boolean enabled = true;
 
-    @NestedConfigurationProperty
-    private Datasource datasource = new Datasource();
-
     public MybatisMapperProperties() {
-    }
-
-    public static class Datasource {
-        /** 是否开启自动注入 */
-        private boolean enabled = false;
-
-        public Datasource() {
-        }
-
-        public boolean isEnabled() {
-            return enabled;
-        }
-
-        public void setEnabled(boolean enabled) {
-            this.enabled = enabled;
-        }
     }
 
     public boolean isEnabled() {
@@ -45,11 +26,4 @@ public class MybatisMapperProperties {
         this.enabled = enabled;
     }
 
-    public Datasource getDatasource() {
-        return datasource;
-    }
-
-    public void setDatasource(Datasource datasource) {
-        this.datasource = datasource;
-    }
 }

@@ -1,7 +1,7 @@
 package io.github.nichetoolkit.mybatis.configure;
 
+import io.github.nichetoolkit.mybatis.driver.DatabaseType;
 import io.github.nichetoolkit.rest.util.GeneralUtils;
-import io.github.nichetoolkit.rice.enums.DatabaseType;
 import io.github.nichetoolkit.rice.enums.StyleType;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;

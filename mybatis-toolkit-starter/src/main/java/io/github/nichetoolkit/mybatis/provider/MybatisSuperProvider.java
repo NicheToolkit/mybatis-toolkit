@@ -4,13 +4,14 @@ import io.github.nichetoolkit.mybatis.MybatisColumn;
 import io.github.nichetoolkit.mybatis.MybatisSqlScript;
 import io.github.nichetoolkit.mybatis.MybatisTable;
 import io.github.nichetoolkit.mybatis.configure.MybatisTableProperties;
+import io.github.nichetoolkit.mybatis.driver.DatabaseType;
 import io.github.nichetoolkit.mybatis.error.MybatisParamErrorException;
 import io.github.nichetoolkit.mybatis.error.MybatisTableErrorException;
+import io.github.nichetoolkit.mybatis.error.MybatisUnrealizedError;
 import io.github.nichetoolkit.mybatis.error.MybatisUnsupportedErrorException;
 import io.github.nichetoolkit.rest.RestException;
 import io.github.nichetoolkit.rest.helper.OptionalHelper;
 import io.github.nichetoolkit.rest.util.GeneralUtils;
-import io.github.nichetoolkit.rice.enums.DatabaseType;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.builder.annotation.ProviderContext;
 import org.springframework.beans.factory.InitializingBean;
@@ -66,7 +67,16 @@ public class MybatisSuperProvider implements InitializingBean {
         }
         String upsetSql;
         switch (databaseType) {
-            case OPENGAUSS:
+            case MARIADB:
+            case SQLSEVER:
+            case ORACLE:
+            case SQLITE:
+            case H2:
+            case HSQLDB:
+            case REDSHIFT:
+            case CASSANDRA:
+                throw new MybatisUnrealizedError("the function is unrealized of this database type: " + databaseType.getKey());
+            case GAUSSDB:
             case MYSQL:
                 if (doNothing) {
                     upsetSql = " ON DUPLICATE KEY DO NOTHING ";

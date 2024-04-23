@@ -4,6 +4,16 @@
       "name": "nichetoolkit.mybatis.mapper",
       "sourceType": "io.github.nichetoolkit.mybatis.configure.MybatisMapperProperties",
       "type": "io.github.nichetoolkit.mybatis.configure.MybatisMapperProperties"
+    },
+    {
+      "name": "nichetoolkit.mybatis.datasource",
+      "sourceType": "io.github.nichetoolkit.mybatis.configure.MybatisDatasourceProperties",
+      "type": "io.github.nichetoolkit.mybatis.configure.MybatisDatasourceProperties"
+    },
+    {
+      "name": "nichetoolkit.mybatis.datasource.druid",
+      "sourceType": "io.github.nichetoolkit.mybatis.configure.MybatisDruidPoolProperties",
+      "type": "io.github.nichetoolkit.mybatis.configure.MybatisDruidPoolProperties"
     }
   ],
   "properties": [
@@ -14,10 +24,124 @@
       "description": "mybatis mapper enabled."
     },
     {
-      "name": "nichetoolkit.mybatis.mapper.datasource.enabled",
+      "name": "nichetoolkit.mybatis.datasource.enabled",
       "type": "java.lang.Boolean",
       "sourceType": "java.lang.Boolean",
       "description": "mybatis mapper datasource enabled."
+    },
+    {
+      "name": "nichetoolkit.mybatis.datasource.type",
+      "type": "io.github.nichetoolkit.mybatis.datasource.DatasourceType",
+      "sourceType": "io.github.nichetoolkit.mybatis.datasource.DatasourceType",
+      "description": "mybatis datasource type.",
+      "defaultValue": "default"
+    },
+    {
+      "name": "nichetoolkit.mybatis.datasource.druid.core-size",
+      "type": "java.lang.Integer",
+      "sourceType": "java.lang.Integer",
+      "description": "mybatis datasource druid core size."
+    },
+    {
+      "name": "nichetoolkit.mybatis.datasource.druid.min-idle-size",
+      "type": "java.lang.Integer",
+      "sourceType": "java.lang.Integer",
+      "description": "mybatis datasource druid min idle size."
+    },
+    {
+      "name": "nichetoolkit.mybatis.datasource.druid.max-work-size",
+      "type": "java.lang.Integer",
+      "sourceType": "java.lang.Integer",
+      "description": "mybatis datasource druid max work size."
+    },
+    {
+      "name": "nichetoolkit.mybatis.datasource.druid.max-wait-time",
+      "type": "java.lang.Integer",
+      "sourceType": "java.lang.Integer",
+      "description": "mybatis datasource druid max wait time."
+    },
+    {
+      "name": "nichetoolkit.mybatis.datasource.druid.check-beat-time",
+      "type": "java.lang.Integer",
+      "sourceType": "java.lang.Integer",
+      "description": "mybatis datasource druid check beat time."
+    },
+    {
+      "name": "nichetoolkit.mybatis.datasource.druid.min-live-time",
+      "type": "java.lang.Integer",
+      "sourceType": "java.lang.Integer",
+      "description": "mybatis datasource druid min live time."
+    },
+    {
+      "name": "nichetoolkit.mybatis.datasource.druid.test-sql",
+      "type": "java.lang.String",
+      "sourceType": "java.lang.String",
+      "description": "mybatis datasource druid test sql."
+    },
+    {
+      "name": "nichetoolkit.mybatis.datasource.druid.idle-test",
+      "type": "java.lang.Boolean",
+      "sourceType": "java.lang.Boolean",
+      "description": "mybatis datasource druid idle test."
+    },
+    {
+      "name": "nichetoolkit.mybatis.datasource.druid.apply-test",
+      "type": "java.lang.Boolean",
+      "sourceType": "java.lang.Boolean",
+      "description": "mybatis datasource druid apply test."
+    },
+    {
+      "name": "nichetoolkit.mybatis.datasource.druid.revert-test",
+      "type": "java.lang.Boolean",
+      "sourceType": "java.lang.Boolean",
+      "description": "mybatis datasource druid revert test."
+    },
+    {
+      "name": "nichetoolkit.mybatis.datasource.druid.slave.enabled",
+      "type": "java.lang.Boolean",
+      "sourceType": "java.lang.Boolean",
+      "description": "mybatis datasource druid slave enabled."
+    }
+  ],
+  "hints": [
+    {
+      "name": "nichetoolkit.mybatis.mapper.enabled",
+      "values": [
+        {
+          "value": false,
+          "description": "mapper auto config close."
+        },
+        {
+          "value": true,
+          "description": "mapper auto config open."
+        }
+      ]
+    },
+    {
+      "name": "nichetoolkit.mybatis.datasource.enabled",
+      "values": [
+        {
+          "value": false,
+          "description": "datasource auto config close."
+        },
+        {
+          "value": true,
+          "description": "datasource auto config open."
+        }
+      ]
+    },
+    {
+      "name": "nichetoolkit.mybatis.datasource.druid.slave.enabled",
+      "values": [
+        {
+          "value": false,
+          "description": "datasource druid slave close."
+        },
+        {
+          "value": true,
+          "description": "datasource druid slave open."
+        }
+      ]
     }
   ]
 }

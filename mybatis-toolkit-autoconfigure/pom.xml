@@ -65,6 +65,12 @@
             <version>${mybatis-toolkit.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid-spring-boot-starter</artifactId>
+            <version>${alibaba-druid.version}</version>
+        </dependency>
+
     </dependencies>
 
     <repositories>
