@@ -7,7 +7,7 @@ import io.github.nichetoolkit.mybatis.configure.MybatisTableProperties;
 import io.github.nichetoolkit.mybatis.driver.DatabaseType;
 import io.github.nichetoolkit.mybatis.error.MybatisParamErrorException;
 import io.github.nichetoolkit.mybatis.error.MybatisTableErrorException;
-import io.github.nichetoolkit.mybatis.error.MybatisUnrealizedError;
+import io.github.nichetoolkit.mybatis.error.MybatisUnrealizedLackError;
 import io.github.nichetoolkit.mybatis.error.MybatisUnsupportedErrorException;
 import io.github.nichetoolkit.rest.RestException;
 import io.github.nichetoolkit.rest.helper.OptionalHelper;
@@ -29,7 +29,7 @@ import java.util.stream.Collectors;
  */
 public class MybatisSuperProvider implements InitializingBean {
 
-    private MybatisTableProperties tableProperties;
+    private final MybatisTableProperties tableProperties;
 
     @Autowired
     public MybatisSuperProvider(MybatisTableProperties tableProperties) {
@@ -43,7 +43,7 @@ public class MybatisSuperProvider implements InitializingBean {
     }
 
     @Override
-    public void afterPropertiesSet() throws Exception {
+    public void afterPropertiesSet() {
         INSTANCE = this;
     }
 
@@ -75,7 +75,7 @@ public class MybatisSuperProvider implements InitializingBean {
             case HSQLDB:
             case REDSHIFT:
             case CASSANDRA:
-                throw new MybatisUnrealizedError("the function is unrealized of this database type: " + databaseType.getKey());
+                throw new MybatisUnrealizedLackError("the function is unrealized of this database type: " + databaseType.getKey());
             case GAUSSDB:
             case MYSQL:
                 if (doNothing) {
@@ -102,17 +102,14 @@ public class MybatisSuperProvider implements InitializingBean {
 
     public static <E> String saveDynamic(ProviderContext providerContext, @Param("tablename") String tablename, @Param("entity") E entity) throws RestException {
         OptionalHelper.falseable(GeneralUtils.isNotEmpty(entity), "the entity param of 'save' method cannot be empty!", message -> new MybatisParamErrorException("save", "entity", message));
-        return MybatisSqlScript.caching(providerContext, new MybatisSqlScript() {
-            @Override
-            public String sql(MybatisTable table) throws RestException {
-                OptionalHelper.falseable(GeneralUtils.isNotEmpty(table.insertColumns()), "the insert columns of table with 'save' method cannot be empty!", message -> new MybatisTableErrorException("save", "insertColumns", message));
-                OptionalHelper.falseable(GeneralUtils.isNotEmpty(table.identityColumns()), "the identity columns of table with 'save' method cannot be empty!", message -> new MybatisTableErrorException("save", "identityColumns", message));
-                return "INSERT INTO " + Optional.ofNullable(tablename).orElse(table.tableName())
-                        + " (" + table.insertColumnList() + ")"
-                        + " VALUES (" + table.insertColumns().stream()
-                        .map(column -> column.variable("entity.")).collect(Collectors.joining(", "))
-                        + ")" + saveUpsetSql(table);
-            }
+        return MybatisSqlScript.caching(providerContext, table -> {
+            OptionalHelper.falseable(GeneralUtils.isNotEmpty(table.insertColumns()), "the insert columns of table with 'save' method cannot be empty!", message -> new MybatisTableErrorException("save", "insertColumns", message));
+            OptionalHelper.falseable(GeneralUtils.isNotEmpty(table.identityColumns()), "the identity columns of table with 'save' method cannot be empty!", message -> new MybatisTableErrorException("save", "identityColumns", message));
+            return "INSERT INTO " + Optional.ofNullable(tablename).orElse(table.tableName())
+                    + " (" + table.insertColumnList() + ")"
+                    + " VALUES (" + table.insertColumns().stream()
+                    .map(column -> column.variable("entity.")).collect(Collectors.joining(", "))
+                    + ")" + saveUpsetSql(table);
         });
     }
 

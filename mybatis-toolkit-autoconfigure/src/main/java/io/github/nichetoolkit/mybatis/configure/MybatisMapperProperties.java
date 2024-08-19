@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component;
  * @author Cyan (snow22314@outlook.com)
  * @version v1.0.0
  */
-@Component
 @ConfigurationProperties(prefix = "nichetoolkit.mybatis.mapper")
 public class MybatisMapperProperties {
     /** 是否开启自动注入 */

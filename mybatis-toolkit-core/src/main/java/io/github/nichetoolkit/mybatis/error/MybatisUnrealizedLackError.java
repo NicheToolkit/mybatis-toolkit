@@ -6,17 +6,17 @@ import io.github.nichetoolkit.rest.RestStatus;
 import java.util.function.Supplier;
 
 /**
- * <p>Mybatis</p>
+ * <p>MybatisUnrealizedLackError</p>
  * @author Cyan (snow22314@outlook.com)
  * @version v1.0.0
  */
 public class MybatisUnrealizedLackError extends RestError {
     public MybatisUnrealizedLackError() {
-        super(MybatisErrorStatus.MYBATIS_UNREALIZED_ERROR);
+        super(MybatisErrorStatus.MYBATIS_UNREALIZED_LACK_ERROR);
     }
 
     public MybatisUnrealizedLackError(Throwable cause) {
-        super(MybatisErrorStatus.MYBATIS_UNREALIZED_ERROR, cause);
+        super(MybatisErrorStatus.MYBATIS_UNREALIZED_LACK_ERROR, cause);
     }
 
     public MybatisUnrealizedLackError(Supplier<RestStatus> supplier) {
@@ -24,11 +24,11 @@ public class MybatisUnrealizedLackError extends RestError {
     }
 
     public MybatisUnrealizedLackError(String error) {
-        super(error, MybatisErrorStatus.MYBATIS_UNREALIZED_ERROR);
+        super(error, MybatisErrorStatus.MYBATIS_UNREALIZED_LACK_ERROR);
     }
 
     public MybatisUnrealizedLackError(String error, Throwable cause) {
-        super(MybatisErrorStatus.MYBATIS_UNREALIZED_ERROR, error, cause);
+        super(MybatisErrorStatus.MYBATIS_UNREALIZED_LACK_ERROR, error, cause);
     }
 
     public MybatisUnrealizedLackError(RestStatus status) {

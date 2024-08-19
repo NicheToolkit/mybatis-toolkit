@@ -7,11 +7,13 @@ import io.github.nichetoolkit.rest.RestKey;
 import java.util.Optional;
 
 /**
- * <p>DynamicType</p>
+ * <p>DruidDatasourceType</p>
  * @author Cyan (snow22314@outlook.com)
  * @version v1.0.0
  */
-public enum DynamicType implements RestKey<String> {
+public enum DruidDatasourceType implements RestKey<String> {
+    /** 主库 */
+    DEFAULT("default"),
     /** 主库 */
     MASTER("master"),
     /** 从库 */
@@ -19,7 +21,7 @@ public enum DynamicType implements RestKey<String> {
     ;
     private final String key;
 
-    DynamicType(String key) {
+    DruidDatasourceType(String key) {
         this.key = key;
     }
 
@@ -30,9 +32,9 @@ public enum DynamicType implements RestKey<String> {
     }
 
     @JsonCreator
-    public static DynamicType parseKey(String key) {
-        DynamicType datasourceType = RestKey.parseKey(DynamicType.class, key);
-        return Optional.ofNullable(datasourceType).orElse(DynamicType.MASTER);
+    public static DruidDatasourceType parseKey(String key) {
+        DruidDatasourceType datasourceType = RestKey.parseKey(DruidDatasourceType.class, key);
+        return Optional.ofNullable(datasourceType).orElse(DruidDatasourceType.DEFAULT);
     }
 
 }

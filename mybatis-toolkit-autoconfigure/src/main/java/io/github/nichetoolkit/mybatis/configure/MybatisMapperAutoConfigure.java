@@ -5,9 +5,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -20,26 +20,27 @@ import org.springframework.context.annotation.Configuration;
 @Slf4j
 @Configuration
 @ComponentScan(basePackages = {"io.github.nichetoolkit.mybatis"})
+@EnableConfigurationProperties({MybatisMapperProperties.class})
 @ConditionalOnProperty(prefix = "nichetoolkit.mybatis.mapper.enabled", havingValue = "true", matchIfMissing = true)
 public class MybatisMapperAutoConfigure {
 
     public MybatisMapperAutoConfigure() {
-        log.debug("================= mybatis-auto-config initiated ！ ===================");
+        log.debug("================= mybatis-mapper-auto-config initiated ！ ===================");
     }
 
     @Bean
-    @ConditionalOnMissingBean
-    public MybatisMapperProvider mapperProvider(SqlSessionTemplate sqlSessionTemplate) {
-        return new MybatisMapperProvider(sqlSessionTemplate);
+    @ConditionalOnMissingBean(MybatisMapperProvider.class)
+    public MybatisMapperProvider<?,?,?> mapperProvider(SqlSessionTemplate sqlSessionTemplate) {
+        return new MybatisMapperProvider<>(sqlSessionTemplate);
     }
 
     @Configuration
     @ComponentScan(basePackages = {"io.github.nichetoolkit.mybatis"})
     public static class AutoRegisterConfigure implements InitializingBean {
-        private final MybatisMapperProvider mapperProvider;
+        private final MybatisMapperProvider<?,?,?> mapperProvider;
 
         @Autowired
-        public AutoRegisterConfigure(MybatisMapperProvider mapperProvider) {
+        public AutoRegisterConfigure(MybatisMapperProvider<?,?,?> mapperProvider) {
             this.mapperProvider = mapperProvider;
         }
 

@@ -1,122 +1,42 @@
 package io.github.nichetoolkit.mybatis.configure;
 
+import lombok.Getter;
+import lombok.Setter;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+
 /**
- * <p>DruidConfig</p>
+ * <p>MybatisDruidPoolProperties</p>
  * @author Cyan (snow22314@outlook.com)
  * @version v1.0.0
  */
+@Setter
+@Getter
+@ConfigurationProperties(prefix = "spring.datasource.druid")
 public class MybatisDruidPoolProperties {
-    /** 初始化核心线程大小 */
-    private Integer coreSize = 5;
-    /** 最小空闲线程大小 */
-    private Integer minIdleSize = 10;
-    /** 最大工作线程大小 */
-    private Integer maxWorkSize = 20;
-    /** 连接等待超时的时间 */
-    private Integer maxWaitTime = 60000;
-    /** 空闲连接检测心跳时间*/
-    private Integer checkBeatTime = 60000;
-    /** 连接最小生存时间 */
-    private Integer minLiveTime = 30000;
-    /** 连接最大生存时间 */
-    private Integer maxLiveTime = 90000;
-    /** 测试查询SQL */
-    private String testSql = "SELECT 1";
-    /** 空闲时测试 */
-    private Boolean idleTest = true;
-    /** 申请连接时测试 */
-    private Boolean applyTest = false;
-    /** 归还连接时测试 */
-    private Boolean revertTest = false;
+    /** 数据库连接池初始值 */
+    private Integer initialSize = 5;
+    /** 数据库连接池最小空闲值 */
+    private Integer minIdle = 10;
+    /** 数据库连接池最大值 */
+    private Integer maxActive = 20;
+    /** 获取连接时最大等待时间，单位毫秒(1分钟) */
+    private Integer maxWait = 60000;
+    /** 空闲连接检查、废弃连接清理、空闲连接池大小调整的操作时间间隔，单位是毫秒(1分钟)*/
+    private Integer timeBetweenEvictionRunsMillis = 60000;
+    /** 空闲连接大于minIdle且连接空闲时间大于该值，则关闭该连接，单位毫秒(5分钟，默认30分钟) */
+    private Integer minEvictableIdleTimeMillis = 300000;
+    /** 空闲连接最大生存时间 单位毫秒(15分钟) */
+    private Integer maxEvictableIdleTimeMillis = 900000;
+    /** 检测连接是否有效时执行的sql命令 */
+    private String validationQuery = "SELECT 1";
+    /** 连接空闲时检测，如果连接空闲时间大于timeBetweenEvictionRunsMillis指定的毫秒，执行validationQuery指定的SQL来检测连接是否有效 */
+    private Boolean testWhileIdle = true;
+    /** 借用连接时执行validationQuery检测连接是否有效 */
+    private Boolean testOnBorrow = false;
+    /** 归还连接时执行validationQuery检测连接是否有效 */
+    private Boolean testOnReturn = false;
 
     public MybatisDruidPoolProperties() {
     }
 
-    public Integer getCoreSize() {
-        return coreSize;
-    }
-
-    public void setCoreSize(Integer coreSize) {
-        this.coreSize = coreSize;
-    }
-
-    public Integer getMinIdleSize() {
-        return minIdleSize;
-    }
-
-    public void setMinIdleSize(Integer minIdleSize) {
-        this.minIdleSize = minIdleSize;
-    }
-
-    public Integer getMaxWorkSize() {
-        return maxWorkSize;
-    }
-
-    public void setMaxWorkSize(Integer maxWorkSize) {
-        this.maxWorkSize = maxWorkSize;
-    }
-
-    public Integer getMaxWaitTime() {
-        return maxWaitTime;
-    }
-
-    public void setMaxWaitTime(Integer maxWaitTime) {
-        this.maxWaitTime = maxWaitTime;
-    }
-
-    public Integer getCheckBeatTime() {
-        return checkBeatTime;
-    }
-
-    public void setCheckBeatTime(Integer checkBeatTime) {
-        this.checkBeatTime = checkBeatTime;
-    }
-
-    public Integer getMinLiveTime() {
-        return minLiveTime;
-    }
-
-    public void setMinLiveTime(Integer minLiveTime) {
-        this.minLiveTime = minLiveTime;
-    }
-
-    public Integer getMaxLiveTime() {
-        return maxLiveTime;
-    }
-
-    public void setMaxLiveTime(Integer maxLiveTime) {
-        this.maxLiveTime = maxLiveTime;
-    }
-
-    public String getTestSql() {
-        return testSql;
-    }
-
-    public void setTestSql(String testSql) {
-        this.testSql = testSql;
-    }
-
-    public Boolean getIdleTest() {
-        return idleTest;
-    }
-
-    public void setIdleTest(Boolean idleTest) {
-        this.idleTest = idleTest;
-    }
-
-    public Boolean getApplyTest() {
-        return applyTest;
-    }
-
-    public void setApplyTest(Boolean applyTest) {
-        this.applyTest = applyTest;
-    }
-
-    public Boolean getRevertTest() {
-        return revertTest;
-    }
-
-    public void setRevertTest(Boolean revertTest) {
-        this.revertTest = revertTest;
-    }
 }

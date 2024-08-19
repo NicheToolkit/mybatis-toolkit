@@ -7,21 +7,21 @@ import io.github.nichetoolkit.rest.RestKey;
 import java.util.Optional;
 
 /**
- * <p>DatasourceType</p>
+ * <p>ConnectionPoolType</p>
  * @author Cyan (snow22314@outlook.com)
  * @version v1.0.0
  */
-public enum DatasourceType implements RestKey<String> {
-    /** 默认单一数据源 */
-    DEFAULT("default"),
-    /** 动态数据源 */
-    DYNAMIC("dynamic"),
+public enum ConnectionPoolType implements RestKey<String> {
+    /** 默认Hikari 数据源 */
+    HIKARI("hikari"),
+    /** 阿里Druid 数据源 */
+    DRUID("druid"),
     /** 自定义数据源 JDBC Sharding 实现等*/
     CUSTOM("custom"),
     ;
     private final String key;
     
-    DatasourceType(String key) {
+    ConnectionPoolType(String key) {
         this.key = key;
     }
 
@@ -32,9 +32,9 @@ public enum DatasourceType implements RestKey<String> {
     }
     
     @JsonCreator
-    public static DatasourceType parseKey(String key) {
-        DatasourceType datasourceType = RestKey.parseKey(DatasourceType.class, key);
-        return Optional.ofNullable(datasourceType).orElse(DatasourceType.DEFAULT);
+    public static ConnectionPoolType parseKey(String key) {
+        ConnectionPoolType datasourceType = RestKey.parseKey(ConnectionPoolType.class, key);
+        return Optional.ofNullable(datasourceType).orElse(ConnectionPoolType.HIKARI);
     }
 
 }

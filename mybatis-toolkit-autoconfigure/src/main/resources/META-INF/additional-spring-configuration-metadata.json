@@ -11,7 +11,7 @@
       "type": "io.github.nichetoolkit.mybatis.configure.MybatisDatasourceProperties"
     },
     {
-      "name": "nichetoolkit.mybatis.datasource.druid",
+      "name": "spring.datasource.druid",
       "sourceType": "io.github.nichetoolkit.mybatis.configure.MybatisDruidPoolProperties",
       "type": "io.github.nichetoolkit.mybatis.configure.MybatisDruidPoolProperties"
     }
@@ -31,73 +31,85 @@
     },
     {
       "name": "nichetoolkit.mybatis.datasource.type",
-      "type": "io.github.nichetoolkit.mybatis.datasource.DatasourceType",
-      "sourceType": "io.github.nichetoolkit.mybatis.datasource.DatasourceType",
+      "type": "io.github.nichetoolkit.mybatis.datasource.ConnectionPoolType",
+      "sourceType": "io.github.nichetoolkit.mybatis.datasource.ConnectionPoolType",
       "description": "mybatis datasource type.",
-      "defaultValue": "default"
+      "defaultValue": "hikari"
     },
     {
-      "name": "nichetoolkit.mybatis.datasource.druid.core-size",
+      "name": "spring.datasource.druid.initial-size",
       "type": "java.lang.Integer",
       "sourceType": "java.lang.Integer",
-      "description": "mybatis datasource druid core size."
+      "description": "spring datasource druid initial size."
     },
     {
-      "name": "nichetoolkit.mybatis.datasource.druid.min-idle-size",
+      "name": "spring.datasource.druid.min-idle",
       "type": "java.lang.Integer",
       "sourceType": "java.lang.Integer",
       "description": "mybatis datasource druid min idle size."
     },
     {
-      "name": "nichetoolkit.mybatis.datasource.druid.max-work-size",
+      "name": "spring.datasource.druid.max-active",
       "type": "java.lang.Integer",
       "sourceType": "java.lang.Integer",
-      "description": "mybatis datasource druid max work size."
+      "description": "mybatis datasource druid max active size."
     },
     {
-      "name": "nichetoolkit.mybatis.datasource.druid.max-wait-time",
+      "name": "spring.datasource.druid.max-wait",
       "type": "java.lang.Integer",
       "sourceType": "java.lang.Integer",
       "description": "mybatis datasource druid max wait time."
     },
     {
-      "name": "nichetoolkit.mybatis.datasource.druid.check-beat-time",
+      "name": "spring.datasource.druid.time-between-eviction-runs-millis",
       "type": "java.lang.Integer",
       "sourceType": "java.lang.Integer",
-      "description": "mybatis datasource druid check beat time."
+      "description": "mybatis datasource druid time between eviction runs time."
     },
     {
-      "name": "nichetoolkit.mybatis.datasource.druid.min-live-time",
+      "name": "spring.datasource.druid.min-evictable-idle-time-millis",
       "type": "java.lang.Integer",
       "sourceType": "java.lang.Integer",
-      "description": "mybatis datasource druid min live time."
+      "description": "mybatis datasource druid min evictable idle time."
     },
     {
-      "name": "nichetoolkit.mybatis.datasource.druid.test-sql",
+      "name": "spring.datasource.druid.max-evictable-idle-time-millis",
+      "type": "java.lang.Integer",
+      "sourceType": "java.lang.Integer",
+      "description": "mybatis datasource druid max evictable idle time."
+    },
+    {
+      "name": "spring.datasource.druid.validation-query",
       "type": "java.lang.String",
       "sourceType": "java.lang.String",
-      "description": "mybatis datasource druid test sql."
+      "description": "mybatis datasource druid test validation query sql."
     },
     {
-      "name": "nichetoolkit.mybatis.datasource.druid.idle-test",
+      "name": "spring.datasource.druid.test-while-idle",
       "type": "java.lang.Boolean",
       "sourceType": "java.lang.Boolean",
       "description": "mybatis datasource druid idle test."
     },
     {
-      "name": "nichetoolkit.mybatis.datasource.druid.apply-test",
+      "name": "spring.datasource.druid.test-on-borrow",
       "type": "java.lang.Boolean",
       "sourceType": "java.lang.Boolean",
-      "description": "mybatis datasource druid apply test."
+      "description": "mybatis datasource druid borrow test."
     },
     {
-      "name": "nichetoolkit.mybatis.datasource.druid.revert-test",
+      "name": "spring.datasource.druid.test-on-return",
       "type": "java.lang.Boolean",
       "sourceType": "java.lang.Boolean",
-      "description": "mybatis datasource druid revert test."
+      "description": "mybatis datasource druid return test."
     },
     {
-      "name": "nichetoolkit.mybatis.datasource.druid.slave.enabled",
+      "name": "spring.datasource.druid.master.enabled",
+      "type": "java.lang.Boolean",
+      "sourceType": "java.lang.Boolean",
+      "description": "mybatis datasource druid master enabled."
+    },
+    {
+      "name": "spring.datasource.druid.slave.enabled",
       "type": "java.lang.Boolean",
       "sourceType": "java.lang.Boolean",
       "description": "mybatis datasource druid slave enabled."
@@ -131,7 +143,20 @@
       ]
     },
     {
-      "name": "nichetoolkit.mybatis.datasource.druid.slave.enabled",
+      "name": "spring.datasource.druid.master.enabled",
+      "values": [
+        {
+          "value": false,
+          "description": "datasource druid master close."
+        },
+        {
+          "value": true,
+          "description": "datasource druid master open."
+        }
+      ]
+    },
+    {
+      "name": "spring.datasource.druid.slave.enabled",
       "values": [
         {
           "value": false,

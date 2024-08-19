@@ -6,13 +6,13 @@ import javax.sql.DataSource;
 import java.util.Map;
 
 /**
- * <p>DynamicDatasource</p>
+ * <p>DruidDatasource</p>
  * @author Cyan (snow22314@outlook.com)
  * @version v1.0.0
  */
-public class DynamicDatasource extends AbstractRoutingDataSource {
+public class DruidDatasource extends AbstractRoutingDataSource {
 
-    public DynamicDatasource(DataSource defaultDatasource, Map<Object, Object> datasourceMap) {
+    public DruidDatasource(DataSource defaultDatasource, Map<Object, Object> datasourceMap) {
         super.setDefaultTargetDataSource(defaultDatasource);
         super.setTargetDataSources(datasourceMap);
         super.afterPropertiesSet();
