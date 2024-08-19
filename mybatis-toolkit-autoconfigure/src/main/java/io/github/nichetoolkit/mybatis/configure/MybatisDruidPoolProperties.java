@@ -36,7 +36,4 @@ public class MybatisDruidPoolProperties {
     /** 归还连接时执行validationQuery检测连接是否有效 */
     private Boolean testOnReturn = false;
 
-    public MybatisDruidPoolProperties() {
-    }
-
 }

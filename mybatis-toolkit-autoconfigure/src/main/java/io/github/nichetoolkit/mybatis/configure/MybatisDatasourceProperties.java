@@ -19,7 +19,4 @@ public class MybatisDatasourceProperties {
     /** 数据源类型 */
     private ConnectionPoolType type = ConnectionPoolType.HIKARI;
 
-    public MybatisDatasourceProperties() {
-    }
-
 }
