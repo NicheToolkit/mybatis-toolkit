@@ -20,7 +20,7 @@ import java.util.Optional;
  */
 public class DefaultColumnFactory implements MybatisColumnFactory {
 
-    private MybatisTableProperties tableProperties;
+    private final MybatisTableProperties tableProperties;
 
     public DefaultColumnFactory() {
         this.tableProperties = ContextUtils.getBean(MybatisTableProperties.class);

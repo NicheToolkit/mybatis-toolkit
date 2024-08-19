@@ -25,9 +25,8 @@ import java.util.Optional;
  */
 public class DefaultTableFactory implements MybatisTableFactory {
 
-    private MybatisTableProperties tableProperties;
+    private final MybatisTableProperties tableProperties;
 
-    @Autowired
     public DefaultTableFactory() {
         this.tableProperties = ContextUtils.getBean(MybatisTableProperties.class);
     }

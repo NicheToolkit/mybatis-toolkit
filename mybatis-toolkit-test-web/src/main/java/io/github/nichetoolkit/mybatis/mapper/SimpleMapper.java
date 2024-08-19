@@ -1,6 +1,7 @@
 package io.github.nichetoolkit.mybatis.mapper;
 
 import io.github.nichetoolkit.mybatis.simple.SimpleEntity;
+import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Component;
 
 /**
