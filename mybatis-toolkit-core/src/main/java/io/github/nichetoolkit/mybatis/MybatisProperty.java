@@ -1,8 +1,7 @@
 package io.github.nichetoolkit.mybatis;
 
 import io.github.nichetoolkit.rest.util.GeneralUtils;
-import io.github.nichetoolkit.rice.helper.PropertyHelper;
-import io.github.nichetoolkit.rice.stereotype.mybatis.RestProperty;
+import io.github.nichetoolkit.mybatis.stereotype.RestProperty;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -44,7 +43,7 @@ public class MybatisProperty<P extends MybatisProperty<P>> {
 
     public Integer getPropertyInt(String property) {
         String value = getProperty(property);
-        return PropertyHelper.toInteger(value);
+        return GeneralUtils.toInteger(value);
     }
 
     public Integer getPropertyInt(String property, Integer defaultValue) {
@@ -62,14 +61,12 @@ public class MybatisProperty<P extends MybatisProperty<P>> {
         return GeneralUtils.isNotEmpty(value) ? Boolean.parseBoolean(value) : defaultValue;
     }
 
-    @SuppressWarnings(value = "unchecked")
-    public P setProperty(String property, String value) {
+    public void setProperty(String property, String value) {
         this.properties.put(property, value);
-        return (P) this;
     }
 
-    public P setProperty(RestProperty property) {
-        return setProperty(property.name(), property.value());
+    public void setProperty(RestProperty property) {
+        setProperty(property.name(), property.value());
     }
 
     @SuppressWarnings(value = "unchecked")

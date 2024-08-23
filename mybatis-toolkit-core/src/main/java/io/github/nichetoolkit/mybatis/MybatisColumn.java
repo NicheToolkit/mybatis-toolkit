@@ -1,7 +1,7 @@
 package io.github.nichetoolkit.mybatis;
 
 import io.github.nichetoolkit.rest.util.GeneralUtils;
-import io.github.nichetoolkit.rice.enums.SortType;
+import io.github.nichetoolkit.mybatis.enums.SortType;
 import lombok.Data;
 import org.apache.ibatis.type.JdbcType;
 import org.apache.ibatis.type.TypeHandler;
@@ -71,7 +71,7 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
     /** jdbc类型 */
     protected JdbcType jdbcType;
     /** 类型处理器 */
-    protected Class<? extends TypeHandler> typeHandler;
+    protected Class<? extends TypeHandler<?>> typeHandler;
     /** 精度 */
     protected String numericScale;
 

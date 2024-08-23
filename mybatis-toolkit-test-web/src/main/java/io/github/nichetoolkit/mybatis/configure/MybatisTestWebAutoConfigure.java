@@ -15,7 +15,6 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @MapperScan(basePackages = {"io.github.nichetoolkit.mybatis.mapper"})
 @ComponentScan(basePackages = {"io.github.nichetoolkit.mybatis"})
-@ImportAutoConfiguration(value = {DatasourceAutoConfigure.class})
 public class MybatisTestWebAutoConfigure {
     public MybatisTestWebAutoConfigure() {
         log.debug("================= mybatis-toolkit-test-web initiated ！ ===================");

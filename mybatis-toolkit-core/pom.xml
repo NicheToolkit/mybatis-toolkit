@@ -55,22 +55,15 @@
     <dependencies>
 
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-configuration-processor</artifactId>
-            <optional>true</optional>
-        </dependency>
-
-        <dependency>
             <groupId>org.mybatis</groupId>
             <artifactId>mybatis</artifactId>
             <version>${mybatis.version}</version>
-            <optional>true</optional>
         </dependency>
 
         <dependency>
             <groupId>io.github.nichetoolkit</groupId>
-            <artifactId>rice-toolkit-core</artifactId>
-            <version>${rice-toolkit.version}</version>
+            <artifactId>rest-toolkit-utils</artifactId>
+            <version>${rest-toolkit.version}</version>
         </dependency>
 
     </dependencies>

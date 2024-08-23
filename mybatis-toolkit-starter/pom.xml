@@ -61,15 +61,8 @@
 
         <dependency>
             <groupId>io.github.nichetoolkit</groupId>
-            <artifactId>mybatis-toolkit-core</artifactId>
+            <artifactId>mybatis-toolkit-context</artifactId>
             <version>${mybatis-toolkit.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.mybatis</groupId>
-            <artifactId>mybatis-spring</artifactId>
-            <version>${mybatis-spring.version}</version>
-            <optional>true</optional>
         </dependency>
 
         <dependency>

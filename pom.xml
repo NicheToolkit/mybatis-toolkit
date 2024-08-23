@@ -9,6 +9,7 @@
 
     <modules>
         <module>mybatis-toolkit-core</module>
+        <module>mybatis-toolkit-context</module>
         <module>mybatis-toolkit-starter</module>
         <module>mybatis-toolkit-autoconfigure</module>
         <module>mybatis-toolkit-test-web</module>

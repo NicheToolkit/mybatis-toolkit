@@ -1,8 +1,7 @@
 package io.github.nichetoolkit.mybatis;
 
-import io.github.nichetoolkit.mybatis.defaults.MybatisGenericTypeResolver;
+import io.github.nichetoolkit.mybatis.resolver.MybatisGenericTypeResolver;
 import io.github.nichetoolkit.rest.error.lack.AccessibleLackError;
-import io.github.nichetoolkit.rice.stereotype.mybatis.column.RestName;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import org.springframework.core.annotation.AnnotationUtils;

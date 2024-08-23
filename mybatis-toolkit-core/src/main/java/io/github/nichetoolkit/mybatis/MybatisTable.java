@@ -1,10 +1,10 @@
 package io.github.nichetoolkit.mybatis;
 
-import io.github.nichetoolkit.mybatis.defaults.MybatisGenericTypeResolver;
+import io.github.nichetoolkit.mybatis.resolver.MybatisGenericTypeResolver;
 import io.github.nichetoolkit.rest.error.lack.ConfigureLackError;
 import io.github.nichetoolkit.rest.util.GeneralUtils;
-import io.github.nichetoolkit.rice.enums.SortType;
-import io.github.nichetoolkit.rice.enums.StyleType;
+import io.github.nichetoolkit.mybatis.enums.SortType;
+import io.github.nichetoolkit.mybatis.enums.StyleType;
 import lombok.Data;
 import org.apache.ibatis.annotations.SelectProvider;
 import org.apache.ibatis.builder.annotation.ProviderContext;
@@ -351,7 +351,7 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
      */
     protected boolean hasBeenReplaced(Configuration configuration, String cacheKey) {
         MappedStatement mappedStatement = configuration.getMappedStatement(cacheKey);
-        if (mappedStatement.getResultMaps() != null && mappedStatement.getResultMaps().size() > 0) {
+        if (mappedStatement.getResultMaps() != null && !mappedStatement.getResultMaps().isEmpty()) {
             return mappedStatement.getResultMaps().get(0) == this.autoResultMaps.get(0);
         }
         return false;
@@ -451,11 +451,11 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
     /**
      * 实例化TypeHandler
      */
-    public TypeHandler getTypeHandlerInstance(Class<?> javaTypeClass, Class<?> typeHandlerClass) {
+    public TypeHandler<?> getTypeHandlerInstance(Class<?> javaTypeClass, Class<?> typeHandlerClass) {
         if (javaTypeClass != null) {
             try {
                 Constructor<?> c = typeHandlerClass.getConstructor(Class.class);
-                return (TypeHandler) c.newInstance(javaTypeClass);
+                return (TypeHandler<?>) c.newInstance(javaTypeClass);
             } catch (NoSuchMethodException ignored) {
                 // ignored
             } catch (Exception e) {
@@ -464,7 +464,7 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
         }
         try {
             Constructor<?> c = typeHandlerClass.getConstructor();
-            return (TypeHandler) c.newInstance();
+            return (TypeHandler<?>) c.newInstance();
         } catch (Exception e) {
             throw new TypeException("Unable to find a usable constructor for " + typeHandlerClass, e);
         }
@@ -574,7 +574,7 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
                 .filter(column -> GeneralUtils.isNotEmpty(column.getSortType()) && SortType.NONE != column.getSortType())
                 .sorted(Comparator.comparing(MybatisColumn::getPriority))
                 .collect(Collectors.toList());
-        if (orderByColumns.size() > 0) {
+        if (!orderByColumns.isEmpty()) {
             return Optional.of(orderByColumns);
         }
         return Optional.empty();
