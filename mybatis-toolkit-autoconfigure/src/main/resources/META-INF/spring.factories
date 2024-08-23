@@ -1,1 +1,1 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=io.github.nichetoolkit.mybatis.configure.MybatisMapperAutoConfigure,io.github.nichetoolkit.mybatis.configure.MybatisDatasourceAutoConfigure
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=io.github.nichetoolkit.mybatis.configure.MybatisDatasourceAutoConfigure

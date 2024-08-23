@@ -1,6 +1,7 @@
 
-package io.github.nichetoolkit.mybatis;
+package io.github.nichetoolkit.mybatis.advice;
 
+import io.github.nichetoolkit.mybatis.MybatisEntityMapper;
 import io.github.nichetoolkit.mybatis.mapper.MybatisSuperMapper;
 import io.github.nichetoolkit.rice.IdEntity;
 
@@ -12,7 +13,7 @@ import io.github.nichetoolkit.rice.IdEntity;
 public interface SuperMapperAdvice<M extends MybatisSuperMapper<E, I>, E extends IdEntity<I>, I> extends MybatisEntityMapper<E> {
 
   default M superMapper() {
-    return MybatisMapperProvider.<M,E, I>defaultInstance().superMapper(clazz());
+    return MybatisMapperAdvice.<M,E, I>defaultInstance().superMapper(clazz());
   }
 
 }

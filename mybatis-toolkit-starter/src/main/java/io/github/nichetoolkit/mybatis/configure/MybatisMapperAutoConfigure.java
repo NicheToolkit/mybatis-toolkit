@@ -1,6 +1,6 @@
 package io.github.nichetoolkit.mybatis.configure;
 
-import io.github.nichetoolkit.mybatis.MybatisMapperProvider;
+import io.github.nichetoolkit.mybatis.advice.MybatisMapperAdvice;
 import lombok.extern.slf4j.Slf4j;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.InitializingBean;
@@ -29,24 +29,24 @@ public class MybatisMapperAutoConfigure {
     }
 
     @Bean
-    @ConditionalOnMissingBean(MybatisMapperProvider.class)
-    public MybatisMapperProvider<?,?,?> mapperProvider(SqlSessionTemplate sqlSessionTemplate) {
-        return new MybatisMapperProvider<>(sqlSessionTemplate);
+    @ConditionalOnMissingBean(MybatisMapperAdvice.class)
+    public MybatisMapperAdvice<?,?,?> mapperAdvice(SqlSessionTemplate sqlSessionTemplate) {
+        return new MybatisMapperAdvice<>(sqlSessionTemplate);
     }
 
     @Configuration
     @ComponentScan(basePackages = {"io.github.nichetoolkit.mybatis"})
     public static class AutoRegisterConfigure implements InitializingBean {
-        private final MybatisMapperProvider<?,?,?> mapperProvider;
+        private final MybatisMapperAdvice<?,?,?> mapperAdvice;
 
         @Autowired
-        public AutoRegisterConfigure(MybatisMapperProvider<?,?,?> mapperProvider) {
-            this.mapperProvider = mapperProvider;
+        public AutoRegisterConfigure(MybatisMapperAdvice<?,?,?> mapperAdvice) {
+            this.mapperAdvice = mapperAdvice;
         }
 
         @Override
         public void afterPropertiesSet() {
-            mapperProvider.registerAsDefault();
+            mapperAdvice.registerAsDefault();
         }
     }
 

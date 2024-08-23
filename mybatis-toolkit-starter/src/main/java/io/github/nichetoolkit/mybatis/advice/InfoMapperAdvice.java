@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
-package io.github.nichetoolkit.mybatis;
+package io.github.nichetoolkit.mybatis.advice;
 
+import io.github.nichetoolkit.mybatis.MybatisEntityMapper;
 import io.github.nichetoolkit.mybatis.mapper.MybatisInfoMapper;
 import io.github.nichetoolkit.rice.InfoEntity;
 
@@ -27,7 +28,7 @@ import io.github.nichetoolkit.rice.InfoEntity;
 public interface InfoMapperAdvice<M extends MybatisInfoMapper<E, I>, E extends InfoEntity<I>, I> extends MybatisEntityMapper<E> {
 
   default M infoMapper() {
-    return MybatisMapperProvider.<M,E, I>defaultInstance().superMapper(clazz());
+    return MybatisMapperAdvice.<M,E, I>defaultInstance().superMapper(clazz());
   }
 
 }

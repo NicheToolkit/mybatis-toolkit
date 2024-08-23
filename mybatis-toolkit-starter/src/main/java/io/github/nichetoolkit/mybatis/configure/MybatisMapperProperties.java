@@ -3,8 +3,6 @@ package io.github.nichetoolkit.mybatis.configure;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.boot.context.properties.NestedConfigurationProperty;
-import org.springframework.stereotype.Component;
 
 /**
  * <p>MybatisMapperProperties</p>

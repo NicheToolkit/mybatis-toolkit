@@ -1,5 +1,6 @@
-package io.github.nichetoolkit.mybatis;
+package io.github.nichetoolkit.mybatis.advice;
 
+import io.github.nichetoolkit.mybatis.MybatisClassFinder;
 import io.github.nichetoolkit.mybatis.error.MybatisProviderLackError;
 import io.github.nichetoolkit.mybatis.mapper.MybatisSuperMapper;
 import io.github.nichetoolkit.rest.util.GeneralUtils;
@@ -19,11 +20,11 @@ import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * <p>MybatisMapperProvider</p>
+ * <p>MybatisMapperAdvice</p>
  * @author Cyan (snow22314@outlook.com)
  * @version v1.0.0
  */
-public class MybatisMapperProvider<M extends MybatisSuperMapper<E, I>, E extends IdEntity<I>, I> implements ApplicationContextAware, ApplicationListener<ContextRefreshedEvent> {
+public class MybatisMapperAdvice<M extends MybatisSuperMapper<E, I>, E extends IdEntity<I>, I> implements ApplicationContextAware, ApplicationListener<ContextRefreshedEvent> {
 
 
     protected final Map<Class<?>, MybatisSuperMapper<E, I>> SUPER_MAPPER_CACHE = new ConcurrentHashMap<>();
@@ -33,13 +34,13 @@ public class MybatisMapperProvider<M extends MybatisSuperMapper<E, I>, E extends
     protected SqlSessionTemplate sqlSessionTemplate;
 
     @Autowired
-    public MybatisMapperProvider(SqlSessionTemplate sqlSessionTemplate) {
+    public MybatisMapperAdvice(SqlSessionTemplate sqlSessionTemplate) {
         this.sqlSessionTemplate = sqlSessionTemplate;
     }
 
     @Override
     public void setApplicationContext(@NonNull ApplicationContext applicationContext) throws BeansException {
-        MybatisMapperProvider.applicationContext = applicationContext;
+        MybatisMapperAdvice.applicationContext = applicationContext;
     }
 
     @Override
@@ -47,13 +48,13 @@ public class MybatisMapperProvider<M extends MybatisSuperMapper<E, I>, E extends
         registryMappers();
     }
 
-    public static <M extends MybatisSuperMapper<E, I>, E extends IdEntity<I>, I> MybatisMapperProvider<M, E, I> defaultInstance() {
+    public static <M extends MybatisSuperMapper<E, I>, E extends IdEntity<I>, I> MybatisMapperAdvice<M, E, I> defaultInstance() {
         return MybatisMapperProviderInstance.instance();
     }
 
     @SuppressWarnings(value = "unchecked")
-    public static <M extends MybatisSuperMapper<E, I>, E extends IdEntity<I>, I> MybatisMapperProvider<M, E, I> getInstance(String instanceName) {
-        return (MybatisMapperProvider<M, E, I>) applicationContext.getBean(instanceName);
+    public static <M extends MybatisSuperMapper<E, I>, E extends IdEntity<I>, I> MybatisMapperAdvice<M, E, I> getInstance(String instanceName) {
+        return (MybatisMapperAdvice<M, E, I>) applicationContext.getBean(instanceName);
     }
 
     protected void registryMappers() {
@@ -94,17 +95,17 @@ public class MybatisMapperProvider<M extends MybatisSuperMapper<E, I>, E extends
     }
 
     private static class MybatisMapperProviderInstance {
-        public static MybatisMapperProvider INSTANCE;
+        public static MybatisMapperAdvice INSTANCE;
 
         @SuppressWarnings(value = "unchecked")
-        private static <M extends MybatisSuperMapper<E, I>, E extends IdEntity<I>, I> MybatisMapperProvider<M, E, I> instance() {
+        private static <M extends MybatisSuperMapper<E, I>, E extends IdEntity<I>, I> MybatisMapperAdvice<M, E, I> instance() {
             if (INSTANCE == null) {
                 throw new MybatisProviderLackError("MybatisMapperProvider default instance not found");
             }
             return INSTANCE;
         }
 
-        private static <M extends MybatisSuperMapper<E, I>, E extends IdEntity<I>, I> void instance(MybatisMapperProvider<M, E, I> instance) {
+        private static <M extends MybatisSuperMapper<E, I>, E extends IdEntity<I>, I> void instance(MybatisMapperAdvice<M, E, I> instance) {
             MybatisMapperProviderInstance.INSTANCE = instance;
         }
     }
