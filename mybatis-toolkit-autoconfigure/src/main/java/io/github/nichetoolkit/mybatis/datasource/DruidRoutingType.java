@@ -11,7 +11,7 @@ import java.util.Optional;
  * @author Cyan (snow22314@outlook.com)
  * @version v1.0.0
  */
-public enum DruidDatasourceType implements RestKey<String> {
+public enum DruidRoutingType implements RestKey<String> {
     /** 主库 */
     DEFAULT("default"),
     /** 主库 */
@@ -21,7 +21,7 @@ public enum DruidDatasourceType implements RestKey<String> {
     ;
     private final String key;
 
-    DruidDatasourceType(String key) {
+    DruidRoutingType(String key) {
         this.key = key;
     }
 
@@ -32,9 +32,9 @@ public enum DruidDatasourceType implements RestKey<String> {
     }
 
     @JsonCreator
-    public static DruidDatasourceType parseKey(String key) {
-        DruidDatasourceType datasourceType = RestKey.parseKey(DruidDatasourceType.class, key);
-        return Optional.ofNullable(datasourceType).orElse(DruidDatasourceType.DEFAULT);
+    public static DruidRoutingType parseKey(String key) {
+        DruidRoutingType routingType = RestKey.parseKey(DruidRoutingType.class, key);
+        return Optional.ofNullable(routingType).orElse(DruidRoutingType.DEFAULT);
     }
 
 }

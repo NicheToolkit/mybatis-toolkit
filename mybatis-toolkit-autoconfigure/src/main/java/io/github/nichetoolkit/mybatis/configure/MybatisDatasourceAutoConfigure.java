@@ -3,14 +3,15 @@ package io.github.nichetoolkit.mybatis.configure;
 import com.alibaba.druid.pool.DruidDataSource;
 import com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceBuilder;
 import com.zaxxer.hikari.HikariDataSource;
-import io.github.nichetoolkit.mybatis.datasource.DruidDatasource;
-import io.github.nichetoolkit.mybatis.datasource.DruidDatasourceType;
+import io.github.nichetoolkit.mybatis.datasource.DruidRoutingDatasource;
+import io.github.nichetoolkit.mybatis.datasource.DruidRoutingType;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -37,7 +38,7 @@ import java.util.Map;
 @Configuration
 @ComponentScan(basePackages = {"io.github.nichetoolkit.mybatis"})
 @EnableConfigurationProperties({MybatisDatasourceProperties.class, MybatisDruidPoolProperties.class})
-@ConditionalOnProperty(prefix = "nichetoolkit.mybatis.datasource",  havingValue = "true", matchIfMissing = true)
+@ConditionalOnProperty(prefix = "nichetoolkit.mybatis.datasource", name="enabled",  havingValue = "true", matchIfMissing = true)
 public class MybatisDatasourceAutoConfigure {
 
     public MybatisDatasourceAutoConfigure() {
@@ -46,7 +47,8 @@ public class MybatisDatasourceAutoConfigure {
 
     @Configuration
     @EnableTransactionManagement
-    @ConditionalOnProperty(value = "nichetoolkit.mybatis.datasource.type", havingValue = "hikari", matchIfMissing = true)
+    @ConditionalOnClass(HikariDataSource.class)
+    @ConditionalOnProperty(prefix = "nichetoolkit.mybatis.datasource", name="type", havingValue = "hikari", matchIfMissing = true)
     public static class HikariDatasourceAutoConfigure {
 
         public HikariDatasourceAutoConfigure() {
@@ -79,7 +81,8 @@ public class MybatisDatasourceAutoConfigure {
 
     @Configuration
     @EnableTransactionManagement
-    @ConditionalOnProperty(value = "nichetoolkit.mybatis.datasource.type", havingValue = "druid", matchIfMissing = true)
+    @ConditionalOnClass(DruidDataSource.class)
+    @ConditionalOnProperty(prefix = "nichetoolkit.mybatis.datasource", name = "type", havingValue = "druid", matchIfMissing = true)
     public static class DruidDatasourceAutoConfigure {
 
         public DruidDatasourceAutoConfigure() {
@@ -107,32 +110,32 @@ public class MybatisDatasourceAutoConfigure {
         @Primary
         @Autowired(required = false)
         @Bean(name = "druidDatasource")
-        @ConditionalOnMissingBean(DruidDatasource.class)
-        public DruidDatasource druidDatasource(@Qualifier("masterDatasource") DataSource masterDatasource, @Qualifier("slaveDatasource") DataSource slaveDatasource) {
+        @ConditionalOnMissingBean(DruidRoutingDatasource.class)
+        public DruidRoutingDatasource druidDatasource(@Qualifier("masterDatasource") DataSource masterDatasource, @Qualifier("slaveDatasource") DataSource slaveDatasource) {
             Map<Object, Object> datasourceMap = new HashMap<>();
-            datasourceMap.put(DruidDatasourceType.MASTER, masterDatasource);
-            datasourceMap.put(DruidDatasourceType.SLAVE, slaveDatasource);
-            return new DruidDatasource(masterDatasource, datasourceMap);
+            datasourceMap.put(DruidRoutingType.MASTER, masterDatasource);
+            datasourceMap.put(DruidRoutingType.SLAVE, slaveDatasource);
+            return new DruidRoutingDatasource(masterDatasource, datasourceMap);
         }
 
         @Primary
         @Autowired(required = false)
         @Bean(name = "druidDatasource")
-        @ConditionalOnMissingBean(DruidDatasource.class)
-        public DruidDatasource masterDatasource(@Qualifier("masterDatasource") DataSource masterDatasource) {
+        @ConditionalOnMissingBean(DruidRoutingDatasource.class)
+        public DruidRoutingDatasource masterDatasource(@Qualifier("masterDatasource") DataSource masterDatasource) {
             Map<Object, Object> datasourceMap = new HashMap<>();
-            datasourceMap.put(DruidDatasourceType.MASTER, masterDatasource);
-            return new DruidDatasource(masterDatasource, datasourceMap);
+            datasourceMap.put(DruidRoutingType.MASTER, masterDatasource);
+            return new DruidRoutingDatasource(masterDatasource, datasourceMap);
         }
 
         @Primary
         @Autowired(required = false)
         @Bean(name = "druidDatasource")
-        @ConditionalOnMissingBean(DruidDatasource.class)
-        public DruidDatasource slaveDatasource(@Qualifier("slaveDatasource") DataSource slaveDatasource) {
+        @ConditionalOnMissingBean(DruidRoutingDatasource.class)
+        public DruidRoutingDatasource slaveDatasource(@Qualifier("slaveDatasource") DataSource slaveDatasource) {
             Map<Object, Object> datasourceMap = new HashMap<>();
-            datasourceMap.put(DruidDatasourceType.SLAVE, slaveDatasource);
-            return new DruidDatasource(slaveDatasource, datasourceMap);
+            datasourceMap.put(DruidRoutingType.SLAVE, slaveDatasource);
+            return new DruidRoutingDatasource(slaveDatasource, datasourceMap);
         }
 
         @Bean(name = "sqlSessionFactory")

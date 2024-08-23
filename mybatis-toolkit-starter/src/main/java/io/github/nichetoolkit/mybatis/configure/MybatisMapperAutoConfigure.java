@@ -21,7 +21,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @ComponentScan(basePackages = {"io.github.nichetoolkit.mybatis"})
 @EnableConfigurationProperties({MybatisMapperProperties.class})
-@ConditionalOnProperty(prefix = "nichetoolkit.mybatis.mapper.enabled", havingValue = "true", matchIfMissing = true)
+@ConditionalOnProperty(prefix = "nichetoolkit.mybatis.mapper", name="enabled", havingValue = "true", matchIfMissing = true)
 public class MybatisMapperAutoConfigure {
 
     public MybatisMapperAutoConfigure() {

@@ -1,6 +1,9 @@
 package io.github.nichetoolkit.mybatis.stereotype;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.springframework.core.annotation.AliasFor;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.lang.annotation.*;
 
@@ -13,6 +16,11 @@ import java.lang.annotation.*;
 @Inherited
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE, ElementType.METHOD, ElementType.FIELD, ElementType.PARAMETER})
+@Component
 @Mapper
 public @interface RestMapper {
+    @AliasFor(
+            annotation = Component.class
+    )
+    String value() default "";
 }
