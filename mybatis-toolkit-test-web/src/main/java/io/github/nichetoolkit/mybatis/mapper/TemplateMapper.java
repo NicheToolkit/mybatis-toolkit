@@ -3,6 +3,7 @@ package io.github.nichetoolkit.mybatis.mapper;
 import io.github.nichetoolkit.mybatis.simple.TemplateEntity;
 import io.github.nichetoolkit.mybatis.simple.TemplateKey;
 import io.github.nichetoolkit.mybatis.stereotype.RestMapper;
+import org.springframework.stereotype.Component;
 
 /**
  * <p>TemplateMapper</p>

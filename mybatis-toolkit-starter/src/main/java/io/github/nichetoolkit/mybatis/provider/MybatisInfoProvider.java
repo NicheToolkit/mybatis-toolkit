@@ -21,7 +21,6 @@ import java.util.stream.Collectors;
  */
 public class MybatisInfoProvider {
 
-
     public static String findByName(ProviderContext providerContext, @Param("name") String name, @Param("sign") String sign) throws RestException {
         return findDynamicByName(providerContext, null, name, sign);
     }
