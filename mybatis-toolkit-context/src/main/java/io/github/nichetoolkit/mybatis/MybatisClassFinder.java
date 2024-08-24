@@ -23,6 +23,7 @@ public interface MybatisClassFinder extends MybatisOrder {
      */
     static Optional<Class<?>> findClass(Class<?> mapperType, Method mapperMethod) {
         Objects.requireNonNull(mapperType);
+        List<MybatisClassFinder> instances = ClassFinderInstance.instances();
         for (MybatisClassFinder instance : ClassFinderInstance.instances()) {
             Optional<Class<?>> optionalClass = instance.findEntity(mapperType, mapperMethod);
             if (optionalClass.isPresent()) {

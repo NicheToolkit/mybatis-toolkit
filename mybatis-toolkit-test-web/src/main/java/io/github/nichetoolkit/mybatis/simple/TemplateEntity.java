@@ -1,9 +1,8 @@
 package io.github.nichetoolkit.mybatis.simple;
 
 import io.github.nichetoolkit.rice.RestInfoEntity;
-import io.github.nichetoolkit.rice.RiceInfoEntity;
-import io.github.nichetoolkit.rice.stereotype.mybatis.column.RestForceInsert;
-import io.github.nichetoolkit.rice.stereotype.mybatis.table.RestEntity;
+import io.github.nichetoolkit.mybatis.stereotype.column.RestForceInsert;
+import io.github.nichetoolkit.mybatis.stereotype.table.RestEntity;
 
 import java.util.Date;
 
