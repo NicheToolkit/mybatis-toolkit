@@ -78,6 +78,9 @@
         <compiler-plugin.version>3.3</compiler-plugin.version>
         <release-plugin.version>2.5.3</release-plugin.version>
 
+        <pagehelper.version>6.1.0</pagehelper.version>
+        <pagehelper-starter.version>2.1.0</pagehelper-starter.version>
+
         <mybatis.version>3.5.16</mybatis.version>
         <alibaba-druid.version>1.2.23</alibaba-druid.version>
 

@@ -64,7 +64,6 @@
             <groupId>org.mybatis</groupId>
             <artifactId>mybatis</artifactId>
             <version>${mybatis.version}</version>
-            <optional>true</optional>
         </dependency>
 
     </dependencies>
