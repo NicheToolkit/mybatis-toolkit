@@ -12,7 +12,7 @@
         <module>mybatis-toolkit-context</module>
         <module>mybatis-toolkit-starter</module>
         <module>mybatis-toolkit-autoconfigure</module>
-        <module>mybatis-toolkit-test-web</module>
+<!--        <module>mybatis-toolkit-test-web</module>-->
     </modules>
 
     <name>mybatis-toolkit-parent</name>
@@ -42,7 +42,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.7.7</version>
+        <version>2.7.18</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
@@ -66,9 +66,9 @@
         <maven.compiler.encoding>UTF-8</maven.compiler.encoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
-        <spring-boot.version>2.7.7</spring-boot.version>
-        <rest-toolkit.version>1.0.6-SNAPSHOT</rest-toolkit.version>
-        <rice-toolkit.version>1.0.5-SNAPSHOT</rice-toolkit.version>
+        <spring-boot.version>2.7.18</spring-boot.version>
+        <rest-toolkit.version>1.0.7-SNAPSHOT</rest-toolkit.version>
+        <rice-toolkit.version>1.0.6-SNAPSHOT</rice-toolkit.version>
         <mybatis-toolkit.version>1.0.1-SNAPSHOT</mybatis-toolkit.version>
 
         <source-plugin.version>2.2.1</source-plugin.version>
@@ -78,15 +78,9 @@
         <compiler-plugin.version>3.3</compiler-plugin.version>
         <release-plugin.version>2.5.3</release-plugin.version>
 
-        <pagehelper.version>1.4.6</pagehelper.version>
-        <mybatis-spring-starter.version>2.3.0</mybatis-spring-starter.version>
+        <mybatis.version>3.5.16</mybatis.version>
+        <alibaba-druid.version>1.2.23</alibaba-druid.version>
 
-        <mybatis.version>3.5.11</mybatis.version>
-        <mybatis-spring.version>2.1.0</mybatis-spring.version>
-
-        <HikariCP.version>3.4.5</HikariCP.version>
-        <alibaba-druid.version>1.2.22</alibaba-druid.version>
-        <postgresql.version>42.2.23</postgresql.version>
     </properties>
 
     <repositories>

@@ -1,6 +1,5 @@
 package io.github.nichetoolkit.mybatis;
 
-import io.github.nichetoolkit.*;
 import io.github.nichetoolkit.mybatis.defaults.DefaultColumnFactoryChain;
 import io.github.nichetoolkit.mybatis.defaults.DefaultTableFactoryChain;
 import io.github.nichetoolkit.mybatis.helper.ServiceLoaderHelper;
