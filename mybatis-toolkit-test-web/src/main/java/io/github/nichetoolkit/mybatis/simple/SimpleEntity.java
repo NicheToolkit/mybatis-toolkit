@@ -7,28 +7,43 @@ import io.github.nichetoolkit.rice.RiceInfoEntity;
 import java.util.Date;
 
 
-/**
- * <p>SimpleEntity</p>
- * @author Cyan (snow22314@outlook.com)
- * @version v1.0.0
- */
+
 @RestEntity(name = "ntr_simple")
 public class SimpleEntity extends RiceInfoEntity<SimpleEntity, SimpleModel> {
 
+    /**
+     * time.
+     * The Time.
+     */
     @RestForceInsert("now()")
     private Date time;
 
+    /**
+     * Instantiates a new Simple entity.
+     */
     public SimpleEntity() {
     }
 
+    /**
+     * Instantiates a new Simple entity.
+     * @param id the id
+     */
     public SimpleEntity(String id) {
         super(id);
     }
 
+    /**
+     * Gets time.
+     * @return the time
+     */
     public Date getTime() {
         return time;
     }
 
+    /**
+     * Sets time.
+     * @param time the time
+     */
     public void setTime(Date time) {
         this.time = time;
     }

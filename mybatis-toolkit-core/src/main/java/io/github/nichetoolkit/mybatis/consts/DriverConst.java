@@ -5,7 +5,7 @@ package io.github.nichetoolkit.mybatis.consts;
  * @author Cyan (snow22314@outlook.com)
  * @version v1.0.0
  */
-public class DriverConstants {
+public class DriverConst {
 
     public static final String POSTGRESQL = "org.postgresql.Driver";
     public static final String MYSQL = "com.mysql.cj.jdbc.Driver";

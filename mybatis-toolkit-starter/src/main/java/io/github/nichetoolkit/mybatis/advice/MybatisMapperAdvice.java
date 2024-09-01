@@ -26,7 +26,6 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class MybatisMapperAdvice<M extends MybatisSuperMapper<E, I>, E extends IdEntity<I>, I> implements ApplicationContextAware, ApplicationListener<ContextRefreshedEvent> {
 
-
     protected final Map<Class<?>, MybatisSuperMapper<E, I>> SUPER_MAPPER_CACHE = new ConcurrentHashMap<>();
 
     protected static ApplicationContext applicationContext;

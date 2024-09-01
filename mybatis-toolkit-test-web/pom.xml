@@ -26,7 +26,6 @@
         <dependency>
             <groupId>io.github.nichetoolkit</groupId>
             <artifactId>mybatis-toolkit-autoconfigure</artifactId>
-            <version>${mybatis-toolkit.version}</version>
         </dependency>
 
         <dependency>

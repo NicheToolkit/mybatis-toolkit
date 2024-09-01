@@ -2,7 +2,7 @@ package io.github.nichetoolkit.mybatis.enums;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
-import io.github.nichetoolkit.mybatis.consts.DriverConstants;
+import io.github.nichetoolkit.mybatis.consts.DriverConst;
 import io.github.nichetoolkit.rest.RestValue;
 
 import java.util.Optional;
@@ -14,27 +14,27 @@ import java.util.Optional;
  */
 public enum DatabaseType implements RestValue<String, String> {
     /** PostgreSQL OpenGuss GaussDB */
-    POSTGRESQL("postgresql", DriverConstants.POSTGRESQL),
+    POSTGRESQL("postgresql", DriverConst.POSTGRESQL),
     /** PostgreSQL OpenGuss GaussDB */
-    GAUSSDB("gaussdb", DriverConstants.POSTGRESQL),
+    GAUSSDB("gaussdb", DriverConst.POSTGRESQL),
     /** MySQL */
-    MYSQL("mysql", DriverConstants.MYSQL),
+    MYSQL("mysql", DriverConst.MYSQL),
     /** MariaDB */
-    MARIADB("mariadb", DriverConstants.MARIADB),
+    MARIADB("mariadb", DriverConst.MARIADB),
     /** Microsoft SQL Server */
-    SQLSEVER("sqlsever", DriverConstants.SQLSEVER),
+    SQLSEVER("sqlsever", DriverConst.SQLSEVER),
     /** MariaDB */
-    ORACLE("oracle", DriverConstants.ORACLE),
+    ORACLE("oracle", DriverConst.ORACLE),
     /** SQLite */
-    SQLITE("sqlite", DriverConstants.SQLITE),
+    SQLITE("sqlite", DriverConst.SQLITE),
     /** H2 */
-    H2("h2", DriverConstants.H2),
+    H2("h2", DriverConst.H2),
     /** HSQLDB */
-    HSQLDB("hsqldb", DriverConstants.HSQLDB),
+    HSQLDB("hsqldb", DriverConst.HSQLDB),
     /** Amazon Redshift */
-    REDSHIFT("redshift", DriverConstants.REDSHIFT),
+    REDSHIFT("redshift", DriverConst.REDSHIFT),
     /** Apache Cassandra */
-    CASSANDRA("cassandra", DriverConstants.CASSANDRA),
+    CASSANDRA("cassandra", DriverConst.CASSANDRA),
     ;
     private final String key;
     private final String value;
