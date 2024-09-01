@@ -53,7 +53,6 @@
     </distributionManagement>
 
     <dependencies>
-
         <dependency>
             <groupId>io.github.nichetoolkit</groupId>
             <artifactId>rest-toolkit-utils</artifactId>
@@ -63,7 +62,6 @@
             <groupId>org.mybatis</groupId>
             <artifactId>mybatis</artifactId>
         </dependency>
-
     </dependencies>
 
     <repositories>
