@@ -67,6 +67,7 @@
         <dependency>
             <groupId>com.zaxxer</groupId>
             <artifactId>HikariCP</artifactId>
+            <scope>runtime</scope>
             <optional>true</optional>
         </dependency>
 
@@ -74,6 +75,7 @@
             <groupId>com.alibaba</groupId>
             <artifactId>druid-spring-boot-starter</artifactId>
             <version>${alibaba-druid.version}</version>
+            <scope>runtime</scope>
             <optional>true</optional>
         </dependency>
 
