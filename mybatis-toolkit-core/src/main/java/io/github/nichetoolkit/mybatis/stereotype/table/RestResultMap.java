@@ -6,9 +6,15 @@ import org.springframework.stereotype.Indexed;
 import java.lang.annotation.*;
 
 /**
- * <p>RestResultMap</p>
+ * <code>RestResultMap</code>
+ * <p>The type rest result map interface.</p>
  * @author Cyan (snow22314@outlook.com)
- * @version v1.0.0
+ * @see java.lang.annotation.Annotation
+ * @see java.lang.annotation.Retention
+ * @see java.lang.annotation.Target
+ * @see java.lang.annotation.Documented
+ * @see org.springframework.stereotype.Indexed
+ * @since Jdk1.8
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE})
@@ -16,19 +22,29 @@ import java.lang.annotation.*;
 @Indexed
 public @interface RestResultMap {
     /**
-     * 指定返回集合名称
+     * <code>value</code>
+     * <p>the method.</p>
+     * @return {@link java.lang.String} <p>the return object is <code>String</code> type.</p>
+     * @see java.lang.String
+     * @see org.springframework.core.annotation.AliasFor
      */
     @AliasFor("name")
     String value() default "";
 
     /**
-     * 指定返回集合名称
+     * <code>name</code>
+     * <p>the method.</p>
+     * @return {@link java.lang.String} <p>the return object is <code>String</code> type.</p>
+     * @see java.lang.String
+     * @see org.springframework.core.annotation.AliasFor
      */
     @AliasFor("value")
     String name() default "";
 
     /**
-     * 自动根据字段生成返回集合
+     * <code>autoResultMap</code>
+     * <p>the result map method.</p>
+     * @return boolean <p>the result map return object is <code>boolean</code> type.</p>
      */
     boolean autoResultMap() default true;
 

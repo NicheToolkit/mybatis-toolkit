@@ -6,9 +6,15 @@ import org.springframework.stereotype.Indexed;
 import java.lang.annotation.*;
 
 /**
- * <p>RestEntity</p>
+ * <code>RestEntity</code>
+ * <p>The type rest entity interface.</p>
  * @author Cyan (snow22314@outlook.com)
- * @version v1.0.0
+ * @see java.lang.annotation.Annotation
+ * @see java.lang.annotation.Retention
+ * @see java.lang.annotation.Target
+ * @see java.lang.annotation.Documented
+ * @see org.springframework.stereotype.Indexed
+ * @since Jdk1.8
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE,ElementType.METHOD,ElementType.ANNOTATION_TYPE})
@@ -16,24 +22,38 @@ import java.lang.annotation.*;
 @Indexed
 public @interface RestEntity {
     /**
-     * 表名，默认空时使用对象名
+     * <code>value</code>
+     * <p>the method.</p>
+     * @return {@link java.lang.String} <p>the return object is <code>String</code> type.</p>
+     * @see java.lang.String
+     * @see org.springframework.core.annotation.AliasFor
      */
     @AliasFor("name")
     String value() default "";
 
     /**
-     * 表名，默认空时使用对象名
+     * <code>name</code>
+     * <p>the method.</p>
+     * @return {@link java.lang.String} <p>the return object is <code>String</code> type.</p>
+     * @see java.lang.String
+     * @see org.springframework.core.annotation.AliasFor
      */
     @AliasFor("value")
     String name() default "";
 
     /**
-     * 备注
+     * <code>remark</code>
+     * <p>the method.</p>
+     * @return {@link java.lang.String} <p>the return object is <code>String</code> type.</p>
+     * @see java.lang.String
      */
     String remark() default "";
 
     /**
-     * 实体类型
+     * <code>entity</code>
+     * <p>the method.</p>
+     * @return {@link java.lang.Class} <p>the return object is <code>Class</code> type.</p>
+     * @see java.lang.Class
      */
     Class<?> entity() default Object.class;
 

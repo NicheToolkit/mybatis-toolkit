@@ -7,9 +7,15 @@ import org.springframework.stereotype.Indexed;
 import java.lang.annotation.*;
 
 /**
- * <p>RestStyle</p>
+ * <code>RestStyle</code>
+ * <p>The type rest style interface.</p>
  * @author Cyan (snow22314@outlook.com)
- * @version v1.0.0
+ * @see java.lang.annotation.Annotation
+ * @see java.lang.annotation.Retention
+ * @see java.lang.annotation.Target
+ * @see java.lang.annotation.Documented
+ * @see org.springframework.stereotype.Indexed
+ * @since Jdk1.8
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE})
@@ -17,33 +23,46 @@ import java.lang.annotation.*;
 @Indexed
 public @interface RestStyle {
     /**
-     * 表名，默认空时使用对象名
+     * <code>value</code>
+     * <p>the method.</p>
+     * @return {@link java.lang.String} <p>the return object is <code>String</code> type.</p>
+     * @see java.lang.String
+     * @see org.springframework.core.annotation.AliasFor
      */
     @AliasFor("name")
     String value() default "";
 
     /**
-     * 名称规则样式 默认小写加下划线 支持自定义
-     * 默认使用 全局配置 LOWER_UNDERSCORE
+     * <code>name</code>
+     * <p>the method.</p>
+     * @return {@link java.lang.String} <p>the return object is <code>String</code> type.</p>
+     * @see java.lang.String
+     * @see org.springframework.core.annotation.AliasFor
      */
     @AliasFor("value")
     String name() default "";
 
     /**
-     * 名称规则样式 默认小写加下划线
-     * 默认使用 全局配置 LOWER_UNDERSCORE
+     * <code>type</code>
+     * <p>the method.</p>
+     * @return {@link io.github.nichetoolkit.mybatis.enums.StyleType} <p>the return object is <code>StyleType</code> type.</p>
+     * @see io.github.nichetoolkit.mybatis.enums.StyleType
      */
     StyleType type() default StyleType.LOWER_UNDERLINE;
 
     /**
-     * catalog 名称，配置后，会在表名前面加上 catalog名称
-     * 默认使用 全局配置
+     * <code>catalog</code>
+     * <p>the method.</p>
+     * @return {@link java.lang.String} <p>the return object is <code>String</code> type.</p>
+     * @see java.lang.String
      */
     String catalog() default "";
 
     /**
-     * schema 名称，配置后，会在表名前面加上 schema 名称
-     * 默认使用 全局配置
+     * <code>schema</code>
+     * <p>the method.</p>
+     * @return {@link java.lang.String} <p>the return object is <code>String</code> type.</p>
+     * @see java.lang.String
      */
     String schema() default "";
 

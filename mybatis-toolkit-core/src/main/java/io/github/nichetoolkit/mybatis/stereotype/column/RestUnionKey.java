@@ -5,10 +5,15 @@ import org.springframework.stereotype.Indexed;
 import java.lang.annotation.*;
 
 /**
- * <p>RestUnionKey</p>
- * 联合主键注解 单个配置不生效
+ * <code>RestUnionKey</code>
+ * <p>The type rest union key interface.</p>
  * @author Cyan (snow22314@outlook.com)
- * @version v1.0.0
+ * @see java.lang.annotation.Annotation
+ * @see java.lang.annotation.Retention
+ * @see java.lang.annotation.Target
+ * @see java.lang.annotation.Documented
+ * @see org.springframework.stereotype.Indexed
+ * @since Jdk1.8
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.FIELD,ElementType.ANNOTATION_TYPE})
@@ -16,12 +21,16 @@ import java.lang.annotation.*;
 @Indexed
 public @interface RestUnionKey {
     /**
-     * 标记字段是否 用于联合主键字段
+     * <code>value</code>
+     * <p>the method.</p>
+     * @return boolean <p>the return object is <code>boolean</code> type.</p>
      */
     boolean value() default true;
 
     /**
-     * 用于联合主键的顺序
+     * <code>index</code>
+     * <p>the method.</p>
+     * @return int <p>the return object is <code>int</code> type.</p>
      */
     int index() default 0;
 

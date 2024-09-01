@@ -15,79 +15,200 @@ import java.util.regex.Matcher;
 import static io.github.nichetoolkit.mybatis.MybatisTable.DELIMITER;
 
 /**
- * <p>MybatisColumn</p>
- * 实体中字段和列的对应关系接口
+ * <code>MybatisColumn</code>
+ * <p>The type mybatis column class.</p>
  * @author Cyan (snow22314@outlook.com)
- * @version v1.0.0
+ * @see io.github.nichetoolkit.mybatis.MybatisProperty
+ * @see lombok.Data
+ * @since Jdk1.8
  */
 @Data
 public class MybatisColumn extends MybatisProperty<MybatisColumn> {
-    /** 实体类字段 */
+    /**
+     * <code>field</code>
+     * {@link io.github.nichetoolkit.mybatis.MybatisField} <p>the <code>field</code> field.</p>
+     * @see io.github.nichetoolkit.mybatis.MybatisField
+     */
     protected final MybatisField field;
-    /** 所在实体类 */
+    /**
+     * <code>table</code>
+     * {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>the <code>table</code> field.</p>
+     * @see io.github.nichetoolkit.mybatis.MybatisTable
+     */
     protected MybatisTable table;
-    /** 列名 */
+    /**
+     * <code>columnName</code>
+     * {@link java.lang.String} <p>the <code>columnName</code> field.</p>
+     * @see java.lang.String
+     */
     protected String columnName;
-    /** 排序的优先级 */
+    /**
+     * <code>order</code>
+     * {@link java.lang.Integer} <p>the <code>order</code> field.</p>
+     * @see java.lang.Integer
+     */
     protected Integer order;
-    /** 是否主键 */
+    /**
+     * <code>identity</code>
+     * <p>the <code>identity</code> field.</p>
+     */
     protected boolean identity;
-    /** 是否主键 */
+    /**
+     * <code>primaryKey</code>
+     * <p>the <code>primaryKey</code> field.</p>
+     */
     protected boolean primaryKey;
-    /** 是否联合主键 */
+    /**
+     * <code>linkKey</code>
+     * <p>the <code>linkKey</code> field.</p>
+     */
     protected boolean linkKey;
-    /** 是否联合主键 */
+    /**
+     * <code>unionKey</code>
+     * <p>the <code>unionKey</code> field.</p>
+     */
     protected boolean unionKey;
-    /** 联合主键顺序 */
+    /**
+     * <code>unionIndex</code>
+     * {@link java.lang.Integer} <p>the <code>unionIndex</code> field.</p>
+     * @see java.lang.Integer
+     */
     protected Integer unionIndex;
-    /** 是否联合主键 */
+    /**
+     * <code>alertKey</code>
+     * <p>the <code>alertKey</code> field.</p>
+     */
     protected boolean alertKey;
-    /** 排序方式 */
+    /**
+     * <code>sortType</code>
+     * {@link io.github.nichetoolkit.mybatis.enums.SortType} <p>the <code>sortType</code> field.</p>
+     * @see io.github.nichetoolkit.mybatis.enums.SortType
+     */
     protected SortType sortType;
-    /** 排序的优先级 */
+    /**
+     * <code>priority</code>
+     * <p>the <code>priority</code> field.</p>
+     */
     protected int priority;
-    /** 是否排除字段 */
+    /**
+     * <code>exclude</code>
+     * <p>the <code>exclude</code> field.</p>
+     */
     protected boolean exclude;
-    /** 是否强制插入 */
+    /**
+     * <code>forceInsert</code>
+     * <p>the <code>forceInsert</code> field.</p>
+     */
     protected boolean forceInsert;
-    /** 强制插入值 */
+    /**
+     * <code>forceInsertValue</code>
+     * {@link java.lang.String} <p>the <code>forceInsertValue</code> field.</p>
+     * @see java.lang.String
+     */
     protected String forceInsertValue;
-    /** 是否强制更新 */
+    /**
+     * <code>forceUpdate</code>
+     * <p>the <code>forceUpdate</code> field.</p>
+     */
     protected boolean forceUpdate;
-    /** 强制更新值 */
+    /**
+     * <code>forceUpdateValue</code>
+     * {@link java.lang.String} <p>the <code>forceUpdateValue</code> field.</p>
+     * @see java.lang.String
+     */
     protected String forceUpdateValue;
-    /** 是否唯一性字段 */
+    /**
+     * <code>unique</code>
+     * <p>the <code>unique</code> field.</p>
+     */
     protected boolean unique;
-    /** 是否查询字段 */
+    /**
+     * <code>logic</code>
+     * <p>the <code>logic</code> field.</p>
+     */
     protected boolean logic;
-    /** 是否查询字段 */
+    /**
+     * <code>operate</code>
+     * <p>the <code>operate</code> field.</p>
+     */
     protected boolean operate;
-    /** 是否查询字段 */
+    /**
+     * <code>select</code>
+     * <p>the <code>select</code> field.</p>
+     */
     protected boolean select = true;
-    /** 是否插入字段 */
+    /**
+     * <code>insert</code>
+     * <p>the <code>insert</code> field.</p>
+     */
     protected boolean insert = true;
-    /** 是否更新字段 */
+    /**
+     * <code>update</code>
+     * <p>the <code>update</code> field.</p>
+     */
     protected boolean update = true;
-    /** jdbc类型 */
+    /**
+     * <code>jdbcType</code>
+     * {@link org.apache.ibatis.type.JdbcType} <p>the <code>jdbcType</code> field.</p>
+     * @see org.apache.ibatis.type.JdbcType
+     */
     protected JdbcType jdbcType;
-    /** 类型处理器 */
+    /**
+     * <code>typeHandler</code>
+     * {@link java.lang.Class} <p>the <code>typeHandler</code> field.</p>
+     * @see java.lang.Class
+     */
     protected Class<? extends TypeHandler<?>> typeHandler;
-    /** 精度 */
+    /**
+     * <code>numericScale</code>
+     * {@link java.lang.String} <p>the <code>numericScale</code> field.</p>
+     * @see java.lang.String
+     */
     protected String numericScale;
 
+    /**
+     * <code>MybatisColumn</code>
+     * Instantiates a new mybatis column.
+     * @param field {@link io.github.nichetoolkit.mybatis.MybatisField} <p>the field parameter is <code>MybatisField</code> type.</p>
+     * @see io.github.nichetoolkit.mybatis.MybatisField
+     */
     protected MybatisColumn(MybatisField field) {
         this.field = field;
     }
 
+    /**
+     * <code>MybatisColumn</code>
+     * Instantiates a new mybatis column.
+     * @param properties {@link java.util.Map} <p>the properties parameter is <code>Map</code> type.</p>
+     * @param field      {@link io.github.nichetoolkit.mybatis.MybatisField} <p>the field parameter is <code>MybatisField</code> type.</p>
+     * @see java.util.Map
+     * @see io.github.nichetoolkit.mybatis.MybatisField
+     */
     protected MybatisColumn(Map<String, String> properties, MybatisField field) {
         super(properties);
         this.field = field;
     }
 
+    /**
+     * <code>of</code>
+     * <p>the method.</p>
+     * @param field {@link io.github.nichetoolkit.mybatis.MybatisField} <p>the field parameter is <code>MybatisField</code> type.</p>
+     * @return {@link io.github.nichetoolkit.mybatis.MybatisColumn} <p>the return object is <code>MybatisColumn</code> type.</p>
+     * @see io.github.nichetoolkit.mybatis.MybatisField
+     */
     public static MybatisColumn of(MybatisField field) {
         return new MybatisColumn(field);
     }
 
+    /**
+     * <code>of</code>
+     * <p>the method.</p>
+     * @param field      {@link io.github.nichetoolkit.mybatis.MybatisField} <p>the field parameter is <code>MybatisField</code> type.</p>
+     * @param properties {@link java.util.Map} <p>the properties parameter is <code>Map</code> type.</p>
+     * @return {@link io.github.nichetoolkit.mybatis.MybatisColumn} <p>the return object is <code>MybatisColumn</code> type.</p>
+     * @see io.github.nichetoolkit.mybatis.MybatisField
+     * @see java.util.Map
+     */
     public static MybatisColumn of(MybatisField field, Map<String, String> properties) {
         if (GeneralUtils.isNotEmpty(properties)) {
             return new MybatisColumn(properties, field);
@@ -97,42 +218,62 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
     }
 
     /**
-     * 属性名
+     * <code>fieldName</code>
+     * <p>the name method.</p>
+     * @return {@link java.lang.String} <p>the name return object is <code>String</code> type.</p>
+     * @see java.lang.String
      */
     public String fieldName() {
         return this.field.fieldName();
     }
 
-    /** Java 类型 */
+    /**
+     * <code>javaType</code>
+     * <p>the type method.</p>
+     * @return {@link java.lang.Class} <p>the type return object is <code>Class</code> type.</p>
+     * @see java.lang.Class
+     */
     public Class<?> javaType() {
         return this.field.fieldType();
     }
 
     /**
-     * 属性名
+     * <code>property</code>
+     * <p>the method.</p>
+     * @return {@link java.lang.String} <p>the return object is <code>String</code> type.</p>
+     * @see java.lang.String
      */
     public String property() {
         return property("");
     }
 
     /**
-     * 带指定前缀的属性名
-     * @param prefix 指定前缀，需要自己提供"."
+     * <code>property</code>
+     * <p>the method.</p>
+     * @param prefix {@link java.lang.String} <p>the prefix parameter is <code>String</code> type.</p>
+     * @return {@link java.lang.String} <p>the return object is <code>String</code> type.</p>
+     * @see java.lang.String
      */
     public String property(String prefix) {
         return prefix + this.field.fieldName();
     }
 
     /**
-     * 返回 xml 变量形式 #{property}
+     * <code>variable</code>
+     * <p>the method.</p>
+     * @return {@link java.lang.String} <p>the return object is <code>String</code> type.</p>
+     * @see java.lang.String
      */
     public String variable() {
         return variable("");
     }
 
     /**
-     * 返回带前缀的 xml 变量形式 #{prefix property}
-     * @param prefix 指定前缀，需要自己提供"."
+     * <code>variable</code>
+     * <p>the method.</p>
+     * @param prefix {@link java.lang.String} <p>the prefix parameter is <code>String</code> type.</p>
+     * @return {@link java.lang.String} <p>the return object is <code>String</code> type.</p>
+     * @see java.lang.String
      */
     public String variable(String prefix) {
         if (this.forceInsert) {
@@ -145,6 +286,12 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
         }
     }
 
+    /**
+     * <code>excluded</code>
+     * <p>the method.</p>
+     * @return {@link java.lang.String} <p>the return object is <code>String</code> type.</p>
+     * @see java.lang.String
+     */
     public String excluded() {
         if (this.forceUpdate) {
             return this.columnName + " = " + this.forceUpdateValue;
@@ -155,7 +302,10 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
     }
 
     /**
-     * 数据库类型 {, jdbcType=VARCHAR}
+     * <code>jdbcTypeVariable</code>
+     * <p>the type variable method.</p>
+     * @return {@link java.util.Optional} <p>the type variable return object is <code>Optional</code> type.</p>
+     * @see java.util.Optional
      */
     public Optional<String> jdbcTypeVariable() {
         if (this.jdbcType != null && this.jdbcType != JdbcType.UNDEFINED) {
@@ -165,7 +315,10 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
     }
 
     /**
-     * 类型处理器 {, typeHandler=XXTypeHandler}
+     * <code>typeHandlerVariable</code>
+     * <p>the handler variable method.</p>
+     * @return {@link java.util.Optional} <p>the handler variable return object is <code>Optional</code> type.</p>
+     * @see java.util.Optional
      */
     public Optional<String> typeHandlerVariable() {
         if (this.typeHandler != null && this.typeHandler != UnknownTypeHandler.class) {
@@ -175,7 +328,10 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
     }
 
     /**
-     * 小数位数 {, numericScale=2}
+     * <code>numericScaleVariable</code>
+     * <p>the scale variable method.</p>
+     * @return {@link java.util.Optional} <p>the scale variable return object is <code>Optional</code> type.</p>
+     * @see java.util.Optional
      */
     public Optional<String> numericScaleVariable() {
         if (GeneralUtils.isNotEmpty(this.numericScale)) {
@@ -185,19 +341,25 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
     }
 
     /**
-     * 返回 column AS property 形式的字符串, 当 column 和 property 相同时没有别名
+     * <code>columnAsProperty</code>
+     * <p>the as property method.</p>
+     * @return {@link java.lang.String} <p>the as property return object is <code>String</code> type.</p>
+     * @see java.lang.String
      */
     public String columnAsProperty() {
         return columnAsProperty("");
     }
 
     /**
-     * 返回 column AS prefix property 形式的字符串
-     * @param prefix 指定前缀，需要自己提供"."
+     * <code>columnAsProperty</code>
+     * <p>the as property method.</p>
+     * @param prefix {@link java.lang.String} <p>the prefix parameter is <code>String</code> type.</p>
+     * @return {@link java.lang.String} <p>the as property return object is <code>String</code> type.</p>
+     * @see java.lang.String
      */
     public String columnAsProperty(String prefix) {
-        /** 这里的column 和 property 的比较 应该是需要忽略界定符之后再比较 */
-        /** mysql 中 【`order`】 应该认为是 和 field 的 【order】 相同 */
+        /* 这里的column 和 property 的比较 应该是需要忽略界定符之后再比较 */
+        /* mysql 中 【`order`】 应该认为是 和 field 的 【order】 相同 */
         String column = this.columnName;
         Matcher matcher = DELIMITER.matcher(this.columnName);
         if (matcher.find()) {
@@ -210,90 +372,124 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
     }
 
     /**
-     * 返回 column = ${key} 形式的字符串
+     * <code>columnEqualsKey</code>
+     * <p>the equals key method.</p>
+     * @return {@link java.lang.String} <p>the equals key return object is <code>String</code> type.</p>
+     * @see java.lang.String
      */
     public String columnEqualsKey() {
         return this.columnName + " = " + "${key}";
     }
 
     /**
-     * 返回 column = ${sign} 形式的字符串
+     * <code>columnEqualsSign</code>
+     * <p>the equals sign method.</p>
+     * @return {@link java.lang.String} <p>the equals sign return object is <code>String</code> type.</p>
+     * @see java.lang.String
      */
     public String columnEqualsSign() {
         return this.columnName + " = " + "${sign}";
     }
 
     /**
-     * 返回 column = ${operate} 形式的字符串
+     * <code>columnEqualsOperate</code>
+     * <p>the equals operate method.</p>
+     * @return {@link java.lang.String} <p>the equals operate return object is <code>String</code> type.</p>
+     * @see java.lang.String
      */
     public String columnEqualsOperate() {
         return this.columnName + " = " + "${operate}";
     }
 
     /**
-     * 返回 column = #{linkId} 形式的字符串
+     * <code>columnEqualsLink</code>
+     * <p>the equals link method.</p>
+     * @return {@link java.lang.String} <p>the equals link return object is <code>String</code> type.</p>
+     * @see java.lang.String
      */
     public String columnEqualsLink() {
         return this.columnName + " = " + "#{linkId}";
     }
 
     /**
-     * 返回 column = #{property} 形式的字符串
+     * <code>columnEqualsProperty</code>
+     * <p>the equals property method.</p>
+     * @return {@link java.lang.String} <p>the equals property return object is <code>String</code> type.</p>
+     * @see java.lang.String
      */
     public String columnEqualsProperty() {
         return columnEqualsProperty("");
     }
 
     /**
-     * 返回 column = #{property} 形式的字符串
+     * <code>columnNotEqualsProperty</code>
+     * <p>the not equals property method.</p>
+     * @return {@link java.lang.String} <p>the not equals property return object is <code>String</code> type.</p>
+     * @see java.lang.String
      */
     public String columnNotEqualsProperty() {
         return columnNotEqualsProperty("");
     }
 
     /**
-     * 返回带前缀的 column = #{prefix property} 形式的字符串
-     * @param prefix 指定前缀，需要自己提供"."
+     * <code>columnEqualsProperty</code>
+     * <p>the equals property method.</p>
+     * @param prefix {@link java.lang.String} <p>the prefix parameter is <code>String</code> type.</p>
+     * @return {@link java.lang.String} <p>the equals property return object is <code>String</code> type.</p>
+     * @see java.lang.String
      */
     public String columnEqualsProperty(String prefix) {
         return this.columnName + " = " + variable(prefix);
     }
 
     /**
-     * 返回带前缀的 column = #{prefix property} 形式的字符串
-     * @param prefix 指定前缀，需要自己提供"."
+     * <code>columnNotEqualsProperty</code>
+     * <p>the not equals property method.</p>
+     * @param prefix {@link java.lang.String} <p>the prefix parameter is <code>String</code> type.</p>
+     * @return {@link java.lang.String} <p>the not equals property return object is <code>String</code> type.</p>
+     * @see java.lang.String
      */
     public String columnNotEqualsProperty(String prefix) {
         return this.columnName + " != " + variable(prefix);
     }
 
     /**
-     * 返回 property != null 形式的字符串
+     * <code>notNullTest</code>
+     * <p>the null test method.</p>
+     * @return {@link java.lang.String} <p>the null test return object is <code>String</code> type.</p>
+     * @see java.lang.String
      */
     public String notNullTest() {
         return notNullTest("");
     }
 
     /**
-     * 返回带前缀的  prefix property != null 形式的字符串
-     * @param prefix 指定前缀，需要自己提供"."
+     * <code>notNullTest</code>
+     * <p>the null test method.</p>
+     * @param prefix {@link java.lang.String} <p>the prefix parameter is <code>String</code> type.</p>
+     * @return {@link java.lang.String} <p>the null test return object is <code>String</code> type.</p>
+     * @see java.lang.String
      */
     public String notNullTest(String prefix) {
         return property(prefix) + " != null";
     }
 
     /**
-     * 当字段类型为 String 时，返回 property != null and property != '' 形式的字符串.
-     * 其他类型时和 {@link #notNullTest()} 方法一样.
+     * <code>notEmptyTest</code>
+     * <p>the empty test method.</p>
+     * @return {@link java.lang.String} <p>the empty test return object is <code>String</code> type.</p>
+     * @see java.lang.String
      */
     public String notEmptyTest() {
         return notEmptyTest("");
     }
 
     /**
-     * 当字段类型为 String 时，返回 prefix property != null and prefix property != '' 形式的字符串.
-     * 其他类型时和 {@link #notNullTest()} 方法一样.
-     * @param prefix 指定前缀，需要自己提供"."
+     * <code>notEmptyTest</code>
+     * <p>the empty test method.</p>
+     * @param prefix {@link java.lang.String} <p>the prefix parameter is <code>String</code> type.</p>
+     * @return {@link java.lang.String} <p>the empty test return object is <code>String</code> type.</p>
+     * @see java.lang.String
      */
     public String notEmptyTest(String prefix) {
         if (this.field.fieldType() == String.class) {

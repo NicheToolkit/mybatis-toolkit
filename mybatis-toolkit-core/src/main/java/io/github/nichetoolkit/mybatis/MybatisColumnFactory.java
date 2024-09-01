@@ -4,39 +4,55 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * <p>MybatisColumnFactory</p>
- * 实体类信息工厂
+ * <code>MybatisColumnFactory</code>
+ * <p>The type mybatis column factory interface.</p>
  * @author Cyan (snow22314@outlook.com)
- * @version v1.0.0
+ * @see io.github.nichetoolkit.mybatis.MybatisOrder
+ * @since Jdk1.8
  */
 public interface MybatisColumnFactory extends MybatisOrder {
 
     /**
-     * 根据注解判断是否支持 创建 MybatisTable 对象
-     * @param table 表实体
-     * @param field 字段信息
-     * @return 实体类信息
+     * <code>supports</code>
+     * <p>the method.</p>
+     * @param table {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>the table parameter is <code>MybatisTable</code> type.</p>
+     * @param field {@link io.github.nichetoolkit.mybatis.MybatisField} <p>the field parameter is <code>MybatisField</code> type.</p>
+     * @return boolean <p>the return object is <code>boolean</code> type.</p>
+     * @see io.github.nichetoolkit.mybatis.MybatisTable
+     * @see io.github.nichetoolkit.mybatis.MybatisField
      */
     boolean supports(MybatisTable table, MybatisField field);
 
     /**
-     * 创建列信息，一个字段可能不是列，也可能是列，还有可能对应多个列（例如 ValueObject对象）
-     * @param table 表实体
-     * @param field 字段信息
-     * @param chain 调用下一个
-     * @return 实体类中列的信息，如果返回空，则不属于实体中的列
+     * <code>createColumn</code>
+     * <p>the column method.</p>
+     * @param table {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>the table parameter is <code>MybatisTable</code> type.</p>
+     * @param field {@link io.github.nichetoolkit.mybatis.MybatisField} <p>the field parameter is <code>MybatisField</code> type.</p>
+     * @param chain {@link io.github.nichetoolkit.mybatis.MybatisColumnFactory.Chain} <p>the chain parameter is <code>Chain</code> type.</p>
+     * @return {@link java.util.Optional} <p>the column return object is <code>Optional</code> type.</p>
+     * @see io.github.nichetoolkit.mybatis.MybatisTable
+     * @see io.github.nichetoolkit.mybatis.MybatisField
+     * @see io.github.nichetoolkit.mybatis.MybatisColumnFactory.Chain
+     * @see java.util.Optional
      */
     Optional<List<MybatisColumn>> createColumn(MybatisTable table, MybatisField field, Chain chain);
 
     /**
-     * 工厂链
+     * <code>Chain</code>
+     * <p>The type chain interface.</p>
+     * @author Cyan (snow22314@outlook.com)
+     * @since Jdk1.8
      */
     interface Chain {
         /**
-         * 创建列信息，一个字段可能不是列，也可能是列，还有可能对应多个列（例如 ValueObject对象）
-         * @param table 表实体
-         * @param field 字段信息
-         * @return 实体类中列的信息，如果返回空，则不属于实体中的列
+         * <code>createColumn</code>
+         * <p>the column method.</p>
+         * @param table {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>the table parameter is <code>MybatisTable</code> type.</p>
+         * @param field {@link io.github.nichetoolkit.mybatis.MybatisField} <p>the field parameter is <code>MybatisField</code> type.</p>
+         * @return {@link java.util.Optional} <p>the column return object is <code>Optional</code> type.</p>
+         * @see io.github.nichetoolkit.mybatis.MybatisTable
+         * @see io.github.nichetoolkit.mybatis.MybatisField
+         * @see java.util.Optional
          */
         Optional<List<MybatisColumn>> createColumn(MybatisTable table, MybatisField field);
     }

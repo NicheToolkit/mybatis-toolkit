@@ -7,9 +7,23 @@ import org.springframework.core.annotation.AliasFor;
 import java.lang.annotation.*;
 
 /**
- * <p>RestTable</p>
+ * <code>RestTable</code>
+ * <p>The type rest table interface.</p>
  * @author Cyan (snow22314@outlook.com)
- * @version v1.0.0
+ * @see java.lang.annotation.Annotation
+ * @see java.lang.annotation.Retention
+ * @see java.lang.annotation.Target
+ * @see java.lang.annotation.Documented
+ * @see io.github.nichetoolkit.mybatis.stereotype.table.RestEntity
+ * @see io.github.nichetoolkit.mybatis.stereotype.table.RestStyle
+ * @see io.github.nichetoolkit.mybatis.stereotype.table.RestResultMap
+ * @see io.github.nichetoolkit.mybatis.stereotype.RestProperties
+ * @see io.github.nichetoolkit.mybatis.stereotype.table.RestExcludes
+ * @see io.github.nichetoolkit.mybatis.stereotype.table.RestUnionKeys
+ * @see io.github.nichetoolkit.mybatis.stereotype.table.RestLinkKeys
+ * @see io.github.nichetoolkit.mybatis.stereotype.table.RestUniqueKeys
+ * @see io.github.nichetoolkit.mybatis.stereotype.table.RestAlertKeys
+ * @since Jdk1.8
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE})
@@ -25,113 +39,179 @@ import java.lang.annotation.*;
 @RestAlertKeys
 public @interface RestTable {
     /**
-     * 表名，默认空时使用对象名
+     * <code>value</code>
+     * <p>the method.</p>
+     * @return {@link java.lang.String} <p>the return object is <code>String</code> type.</p>
+     * @see java.lang.String
+     * @see org.springframework.core.annotation.AliasFor
      */
     @AliasFor(annotation = RestEntity.class, attribute = "name")
     String value() default "";
 
     /**
-     * 备注，仅用于在注解上展示，不用于任何其他处理
+     * <code>remark</code>
+     * <p>the method.</p>
+     * @return {@link java.lang.String} <p>the return object is <code>String</code> type.</p>
+     * @see java.lang.String
+     * @see org.springframework.core.annotation.AliasFor
      */
     @AliasFor(annotation = RestEntity.class, attribute = "remark")
     String remark() default "";
 
     /**
-     * 备注，仅用于在注解上展示，不用于任何其他处理
+     * <code>entity</code>
+     * <p>the method.</p>
+     * @return {@link java.lang.Class} <p>the return object is <code>Class</code> type.</p>
+     * @see java.lang.Class
+     * @see org.springframework.core.annotation.AliasFor
      */
     @AliasFor(annotation = RestEntity.class, attribute = "entity")
     Class<?> entity() default Object.class;
 
     /**
-     * 联合主键的字段名称
+     * <code>unionKeys</code>
+     * <p>the keys method.</p>
+     * @return {@link java.lang.String} <p>the keys return object is <code>String</code> type.</p>
+     * @see java.lang.String
+     * @see org.springframework.core.annotation.AliasFor
      */
     @AliasFor(annotation = RestUnionKeys.class, attribute = "unionKeys")
     String[] unionKeys() default {};
 
     /**
-     * 是否将主键注解添加到联合主键
+     * <code>unionIdentity</code>
+     * <p>the identity method.</p>
+     * @return boolean <p>the identity return object is <code>boolean</code> type.</p>
+     * @see org.springframework.core.annotation.AliasFor
      */
     @AliasFor(annotation = RestUnionKeys.class, attribute = "unionIdentity")
     boolean unionIdentity() default false;
 
     /**
-     * 联合主键的字段名称
+     * <code>alertKeys</code>
+     * <p>the keys method.</p>
+     * @return {@link java.lang.String} <p>the keys return object is <code>String</code> type.</p>
+     * @see java.lang.String
+     * @see org.springframework.core.annotation.AliasFor
      */
     @AliasFor(annotation = RestAlertKeys.class, attribute = "alertKeys")
     String[] alertKeys() default {};
 
     /**
-     * 联合主键的字段名称
+     * <code>linkKeys</code>
+     * <p>the keys method.</p>
+     * @return {@link java.lang.String} <p>the keys return object is <code>String</code> type.</p>
+     * @see java.lang.String
+     * @see org.springframework.core.annotation.AliasFor
      */
     @AliasFor(annotation = RestLinkKeys.class, attribute = "linkKeys")
     String[] linkKeys() default {};
 
     /**
-     * 联合主键的字段名称
+     * <code>uniqueKeys</code>
+     * <p>the keys method.</p>
+     * @return {@link java.lang.String} <p>the keys return object is <code>String</code> type.</p>
+     * @see java.lang.String
+     * @see org.springframework.core.annotation.AliasFor
      */
     @AliasFor(annotation = RestUniqueKeys.class, attribute = "uniqueKeys")
     String[] uniqueKeys() default {};
 
     /**
-     * catalog 名称，配置后，会在表名前面加上 catalog名称
-     * 默认使用 全局配置
+     * <code>catalog</code>
+     * <p>the method.</p>
+     * @return {@link java.lang.String} <p>the return object is <code>String</code> type.</p>
+     * @see java.lang.String
+     * @see org.springframework.core.annotation.AliasFor
      */
     @AliasFor(annotation = RestStyle.class, attribute = "catalog")
     String catalog() default "";
 
     /**
-     * schema 名称，配置后，会在表名前面加上 schema 名称
-     * 默认使用 全局配置
+     * <code>schema</code>
+     * <p>the method.</p>
+     * @return {@link java.lang.String} <p>the return object is <code>String</code> type.</p>
+     * @see java.lang.String
+     * @see org.springframework.core.annotation.AliasFor
      */
     @AliasFor(annotation = RestStyle.class, attribute = "schema")
     String schema() default "";
 
     /**
-     * 名称规则样式 默认小写加下划线 支持自定义
-     * 默认使用 全局配置 LOWER_UNDERSCORE
+     * <code>styleName</code>
+     * <p>the name method.</p>
+     * @return {@link java.lang.String} <p>the name return object is <code>String</code> type.</p>
+     * @see java.lang.String
+     * @see org.springframework.core.annotation.AliasFor
      */
     @AliasFor(annotation = RestStyle.class, attribute = "name")
     String styleName() default "";
 
     /**
-     * 名称规则样式 默认小写加下划线
-     * 默认使用 全局配置 LOWER_UNDERSCORE
+     * <code>styleType</code>
+     * <p>the type method.</p>
+     * @return {@link io.github.nichetoolkit.mybatis.enums.StyleType} <p>the type return object is <code>StyleType</code> type.</p>
+     * @see io.github.nichetoolkit.mybatis.enums.StyleType
+     * @see org.springframework.core.annotation.AliasFor
      */
     @AliasFor(annotation = RestStyle.class, attribute = "type")
     StyleType styleType() default StyleType.LOWER_UNDERLINE;
 
     /**
-     * 使用指定的 <resultMap>
+     * <code>resultMap</code>
+     * <p>the map method.</p>
+     * @return {@link java.lang.String} <p>the map return object is <code>String</code> type.</p>
+     * @see java.lang.String
+     * @see org.springframework.core.annotation.AliasFor
      */
     @AliasFor(annotation = RestResultMap.class, attribute = "name")
     String resultMap() default "";
 
     /**
-     * 自动根据字段生成 <resultMap>
+     * <code>autoResultMap</code>
+     * <p>the result map method.</p>
+     * @return boolean <p>the result map return object is <code>boolean</code> type.</p>
+     * @see org.springframework.core.annotation.AliasFor
      */
     @AliasFor(annotation = RestResultMap.class, attribute = "autoResultMap")
     boolean autoResultMap() default true;
 
     /**
-     * 属性配置
+     * <code>properties</code>
+     * <p>the method.</p>
+     * @return {@link io.github.nichetoolkit.mybatis.stereotype.RestProperty} <p>the return object is <code>RestProperty</code> type.</p>
+     * @see io.github.nichetoolkit.mybatis.stereotype.RestProperty
+     * @see org.springframework.core.annotation.AliasFor
      */
     @AliasFor(annotation = RestProperties.class, attribute = "properties")
     RestProperty[] properties() default {};
 
     /**
-     * 排除指定字段名的字段
+     * <code>excludeFields</code>
+     * <p>the fields method.</p>
+     * @return {@link java.lang.String} <p>the fields return object is <code>String</code> type.</p>
+     * @see java.lang.String
+     * @see org.springframework.core.annotation.AliasFor
      */
     @AliasFor(annotation = RestExcludes.class, attribute = "fields")
     String[] excludeFields() default {};
 
     /**
-     * 排除指定类型的字段
+     * <code>excludeFieldTypes</code>
+     * <p>the field types method.</p>
+     * @return {@link java.lang.Class} <p>the field types return object is <code>Class</code> type.</p>
+     * @see java.lang.Class
+     * @see org.springframework.core.annotation.AliasFor
      */
     @AliasFor(annotation = RestExcludes.class, attribute = "fieldTypes")
     Class<?>[] excludeFieldTypes() default {};
 
     /**
-     * 排除指定父类的所有字段
+     * <code>excludeSuperClasses</code>
+     * <p>the super classes method.</p>
+     * @return {@link java.lang.Class} <p>the super classes return object is <code>Class</code> type.</p>
+     * @see java.lang.Class
+     * @see org.springframework.core.annotation.AliasFor
      */
     @AliasFor(annotation = RestExcludes.class, attribute = "superClasses")
     Class<?>[] excludeSuperClasses() default {};

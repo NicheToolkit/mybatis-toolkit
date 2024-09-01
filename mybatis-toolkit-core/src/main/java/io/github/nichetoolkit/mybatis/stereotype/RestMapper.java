@@ -8,9 +8,17 @@ import org.springframework.stereotype.Service;
 import java.lang.annotation.*;
 
 /**
- * <p>RestMapper</p>
- * @author Cyan (snow22314 @ outlook.com)
- * @version v1.0.0
+ * <code>RestMapper</code>
+ * <p>The type rest mapper interface.</p>
+ * @author Cyan (snow22314@outlook.com)
+ * @see java.lang.annotation.Annotation
+ * @see java.lang.annotation.Documented
+ * @see java.lang.annotation.Inherited
+ * @see java.lang.annotation.Retention
+ * @see java.lang.annotation.Target
+ * @see org.springframework.stereotype.Component
+ * @see org.apache.ibatis.annotations.Mapper
+ * @since Jdk1.8
  */
 @Documented
 @Inherited
@@ -19,6 +27,13 @@ import java.lang.annotation.*;
 @Component
 @Mapper
 public @interface RestMapper {
+    /**
+     * <code>value</code>
+     * <p>the method.</p>
+     * @return {@link java.lang.String} <p>the return object is <code>String</code> type.</p>
+     * @see java.lang.String
+     * @see org.springframework.core.annotation.AliasFor
+     */
     @AliasFor(
             annotation = Component.class
     )

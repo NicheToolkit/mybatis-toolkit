@@ -1,6 +1,6 @@
 package io.github.nichetoolkit.mybatis;
 
-import io.github.nichetoolkit.mybatis.consts.StyleConst;
+import io.github.nichetoolkit.mybatis.consts.StyleConstants;
 import io.github.nichetoolkit.mybatis.enums.StyleType;
 import io.github.nichetoolkit.mybatis.helper.ServiceLoaderHelper;
 import io.github.nichetoolkit.rest.error.lack.InterfaceLackError;
@@ -17,15 +17,15 @@ import java.util.Map;
  */
 public interface MybatisStyle {
     /** 默认驼峰 */
-    String NORMAL = StyleConst.NORMAL;
+    String NORMAL = StyleConstants.NORMAL;
     /** 小写加下划线 */
-    String LOWER_UNDERLINE = StyleConst.LOWER_UNDERLINE;
+    String LOWER_UNDERLINE = StyleConstants.LOWER_UNDERLINE;
     /** 小写 */
-    String LOWER = StyleConst.LOWER;
+    String LOWER = StyleConstants.LOWER;
     /** 大写 */
-    String UPPER = StyleConst.UPPER;
+    String UPPER = StyleConstants.UPPER;
     /** 大写加下划线 */
-    String UPPER_UNDERLINE = StyleConst.UPPER_UNDERLINE;
+    String UPPER_UNDERLINE = StyleConstants.UPPER_UNDERLINE;
 
 
     Map<String, MybatisStyle> STYLE_MAP = new HashMap<String, MybatisStyle>() {

@@ -6,9 +6,15 @@ import org.springframework.stereotype.Indexed;
 import java.lang.annotation.*;
 
 /**
- * <p>RestLinkKeys</p>
+ * <code>RestLinkKeys</code>
+ * <p>The type rest link keys interface.</p>
  * @author Cyan (snow22314@outlook.com)
- * @version v1.0.0
+ * @see java.lang.annotation.Annotation
+ * @see java.lang.annotation.Retention
+ * @see java.lang.annotation.Target
+ * @see java.lang.annotation.Documented
+ * @see org.springframework.stereotype.Indexed
+ * @since Jdk1.8
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
@@ -17,18 +23,32 @@ import java.lang.annotation.*;
 public @interface RestLinkKeys {
 
     /**
-     * 联合主键的字段名称
+     * <code>value</code>
+     * <p>the method.</p>
+     * @return {@link java.lang.String} <p>the return object is <code>String</code> type.</p>
+     * @see java.lang.String
+     * @see org.springframework.core.annotation.AliasFor
      */
     @AliasFor("linkKeys")
     String[] value() default {};
 
     /**
-     * 联合主键的字段名称
+     * <code>linkKeys</code>
+     * <p>the keys method.</p>
+     * @return {@link java.lang.String} <p>the keys return object is <code>String</code> type.</p>
+     * @see java.lang.String
+     * @see org.springframework.core.annotation.AliasFor
      */
     @AliasFor("value")
     String[] linkKeys() default {};
 
 
+    /**
+     * <code>ignores</code>
+     * <p>the method.</p>
+     * @return {@link java.lang.String} <p>the return object is <code>String</code> type.</p>
+     * @see java.lang.String
+     */
     String[] ignores() default {};
 
 }

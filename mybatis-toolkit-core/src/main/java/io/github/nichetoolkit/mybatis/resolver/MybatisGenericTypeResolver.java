@@ -10,62 +10,64 @@ import java.util.Collection;
 import java.util.*;
 
 /**
- * <p>MybatisGenericTypeResolver</p>
+ * <code>MybatisGenericTypeResolver</code>
+ * <p>The type mybatis generic type resolver class.</p>
  * @author Cyan (snow22314@outlook.com)
- * @version v1.0.0
+ * @since Jdk1.8
  */
 public class MybatisGenericTypeResolver {
 
     /**
-     * 获取Mapper的方法返回类型
-     * 源码来源 https://github.com/mybatis-mapper/provider
-     * @param mapperMethod Mapper的方法
-     * @param mapperType Mapper的类型
-     * @return Class<?> 返回类型
+     * <code>resolveMapperReturnType</code>
+     * <p>the mapper return type method.</p>
+     * @param mapperMethod {@link java.lang.reflect.Method} <p>the mapper method parameter is <code>Method</code> type.</p>
+     * @param mapperType   {@link java.lang.Class} <p>the mapper type parameter is <code>Class</code> type.</p>
+     * @return {@link java.lang.Class} <p>the mapper return type return object is <code>Class</code> type.</p>
+     * @see java.lang.reflect.Method
+     * @see java.lang.Class
      */
     public static Class<?> resolveMapperReturnType(Method mapperMethod, Class<?> mapperType) {
         Class<?> returnType = mapperMethod.getReturnType();
         Type resolvedReturnType = resolveReturnType(mapperMethod, mapperType);
         if (resolvedReturnType instanceof Class) {
-            /** resolvedReturnType 为具体类型 */
+            /* resolvedReturnType 为具体类型 */
             returnType = (Class<?>) resolvedReturnType;
             if (returnType.isArray()) {
-                /** returnType 为数组类型 byte[]*/
+                /* returnType 为数组类型 byte[]*/
                 returnType = returnType.getComponentType();
             }
             if (void.class.equals(returnType)) {
-                /** returnType 为void类型 时校验 ResultType注解类型 */
+                /* returnType 为void类型 时校验 ResultType注解类型 */
                 ResultType resultTypeAnnotation = mapperMethod.getAnnotation(ResultType.class);
                 if (resultTypeAnnotation != null) {
                     returnType = resultTypeAnnotation.value();
                 }
             }
-
         } else if (resolvedReturnType instanceof ParameterizedType) {
-            /** resolvedReturnType为 参数化带有泛型类型  List<Object> */
+            /* resolvedReturnType为 参数化带有泛型类型  List<Object> */
             ParameterizedType parameterizedType = (ParameterizedType) resolvedReturnType;
             Class<?> rawType = (Class<?>) parameterizedType.getRawType();
             if (Collection.class.isAssignableFrom(rawType) || Cursor.class.isAssignableFrom(rawType)) {
-                /** 如果为Java的Collection类型{@link Collection} 或者 mybatis的游标类型 {@link Cursor}*/
+                /* 如果为Java的Collection类型{@link Collection} 或者 mybatis的游标类型 {@link Cursor}*/
                 Type[] actualTypeArguments = parameterizedType.getActualTypeArguments();
                 if (actualTypeArguments != null && actualTypeArguments.length == 1) {
                     Type returnTypeParameter = actualTypeArguments[0];
                     if (returnTypeParameter instanceof Class<?>) {
-                        /** returnTypeParameter 为具体类型 Object */
+                        /* returnTypeParameter 为具体类型 Object */
                         returnType = (Class<?>) returnTypeParameter;
                     } else if (returnTypeParameter instanceof ParameterizedType) {
-                        /** returnTypeParameter 为参数化带有泛型类型 List<Object> */
+                        /* returnTypeParameter 为参数化带有泛型类型 List<Object> */
                         // (gcode issue #443) actual type can be a also a parameterized type
                         returnType = (Class<?>) ((ParameterizedType) returnTypeParameter).getRawType();
                     } else if (returnTypeParameter instanceof GenericArrayType) {
-                        /** returnTypeParameter 支持参数化带有数组类型 List<byte[]>*/
+                        /* returnTypeParameter 支持参数化带有数组类型 List<byte[]>*/
                         Class<?> componentType = (Class<?>) ((GenericArrayType) returnTypeParameter).getGenericComponentType();
                         // (gcode issue #525) support List<byte[]>
                         returnType = Array.newInstance(componentType, 0).getClass();
                     }
                 }
             } else if (mapperMethod.isAnnotationPresent(MapKey.class) && Map.class.isAssignableFrom(rawType)) {
-                /** 如果为Java的Map类型{@link Map} Map<Key,Value></>*/
+                /* 如果为Java的Map类型{@link Map} Map<Key,Value></>*/
                 // (gcode issue 504) Do not look into Maps if there is not MapKey annotation
                 Type[] actualTypeArguments = parameterizedType.getActualTypeArguments();
                 if (actualTypeArguments != null && actualTypeArguments.length == 2) {
@@ -78,7 +80,7 @@ public class MybatisGenericTypeResolver {
                     }
                 }
             } else if (Optional.class.equals(rawType)) {
-                /** 如果为Java的Map类型{@link Optional} Optional<Object> */
+                /* 如果为Java的Map类型{@link Optional} Optional<Object> */
                 Type[] actualTypeArguments = parameterizedType.getActualTypeArguments();
                 Type returnTypeParameter = actualTypeArguments[0];
                 if (returnTypeParameter instanceof Class<?>) {
@@ -90,13 +92,12 @@ public class MybatisGenericTypeResolver {
     }
 
     /**
-     * 以下 源码来自 https://github.com/mybatis/mybatis-3
-     */
-
-    /**
-     * Resolve srcType types.
-     * @param srcType the src type
-     * @return get the actual type of the generic parameter on the interface
+     * <code>resolveMapperTypes</code>
+     * <p>the mapper types method.</p>
+     * @param srcType {@link java.lang.Class} <p>the src type parameter is <code>Class</code> type.</p>
+     * @return {@link java.lang.reflect.Type} <p>the mapper types return object is <code>Type</code> type.</p>
+     * @see java.lang.Class
+     * @see java.lang.reflect.Type
      */
     public static Type[] resolveMapperTypes(Class<?> srcType) {
         Type[] types = srcType.getGenericInterfaces();
@@ -112,10 +113,13 @@ public class MybatisGenericTypeResolver {
     }
 
     /**
-     * Resolve srcType types.
-     * @param method  the method
-     * @param srcType the src type
-     * @return get the actual type of the generic parameter on the interface
+     * <code>resolveMapperTypes</code>
+     * <p>the mapper types method.</p>
+     * @param method  {@link java.lang.reflect.Method} <p>the method parameter is <code>Method</code> type.</p>
+     * @param srcType {@link java.lang.reflect.Type} <p>the src type parameter is <code>Type</code> type.</p>
+     * @return {@link java.lang.reflect.Type} <p>the mapper types return object is <code>Type</code> type.</p>
+     * @see java.lang.reflect.Method
+     * @see java.lang.reflect.Type
      */
     public static Type[] resolveMapperTypes(Method method, Type srcType) {
         Class<?> declaringClass = method.getDeclaringClass();
@@ -128,11 +132,13 @@ public class MybatisGenericTypeResolver {
     }
 
     /**
-     * Resolve field type.
-     * @param field   the field
-     * @param srcType the src type
-     * @return The field type as {@link Type}. If it has type parameters in the declaration,<br>
-     * they will be resolved to the actual runtime {@link Type}s.
+     * <code>resolveFieldType</code>
+     * <p>the field type method.</p>
+     * @param field   {@link java.lang.reflect.Field} <p>the field parameter is <code>Field</code> type.</p>
+     * @param srcType {@link java.lang.reflect.Type} <p>the src type parameter is <code>Type</code> type.</p>
+     * @return {@link java.lang.reflect.Type} <p>the field type return object is <code>Type</code> type.</p>
+     * @see java.lang.reflect.Field
+     * @see java.lang.reflect.Type
      */
     public static Type resolveFieldType(Field field, Type srcType) {
         Type fieldType = field.getGenericType();
@@ -141,11 +147,14 @@ public class MybatisGenericTypeResolver {
     }
 
     /**
-     * Resolve field type.
-     * @param field   the field
-     * @param srcType the src type
-     * @return The field type as {@link Type}. If it has type parameters in the declaration,<br>
-     * they will be resolved to the actual runtime {@link Type}s.
+     * <code>resolveFieldClass</code>
+     * <p>the field class method.</p>
+     * @param field   {@link java.lang.reflect.Field} <p>the field parameter is <code>Field</code> type.</p>
+     * @param srcType {@link java.lang.reflect.Type} <p>the src type parameter is <code>Type</code> type.</p>
+     * @return {@link java.lang.Class} <p>the field class return object is <code>Class</code> type.</p>
+     * @see java.lang.reflect.Field
+     * @see java.lang.reflect.Type
+     * @see java.lang.Class
      */
     public static Class<?> resolveFieldClass(Field field, Type srcType) {
         Type fieldType = field.getGenericType();
@@ -155,7 +164,12 @@ public class MybatisGenericTypeResolver {
     }
 
     /**
-     * Resolve Type to Class
+     * <code>resolveTypeToClass</code>
+     * <p>the type to class method.</p>
+     * @param type {@link java.lang.reflect.Type} <p>the type parameter is <code>Type</code> type.</p>
+     * @return {@link java.lang.Class} <p>the type to class return object is <code>Class</code> type.</p>
+     * @see java.lang.reflect.Type
+     * @see java.lang.Class
      */
     public static Class<?> resolveTypeToClass(Type type) {
         if (type instanceof Class) {
@@ -178,11 +192,13 @@ public class MybatisGenericTypeResolver {
     }
 
     /**
-     * Resolve return type.
-     * @param method  the method
-     * @param srcType the src type
-     * @return The return type of the method as {@link Type}. If it has type parameters in the declaration,<br>
-     * they will be resolved to the actual runtime {@link Type}s.
+     * <code>resolveReturnType</code>
+     * <p>the return type method.</p>
+     * @param method  {@link java.lang.reflect.Method} <p>the method parameter is <code>Method</code> type.</p>
+     * @param srcType {@link java.lang.reflect.Type} <p>the src type parameter is <code>Type</code> type.</p>
+     * @return {@link java.lang.reflect.Type} <p>the return type return object is <code>Type</code> type.</p>
+     * @see java.lang.reflect.Method
+     * @see java.lang.reflect.Type
      */
     public static Type resolveReturnType(Method method, Type srcType) {
         Type returnType = method.getGenericReturnType();
@@ -191,12 +207,13 @@ public class MybatisGenericTypeResolver {
     }
 
     /**
-     * Resolve param types.
-     * @param method  the method
-     * @param srcType the src type
-     * @return The parameter types of the method as an array of {@link Type}s. If they have type parameters in the
-     * declaration,<br>
-     * they will be resolved to the actual runtime {@link Type}s.
+     * <code>resolveParamTypes</code>
+     * <p>the param types method.</p>
+     * @param method  {@link java.lang.reflect.Method} <p>the method parameter is <code>Method</code> type.</p>
+     * @param srcType {@link java.lang.reflect.Type} <p>the src type parameter is <code>Type</code> type.</p>
+     * @return {@link java.lang.reflect.Type} <p>the param types return object is <code>Type</code> type.</p>
+     * @see java.lang.reflect.Method
+     * @see java.lang.reflect.Type
      */
     public static Type[] resolveParamTypes(Method method, Type srcType) {
         Type[] paramTypes = method.getGenericParameterTypes();
@@ -208,6 +225,16 @@ public class MybatisGenericTypeResolver {
         return result;
     }
 
+    /**
+     * <code>resolveType</code>
+     * <p>the type method.</p>
+     * @param type           {@link java.lang.reflect.Type} <p>the type parameter is <code>Type</code> type.</p>
+     * @param srcType        {@link java.lang.reflect.Type} <p>the src type parameter is <code>Type</code> type.</p>
+     * @param declaringClass {@link java.lang.Class} <p>the declaring class parameter is <code>Class</code> type.</p>
+     * @return {@link java.lang.reflect.Type} <p>the type return object is <code>Type</code> type.</p>
+     * @see java.lang.reflect.Type
+     * @see java.lang.Class
+     */
     public static Type resolveType(Type type, Type srcType, Class<?> declaringClass) {
         if (type instanceof TypeVariable) {
             return resolveTypeVar((TypeVariable<?>) type, srcType, declaringClass);

@@ -27,87 +27,238 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-/**
- * <p>MybatisTable</p>
+/*
+ * <code>MybatisTable</code>
+ * <p>The type mybatis table class.</p>
  * @author Cyan (snow22314@outlook.com)
- * @version v1.0.0
+ * @see io.github.nichetoolkit.mybatis.MybatisProperty
+ * @see lombok.Data
+ * @since Jdk1.8
  */
 @Data
 public class MybatisTable extends MybatisProperty<MybatisTable> {
 
+    /*
+     * <code>DELIMITER</code>
+     * {@link java.util.regex.Pattern} <p>the constant <code>DELIMITER</code> field.</p>
+     * @see java.util.regex.Pattern
+     */
     public static final Pattern DELIMITER = Pattern.compile("^[`\\[\"]?(.*?)[`\\]\"]?$");
 
+    /*
+     * <code>DEFAULT_RESULT_MAP_NAME</code>
+     * {@link java.lang.String} <p>the constant <code>DEFAULT_RESULT_MAP_NAME</code> field.</p>
+     * @see java.lang.String
+     */
     public static final String DEFAULT_RESULT_MAP_NAME = "defaultResultMap";
 
-    /** 原始表名 */
+    /*
+     * <code>table</code>
+     * {@link java.lang.String} <p>the <code>table</code> field.</p>
+     * @see java.lang.String
+     */
     protected String table;
-    /** 实体类 */
+    /*
+     * <code>entity</code>
+     * {@link java.lang.Class} <p>the <code>entity</code> field.</p>
+     * @see java.lang.Class
+     */
     protected Class<?> entity;
-    /** 联合主键 */
+    /*
+     * <code>unionKeys</code>
+     * {@link java.util.List} <p>the <code>unionKeys</code> field.</p>
+     * @see java.util.List
+     */
     protected List<String> unionKeys;
-    /** 联合键忽略 */
+    /*
+     * <code>unionIgnoreKeys</code>
+     * {@link java.util.List} <p>the <code>unionIgnoreKeys</code> field.</p>
+     * @see java.util.List
+     */
     protected List<String> unionIgnoreKeys;
-    /** 是否将主键添加到联合主键 */
+    /*
+     * <code>unionIdentity</code>
+     * <p>the <code>unionIdentity</code> field.</p>
+     */
     protected boolean unionIdentity;
-    /** 是否将主键添加到联合主键 */
+    /*
+     * <code>useUnionKey</code>
+     * <p>the <code>useUnionKey</code> field.</p>
+     */
     protected boolean useUnionKey;
-    /** 连接键 */
+    /*
+     * <code>linkKeys</code>
+     * {@link java.util.List} <p>the <code>linkKeys</code> field.</p>
+     * @see java.util.List
+     */
     protected List<String> linkKeys;
-    /** 连接键忽略 */
+    /*
+     * <code>linkIgnoreKeys</code>
+     * {@link java.util.List} <p>the <code>linkIgnoreKeys</code> field.</p>
+     * @see java.util.List
+     */
     protected List<String> linkIgnoreKeys;
-    /** 唯一键 */
+    /*
+     * <code>uniqueKeys</code>
+     * {@link java.util.List} <p>the <code>uniqueKeys</code> field.</p>
+     * @see java.util.List
+     */
     protected List<String> uniqueKeys;
-    /** 唯一键忽略 */
+    /*
+     * <code>uniqueIgnoreKeys</code>
+     * {@link java.util.List} <p>the <code>uniqueIgnoreKeys</code> field.</p>
+     * @see java.util.List
+     */
     protected List<String> uniqueIgnoreKeys;
-    /** 联合主键 */
+    /*
+     * <code>alertKeys</code>
+     * {@link java.util.List} <p>the <code>alertKeys</code> field.</p>
+     * @see java.util.List
+     */
     protected List<String> alertKeys;
-    /** 联合键忽略 */
+    /*
+     * <code>alertIgnoreKeys</code>
+     * {@link java.util.List} <p>the <code>alertIgnoreKeys</code> field.</p>
+     * @see java.util.List
+     */
     protected List<String> alertIgnoreKeys;
-    /** catalog 名称 */
+    /*
+     * <code>catalog</code>
+     * {@link java.lang.String} <p>the <code>catalog</code> field.</p>
+     * @see java.lang.String
+     */
     protected String catalog;
-    /** schema 名称 */
+    /*
+     * <code>schema</code>
+     * {@link java.lang.String} <p>the <code>schema</code> field.</p>
+     * @see java.lang.String
+     */
     protected String schema;
-    /** 名称规则样式名称 */
+    /*
+     * <code>styleName</code>
+     * {@link java.lang.String} <p>the <code>styleName</code> field.</p>
+     * @see java.lang.String
+     */
     protected String styleName;
-    /** 名称规则样式类型 */
+    /*
+     * <code>styleType</code>
+     * {@link io.github.nichetoolkit.mybatis.enums.StyleType} <p>the <code>styleType</code> field.</p>
+     * @see io.github.nichetoolkit.mybatis.enums.StyleType
+     */
     protected StyleType styleType;
-    /** 使用指定的 resultMap */
+    /*
+     * <code>resultMap</code>
+     * {@link java.lang.String} <p>the <code>resultMap</code> field.</p>
+     * @see java.lang.String
+     */
     protected String resultMap;
-    /** 根据字段生成 resultMap */
+    /*
+     * <code>autoResultMap</code>
+     * <p>the <code>autoResultMap</code> field.</p>
+     */
     protected boolean autoResultMap;
-    /** 初始化自动ResultMap */
+    /*
+     * <code>autoResultMaps</code>
+     * {@link java.util.List} <p>the <code>autoResultMaps</code> field.</p>
+     * @see java.util.List
+     */
     protected List<ResultMap> autoResultMaps;
-    /** 排除指定字段名的字段 */
+    /*
+     * <code>excludeFields</code>
+     * {@link java.util.List} <p>the <code>excludeFields</code> field.</p>
+     * @see java.util.List
+     */
     protected List<String> excludeFields;
-    /** 排除指定类型的字段 */
+    /*
+     * <code>excludeFieldTypes</code>
+     * {@link java.util.List} <p>the <code>excludeFieldTypes</code> field.</p>
+     * @see java.util.List
+     */
     protected List<Class<?>> excludeFieldTypes;
-    /** 排除指定父类的所有字段 */
+    /*
+     * <code>excludeSuperClasses</code>
+     * {@link java.util.List} <p>the <code>excludeSuperClasses</code> field.</p>
+     * @see java.util.List
+     */
     protected List<Class<?>> excludeSuperClasses;
-    /**排除指定键忽略 */
+    /*
+     * <code>excludeIgnoreKeys</code>
+     * {@link java.util.List} <p>the <code>excludeIgnoreKeys</code> field.</p>
+     * @see java.util.List
+     */
     protected List<String> excludeIgnoreKeys;
-    /** 字段集合 */
+    /*
+     * <code>allColumns</code>
+     * {@link java.util.List} <p>the <code>allColumns</code> field.</p>
+     * @see java.util.List
+     */
     protected List<MybatisColumn> allColumns;
-    /** 主键字段 */
+    /*
+     * <code>identityColumn</code>
+     * {@link io.github.nichetoolkit.mybatis.MybatisColumn} <p>the <code>identityColumn</code> field.</p>
+     * @see io.github.nichetoolkit.mybatis.MybatisColumn
+     */
     protected MybatisColumn identityColumn;
-    /** 逻辑删除字段 */
+    /*
+     * <code>logicColumn</code>
+     * {@link io.github.nichetoolkit.mybatis.MybatisColumn} <p>the <code>logicColumn</code> field.</p>
+     * @see io.github.nichetoolkit.mybatis.MybatisColumn
+     */
     protected MybatisColumn logicColumn;
-    /** 数据操作字段 */
+    /*
+     * <code>operateColumn</code>
+     * {@link io.github.nichetoolkit.mybatis.MybatisColumn} <p>the <code>operateColumn</code> field.</p>
+     * @see io.github.nichetoolkit.mybatis.MybatisColumn
+     */
     protected MybatisColumn operateColumn;
-    /** 修改字段 */
+    /*
+     * <code>alertColumn</code>
+     * {@link io.github.nichetoolkit.mybatis.MybatisColumn} <p>the <code>alertColumn</code> field.</p>
+     * @see io.github.nichetoolkit.mybatis.MybatisColumn
+     */
     protected MybatisColumn alertColumn;
-    /** 关联连接字段 */
+    /*
+     * <code>linkColumn</code>
+     * {@link io.github.nichetoolkit.mybatis.MybatisColumn} <p>the <code>linkColumn</code> field.</p>
+     * @see io.github.nichetoolkit.mybatis.MybatisColumn
+     */
     protected MybatisColumn linkColumn;
-    /** 联合主键字段 */
+    /*
+     * <code>uniqueColumns</code>
+     * {@link java.util.List} <p>the <code>uniqueColumns</code> field.</p>
+     * @see java.util.List
+     */
     protected List<MybatisColumn> uniqueColumns;
-    /** 联合主键字段 */
+    /*
+     * <code>unionColumns</code>
+     * {@link java.util.List} <p>the <code>unionColumns</code> field.</p>
+     * @see java.util.List
+     */
     protected List<MybatisColumn> unionColumns;
-    /** 初始化完成，可以使用 */
+    /*
+     * <code>ready</code>
+     * <p>the <code>ready</code> field.</p>
+     */
     protected boolean ready;
-    /** 已经初始化的配置 */
+    /*
+     * <code>initiates</code>
+     * {@link java.util.Set} <p>the <code>initiates</code> field.</p>
+     * @see java.util.Set
+     */
     protected Set<Configuration> initiates = new HashSet<>();
-    /** 字段名称 */
+    /*
+     * <code>fieldColumns</code>
+     * {@link java.util.Map} <p>the <code>fieldColumns</code> field.</p>
+     * @see java.util.Map
+     */
     protected Map<String, MybatisColumn> fieldColumns = new HashMap<>();
 
+    /*
+     * <code>MybatisTable</code>
+     * Instantiates a new mybatis table.
+     * @param entity {@link java.lang.Class} <p>the entity parameter is <code>Class</code> type.</p>
+     * @see java.lang.Class
+     */
     public MybatisTable(Class<?> entity) {
         this.entity = entity;
         this.allColumns = new ArrayList<>();
@@ -115,6 +266,14 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
         this.unionColumns = new ArrayList<>();
     }
 
+    /*
+     * <code>MybatisTable</code>
+     * Instantiates a new mybatis table.
+     * @param properties {@link java.util.Map} <p>the properties parameter is <code>Map</code> type.</p>
+     * @param entity     {@link java.lang.Class} <p>the entity parameter is <code>Class</code> type.</p>
+     * @see java.util.Map
+     * @see java.lang.Class
+     */
     public MybatisTable(Map<String, String> properties, Class<?> entity) {
         super(properties);
         this.entity = entity;
@@ -123,10 +282,26 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
         this.unionColumns = new ArrayList<>();
     }
 
+    /*
+     * <code>of</code>
+     * <p>the method.</p>
+     * @param clazz {@link java.lang.Class} <p>the clazz parameter is <code>Class</code> type.</p>
+     * @return {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>the return object is <code>MybatisTable</code> type.</p>
+     * @see java.lang.Class
+     */
     public static MybatisTable of(Class<?> clazz) {
         return new MybatisTable(clazz);
     }
 
+    /*
+     * <code>of</code>
+     * <p>the method.</p>
+     * @param clazz      {@link java.lang.Class} <p>the clazz parameter is <code>Class</code> type.</p>
+     * @param properties {@link java.util.Map} <p>the properties parameter is <code>Map</code> type.</p>
+     * @return {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>the return object is <code>MybatisTable</code> type.</p>
+     * @see java.lang.Class
+     * @see java.util.Map
+     */
     public static MybatisTable of(Class<?> clazz, Map<String, String> properties) {
         if (GeneralUtils.isNotEmpty(properties)) {
             return new MybatisTable(properties, clazz);
@@ -135,24 +310,52 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
         }
     }
 
+    /*
+     * <code>tableName</code>
+     * <p>the name method.</p>
+     * @return {@link java.lang.String} <p>the name return object is <code>String</code> type.</p>
+     * @see java.lang.String
+     */
     public String tableName() {
         return Stream.of(this.catalog, this.schema, this.table)
                 .filter(GeneralUtils::isNotEmpty)
                 .collect(Collectors.joining("."));
     }
 
+    /*
+     * <code>fields</code>
+     * <p>the method.</p>
+     * @return {@link java.util.List} <p>the return object is <code>List</code> type.</p>
+     * @see java.util.List
+     */
     public List<MybatisField> fields() {
         return this.allColumns.stream().map(MybatisColumn::getField).collect(Collectors.toList());
     }
 
+    /*
+     * <code>columnNames</code>
+     * <p>the names method.</p>
+     * @return {@link java.util.List} <p>the names return object is <code>List</code> type.</p>
+     * @see java.util.List
+     */
     public List<String> columnNames() {
         return this.allColumns.stream().map(MybatisColumn::getColumnName).collect(Collectors.toList());
     }
 
+    /*
+     * <code>fieldNames</code>
+     * <p>the names method.</p>
+     * @return {@link java.util.List} <p>the names return object is <code>List</code> type.</p>
+     * @see java.util.List
+     */
     public List<String> fieldNames() {
         return this.allColumns.stream().map(MybatisColumn::property).collect(Collectors.toList());
     }
 
+    /*
+     * <code>readyColumns</code>
+     * <p>the columns method.</p>
+     */
     public void readyColumns() {
         List<MybatisColumn> identityColumns = new ArrayList<>();
         List<MybatisColumn> primaryKeyColumns = new ArrayList<>();
@@ -193,7 +396,7 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
                     operateColumns.add(0,column);
                 }
             }
-            /** 如果是联合主键 */
+            /* 如果是联合主键 */
             String fieldName = column.getField().fieldName();
             if (column.isUnionKey() || (GeneralUtils.isNotEmpty(this.unionKeys) && this.unionKeys.contains(fieldName))) {
                 column.setUnionKey(true);
@@ -208,7 +411,7 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
                 column.setUnionKey(false);
                 this.unionColumns.remove(column);
             }
-            /** 如果是链接外键 */
+            /* 如果是链接外键 */
             if (column.isLinkKey() || (GeneralUtils.isNotEmpty(this.linkKeys) && this.linkKeys.contains(fieldName))) {
                 column.setLinkKey(true);
                 if (!linkKeyColumns.contains(column)) {
@@ -222,7 +425,7 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
                 column.setLinkKey(false);
                 linkKeyColumns.remove(column);
             }
-            /** 如果是链接外键 */
+            /* 如果是链接外键 */
             if (column.isAlertKey() || (GeneralUtils.isNotEmpty(this.alertKeys) && this.alertKeys.contains(fieldName))) {
                 column.setAlertKey(true);
                 if (!alertKeyColumns.contains(column)) {
@@ -236,7 +439,7 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
                 column.setAlertKey(false);
                 alertKeyColumns.remove(column);
             }
-            /** 如果是链接外键 */
+            /* 如果是链接外键 */
             if (column.isUnique() || (GeneralUtils.isNotEmpty(this.uniqueKeys) && this.uniqueKeys.contains(fieldName))) {
                 column.setUnique(true);
                 if (!this.uniqueColumns.contains(column)) {
@@ -279,8 +482,14 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
         }
     }
 
+    /*
+     * <code>addColumn</code>
+     * <p>the column method.</p>
+     * @param column {@link io.github.nichetoolkit.mybatis.MybatisColumn} <p>the column parameter is <code>MybatisColumn</code> type.</p>
+     * @see io.github.nichetoolkit.mybatis.MybatisColumn
+     */
     public void addColumn(MybatisColumn column) {
-        /** 不重复添加同名的列 */
+        /* 不重复添加同名的列 */
         if (!this.allColumns.contains(column)) {
             if (column.getField().declaringClass() != this.entity) {
                 if (column.isForceInsert() || column.isForceUpdate() || column.isLogic() || column.isOperate()) {
@@ -299,7 +508,7 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
             }
             column.setTable(this);
         } else {
-            /** 同名列在父类存在时，说明是子类覆盖的，字段的顺序应该更靠前 */
+            /* 同名列在父类存在时，说明是子类覆盖的，字段的顺序应该更靠前 */
             MybatisColumn existsColumn = this.allColumns.remove(this.allColumns.indexOf(column));
             if (GeneralUtils.isValid(column.getOrder())) {
                 this.allColumns.add(column.getOrder(), existsColumn);
@@ -309,6 +518,14 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
         }
     }
 
+    /*
+     * <code>refreshColumn</code>
+     * <p>the column method.</p>
+     * @param columns {@link java.util.List} <p>the columns parameter is <code>List</code> type.</p>
+     * @param column  {@link io.github.nichetoolkit.mybatis.MybatisColumn} <p>the column parameter is <code>MybatisColumn</code> type.</p>
+     * @see java.util.List
+     * @see io.github.nichetoolkit.mybatis.MybatisColumn
+     */
     protected void refreshColumn(List<MybatisColumn> columns, MybatisColumn column) {
         if (GeneralUtils.isValid(column.getUnionIndex())) {
             columns.add(column.getUnionIndex(),column);
@@ -319,15 +536,24 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
         }
     }
 
+    /*
+     * <code>canUseResultMaps</code>
+     * <p>the use result maps method.</p>
+     * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>the provider context parameter is <code>ProviderContext</code> type.</p>
+     * @param cacheKey        {@link java.lang.String} <p>the cache key parameter is <code>String</code> type.</p>
+     * @return boolean <p>the use result maps return object is <code>boolean</code> type.</p>
+     * @see org.apache.ibatis.builder.annotation.ProviderContext
+     * @see java.lang.String
+     */
     protected boolean canUseResultMaps(ProviderContext providerContext, String cacheKey) {
         if (this.autoResultMaps != null && !this.autoResultMaps.isEmpty()
                 && providerContext.getMapperMethod().isAnnotationPresent(SelectProvider.class)) {
             Class<?> resultType = this.autoResultMaps.get(0).getType();
-            /** 类型相同时直接返回 */
+            /* 类型相同时直接返回 */
             if (resultType == providerContext.getMapperMethod().getReturnType()) {
                 return true;
             }
-            /** 可能存在泛型的情况，如 List<T>, Optional<T>, 还有 MyBatis 包含的一些注解 */
+            /* 可能存在泛型的情况，如 List<T>, Optional<T>, 还有 MyBatis 包含的一些注解 */
             Class<?> returnType = MybatisGenericTypeResolver.resolveMapperReturnType(
                     providerContext.getMapperMethod(), providerContext.getMapperType());
             return resultType == returnType;
@@ -335,19 +561,23 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
         return false;
     }
 
-    /**
-     * 当前实体类是否使用 resultMap
-     * @return boolean
+    /*
+     * <code>useResultMaps</code>
+     * <p>the result maps method.</p>
+     * @return boolean <p>the result maps return object is <code>boolean</code> type.</p>
      */
     public boolean useResultMaps() {
         return this.autoResultMaps != null || this.autoResultMap || GeneralUtils.isNotEmpty(this.resultMap);
     }
 
-    /**
-     * 是否已经替换 resultMap
-     * @param configuration MyBatis 配置类，慎重操作
-     * @param cacheKey      缓存 key，每个方法唯一，默认和 msId 一样
-     * @return boolean
+    /*
+     * <code>hasBeenReplaced</code>
+     * <p>the been replaced method.</p>
+     * @param configuration {@link org.apache.ibatis.session.Configuration} <p>the configuration parameter is <code>Configuration</code> type.</p>
+     * @param cacheKey      {@link java.lang.String} <p>the cache key parameter is <code>String</code> type.</p>
+     * @return boolean <p>the been replaced return object is <code>boolean</code> type.</p>
+     * @see org.apache.ibatis.session.Configuration
+     * @see java.lang.String
      */
     protected boolean hasBeenReplaced(Configuration configuration, String cacheKey) {
         MappedStatement mappedStatement = configuration.getMappedStatement(cacheKey);
@@ -357,14 +587,18 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
         return false;
     }
 
-    /**
-     * 设置运行时信息，不同方法分别执行一次，需要保证幂等
-     * @param configuration   MyBatis 配置类，慎重操作，多数据源或多个配置时，需要区分 Configuration 执行
-     * @param providerContext 当前方法信息
-     * @param cacheKey        缓存 key，每个方法唯一，默认和 msId 一样
+    /*
+     * <code>initContext</code>
+     * <p>the context method.</p>
+     * @param configuration   {@link org.apache.ibatis.session.Configuration} <p>the configuration parameter is <code>Configuration</code> type.</p>
+     * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>the provider context parameter is <code>ProviderContext</code> type.</p>
+     * @param cacheKey        {@link java.lang.String} <p>the cache key parameter is <code>String</code> type.</p>
+     * @see org.apache.ibatis.session.Configuration
+     * @see org.apache.ibatis.builder.annotation.ProviderContext
+     * @see java.lang.String
      */
     public void initContext(Configuration configuration, ProviderContext providerContext, String cacheKey) {
-        /** 初始化一次，后续不会重复初始化 */
+        /* 初始化一次，后续不会重复初始化 */
         if (!this.initiates.contains(configuration)) {
             initResultMap(configuration, providerContext, cacheKey);
             this.initiates.add(configuration);
@@ -379,8 +613,18 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
         }
     }
 
+    /*
+     * <code>initResultMap</code>
+     * <p>the result map method.</p>
+     * @param configuration   {@link org.apache.ibatis.session.Configuration} <p>the configuration parameter is <code>Configuration</code> type.</p>
+     * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>the provider context parameter is <code>ProviderContext</code> type.</p>
+     * @param cacheKey        {@link java.lang.String} <p>the cache key parameter is <code>String</code> type.</p>
+     * @see org.apache.ibatis.session.Configuration
+     * @see org.apache.ibatis.builder.annotation.ProviderContext
+     * @see java.lang.String
+     */
     protected void initResultMap(Configuration configuration, ProviderContext providerContext, String cacheKey) {
-        /** 使用指定的 resultMap */
+        /* 使用指定的 resultMap */
         if (GeneralUtils.isNotEmpty(this.resultMap)) {
             synchronized (this) {
                 if (this.autoResultMaps == null) {
@@ -396,7 +640,7 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
                 }
             }
         } else if (this.autoResultMap) {
-            /** 自动生成 resultMap */
+            /* 自动生成 resultMap */
             synchronized (this) {
                 if (this.autoResultMaps == null) {
                     this.autoResultMaps = new ArrayList<>();
@@ -408,6 +652,15 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
         }
     }
 
+    /*
+     * <code>generateResultMapId</code>
+     * <p>the result map id method.</p>
+     * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>the provider context parameter is <code>ProviderContext</code> type.</p>
+     * @param resultMapId     {@link java.lang.String} <p>the result map id parameter is <code>String</code> type.</p>
+     * @return {@link java.lang.String} <p>the result map id return object is <code>String</code> type.</p>
+     * @see org.apache.ibatis.builder.annotation.ProviderContext
+     * @see java.lang.String
+     */
     protected String generateResultMapId(ProviderContext providerContext, String resultMapId) {
         if (resultMapId.indexOf(".") > 0) {
             return resultMapId;
@@ -415,11 +668,23 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
         return providerContext.getMapperType().getName() + "." + resultMapId;
     }
 
+    /*
+     * <code>autoResultMap</code>
+     * <p>the result map method.</p>
+     * @param configuration   {@link org.apache.ibatis.session.Configuration} <p>the configuration parameter is <code>Configuration</code> type.</p>
+     * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>the provider context parameter is <code>ProviderContext</code> type.</p>
+     * @param cacheKey        {@link java.lang.String} <p>the cache key parameter is <code>String</code> type.</p>
+     * @return {@link org.apache.ibatis.mapping.ResultMap} <p>the result map return object is <code>ResultMap</code> type.</p>
+     * @see org.apache.ibatis.session.Configuration
+     * @see org.apache.ibatis.builder.annotation.ProviderContext
+     * @see java.lang.String
+     * @see org.apache.ibatis.mapping.ResultMap
+     */
     protected ResultMap autoResultMap(Configuration configuration, ProviderContext providerContext, String cacheKey) {
         List<ResultMapping> resultMappings = new ArrayList<>();
         for (MybatisColumn column : selectColumns()) {
             String columnName = column.getColumnName();
-            /** 去掉可能存在的分隔符，例如：`order` */
+            /* 去掉可能存在的分隔符，例如：`order` */
             Matcher matcher = MybatisTable.DELIMITER.matcher(columnName);
             if (matcher.find()) {
                 columnName = matcher.group(1);
@@ -448,8 +713,14 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
     }
 
 
-    /**
-     * 实例化TypeHandler
+    /*
+     * <code>getTypeHandlerInstance</code>
+     * <p>the type handler instance getter method.</p>
+     * @param javaTypeClass    {@link java.lang.Class} <p>the java type class parameter is <code>Class</code> type.</p>
+     * @param typeHandlerClass {@link java.lang.Class} <p>the type handler class parameter is <code>Class</code> type.</p>
+     * @return {@link org.apache.ibatis.type.TypeHandler} <p>the type handler instance return object is <code>TypeHandler</code> type.</p>
+     * @see java.lang.Class
+     * @see org.apache.ibatis.type.TypeHandler
      */
     public TypeHandler<?> getTypeHandlerInstance(Class<?> javaTypeClass, Class<?> typeHandlerClass) {
         if (javaTypeClass != null) {
@@ -470,15 +741,23 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
         }
     }
 
-    /**
-     * 返回查询列，默认所有列，当使用查询条件列时，必须使用当前方法返回的列
+    /*
+     * <code>allColumns</code>
+     * <p>the columns method.</p>
+     * @return {@link java.util.List} <p>the columns return object is <code>List</code> type.</p>
+     * @see java.util.List
      */
     public List<MybatisColumn> allColumns() {
         return this.allColumns;
     }
-    
-    /**
-     * 返回查询列，默认所有列，当使用查询条件列时，必须使用当前方法返回的列
+
+    /*
+     * <code>fieldColumn</code>
+     * <p>the column method.</p>
+     * @param fieldName {@link java.lang.String} <p>the field name parameter is <code>String</code> type.</p>
+     * @return {@link io.github.nichetoolkit.mybatis.MybatisColumn} <p>the column return object is <code>MybatisColumn</code> type.</p>
+     * @see java.lang.String
+     * @see io.github.nichetoolkit.mybatis.MybatisColumn
      */
     public MybatisColumn fieldColumn(String fieldName) {
         if (GeneralUtils.isEmpty(this.fieldColumns)) {
@@ -487,10 +766,12 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
         return this.fieldColumns.get(fieldName);
     }
 
-    /**
-     * 返回主键列，不会为空，当根据主键作为条件时，必须使用当前方法返回的列，没有设置主键时，当前方法返回所有列
+    /*
+     * <code>identityColumns</code>
+     * <p>the columns method.</p>
+     * @return {@link java.util.List} <p>the columns return object is <code>List</code> type.</p>
+     * @see java.util.List
      */
-    
     public List<MybatisColumn> identityColumns() {
         if (GeneralUtils.isNotEmpty(this.unionColumns) && this.unionColumns.size() > 1) {
             return this.unionColumns;
@@ -498,76 +779,112 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
         return Collections.singletonList(this.identityColumn);
     }
 
-    /**
-     * 返回普通列，排除主键字段，当根据非主键作为条件时，必须使用当前方法返回的列
+    /*
+     * <code>normalColumns</code>
+     * <p>the columns method.</p>
+     * @return {@link java.util.List} <p>the columns return object is <code>List</code> type.</p>
+     * @see java.util.List
      */
     public List<MybatisColumn> normalColumns() {
         return this.allColumns.stream().filter(column -> !column.isIdentity() && !column.isPrimaryKey()
                 && !column.isUnionKey() && !column.isLogic() && !column.isOperate()).collect(Collectors.toList());
     }
 
-    /**
-     * 返回查询列，当获取查询列时，必须使用当前方法返回的列
+    /*
+     * <code>selectColumns</code>
+     * <p>the columns method.</p>
+     * @return {@link java.util.List} <p>the columns return object is <code>List</code> type.</p>
+     * @see java.util.List
      */
     public List<MybatisColumn> selectColumns() {
         return this.allColumns.stream().filter(MybatisColumn::isSelect).collect(Collectors.toList());
     }
 
-    /**
-     * 返回查询列，默认所有列，当使用查询条件列时，必须使用当前方法返回的列
+    /*
+     * <code>whereColumns</code>
+     * <p>the columns method.</p>
+     * @return {@link java.util.List} <p>the columns return object is <code>List</code> type.</p>
+     * @see java.util.List
      */
     public List<MybatisColumn> whereColumns() {
         return this.allColumns;
     }
 
+    /*
+     * <code>uniqueColumns</code>
+     * <p>the columns method.</p>
+     * @return {@link java.util.List} <p>the columns return object is <code>List</code> type.</p>
+     * @see java.util.List
+     */
     public List<MybatisColumn> uniqueColumns() {
         return this.unionColumns;
     }
 
-    /**
-     * 所有 insert 用到的字段，当插入列时，必须使用当前方法返回的列
+    /*
+     * <code>insertColumns</code>
+     * <p>the columns method.</p>
+     * @return {@link java.util.List} <p>the columns return object is <code>List</code> type.</p>
+     * @see java.util.List
      */
     public List<MybatisColumn> insertColumns() {
         return this.allColumns.stream().filter(MybatisColumn::isInsert).collect(Collectors.toList());
     }
 
-    /**
-     * 所有 update 用到的字段，当更新列时，必须使用当前方法返回的列
+    /*
+     * <code>updateColumns</code>
+     * <p>the columns method.</p>
+     * @return {@link java.util.List} <p>the columns return object is <code>List</code> type.</p>
+     * @see java.util.List
      */
     public List<MybatisColumn> updateColumns() {
         return this.allColumns.stream().filter(MybatisColumn::isUpdate).collect(Collectors.toList());
     }
 
-    /**
-     * 所有 insert 用到的字段，当更新列时，必须使用当前方法返回的列
+    /*
+     * <code>forceInsertColumns</code>
+     * <p>the insert columns method.</p>
+     * @return {@link java.util.List} <p>the insert columns return object is <code>List</code> type.</p>
+     * @see java.util.List
      */
     public List<MybatisColumn> forceInsertColumns() {
         return this.allColumns.stream().filter(MybatisColumn::isForceInsert).collect(Collectors.toList());
     }
 
-    /**
-     * 所有 update 用到的字段，当更新列时，必须使用当前方法返回的列
+    /*
+     * <code>forceUpdateColumns</code>
+     * <p>the update columns method.</p>
+     * @return {@link java.util.List} <p>the update columns return object is <code>List</code> type.</p>
+     * @see java.util.List
      */
     public List<MybatisColumn> forceUpdateColumns() {
         return this.allColumns.stream().filter(MybatisColumn::isForceUpdate).collect(Collectors.toList());
     }
 
-    /**
-     * 所有 GROUP BY 到的字段，默认为空，当使用 GROUP BY 列时，必须使用当前方法返回的列
+    /*
+     * <code>groupByColumns</code>
+     * <p>the by columns method.</p>
+     * @return {@link java.util.Optional} <p>the by columns return object is <code>Optional</code> type.</p>
+     * @see java.util.Optional
      */
     public Optional<List<MybatisColumn>> groupByColumns() {
         return Optional.empty();
     }
 
-    /**
-     * 所有 HAVING 到的字段，默认为空，当使用 HAVING 列时，必须使用当前方法返回的列
+    /*
+     * <code>havingColumns</code>
+     * <p>the columns method.</p>
+     * @return {@link java.util.Optional} <p>the columns return object is <code>Optional</code> type.</p>
+     * @see java.util.Optional
      */
     public Optional<List<MybatisColumn>> havingColumns() {
         return Optional.empty();
     }
 
-    /**
-     * 所有排序用到的字段
+    /*
+     * <code>orderByColumns</code>
+     * <p>the by columns method.</p>
+     * @return {@link java.util.Optional} <p>the by columns return object is <code>Optional</code> type.</p>
+     * @see java.util.Optional
      */
     public Optional<List<MybatisColumn>> orderByColumns() {
         List<MybatisColumn> orderByColumns = this.allColumns.stream()
@@ -580,15 +897,21 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
         return Optional.empty();
     }
 
-    /**
-     * 所有查询列，形如 column1, column2, ...
+    /*
+     * <code>baseColumnList</code>
+     * <p>the column list method.</p>
+     * @return {@link java.lang.String} <p>the column list return object is <code>String</code> type.</p>
+     * @see java.lang.String
      */
     public String baseColumnList() {
         return selectColumns().stream().map(MybatisColumn::getColumnName).collect(Collectors.joining(", "));
     }
 
-    /**
-     * 所有查询列，形如 column1 AS property1, column2 AS property2, ...
+    /*
+     * <code>baseColumnAsPropertyList</code>
+     * <p>the column as property list method.</p>
+     * @return {@link java.lang.String} <p>the column as property list return object is <code>String</code> type.</p>
+     * @see java.lang.String
      */
     public String baseColumnAsPropertyList() {
         //当存在 resultMaps 时，查询列不能用别名
@@ -598,31 +921,41 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
         return selectColumns().stream().map(MybatisColumn::columnAsProperty).collect(Collectors.joining(", "));
     }
 
-    /**
-     * 所有 select 列，形如 column1, column2, ...，字段来源 {@link #selectColumns()}
+    /*
+     * <code>selectColumnList</code>
+     * <p>the column list method.</p>
+     * @return {@link java.lang.String} <p>the column list return object is <code>String</code> type.</p>
+     * @see java.lang.String
      */
     public String selectColumnList() {
         return selectColumns().stream().map(MybatisColumn::getColumnName).distinct().collect(Collectors.joining(", "));
     }
 
-    /**
-     * 所有 insert 列，形如 column1, column2, ...，字段来源 {@link #insertColumns()}
+    /*
+     * <code>insertColumnList</code>
+     * <p>the column list method.</p>
+     * @return {@link java.lang.String} <p>the column list return object is <code>String</code> type.</p>
+     * @see java.lang.String
      */
     public String insertColumnList() {
         return insertColumns().stream().map(MybatisColumn::getColumnName).distinct().collect(Collectors.joining(", "));
     }
 
-    /**
-     * 所有 主键或联合主键 用到的字段，当插入列时，必须使用当前方法返回的列
+    /*
+     * <code>identityColumnList</code>
+     * <p>the column list method.</p>
+     * @return {@link java.lang.String} <p>the column list return object is <code>String</code> type.</p>
+     * @see java.lang.String
      */
     public String identityColumnList() {
         return identityColumns().stream().map(MybatisColumn::getColumnName).distinct().collect(Collectors.joining(", "));
     }
 
-    /**
-     * 所有 order by 字段，默认空，字段来源 {@link #groupByColumns()} 参考值: column1, column2, ...
-     * <p>
-     * 默认重写 {@link #groupByColumns()} 方法即可，当前方法不需要重写
+    /*
+     * <code>groupByColumnList</code>
+     * <p>the by column list method.</p>
+     * @return {@link java.util.Optional} <p>the by column list return object is <code>Optional</code> type.</p>
+     * @see java.util.Optional
      */
     public Optional<String> groupByColumnList() {
         Optional<List<MybatisColumn>> groupByColumns = groupByColumns();
@@ -630,18 +963,22 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
                 .collect(Collectors.joining(", ")));
     }
 
-    /**
-     * 带上 GROUP BY 前缀的方法，默认空，默认查询列来自 {@link #groupByColumnList()}
-     * <p>
-     * 默认重写 {@link #groupByColumns()} 方法即可，当前方法不需要重写
+    /*
+     * <code>groupByColumn</code>
+     * <p>the by column method.</p>
+     * @return {@link java.util.Optional} <p>the by column return object is <code>Optional</code> type.</p>
+     * @see java.util.Optional
      */
     public Optional<String> groupByColumn() {
         Optional<String> groupByColumnList = groupByColumnList();
         return groupByColumnList.map(s -> " GROUP BY " + s);
     }
 
-    /**
-     * 所有 having 字段，默认空，字段来源 {@link #havingColumns()} 参考值: column1, column2, ...
+    /*
+     * <code>havingColumnList</code>
+     * <p>the column list method.</p>
+     * @return {@link java.util.Optional} <p>the column list return object is <code>Optional</code> type.</p>
+     * @see java.util.Optional
      */
     public Optional<String> havingColumnList() {
         Optional<List<MybatisColumn>> havingColumns = havingColumns();
@@ -649,18 +986,22 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
                 .collect(Collectors.joining(", ")));
     }
 
-    /**
-     * 带上 HAVING 前缀的方法，默认空，默认查询列来自 {@link #havingColumnList()}
+    /*
+     * <code>havingColumn</code>
+     * <p>the column method.</p>
+     * @return {@link java.util.Optional} <p>the column return object is <code>Optional</code> type.</p>
+     * @see java.util.Optional
      */
     public Optional<String> havingColumn() {
         Optional<String> havingColumnList = havingColumnList();
         return havingColumnList.map(s -> " HAVING " + s);
     }
 
-    /**
-     * 所有 order by 字段，默认空，字段来源 {@link #orderByColumns()} 参考值: column1, column2, ...
-     * <p>
-     * 默认重写 {@link #orderByColumns()} 方法即可，当前方法不需要重写
+    /*
+     * <code>orderByColumnList</code>
+     * <p>the by column list method.</p>
+     * @return {@link java.util.Optional} <p>the by column list return object is <code>Optional</code> type.</p>
+     * @see java.util.Optional
      */
     public Optional<String> orderByColumnList() {
         Optional<List<MybatisColumn>> orderByColumns = orderByColumns();
@@ -669,20 +1010,23 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
                 .collect(Collectors.joining(", ")));
     }
 
-    /**
-     * 带上 ORDER BY 前缀的方法，默认空，默认查询列来自 {@link #orderByColumnList()}
-     * <p>
-     * 默认重写 {@link #orderByColumns()} 方法即可，当前方法不需要重写
+    /*
+     * <code>orderByColumn</code>
+     * <p>the by column method.</p>
+     * @return {@link java.util.Optional} <p>the by column return object is <code>Optional</code> type.</p>
+     * @see java.util.Optional
      */
     public Optional<String> orderByColumn() {
         Optional<String> orderColumnList = orderByColumnList();
         return orderColumnList.map(s -> " ORDER BY " + s);
     }
 
-    /**
-     * 是否需要排除父类
-     * @param superClass 父类
-     * @return true - 需要排除，false - 不需要排除
+    /*
+     * <code>isExcludeSuperClass</code>
+     * <p>the exclude super class method.</p>
+     * @param superClass {@link java.lang.Class} <p>the super class parameter is <code>Class</code> type.</p>
+     * @return boolean <p>the exclude super class return object is <code>boolean</code> type.</p>
+     * @see java.lang.Class
      */
     public boolean isExcludeSuperClass(Class<?> superClass) {
         if (this.excludeSuperClasses != null) {
@@ -695,10 +1039,12 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
         return false;
     }
 
-    /**
-     * 是否需要排除指定的字段
-     * @param field 字段
-     * @return true - 需要排除，false - 不需要排除
+    /*
+     * <code>isExcludeField</code>
+     * <p>the exclude field method.</p>
+     * @param field {@link io.github.nichetoolkit.mybatis.MybatisField} <p>the field parameter is <code>MybatisField</code> type.</p>
+     * @return boolean <p>the exclude field return object is <code>boolean</code> type.</p>
+     * @see io.github.nichetoolkit.mybatis.MybatisField
      */
     public boolean isExcludeField(MybatisField field) {
         if (this.excludeFieldTypes != null) {

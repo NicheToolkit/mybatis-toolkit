@@ -1,37 +1,47 @@
 package io.github.nichetoolkit.mybatis;
 
 /**
- * <p>MybatisTableFactory</p>
- * 体类信息工厂
+ * <code>MybatisTableFactory</code>
+ * <p>The type mybatis table factory interface.</p>
  * @author Cyan (snow22314@outlook.com)
- * @version v1.0.0
+ * @see io.github.nichetoolkit.mybatis.MybatisOrder
+ * @since Jdk1.8
  */
 public interface MybatisTableFactory extends MybatisOrder {
 
     /**
-     * 根据注解判断是否支持 创建 MybatisTable 对象
-     * @param clazz 实体类类型
-     * @return 实体类信息
+     * <code>supports</code>
+     * <p>the method.</p>
+     * @param clazz {@link java.lang.Class} <p>the clazz parameter is <code>Class</code> type.</p>
+     * @return boolean <p>the return object is <code>boolean</code> type.</p>
+     * @see java.lang.Class
      */
     boolean supports(Class<?> clazz);
+
     /**
-     * 根据实体类创建 MybatisTable，可以使用自己的注解来实现，
-     * 这一步只返回 MybatisTable，不处理其中的字段
-     * @param clazz 实体类类型
-     * @param chain 调用下一个
-     * @return 实体类信息
+     * <code>createTable</code>
+     * <p>the table method.</p>
+     * @param clazz {@link java.lang.Class} <p>the clazz parameter is <code>Class</code> type.</p>
+     * @param chain {@link io.github.nichetoolkit.mybatis.MybatisTableFactory.Chain} <p>the chain parameter is <code>Chain</code> type.</p>
+     * @return {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>the table return object is <code>MybatisTable</code> type.</p>
+     * @see java.lang.Class
+     * @see io.github.nichetoolkit.mybatis.MybatisTableFactory.Chain
      */
     MybatisTable createTable(Class<?> clazz, Chain chain);
 
     /**
-     * 工厂链
+     * <code>Chain</code>
+     * <p>The type chain interface.</p>
+     * @author Cyan (snow22314@outlook.com)
+     * @since Jdk1.8
      */
     interface Chain {
         /**
-         * 根据实体类创建 MybatisTable，可以使用自己的注解来实现，
-         * 这一步只返回 MybatisTable，不处理其中的字段
-         * @param clazz 实体类类型
-         * @return 实体类信息
+         * <code>createTable</code>
+         * <p>the table method.</p>
+         * @param clazz {@link java.lang.Class} <p>the clazz parameter is <code>Class</code> type.</p>
+         * @return {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>the table return object is <code>MybatisTable</code> type.</p>
+         * @see java.lang.Class
          */
         MybatisTable createTable(Class<?> clazz);
     }

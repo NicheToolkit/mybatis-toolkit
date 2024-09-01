@@ -6,9 +6,15 @@ import org.springframework.stereotype.Indexed;
 import java.lang.annotation.*;
 
 /**
- * <p>RestAlertKeys</p>
+ * <code>RestAlertKeys</code>
+ * <p>The type rest alert keys interface.</p>
  * @author Cyan (snow22314@outlook.com)
- * @version v1.0.0
+ * @see java.lang.annotation.Annotation
+ * @see java.lang.annotation.Retention
+ * @see java.lang.annotation.Target
+ * @see java.lang.annotation.Documented
+ * @see org.springframework.stereotype.Indexed
+ * @since Jdk1.8
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
@@ -16,13 +22,33 @@ import java.lang.annotation.*;
 @Indexed
 public @interface RestAlertKeys {
 
+    /**
+     * <code>value</code>
+     * <p>the method.</p>
+     * @return {@link java.lang.String} <p>the return object is <code>String</code> type.</p>
+     * @see java.lang.String
+     * @see org.springframework.core.annotation.AliasFor
+     */
     @AliasFor("alertKeys")
     String[] value() default {};
 
+    /**
+     * <code>alertKeys</code>
+     * <p>the keys method.</p>
+     * @return {@link java.lang.String} <p>the keys return object is <code>String</code> type.</p>
+     * @see java.lang.String
+     * @see org.springframework.core.annotation.AliasFor
+     */
     @AliasFor("value")
     String[] alertKeys() default {};
 
 
+    /**
+     * <code>ignores</code>
+     * <p>the method.</p>
+     * @return {@link java.lang.String} <p>the return object is <code>String</code> type.</p>
+     * @see java.lang.String
+     */
     String[] ignores() default {};
 
 }

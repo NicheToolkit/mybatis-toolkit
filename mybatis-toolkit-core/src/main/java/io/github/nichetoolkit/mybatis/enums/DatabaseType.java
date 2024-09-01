@@ -2,39 +2,74 @@ package io.github.nichetoolkit.mybatis.enums;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
-import io.github.nichetoolkit.mybatis.consts.DriverConst;
+import io.github.nichetoolkit.mybatis.consts.DriverConstants;
 import io.github.nichetoolkit.rest.RestValue;
 
 import java.util.Optional;
 
 /**
- * <p>DatasourceDriver</p>
+ * <code>DatabaseType</code>
+ * <p>The type database type enumeration.</p>
  * @author Cyan (snow22314@outlook.com)
- * @version v1.0.0
+ * @see io.github.nichetoolkit.rest.RestValue
+ * @since Jdk1.8
  */
 public enum DatabaseType implements RestValue<String, String> {
-    /** PostgreSQL OpenGuss GaussDB */
-    POSTGRESQL("postgresql", DriverConst.POSTGRESQL),
-    /** PostgreSQL OpenGuss GaussDB */
-    GAUSSDB("gaussdb", DriverConst.POSTGRESQL),
-    /** MySQL */
-    MYSQL("mysql", DriverConst.MYSQL),
-    /** MariaDB */
-    MARIADB("mariadb", DriverConst.MARIADB),
-    /** Microsoft SQL Server */
-    SQLSEVER("sqlsever", DriverConst.SQLSEVER),
-    /** MariaDB */
-    ORACLE("oracle", DriverConst.ORACLE),
-    /** SQLite */
-    SQLITE("sqlite", DriverConst.SQLITE),
-    /** H2 */
-    H2("h2", DriverConst.H2),
-    /** HSQLDB */
-    HSQLDB("hsqldb", DriverConst.HSQLDB),
-    /** Amazon Redshift */
-    REDSHIFT("redshift", DriverConst.REDSHIFT),
-    /** Apache Cassandra */
-    CASSANDRA("cassandra", DriverConst.CASSANDRA),
+    /**
+     * <code>POSTGRESQL</code>
+     * <p>the Postgresql database type field.</p>
+     */
+    POSTGRESQL("postgresql", DriverConstants.POSTGRESQL),
+    /**
+     * <code>GAUSSDB</code>
+     * <p>the Gaussdb database type field.</p>
+     */
+    GAUSSDB("gaussdb", DriverConstants.POSTGRESQL),
+    /**
+     * <code>MYSQL</code>
+     * <p>the Mysql database type field.</p>
+     */
+    MYSQL("mysql", DriverConstants.MYSQL),
+    /**
+     * <code>MARIADB</code>
+     * <p>the Mariadb database type field.</p>
+     */
+    MARIADB("mariadb", DriverConstants.MARIADB),
+    /**
+     * <code>SQLSEVER</code>
+     * <p>the Sqlsever database type field.</p>
+     */
+    SQLSEVER("sqlsever", DriverConstants.SQLSEVER),
+    /**
+     * <code>ORACLE</code>
+     * <p>the Oracle database type field.</p>
+     */
+    ORACLE("oracle", DriverConstants.ORACLE),
+    /**
+     * <code>SQLITE</code>
+     * <p>the Sqlite database type field.</p>
+     */
+    SQLITE("sqlite", DriverConstants.SQLITE),
+    /**
+     * <code>H2</code>
+     * <p>the H 2 database type field.</p>
+     */
+    H2("h2", DriverConstants.H2),
+    /**
+     * <code>HSQLDB</code>
+     * <p>the Hsqldb database type field.</p>
+     */
+    HSQLDB("hsqldb", DriverConstants.HSQLDB),
+    /**
+     * <code>REDSHIFT</code>
+     * <p>the Redshift database type field.</p>
+     */
+    REDSHIFT("redshift", DriverConstants.REDSHIFT),
+    /**
+     * <code>CASSANDRA</code>
+     * <p>the Cassandra database type field.</p>
+     */
+    CASSANDRA("cassandra", DriverConstants.CASSANDRA),
     ;
     private final String key;
     private final String value;
@@ -55,12 +90,27 @@ public enum DatabaseType implements RestValue<String, String> {
         return this.value;
     }
 
+    /**
+     * <code>parseKey</code>
+     * <p>the key method.</p>
+     * @param key {@link java.lang.String} <p>the key parameter is <code>String</code> type.</p>
+     * @return {@link io.github.nichetoolkit.mybatis.enums.DatabaseType} <p>the key return object is <code>DatabaseType</code> type.</p>
+     * @see java.lang.String
+     * @see com.fasterxml.jackson.annotation.JsonCreator
+     */
     @JsonCreator
     public static DatabaseType parseKey(String key) {
         DatabaseType datasourceDriver = RestValue.parseKey(DatabaseType.class, key);
         return Optional.ofNullable(datasourceDriver).orElse(DatabaseType.POSTGRESQL);
     }
 
+    /**
+     * <code>parseValue</code>
+     * <p>the value method.</p>
+     * @param value {@link java.lang.String} <p>the value parameter is <code>String</code> type.</p>
+     * @return {@link io.github.nichetoolkit.mybatis.enums.DatabaseType} <p>the value return object is <code>DatabaseType</code> type.</p>
+     * @see java.lang.String
+     */
     public static DatabaseType parseValue(String value) {
         DatabaseType datasourceDriver = RestValue.parseValue(DatabaseType.class, value);
         return Optional.ofNullable(datasourceDriver).orElse(DatabaseType.POSTGRESQL);

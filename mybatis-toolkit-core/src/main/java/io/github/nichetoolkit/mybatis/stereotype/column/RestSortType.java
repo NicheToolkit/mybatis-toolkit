@@ -8,9 +8,15 @@ import org.springframework.stereotype.Indexed;
 import java.lang.annotation.*;
 
 /**
- * <p>RestOrderBy</p>
+ * <code>RestSortType</code>
+ * <p>The type rest sort type interface.</p>
  * @author Cyan (snow22314@outlook.com)
- * @version v1.0.0
+ * @see java.lang.annotation.Annotation
+ * @see java.lang.annotation.Retention
+ * @see java.lang.annotation.Target
+ * @see java.lang.annotation.Documented
+ * @see org.springframework.stereotype.Indexed
+ * @since Jdk1.8
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.FIELD, ElementType.ANNOTATION_TYPE})
@@ -18,19 +24,29 @@ import java.lang.annotation.*;
 @Indexed
 public @interface RestSortType {
     /**
-     * 排序方式
+     * <code>value</code>
+     * <p>the method.</p>
+     * @return {@link io.github.nichetoolkit.mybatis.enums.SortType} <p>the return object is <code>SortType</code> type.</p>
+     * @see io.github.nichetoolkit.mybatis.enums.SortType
+     * @see org.springframework.core.annotation.AliasFor
      */
     @AliasFor("type")
     SortType value() default SortType.NONE;
 
     /**
-     * 排序方式
+     * <code>type</code>
+     * <p>the method.</p>
+     * @return {@link io.github.nichetoolkit.mybatis.enums.SortType} <p>the return object is <code>SortType</code> type.</p>
+     * @see io.github.nichetoolkit.mybatis.enums.SortType
+     * @see org.springframework.core.annotation.AliasFor
      */
     @AliasFor("value")
     SortType type() default SortType.NONE;
 
     /**
-     * 排序的优先级，数值越小优先级越高
+     * <code>priority</code>
+     * <p>the method.</p>
+     * @return int <p>the return object is <code>int</code> type.</p>
      */
     int priority() default 0;
 }

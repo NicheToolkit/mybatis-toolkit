@@ -5,20 +5,31 @@ import io.github.nichetoolkit.rest.actuator.SupplierActuator;
 import org.apache.ibatis.builder.annotation.ProviderContext;
 
 /**
- * <p>MybatisSqlCache</p>
+ * <code>MybatisSqlCache</code>
+ * <p>The type mybatis sql cache class.</p>
  * @author Cyan (snow22314@outlook.com)
- * @version v1.0.0
+ * @since Jdk1.8
  */
 public class MybatisSqlCache {
-    /** 空对象 */
+    /**
+     * <code>NULL_SQL_CACHE</code>
+     * {@link io.github.nichetoolkit.mybatis.MybatisSqlCache} <p>the constant <code>NULL_SQL_CACHE</code> field.</p>
+     */
     public static final MybatisSqlCache NULL_SQL_CACHE = new MybatisSqlCache(null, null, null);
-    /** 执行方法上下文 */
     private final ProviderContext context;
-    /** 实体类信息 */
     private final MybatisTable table;
-    /** sql 提供者 */
     private final SupplierActuator<String> supplier;
 
+    /**
+     * <code>MybatisSqlCache</code>
+     * Instantiates a new mybatis sql cache.
+     * @param context  {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>the context parameter is <code>ProviderContext</code> type.</p>
+     * @param table    {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>the table parameter is <code>MybatisTable</code> type.</p>
+     * @param supplier {@link io.github.nichetoolkit.rest.actuator.SupplierActuator} <p>the supplier parameter is <code>SupplierActuator</code> type.</p>
+     * @see org.apache.ibatis.builder.annotation.ProviderContext
+     * @see io.github.nichetoolkit.mybatis.MybatisTable
+     * @see io.github.nichetoolkit.rest.actuator.SupplierActuator
+     */
     public MybatisSqlCache(ProviderContext context, MybatisTable table, SupplierActuator<String> supplier) {
         this.context = context;
         this.table = table;
@@ -26,21 +37,32 @@ public class MybatisSqlCache {
     }
 
     /**
-     * 该方法延迟到最终生成 SqlSource 时才执行
+     * <code>sqlScript</code>
+     * <p>the script method.</p>
+     * @return {@link java.lang.String} <p>the script return object is <code>String</code> type.</p>
+     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>the rest exception is <code>RestException</code> type.</p>
+     * @see java.lang.String
+     * @see io.github.nichetoolkit.rest.RestException
      */
     public String sqlScript() throws RestException {
         return supplier.get();
     }
 
     /**
-     * @return 执行方法上下文
+     * <code>context</code>
+     * <p>the method.</p>
+     * @return {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>the return object is <code>ProviderContext</code> type.</p>
+     * @see org.apache.ibatis.builder.annotation.ProviderContext
      */
     public ProviderContext context() {
         return context;
     }
 
     /**
-     * @return 实体类信息
+     * <code>table</code>
+     * <p>the method.</p>
+     * @return {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>the return object is <code>MybatisTable</code> type.</p>
+     * @see io.github.nichetoolkit.mybatis.MybatisTable
      */
     public MybatisTable table() {
         return table;

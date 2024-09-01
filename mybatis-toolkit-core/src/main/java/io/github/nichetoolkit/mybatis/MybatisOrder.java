@@ -1,15 +1,17 @@
 package io.github.nichetoolkit.mybatis;
 
 /**
- * <p>MybatisOrder</p>
+ * <code>MybatisOrder</code>
+ * <p>The type mybatis order interface.</p>
  * @author Cyan (snow22314@outlook.com)
- * @version v1.0.0
+ * @since Jdk1.8
  */
 public interface MybatisOrder {
 
     /**
-     * 执行顺序，数字越大优先级越高，越早执行
-     * @return int
+     * <code>getOrder</code>
+     * <p>the order getter method.</p>
+     * @return int <p>the order return object is <code>int</code> type.</p>
      */
     default int getOrder() {
         return 0;

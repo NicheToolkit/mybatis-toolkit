@@ -6,9 +6,15 @@ import org.springframework.stereotype.Indexed;
 import java.lang.annotation.*;
 
 /**
- * <p>RestExclude</p>
+ * <code>RestExcludes</code>
+ * <p>The type rest excludes interface.</p>
  * @author Cyan (snow22314@outlook.com)
- * @version v1.0.0
+ * @see java.lang.annotation.Annotation
+ * @see java.lang.annotation.Retention
+ * @see java.lang.annotation.Target
+ * @see java.lang.annotation.Documented
+ * @see org.springframework.stereotype.Indexed
+ * @since Jdk1.8
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
@@ -17,27 +23,47 @@ import java.lang.annotation.*;
 public @interface RestExcludes {
 
     /**
-     * 排除指定字段名的字段
+     * <code>value</code>
+     * <p>the method.</p>
+     * @return {@link java.lang.String} <p>the return object is <code>String</code> type.</p>
+     * @see java.lang.String
+     * @see org.springframework.core.annotation.AliasFor
      */
     @AliasFor("fields")
     String[] value() default {};
 
     /**
-     * 排除指定字段名的字段
+     * <code>fields</code>
+     * <p>the method.</p>
+     * @return {@link java.lang.String} <p>the return object is <code>String</code> type.</p>
+     * @see java.lang.String
+     * @see org.springframework.core.annotation.AliasFor
      */
     @AliasFor("value")
     String[] fields() default {};
 
 
+    /**
+     * <code>ignores</code>
+     * <p>the method.</p>
+     * @return {@link java.lang.String} <p>the return object is <code>String</code> type.</p>
+     * @see java.lang.String
+     */
     String[] ignores() default {};
 
     /**
-     * 排除指定类型的字段
+     * <code>fieldTypes</code>
+     * <p>the types method.</p>
+     * @return {@link java.lang.Class} <p>the types return object is <code>Class</code> type.</p>
+     * @see java.lang.Class
      */
     Class<?>[] fieldTypes() default {};
 
     /**
-     * 排除指定父类的所有字段
+     * <code>superClasses</code>
+     * <p>the classes method.</p>
+     * @return {@link java.lang.Class} <p>the classes return object is <code>Class</code> type.</p>
+     * @see java.lang.Class
      */
     Class<?>[] superClasses() default {};
 }

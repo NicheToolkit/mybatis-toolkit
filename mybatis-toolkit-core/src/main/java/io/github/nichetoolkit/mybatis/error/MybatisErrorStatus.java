@@ -3,20 +3,58 @@ package io.github.nichetoolkit.mybatis.error;
 import io.github.nichetoolkit.rest.RestStatus;
 
 /**
- * <p>MybatisErrorStatus</p>
+ * <code>MybatisErrorStatus</code>
+ * <p>The type mybatis error status enumeration.</p>
  * @author Cyan (snow22314@outlook.com)
- * @version v1.0.0
+ * @see io.github.nichetoolkit.rest.RestStatus
+ * @since Jdk1.8
  */
 public enum MybatisErrorStatus implements RestStatus {
+    /**
+     * <code>MYBATIS_ERROR</code>
+     * {@link io.github.nichetoolkit.mybatis.error.MybatisErrorStatus} <p>the <code>MYBATIS_ERROR</code> field.</p>
+     */
     MYBATIS_ERROR(21100, "mybatis error"),
+    /**
+     * <code>MYBATIS_PARAM_ERROR</code>
+     * {@link io.github.nichetoolkit.mybatis.error.MybatisErrorStatus} <p>the <code>MYBATIS_PARAM_ERROR</code> field.</p>
+     */
     MYBATIS_PARAM_ERROR(21101, "mybatis param error"),
+    /**
+     * <code>MYBATIS_COLUMN_ERROR</code>
+     * {@link io.github.nichetoolkit.mybatis.error.MybatisErrorStatus} <p>the <code>MYBATIS_COLUMN_ERROR</code> field.</p>
+     */
     MYBATIS_COLUMN_ERROR(21102, "mybatis column error"),
+    /**
+     * <code>MYBATIS_TABLE_ERROR</code>
+     * {@link io.github.nichetoolkit.mybatis.error.MybatisErrorStatus} <p>the <code>MYBATIS_TABLE_ERROR</code> field.</p>
+     */
     MYBATIS_TABLE_ERROR(21103, "mybatis column error"),
+    /**
+     * <code>MYBATIS_UNSUPPORTED_ERROR</code>
+     * {@link io.github.nichetoolkit.mybatis.error.MybatisErrorStatus} <p>the <code>MYBATIS_UNSUPPORTED_ERROR</code> field.</p>
+     */
     MYBATIS_UNSUPPORTED_ERROR(21104, "mybatis unsupported error"),
+    /**
+     * <code>MYBATIS_ASSERT_ERROR</code>
+     * {@link io.github.nichetoolkit.mybatis.error.MybatisErrorStatus} <p>the <code>MYBATIS_ASSERT_ERROR</code> field.</p>
+     */
     MYBATIS_ASSERT_ERROR(21199,"mybatis assert error"),
 
+    /**
+     * <code>MYBATIS_UNREALIZED_LACK_ERROR</code>
+     * {@link io.github.nichetoolkit.mybatis.error.MybatisErrorStatus} <p>the <code>MYBATIS_UNREALIZED_LACK_ERROR</code> field.</p>
+     */
     MYBATIS_UNREALIZED_LACK_ERROR(21200, "mybatis unrealized lack error"),
+    /**
+     * <code>MYBATIS_PROVIDER_LACK_ERROR</code>
+     * {@link io.github.nichetoolkit.mybatis.error.MybatisErrorStatus} <p>the <code>MYBATIS_PROVIDER_LACK_ERROR</code> field.</p>
+     */
     MYBATIS_PROVIDER_LACK_ERROR(21201, "mybatis provider lack error"),
+    /**
+     * <code>MYBATIS_SQL_SCRIPT_LACK_ERROR</code>
+     * {@link io.github.nichetoolkit.mybatis.error.MybatisErrorStatus} <p>the <code>MYBATIS_SQL_SCRIPT_LACK_ERROR</code> field.</p>
+     */
     MYBATIS_SQL_SCRIPT_LACK_ERROR(21202, "mybatis sql script lack error"),
     ;
 
@@ -28,6 +66,12 @@ public enum MybatisErrorStatus implements RestStatus {
         this.message = message;
     }
 
+    /**
+     * <code>getName</code>
+     * <p>the name getter method.</p>
+     * @return {@link java.lang.String} <p>the name return object is <code>String</code> type.</p>
+     * @see java.lang.String
+     */
     public String getName() {
         return this.name().toLowerCase().replace("_", " ");
     }
