@@ -66,7 +66,7 @@ public class MybatisAlertFieldProvider {
         OptionalHelper.falseable(GeneralUtils.isNotEmpty(key), "the key param of 'alertFieldById' method cannot be empty!", message -> new MybatisParamErrorException("alertFieldById", "key", message));
         return MybatisSqlScript.caching(providerContext, table -> {
             OptionalHelper.trueable(table.isUseUnionKey(), "the union keys of table with 'alertFieldById' method is unsupported!", message -> new MybatisUnsupportedErrorException("alertFieldById", "unionKeys", message));
-            return "UPDATE " + Optional.ofNullable(tablename).orElse(table.tableName())
+            return "UPDATE " + Optional.ofNullable(tablename).orElse(table.tablename())
                     + " SET ${field} = ${key} "
                     + " WHERE " + table.getIdentityColumn().columnEqualsProperty();
         });
@@ -119,7 +119,7 @@ public class MybatisAlertFieldProvider {
             @Override
             public String sql(MybatisTable table) throws RestException {
                 OptionalHelper.trueable(table.isUseUnionKey(), "the union keys of table with 'alertFieldAll' method is unsupported!", message -> new MybatisUnsupportedErrorException("alertFieldAll", "unionKeys", message));
-                return "UPDATE " + Optional.ofNullable(tablename).orElse(table.tableName())
+                return "UPDATE " + Optional.ofNullable(tablename).orElse(table.tablename())
                         + " SET ${field} = ${key} "
                         + " WHERE " + table.getIdentityColumn().getColumnName() + " IN " + foreach("idList", "id", ", ", "(", ")", () -> table.getIdentityColumn().variable());
 

@@ -6,6 +6,7 @@ import lombok.Data;
 import org.apache.ibatis.type.JdbcType;
 import org.apache.ibatis.type.TypeHandler;
 import org.apache.ibatis.type.UnknownTypeHandler;
+import org.springframework.lang.NonNull;
 
 import java.util.Map;
 import java.util.Objects;
@@ -289,16 +290,28 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
     /**
      * <code>excluded</code>
      * <p>the method.</p>
+     * @param tablename {@link java.lang.String} <p>the tablename parameter is <code>String</code> type.</p>
      * @return {@link java.lang.String} <p>the return object is <code>String</code> type.</p>
      * @see java.lang.String
+     * @see org.springframework.lang.NonNull
      */
-    public String excluded() {
+    public String excluded(@NonNull String tablename) {
         if (this.forceUpdate) {
             return this.columnName + " = " + this.forceUpdateValue;
         } else {
             return this.columnName + " = CASE WHEN EXCLUDED." + this.columnName + " IS NOT NULL THEN EXCLUDED." +
-                    this.columnName + " ELSE " + this.table.tableName() + "." + this.columnName + " END";
+                    this.columnName + " ELSE " + tablename + "." + this.columnName + " END";
         }
+    }
+
+    /**
+     * <code>excluded</code>
+     * <p>the method.</p>
+     * @return {@link java.lang.String} <p>the return object is <code>String</code> type.</p>
+     * @see java.lang.String
+     */
+    public String excluded() {
+       return excluded(this.table.tableName());
     }
 
     /**

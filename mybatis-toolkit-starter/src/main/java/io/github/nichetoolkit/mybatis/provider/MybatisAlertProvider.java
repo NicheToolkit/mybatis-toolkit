@@ -64,7 +64,7 @@ public class MybatisAlertProvider {
         return MybatisSqlScript.caching(providerContext, table -> {
             OptionalHelper.falseable(GeneralUtils.isNotEmpty(table.getAlertColumn()), "the alert column of table with 'alertById' method cannot be empty!", message -> new MybatisTableErrorException("alertById", "alertColumn", message));
             OptionalHelper.trueable(table.isUseUnionKey(), "the union keys of table with 'alertById' method is unsupported!", message -> new MybatisUnsupportedErrorException("alertById", "unionKeys", message));
-            return "UPDATE " + Optional.ofNullable(tablename).orElse(table.tableName())
+            return "UPDATE " + Optional.ofNullable(tablename).orElse(table.tablename())
                     + " SET " + table.getAlertColumn().columnEqualsKey()
                     + " WHERE " + table.getIdentityColumn().columnEqualsProperty();
         });
@@ -115,7 +115,7 @@ public class MybatisAlertProvider {
             public String sql(MybatisTable table) throws RestException {
                 OptionalHelper.falseable(GeneralUtils.isNotEmpty(table.getAlertColumn()), "the alert column of table with 'alertAll' method cannot be empty!", message -> new MybatisTableErrorException("alertAll", "alertColumn", message));
                 OptionalHelper.trueable(table.isUseUnionKey(), "the union keys of table with 'alertAll' method is unsupported!", message -> new MybatisUnsupportedErrorException("alertAll", "unionKeys", message));
-                return "UPDATE " + Optional.ofNullable(tablename).orElse(table.tableName())
+                return "UPDATE " + Optional.ofNullable(tablename).orElse(table.tablename())
                         + " SET " + table.getAlertColumn().columnEqualsKey()
                         + " WHERE " + table.getIdentityColumn().getColumnName() + " IN " + foreach("idList", "id", ", ", "(", ")", () -> table.getIdentityColumn().variable());
 

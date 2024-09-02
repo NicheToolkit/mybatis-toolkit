@@ -16,6 +16,7 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.builder.annotation.ProviderContext;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.Nullable;
 
 import java.util.Collection;
 import java.util.List;
@@ -83,7 +84,7 @@ public class MybatisSuperProvider implements InitializingBean {
      * @see io.github.nichetoolkit.mybatis.MybatisTable
      * @see java.lang.String
      */
-    public static String saveUpsetSql(MybatisTable table) {
+    public static String saveUpsetSql(@Nullable String dynamicTablename, MybatisTable table) {
         DatabaseType databaseType = databaseType();
         List<MybatisColumn> updateColumns = table.updateColumns();
         boolean doNothing = false;
@@ -91,7 +92,8 @@ public class MybatisSuperProvider implements InitializingBean {
         if (GeneralUtils.isEmpty(updateColumns)) {
             doNothing = true;
         } else {
-            doUpdateSql = table.updateColumns().stream().map(MybatisColumn::excluded).collect(Collectors.joining(", "));
+            String tablename = Optional.ofNullable(dynamicTablename).orElse(table.tablename());
+            doUpdateSql = table.updateColumns().stream().map(column -> column.excluded(tablename)).collect(Collectors.joining(", "));
         }
         String upsetSql;
         switch (databaseType) {
@@ -160,11 +162,11 @@ public class MybatisSuperProvider implements InitializingBean {
         return MybatisSqlScript.caching(providerContext, table -> {
             OptionalHelper.falseable(GeneralUtils.isNotEmpty(table.insertColumns()), "the insert columns of table with 'save' method cannot be empty!", message -> new MybatisTableErrorException("save", "insertColumns", message));
             OptionalHelper.falseable(GeneralUtils.isNotEmpty(table.identityColumns()), "the identity columns of table with 'save' method cannot be empty!", message -> new MybatisTableErrorException("save", "identityColumns", message));
-            return "INSERT INTO " + Optional.ofNullable(tablename).orElse(table.tableName())
+            return "INSERT INTO " + Optional.ofNullable(tablename).orElse(table.tablename())
                     + " (" + table.insertColumnList() + ")"
                     + " VALUES (" + table.insertColumns().stream()
                     .map(column -> column.variable("entity.")).collect(Collectors.joining(", "))
-                    + ")" + saveUpsetSql(table);
+                    + ")" + saveUpsetSql(tablename,table);
         });
     }
 
@@ -208,11 +210,11 @@ public class MybatisSuperProvider implements InitializingBean {
             public String sql(MybatisTable table) throws RestException {
                 OptionalHelper.falseable(GeneralUtils.isNotEmpty(table.insertColumns()), "the insert columns of table with 'saveAll' method cannot be empty!", message -> new MybatisTableErrorException("saveAll", "insertColumns", message));
                 OptionalHelper.falseable(GeneralUtils.isNotEmpty(table.identityColumns()), "the identity columns of table with 'saveAll' method cannot be empty!", message -> new MybatisTableErrorException("saveAll", "identityColumns", message));
-                return "INSERT INTO " + Optional.ofNullable(tablename).orElse(table.tableName())
+                return "INSERT INTO " + Optional.ofNullable(tablename).orElse(table.tablename())
                         + " (" + table.insertColumnList() + ") VALUES "
                         + foreach("entityList", "entity", ", ", () ->
                         " (" + table.insertColumns().stream().map(column -> column.variable("entity.")).collect(Collectors.joining(", ")) + " )")
-                        + saveUpsetSql(table);
+                        + saveUpsetSql(tablename,table);
             }
         });
     }
@@ -252,7 +254,7 @@ public class MybatisSuperProvider implements InitializingBean {
         OptionalHelper.falseable(GeneralUtils.isNotEmpty(id), "the id param of 'deleteById' method cannot be empty!", message -> new MybatisParamErrorException("deleteById", "id", message));
         return MybatisSqlScript.caching(providerContext, table -> {
             OptionalHelper.trueable(table.isUseUnionKey(), "the union keys of table with 'deleteById' method is unsupported!", message -> new MybatisUnsupportedErrorException("deleteById", "unionKeys", message));
-            return "DELETE FROM " + Optional.ofNullable(tablename).orElse(table.tableName())
+            return "DELETE FROM " + Optional.ofNullable(tablename).orElse(table.tablename())
                     + " WHERE " + table.getIdentityColumn().columnEqualsProperty();
         });
     }
@@ -296,7 +298,7 @@ public class MybatisSuperProvider implements InitializingBean {
             @Override
             public String sql(MybatisTable table) throws RestException {
                 OptionalHelper.trueable(table.isUseUnionKey(), "the union keys of table with 'deleteByAll' method is unsupported!", message -> new MybatisUnsupportedErrorException("deleteByAll", "unionKeys", message));
-                return "DELETE FROM " + Optional.ofNullable(tablename).orElse(table.tableName())
+                return "DELETE FROM " + Optional.ofNullable(tablename).orElse(table.tablename())
                         + " WHERE " + table.getIdentityColumn().getColumnName() + " IN " + foreach("idList", "id", ", ", "(", ")", () -> table.getIdentityColumn().variable());
             }
         });
@@ -339,7 +341,7 @@ public class MybatisSuperProvider implements InitializingBean {
             OptionalHelper.falseable(GeneralUtils.isNotEmpty(table.selectColumns()), "the select columns of table with 'findById' method cannot be empty!", message -> new MybatisTableErrorException("findById", "selectColumns", message));
             OptionalHelper.trueable(table.isUseUnionKey(), "the union keys of table with 'findById' method is unsupported!", message -> new MybatisUnsupportedErrorException("findById", "unionKeys", message));
             return "SELECT " + table.selectColumnList()
-                    + " FROM " + Optional.ofNullable(tablename).orElse(table.tableName())
+                    + " FROM " + Optional.ofNullable(tablename).orElse(table.tablename())
                     + " WHERE " + table.getIdentityColumn().columnEqualsProperty();
         });
 
@@ -386,7 +388,7 @@ public class MybatisSuperProvider implements InitializingBean {
                 OptionalHelper.falseable(GeneralUtils.isNotEmpty(table.selectColumns()), "the select columns of table with 'findByAll' method cannot be empty!", message -> new MybatisTableErrorException("findByAll", "selectColumns", message));
                 OptionalHelper.trueable(table.isUseUnionKey(), "the union keys of table with 'findByAll' method is unsupported!", message -> new MybatisUnsupportedErrorException("findByAll", "unionKeys", message));
                 return "SELECT " + table.selectColumnList()
-                        + " FROM " + Optional.ofNullable(tablename).orElse(table.tableName())
+                        + " FROM " + Optional.ofNullable(tablename).orElse(table.tablename())
                         + " WHERE " + table.getIdentityColumn().getColumnName() + " IN " + foreach("idList", "id", ", ", "(", ")", () -> table.getIdentityColumn().variable());
 
             }
@@ -429,7 +431,7 @@ public class MybatisSuperProvider implements InitializingBean {
             public String sql(MybatisTable table) throws RestException {
                 OptionalHelper.falseable(GeneralUtils.isNotEmpty(table.selectColumns()), "the select columns of table with 'findAllByWhere' method cannot be empty!", message -> new MybatisTableErrorException("findAllByWhere", "selectColumns", message));
                 return "SELECT " + table.selectColumnList()
-                        + " FROM " + Optional.ofNullable(tablename).orElse(table.tableName())
+                        + " FROM " + Optional.ofNullable(tablename).orElse(table.tablename())
                         + " WHERE 1=1 "
                         + ifTest("whereSql!=null", () -> "${whereSql}");
             }
@@ -470,7 +472,7 @@ public class MybatisSuperProvider implements InitializingBean {
         return MybatisSqlScript.caching(providerContext, new MybatisSqlScript() {
             @Override
             public String sql(MybatisTable table) throws RestException {
-                return "DELETE FROM " + Optional.ofNullable(tablename).orElse(table.tableName())
+                return "DELETE FROM " + Optional.ofNullable(tablename).orElse(table.tablename())
                         + " WHERE 1=1 "
                         + ifTest("whereSql!=null", () -> "${whereSql}");
             }
