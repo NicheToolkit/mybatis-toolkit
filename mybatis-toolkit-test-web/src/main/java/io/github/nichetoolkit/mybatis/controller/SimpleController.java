@@ -110,9 +110,9 @@ public class SimpleController {
      * @see org.springframework.web.bind.annotation.GetMapping
      * @see io.github.nichetoolkit.rest.RestException
      */
-    @GetMapping("/query/{id}")
-    public RestResult<SimpleModel> queryById(@PathVariable("id") String id) throws RestException {
-        SimpleModel simpleModel = simpleService.queryById(id);
+    @GetMapping("/query/{id}/{tablekey}")
+    public RestResult<SimpleModel> queryById(@PathVariable("id") String id, @PathVariable("tablekey") String tablekey) throws RestException {
+        SimpleModel simpleModel = simpleService.queryById(tablekey,id);
         return RestResult.success(simpleModel);
     }
 
@@ -147,8 +147,8 @@ public class SimpleController {
      * @see io.github.nichetoolkit.rest.RestException
      */
     @DeleteMapping("/delete")
-    public RestResult<?> deleteById(@RequestParam("id") String id) throws RestException {
-        simpleService.deleteById(id);
+    public RestResult<?> deleteById(@RequestParam("id") String id,@RequestParam("tablekey") String tablekey) throws RestException {
+        simpleService.deleteById(tablekey,id);
         return RestResult.success();
     }
 
