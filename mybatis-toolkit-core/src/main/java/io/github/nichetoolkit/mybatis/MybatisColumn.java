@@ -311,7 +311,7 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
      * @see java.lang.String
      */
     public String excluded() {
-       return excluded(this.table.tableName());
+       return excluded(this.table.tablename());
     }
 
     /**
