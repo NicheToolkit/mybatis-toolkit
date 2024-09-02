@@ -10,7 +10,6 @@ import io.github.nichetoolkit.rest.util.GeneralUtils;
 import io.github.nichetoolkit.rice.RestPage;
 import io.github.nichetoolkit.rice.stereotype.RestSkip;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
@@ -45,6 +44,24 @@ public class SimpleController {
     @Autowired
     public SimpleController(SimpleService simpleService) {
         this.simpleService = simpleService;
+    }
+
+    /**
+     * <code>test</code>
+     * <p>the method.</p>
+     * @return {@link io.github.nichetoolkit.rest.RestResult} <p>the return object is <code>RestResult</code> type.</p>
+     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>the rest exception is <code>RestException</code> type.</p>
+     * @see io.github.nichetoolkit.rest.RestResult
+     * @see org.springframework.web.bind.annotation.GetMapping
+     * @see io.github.nichetoolkit.rest.RestException
+     */
+    @GetMapping("/test")
+    public RestResult<SimpleModel> test() throws RestException {
+        SimpleModel simpleModel = new SimpleModel();
+        simpleModel.setTime(new Date());
+        simpleModel.setName(GeneralUtils.uuid());
+        SimpleModel save = simpleService.save(simpleModel);
+        return RestResult.success(save);
     }
 
     /**

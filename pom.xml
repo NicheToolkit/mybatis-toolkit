@@ -13,7 +13,7 @@
         <module>mybatis-toolkit-starter</module>
         <module>mybatis-toolkit-autoconfigure</module>
         <module>mybatis-toolkit-spring-starter</module>
-        <module>mybatis-toolkit-test-web</module>
+<!--        <module>mybatis-toolkit-test-web</module>-->
     </modules>
 
     <name>mybatis-toolkit-parent</name>

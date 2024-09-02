@@ -1,8 +1,8 @@
 package io.github.nichetoolkit.mybatis.simple;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import io.github.nichetoolkit.rice.RestInfoModel;
 import io.github.nichetoolkit.rice.RestTablekey;
-import io.github.nichetoolkit.rice.RiceInfoModel;
 import io.github.nichetoolkit.rice.enums.OperateType;
 import io.github.nichetoolkit.rice.enums.SaveType;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -14,11 +14,11 @@ import java.util.Date;
  * <code>SimpleModel</code>
  * <p>The type simple model class.</p>
  * @author Cyan (snow22314@outlook.com)
- * @see io.github.nichetoolkit.rice.RiceInfoModel
+ * @see io.github.nichetoolkit.rice.RestInfoModel
  * @see io.github.nichetoolkit.rice.RestTablekey
  * @since Jdk1.8
  */
-public class SimpleModel extends RiceInfoModel<SimpleModel,SimpleEntity> implements RestTablekey<String> {
+public class SimpleModel extends RestInfoModel<SimpleModel,SimpleEntity> implements RestTablekey<String> {
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date time;
@@ -90,10 +90,10 @@ public class SimpleModel extends RiceInfoModel<SimpleModel,SimpleEntity> impleme
      * <code>Builder</code>
      * <p>The type builder class.</p>
      * @author Cyan (snow22314@outlook.com)
-     * @see io.github.nichetoolkit.rice.RiceInfoModel.Builder
+     * @see io.github.nichetoolkit.rice.RestInfoModel.Builder
      * @since Jdk1.8
      */
-    public static class Builder extends RiceInfoModel.Builder<SimpleModel,SimpleEntity> {
+    public static class Builder extends RestInfoModel.Builder<SimpleModel,SimpleEntity> {
         /**
          * <code>time</code>
          * {@link java.util.Date} <p>the <code>time</code> field.</p>

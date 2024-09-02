@@ -1,5 +1,6 @@
 package io.github.nichetoolkit.mybatis.simple;
 
+import io.github.nichetoolkit.rice.DefaultInfoEntity;
 import io.github.nichetoolkit.rice.RestInfoEntity;
 import io.github.nichetoolkit.mybatis.stereotype.column.RestForceInsert;
 import io.github.nichetoolkit.mybatis.stereotype.table.RestEntity;
@@ -11,12 +12,12 @@ import java.util.Date;
  * <code>TemplateEntity</code>
  * <p>The type template entity class.</p>
  * @author Cyan (snow22314@outlook.com)
- * @see io.github.nichetoolkit.rice.RestInfoEntity
+ * @see io.github.nichetoolkit.rice.DefaultInfoEntity
  * @see io.github.nichetoolkit.mybatis.stereotype.table.RestEntity
  * @since Jdk1.8
  */
 @RestEntity(name = "ntr_simple")
-public class TemplateEntity extends RestInfoEntity<TemplateEntity, TemplateModel,TemplateKey> {
+public class TemplateEntity extends DefaultInfoEntity<TemplateEntity, TemplateModel, TemplateKey> {
 
     @RestForceInsert("now()")
     private Date time;

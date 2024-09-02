@@ -1,9 +1,8 @@
 package io.github.nichetoolkit.mybatis.simple;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import io.github.nichetoolkit.rice.RestInfoModel;
+import io.github.nichetoolkit.rice.DefaultInfoModel;
 import io.github.nichetoolkit.rice.RestTablekey;
-import io.github.nichetoolkit.rice.RiceInfoModel;
 import io.github.nichetoolkit.rice.enums.OperateType;
 import io.github.nichetoolkit.rice.enums.SaveType;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -15,11 +14,11 @@ import java.util.Date;
  * <code>TemplateModel</code>
  * <p>The type template model class.</p>
  * @author Cyan (snow22314@outlook.com)
- * @see io.github.nichetoolkit.rice.RestInfoModel
+ * @see io.github.nichetoolkit.rice.DefaultInfoModel
  * @see io.github.nichetoolkit.rice.RestTablekey
  * @since Jdk1.8
  */
-public class TemplateModel extends RestInfoModel<TemplateModel, TemplateEntity, TemplateKey> implements RestTablekey<String> {
+public class TemplateModel extends DefaultInfoModel<TemplateModel, TemplateEntity, TemplateKey> implements RestTablekey<String> {
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date time;
@@ -91,10 +90,10 @@ public class TemplateModel extends RestInfoModel<TemplateModel, TemplateEntity, 
      * <code>Builder</code>
      * <p>The type builder class.</p>
      * @author Cyan (snow22314@outlook.com)
-     * @see io.github.nichetoolkit.rice.RestInfoModel.Builder
+     * @see io.github.nichetoolkit.rice.DefaultInfoModel.Builder
      * @since Jdk1.8
      */
-    public static class Builder extends RestInfoModel.Builder<TemplateModel, TemplateEntity, TemplateKey> {
+    public static class Builder extends DefaultInfoModel.Builder<TemplateModel, TemplateEntity, TemplateKey> {
         /**
          * <code>time</code>
          * {@link java.util.Date} <p>the <code>time</code> field.</p>

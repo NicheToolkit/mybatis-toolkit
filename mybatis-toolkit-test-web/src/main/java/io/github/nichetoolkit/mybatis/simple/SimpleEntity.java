@@ -2,7 +2,7 @@ package io.github.nichetoolkit.mybatis.simple;
 
 import io.github.nichetoolkit.mybatis.stereotype.column.RestForceInsert;
 import io.github.nichetoolkit.mybatis.stereotype.table.RestEntity;
-import io.github.nichetoolkit.rice.RiceInfoEntity;
+import io.github.nichetoolkit.rice.RestInfoEntity;
 
 import java.util.Date;
 
@@ -11,12 +11,12 @@ import java.util.Date;
  * <code>SimpleEntity</code>
  * <p>The type simple entity class.</p>
  * @author Cyan (snow22314@outlook.com)
- * @see io.github.nichetoolkit.rice.RiceInfoEntity
+ * @see io.github.nichetoolkit.rice.RestInfoEntity
  * @see io.github.nichetoolkit.mybatis.stereotype.table.RestEntity
  * @since Jdk1.8
  */
 @RestEntity(name = "ntr_simple")
-public class SimpleEntity extends RiceInfoEntity<SimpleEntity, SimpleModel> {
+public class SimpleEntity extends RestInfoEntity<SimpleEntity, SimpleModel> {
 
     @RestForceInsert("now()")
     private Date time;

@@ -5,9 +5,7 @@ import io.github.nichetoolkit.mybatis.simple.TemplateFilter;
 import io.github.nichetoolkit.mybatis.simple.TemplateKey;
 import io.github.nichetoolkit.mybatis.simple.TemplateModel;
 import io.github.nichetoolkit.rest.RestException;
-import io.github.nichetoolkit.rest.util.GeneralUtils;
-import io.github.nichetoolkit.rice.RestInfoService;
-import io.github.nichetoolkit.rice.RiceInfoService;
+import io.github.nichetoolkit.rice.DefaultInfoService;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
@@ -18,12 +16,12 @@ import java.util.Optional;
  * <code>TemplateServiceImpl</code>
  * <p>The type template service class.</p>
  * @author Cyan (snow22314@outlook.com)
- * @see io.github.nichetoolkit.rice.RestInfoService
+ * @see io.github.nichetoolkit.rice.DefaultInfoService
  * @see org.springframework.stereotype.Service
  * @since Jdk1.8
  */
 @Service
-public class TemplateServiceImpl extends RestInfoService<String, TemplateKey,TemplateModel, TemplateEntity, TemplateFilter> implements TemplateService {
+public class TemplateServiceImpl extends DefaultInfoService<String, TemplateKey,TemplateModel, TemplateEntity, TemplateFilter> implements TemplateService {
 
     @Override
     protected void optionalInit(@NonNull TemplateModel model) throws RestException {
