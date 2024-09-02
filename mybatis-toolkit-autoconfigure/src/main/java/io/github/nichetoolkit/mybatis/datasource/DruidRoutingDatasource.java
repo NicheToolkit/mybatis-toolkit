@@ -6,18 +6,35 @@ import javax.sql.DataSource;
 import java.util.Map;
 
 /**
- * <p>DruidDatasource</p>
+ * <code>DruidRoutingDatasource</code>
+ * <p>The type druid routing datasource class.</p>
  * @author Cyan (snow22314@outlook.com)
- * @version v1.0.0
+ * @see AbstractRoutingDataSource
+ * @since Jdk1.8
  */
 public class DruidRoutingDatasource extends AbstractRoutingDataSource {
 
+    /**
+     * <code>DruidRoutingDatasource</code>
+     * Instantiates a new druid routing datasource.
+     * @param defaultDatasource {@link javax.sql.DataSource} <p>the default datasource parameter is <code>DataSource</code> type.</p>
+     * @param datasourceMap     {@link java.util.Map} <p>the datasource map parameter is <code>Map</code> type.</p>
+     * @see javax.sql.DataSource
+     * @see java.util.Map
+     */
     public DruidRoutingDatasource(DataSource defaultDatasource, Map<Object, Object> datasourceMap) {
         super.setDefaultTargetDataSource(defaultDatasource);
         super.setTargetDataSources(datasourceMap);
         super.afterPropertiesSet();
     }
 
+    /**
+     * <code>determineCurrentLookupKey</code>
+     * <p>the current lookup key method.</p>
+     * @return {@link java.lang.Object} <p>the current lookup key return object is <code>Object</code> type.</p>
+     * @see java.lang.Object
+     * @see java.lang.Override
+     */
     @Override
     protected Object determineCurrentLookupKey() {
         return DatasourceContextHolder.getDatasourceType();

@@ -6,15 +6,23 @@ import io.github.nichetoolkit.mybatis.MybatisTableFactory;
 import java.util.List;
 
 /**
- * <p>DefaultTableFactoryChain</p>
+ * <code>DefaultTableFactoryChain</code>
+ * <p>The type default table factory chain class.</p>
  * @author Cyan (snow22314@outlook.com)
- * @version v1.0.0
+ * @see io.github.nichetoolkit.mybatis.MybatisTableFactory.Chain
+ * @since Jdk1.8
  */
 public class DefaultTableFactoryChain implements MybatisTableFactory.Chain {
     private final List<MybatisTableFactory> factories;
     private final DefaultTableFactoryChain next;
     private final int index;
 
+    /**
+     * <code>DefaultTableFactoryChain</code>
+     * Instantiates a new default table factory chain.
+     * @param factories {@link java.util.List} <p>the factories parameter is <code>List</code> type.</p>
+     * @see java.util.List
+     */
     public DefaultTableFactoryChain(List<MybatisTableFactory> factories) {
         this(factories, 0);
     }

@@ -10,15 +10,23 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * <p>DefaultColumnFactoryChain</p>
+ * <code>DefaultColumnFactoryChain</code>
+ * <p>The type default column factory chain class.</p>
  * @author Cyan (snow22314@outlook.com)
- * @version v1.0.0
+ * @see io.github.nichetoolkit.mybatis.MybatisColumnFactory.Chain
+ * @since Jdk1.8
  */
 public class DefaultColumnFactoryChain implements MybatisColumnFactory.Chain {
     private final List<MybatisColumnFactory> factories;
     private final DefaultColumnFactoryChain next;
     private final int index;
 
+    /**
+     * <code>DefaultColumnFactoryChain</code>
+     * Instantiates a new default column factory chain.
+     * @param factories {@link java.util.List} <p>the factories parameter is <code>List</code> type.</p>
+     * @see java.util.List
+     */
     public DefaultColumnFactoryChain(List<MybatisColumnFactory> factories) {
         this(factories, 0);
     }

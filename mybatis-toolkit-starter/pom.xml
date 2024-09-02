@@ -66,8 +66,17 @@
 
         <dependency>
             <groupId>io.github.nichetoolkit</groupId>
-            <artifactId>rice-toolkit-starter</artifactId>
-            <version>${rice-toolkit.version}</version>
+            <artifactId>rice-toolkit-context</artifactId>
+        </dependency>
+
+<!--        <dependency>-->
+<!--            <groupId>org.mybatis.spring.boot</groupId>-->
+<!--            <artifactId>mybatis-spring-boot-starter</artifactId>-->
+<!--        </dependency>-->
+
+        <dependency>
+            <groupId>org.mybatis</groupId>
+            <artifactId>mybatis-spring</artifactId>
         </dependency>
 
     </dependencies>

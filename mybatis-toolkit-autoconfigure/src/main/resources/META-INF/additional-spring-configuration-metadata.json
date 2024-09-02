@@ -2,8 +2,8 @@
   "groups": [
     {
       "name": "nichetoolkit.mybatis.mapper",
-      "sourceType": "io.github.nichetoolkit.mybatis.configure.MybatisMapperProperties",
-      "type": "io.github.nichetoolkit.mybatis.configure.MybatisMapperProperties"
+      "sourceType": "io.github.nichetoolkit.mybatis.configure.MybatisRecordProperties",
+      "type": "io.github.nichetoolkit.mybatis.configure.MybatisRecordProperties"
     },
     {
       "name": "nichetoolkit.mybatis.datasource",

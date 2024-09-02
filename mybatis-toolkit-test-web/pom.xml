@@ -24,8 +24,18 @@
     <dependencies>
 
         <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>io.github.nichetoolkit</groupId>
-            <artifactId>mybatis-toolkit-autoconfigure</artifactId>
+            <artifactId>mybatis-toolkit-spring-starter</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>io.github.nichetoolkit</groupId>
+            <artifactId>rice-toolkit-starter</artifactId>
         </dependency>
 
         <dependency>
@@ -42,7 +52,19 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.jayway.jsonpath</groupId>
+                    <artifactId>json-path</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
+
+        <dependency>
+            <groupId>com.jayway.jsonpath</groupId>
+            <artifactId>json-path</artifactId>
+        </dependency>
+
     </dependencies>
 
     <repositories>

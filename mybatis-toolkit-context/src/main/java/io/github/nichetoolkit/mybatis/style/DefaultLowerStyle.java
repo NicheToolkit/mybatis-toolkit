@@ -6,9 +6,11 @@ import io.github.nichetoolkit.mybatis.MybatisTable;
 import io.github.nichetoolkit.mybatis.enums.StyleType;
 
 /**
- * <p>DefaultLowerStyle</p>
+ * <code>DefaultLowerStyle</code>
+ * <p>The type default lower style class.</p>
  * @author Cyan (snow22314@outlook.com)
- * @version v1.0.0
+ * @see io.github.nichetoolkit.mybatis.MybatisStyle
+ * @since Jdk1.8
  */
 public class DefaultLowerStyle implements MybatisStyle {
     @Override

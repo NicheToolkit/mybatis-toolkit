@@ -8,9 +8,12 @@ import java.util.Date;
 
 
 /**
- * <p>TemplateEntity</p>
+ * <code>TemplateEntity</code>
+ * <p>The type template entity class.</p>
  * @author Cyan (snow22314@outlook.com)
- * @version v1.0.0
+ * @see io.github.nichetoolkit.rice.RestInfoEntity
+ * @see io.github.nichetoolkit.mybatis.stereotype.table.RestEntity
+ * @since Jdk1.8
  */
 @RestEntity(name = "ntr_simple")
 public class TemplateEntity extends RestInfoEntity<TemplateEntity, TemplateModel,TemplateKey> {
@@ -18,17 +21,39 @@ public class TemplateEntity extends RestInfoEntity<TemplateEntity, TemplateModel
     @RestForceInsert("now()")
     private Date time;
 
+    /**
+     * <code>TemplateEntity</code>
+     * Instantiates a new template entity.
+     */
     public TemplateEntity() {
     }
 
+    /**
+     * <code>TemplateEntity</code>
+     * Instantiates a new template entity.
+     * @param id {@link io.github.nichetoolkit.mybatis.simple.TemplateKey} <p>the id parameter is <code>TemplateKey</code> type.</p>
+     * @see io.github.nichetoolkit.mybatis.simple.TemplateKey
+     */
     public TemplateEntity(TemplateKey id) {
         super(id);
     }
 
+    /**
+     * <code>getTime</code>
+     * <p>the time getter method.</p>
+     * @return {@link java.util.Date} <p>the time return object is <code>Date</code> type.</p>
+     * @see java.util.Date
+     */
     public Date getTime() {
         return time;
     }
 
+    /**
+     * <code>setTime</code>
+     * <p>the time setter method.</p>
+     * @param time {@link java.util.Date} <p>the time parameter is <code>Date</code> type.</p>
+     * @see java.util.Date
+     */
     public void setTime(Date time) {
         this.time = time;
     }

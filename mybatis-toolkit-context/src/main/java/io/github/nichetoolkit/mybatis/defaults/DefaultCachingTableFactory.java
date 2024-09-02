@@ -7,14 +7,13 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * <p>DefaultCachingTableFactory</p>
+ * <code>DefaultCachingTableFactory</code>
+ * <p>The type default caching table factory class.</p>
  * @author Cyan (snow22314@outlook.com)
- * @version v1.0.0
+ * @see io.github.nichetoolkit.mybatis.MybatisTableFactory
+ * @since Jdk1.8
  */
 public class DefaultCachingTableFactory implements MybatisTableFactory {
-    /**
-     * 缓存实体类信息
-     */
     private final Map<Class<?>, MybatisTable> CLASS_TABLE_MAP = new ConcurrentHashMap<>();
 
     @Override

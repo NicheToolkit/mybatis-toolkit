@@ -10,9 +10,12 @@ import org.apache.ibatis.annotations.UpdateProvider;
 import java.util.Collection;
 
 /**
- * <p>MybatisDeleteLinkMapper</p>
+ * <code>MybatisDeleteLinkMapper</code>
+ * <p>The type mybatis delete link mapper interface.</p>
+ * @param <I> {@link java.lang.Object} <p>the parameter can be of any type.</p>
  * @author Cyan (snow22314@outlook.com)
- * @version v1.0.0
+ * @see io.github.nichetoolkit.rice.mapper.DeleteLinkMapper
+ * @since Jdk1.8
  */
 public interface MybatisDeleteLinkMapper<I> extends DeleteLinkMapper<I> {
 

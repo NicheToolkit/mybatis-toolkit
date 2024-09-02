@@ -10,20 +10,22 @@ import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.Optional;
 
 /**
- * <p>SimpleServiceImpl</p>
+ * <code>SimpleServiceImpl</code>
+ * <p>The type simple service class.</p>
  * @author Cyan (snow22314@outlook.com)
- * @version v1.0.0
+ * @see io.github.nichetoolkit.rice.RiceInfoService
+ * @see org.springframework.stereotype.Service
+ * @since Jdk1.8
  */
 @Service
 public class SimpleServiceImpl extends RiceInfoService<SimpleModel, SimpleEntity, SimpleFilter> implements SimpleService {
 
     @Override
     protected void optionalInit(@NonNull SimpleModel model) throws RestException {
-        if (GeneralUtils.isNotEmpty(model.getTime())) {
-            model.setTime(new Date());
-        }
+        model.setTime(Optional.ofNullable(model.getTime()).orElse(new Date()));
     }
 
     @Override

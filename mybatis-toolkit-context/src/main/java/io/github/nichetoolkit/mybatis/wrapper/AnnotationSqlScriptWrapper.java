@@ -20,9 +20,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * <p>AnnotationSqlScriptWrapper</p>
+ * <code>AnnotationSqlScriptWrapper</code>
+ * <p>The type annotation sql script wrapper class.</p>
  * @author Cyan (snow22314@outlook.com)
- * @version v1.0.0
+ * @see io.github.nichetoolkit.mybatis.MybatisSqlScriptWrapper
+ * @since Jdk1.8
  */
 public class AnnotationSqlScriptWrapper implements MybatisSqlScriptWrapper {
 
@@ -50,13 +52,6 @@ public class AnnotationSqlScriptWrapper implements MybatisSqlScriptWrapper {
         return sqlScript;
     }
 
-    /**
-     * 获取对象上的 MybatisAnnotationSqlWrapper 实例
-     * @param target      Object
-     * @param type        ElementType
-     * @param annotations Annotation[]
-     * @return List<MybatisAnnotationSqlWrapper>
-     */
     private List<AnnotationSqlWrapper> parseAnnotations(Object target, ElementType type, Annotation[] annotations) {
         List<Class<? extends AnnotationSqlWrapper>> classes = new ArrayList<>();
         for (int i = 0; i < annotations.length; i++) {
@@ -76,13 +71,18 @@ public class AnnotationSqlScriptWrapper implements MybatisSqlScriptWrapper {
     }
 
     /**
-     * 实例化 AbstractSqlScriptWrapper 对象
-     * @param instanceClass 实例类型
-     * @param target        对象目标
-     * @param type          类型
-     * @param annotations   注解
-     * @param <T>           实例泛型
-     * @return T 实例对象
+     * <code>newInstance</code>
+     * <p>the instance method.</p>
+     * @param <T>           {@link java.lang.Object} <p>the parameter can be of any type.</p>
+     * @param instanceClass {@link java.lang.Class} <p>the instance class parameter is <code>Class</code> type.</p>
+     * @param target        {@link java.lang.Object} <p>the target parameter is <code>Object</code> type.</p>
+     * @param type          {@link java.lang.annotation.ElementType} <p>the type parameter is <code>ElementType</code> type.</p>
+     * @param annotations   {@link java.lang.annotation.Annotation} <p>the annotations parameter is <code>Annotation</code> type.</p>
+     * @return T <p>the instance return object is <code>T</code> type.</p>
+     * @see java.lang.Class
+     * @see java.lang.Object
+     * @see java.lang.annotation.ElementType
+     * @see java.lang.annotation.Annotation
      */
     public <T> T newInstance(Class<T> instanceClass, Object target, ElementType type, Annotation[] annotations) {
         try {

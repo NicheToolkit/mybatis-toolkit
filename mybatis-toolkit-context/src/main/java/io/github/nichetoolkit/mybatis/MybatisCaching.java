@@ -19,26 +19,20 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * <p>MybatisCaching</p>
+ * <code>MybatisCaching</code>
+ * <p>The type mybatis caching class.</p>
  * @author Cyan (snow22314@outlook.com)
- * @version v1.0.0
+ * @see org.apache.ibatis.scripting.xmltags.XMLLanguageDriver
+ * @see lombok.extern.slf4j.Slf4j
+ * @since Jdk1.8
  */
 @Slf4j
 public class MybatisCaching extends XMLLanguageDriver {
 
-    /**
-     * 根据接口和方法生成缓存 key
-     * @param providerContext 执行方法上下文
-     * @return 缓存key，经过 String.intern 处理，可以作为锁对象
-     */
     private static String cacheKey(ProviderContext providerContext) {
         return (providerContext.getMapperType().getName() + "." + providerContext.getMapperMethod().getName()).intern();
     }
 
-    /**
-     * 判断方法是否提供了 @Lang(Caching.class) 注解
-     * @param providerContext 执行方法上下文
-     */
     private static void isPresentLang(ProviderContext providerContext) {
         Method mapperMethod = providerContext.getMapperMethod();
         Lang lang = mapperMethod.getAnnotation(Lang.class);
@@ -49,11 +43,18 @@ public class MybatisCaching extends XMLLanguageDriver {
 
 
     /**
-     * 缓存 sqlScript 对应的 SQL 和配置
-     * @param providerContext   执行方法上下文
-     * @param entity            实体类信息
-     * @param sqlScriptSupplier sql脚本提供者
-     * @return 缓存的 key
+     * <code>cache</code>
+     * <p>the method.</p>
+     * @param providerContext   {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>the provider context parameter is <code>ProviderContext</code> type.</p>
+     * @param entity            {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>the entity parameter is <code>MybatisTable</code> type.</p>
+     * @param sqlScriptSupplier {@link io.github.nichetoolkit.rest.actuator.SupplierActuator} <p>the sql script supplier parameter is <code>SupplierActuator</code> type.</p>
+     * @return {@link java.lang.String} <p>the return object is <code>String</code> type.</p>
+     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>the rest exception is <code>RestException</code> type.</p>
+     * @see org.apache.ibatis.builder.annotation.ProviderContext
+     * @see io.github.nichetoolkit.mybatis.MybatisTable
+     * @see io.github.nichetoolkit.rest.actuator.SupplierActuator
+     * @see java.lang.String
+     * @see io.github.nichetoolkit.rest.RestException
      */
     public static String cache(ProviderContext providerContext, MybatisTable entity, SupplierActuator<String> sqlScriptSupplier) throws RestException {
         String cacheKey = cacheKey(providerContext);

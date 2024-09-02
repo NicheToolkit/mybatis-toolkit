@@ -8,18 +8,23 @@ import java.util.Objects;
 import java.util.Optional;
 
 /**
- * <p>MybatisClassFinder</p>
- * 根据类型和方法等信息获取实体类类型
+ * <code>MybatisClassFinder</code>
+ * <p>The type mybatis class finder interface.</p>
  * @author Cyan (snow22314@outlook.com)
- * @version v1.0.0
+ * @see io.github.nichetoolkit.mybatis.MybatisOrder
+ * @since Jdk1.8
  */
 public interface MybatisClassFinder extends MybatisOrder {
 
     /**
-     * 查找当前方法对应的实体类
-     * @param mapperType   Mapper 接口，不能为空
-     * @param mapperMethod Mapper 接口方法，可以为空
-     * @return Optional<Class < ?>>
+     * <code>findClass</code>
+     * <p>the class method.</p>
+     * @param mapperType   {@link java.lang.Class} <p>the mapper type parameter is <code>Class</code> type.</p>
+     * @param mapperMethod {@link java.lang.reflect.Method} <p>the mapper method parameter is <code>Method</code> type.</p>
+     * @return {@link java.util.Optional} <p>the class return object is <code>Optional</code> type.</p>
+     * @see java.lang.Class
+     * @see java.lang.reflect.Method
+     * @see java.util.Optional
      */
     static Optional<Class<?>> findClass(Class<?> mapperType, Method mapperMethod) {
         Objects.requireNonNull(mapperType);
@@ -34,29 +39,40 @@ public interface MybatisClassFinder extends MybatisOrder {
     }
 
     /**
-     * 查找当前方法对应的实体类
-     * @param mapperType   Mapper 接口，不能为空
-     * @param mapperMethod Mapper 接口方法，可以为空
-     * @return Optional<Class < ?>> 实体类类型
+     * <code>findEntity</code>
+     * <p>the entity method.</p>
+     * @param mapperType   {@link java.lang.Class} <p>the mapper type parameter is <code>Class</code> type.</p>
+     * @param mapperMethod {@link java.lang.reflect.Method} <p>the mapper method parameter is <code>Method</code> type.</p>
+     * @return {@link java.util.Optional} <p>the entity return object is <code>Optional</code> type.</p>
+     * @see java.lang.Class
+     * @see java.lang.reflect.Method
+     * @see java.util.Optional
      */
     Optional<Class<?>> findEntity(Class<?> mapperType, Method mapperMethod);
 
     /**
-     * 指定的类型是否为定义的实体类类型
-     * @param clazz 类型
-     * @return 是否为实体类类型
+     * <code>isEntity</code>
+     * <p>the entity method.</p>
+     * @param clazz {@link java.lang.Class} <p>the clazz parameter is <code>Class</code> type.</p>
+     * @return boolean <p>the entity return object is <code>boolean</code> type.</p>
+     * @see java.lang.Class
      */
     boolean isEntity(Class<?> clazz);
 
     /**
-     * 实例
+     * <code>ClassFinderInstance</code>
+     * <p>The type class finder instance class.</p>
+     * @author Cyan (snow22314@outlook.com)
+     * @since Jdk1.8
      */
     class ClassFinderInstance {
         private static volatile List<MybatisClassFinder> INSTANCES;
 
         /**
-         * 通过 SPI 获取扩展的实现或使用默认实现
-         * @return 实例
+         * <code>instances</code>
+         * <p>the method.</p>
+         * @return {@link java.util.List} <p>the return object is <code>List</code> type.</p>
+         * @see java.util.List
          */
         public static List<MybatisClassFinder> instances() {
             if (INSTANCES == null) {

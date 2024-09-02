@@ -6,15 +6,19 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * <p>MybatisEntityMapper</p>
- * 实体类信息接口，继承当前接口即可在接口中方便的获取当前接口对应的实体类类型
+ * <code>MybatisEntityMapper</code>
+ * <p>The type mybatis entity mapper interface.</p>
+ * @param <E> {@link java.lang.Object} <p>the parameter can be of any type.</p>
  * @author Cyan (snow22314@outlook.com)
- * @version v1.0.0
+ * @since Jdk1.8
  */
 public interface MybatisEntityMapper<E> {
     /**
-     * 获取当前接口对应的实体类类型
-     * @return 当前接口对应的实体类类型
+     * <code>clazz</code>
+     * <p>the method.</p>
+     * @return {@link java.lang.Class} <p>the return object is <code>Class</code> type.</p>
+     * @see java.lang.Class
+     * @see java.lang.SuppressWarnings
      */
     @SuppressWarnings(value = "unchecked")
     default Class<E> clazz() {
@@ -22,24 +26,29 @@ public interface MybatisEntityMapper<E> {
     }
 
     /**
-     * 获取当前接口对应的实体表信息
-     * @return 当前接口对应的实体表信息
+     * <code>table</code>
+     * <p>the method.</p>
+     * @return {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>the return object is <code>MybatisTable</code> type.</p>
+     * @see io.github.nichetoolkit.mybatis.MybatisTable
      */
     default MybatisTable table() {
         return MybatisFactory.createTable(clazz());
     }
 
     /**
-     * 缓存实体类类型
+     * <code>CachingMybatisClass</code>
+     * <p>The type caching mybatis class class.</p>
+     * @author Cyan (snow22314@outlook.com)
+     * @since Jdk1.8
      */
     class CachingMybatisClass {
+        /**
+         * <code>CLASS_MAP</code>
+         * {@link java.util.Map} <p>the <code>CLASS_MAP</code> field.</p>
+         * @see java.util.Map
+         */
         static Map<Class<?>, Class<?>> CLASS_MAP = new ConcurrentHashMap<>();
 
-        /**
-         * 获取接口对应的实体类类型
-         * @param clazz 继承的子接口
-         * @return 实体类类型
-         */
         private static Class<?> clazz(Class<?> clazz) {
             if (!CLASS_MAP.containsKey(clazz)) {
                 CLASS_MAP.put(clazz, MybatisGenericTypeResolver.resolveTypeToClass(MybatisGenericTypeResolver.resolveType(

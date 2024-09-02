@@ -8,23 +8,30 @@ import io.github.nichetoolkit.rest.util.GeneralUtils;
 import org.apache.ibatis.builder.annotation.ProviderContext;
 
 /**
- * <p>MybatisSqlScript</p>
- * 对 xml 形式 sql 简单封装
+ * <code>MybatisSqlScript</code>
+ * <p>The type mybatis sql script interface.</p>
  * @author Cyan (snow22314@outlook.com)
- * @version v1.0.0
+ * @since Jdk1.8
  */
 public interface MybatisSqlScript {
 
     /**
-     * 换行符
+     * <code>LINEFEED</code>
+     * {@link java.lang.String} <p>the constant <code>LINEFEED</code> field.</p>
+     * @see java.lang.String
      */
     String LINEFEED = "\n";
 
     /**
-     * 创建SQL并缓存
-     * @param providerContext 执行方法上下文
-     * @param sqlScript       xml sql 脚本实现
-     * @return 缓存key
+     * <code>caching</code>
+     * <p>the method.</p>
+     * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>the provider context parameter is <code>ProviderContext</code> type.</p>
+     * @param sqlScript       {@link io.github.nichetoolkit.mybatis.MybatisSqlScript} <p>the sql script parameter is <code>MybatisSqlScript</code> type.</p>
+     * @return {@link java.lang.String} <p>the return object is <code>String</code> type.</p>
+     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>the rest exception is <code>RestException</code> type.</p>
+     * @see org.apache.ibatis.builder.annotation.ProviderContext
+     * @see java.lang.String
+     * @see io.github.nichetoolkit.rest.RestException
      */
     static String caching(ProviderContext providerContext, MybatisSqlScript sqlScript) throws RestException {
         MybatisTable table = MybatisFactory.createTable(providerContext.getMapperType(), providerContext.getMapperMethod());
@@ -36,92 +43,140 @@ public interface MybatisSqlScript {
     }
 
     /**
-     * 创建SQL并缓存
-     * @param providerContext 执行方法上下文
-     * @param sqlScript       xml sql 脚本实现
-     * @return 缓存key
+     * <code>cachingSimple</code>
+     * <p>the simple method.</p>
+     * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>the provider context parameter is <code>ProviderContext</code> type.</p>
+     * @param sqlScript       {@link io.github.nichetoolkit.mybatis.MybatisSqlScript.SimpleSqlScript} <p>the sql script parameter is <code>SimpleSqlScript</code> type.</p>
+     * @return {@link java.lang.String} <p>the simple return object is <code>String</code> type.</p>
+     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>the rest exception is <code>RestException</code> type.</p>
+     * @see org.apache.ibatis.builder.annotation.ProviderContext
+     * @see io.github.nichetoolkit.mybatis.MybatisSqlScript.SimpleSqlScript
+     * @see java.lang.String
+     * @see io.github.nichetoolkit.rest.RestException
      */
     static String cachingSimple(ProviderContext providerContext, SimpleSqlScript sqlScript) throws RestException {
         return caching(providerContext, sqlScript);
     }
 
     /**
-     * 生成 where 标签包装的 xml 结构
-     * @param content 标签中的内容
-     * @return where 标签包装的 xml 结构
+     * <code>where</code>
+     * <p>the method.</p>
+     * @param content {@link io.github.nichetoolkit.mybatis.MybatisSqlScript.LinefeedSupplier} <p>the content parameter is <code>LinefeedSupplier</code> type.</p>
+     * @return {@link java.lang.String} <p>the return object is <code>String</code> type.</p>
+     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>the rest exception is <code>RestException</code> type.</p>
+     * @see io.github.nichetoolkit.mybatis.MybatisSqlScript.LinefeedSupplier
+     * @see java.lang.String
+     * @see io.github.nichetoolkit.rest.RestException
      */
     default String where(LinefeedSupplier content) throws RestException {
         return String.format("\n<where>%s\n</where> ", content.withLinefeed());
     }
 
     /**
-     * 生成对应的 SQL，支持动态标签
-     * @param table 实体类信息
-     * @return xml sql 脚本
+     * <code>sql</code>
+     * <p>the method.</p>
+     * @param table {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>the table parameter is <code>MybatisTable</code> type.</p>
+     * @return {@link java.lang.String} <p>the return object is <code>String</code> type.</p>
+     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>the rest exception is <code>RestException</code> type.</p>
+     * @see io.github.nichetoolkit.mybatis.MybatisTable
+     * @see java.lang.String
+     * @see io.github.nichetoolkit.rest.RestException
      */
     String sql(MybatisTable table) throws RestException;
 
     /**
-     * 生成 choose 标签包装的 xml 结构
-     * @param content 标签中的内容
-     * @return choose 标签包装的 xml 结构
+     * <code>choose</code>
+     * <p>the method.</p>
+     * @param content {@link io.github.nichetoolkit.mybatis.MybatisSqlScript.LinefeedSupplier} <p>the content parameter is <code>LinefeedSupplier</code> type.</p>
+     * @return {@link java.lang.String} <p>the return object is <code>String</code> type.</p>
+     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>the rest exception is <code>RestException</code> type.</p>
+     * @see io.github.nichetoolkit.mybatis.MybatisSqlScript.LinefeedSupplier
+     * @see java.lang.String
+     * @see io.github.nichetoolkit.rest.RestException
      */
     default String choose(LinefeedSupplier content) throws RestException {
         return String.format("\n<choose>%s\n</choose> ", content.withLinefeed());
     }
 
     /**
-     * 生成 otherwise 标签包装的 xml 结构
-     * @param content 标签中的内容
-     * @return otherwise 标签包装的 xml 结构
+     * <code>otherwise</code>
+     * <p>the method.</p>
+     * @param content {@link io.github.nichetoolkit.mybatis.MybatisSqlScript.LinefeedSupplier} <p>the content parameter is <code>LinefeedSupplier</code> type.</p>
+     * @return {@link java.lang.String} <p>the return object is <code>String</code> type.</p>
+     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>the rest exception is <code>RestException</code> type.</p>
+     * @see io.github.nichetoolkit.mybatis.MybatisSqlScript.LinefeedSupplier
+     * @see java.lang.String
+     * @see io.github.nichetoolkit.rest.RestException
      */
     default String otherwise(LinefeedSupplier content) throws RestException {
         return String.format("\n<otherwise>%s\n</otherwise> ", content.withLinefeed());
     }
 
     /**
-     * 生成 set 标签包装的 xml 结构
-     * @param content 标签中的内容
-     * @return set 标签包装的 xml 结构
+     * <code>set</code>
+     * <p>the method.</p>
+     * @param content {@link io.github.nichetoolkit.mybatis.MybatisSqlScript.LinefeedSupplier} <p>the content parameter is <code>LinefeedSupplier</code> type.</p>
+     * @return {@link java.lang.String} <p>the return object is <code>String</code> type.</p>
+     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>the rest exception is <code>RestException</code> type.</p>
+     * @see io.github.nichetoolkit.mybatis.MybatisSqlScript.LinefeedSupplier
+     * @see java.lang.String
+     * @see io.github.nichetoolkit.rest.RestException
      */
     default String set(LinefeedSupplier content) throws RestException {
         return String.format("\n<set>%s\n</set> ", content.withLinefeed());
     }
 
     /**
-     * 生成 if 标签包装的 xml 结构
-     * @param test    if 的判断条件
-     * @param content 标签中的内容
-     * @return if 标签包装的 xml 结构
+     * <code>ifTest</code>
+     * <p>the test method.</p>
+     * @param test    {@link java.lang.String} <p>the test parameter is <code>String</code> type.</p>
+     * @param content {@link io.github.nichetoolkit.mybatis.MybatisSqlScript.LinefeedSupplier} <p>the content parameter is <code>LinefeedSupplier</code> type.</p>
+     * @return {@link java.lang.String} <p>the test return object is <code>String</code> type.</p>
+     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>the rest exception is <code>RestException</code> type.</p>
+     * @see java.lang.String
+     * @see io.github.nichetoolkit.mybatis.MybatisSqlScript.LinefeedSupplier
+     * @see io.github.nichetoolkit.rest.RestException
      */
     default String ifTest(String test, LinefeedSupplier content) throws RestException {
         return String.format("<if test=\"%s\">%s\n</if> ", test, content.withLinefeed());
     }
 
     /**
-     * 生成 &lt;if test="_parameter != null"&gt; 标签包装的 xml 结构，允许参数为空时使用，
-     * 当参数必填时，可以使用 {@link #parameterNotNull(String)} 方法
-     * @param content 标签中的内容
-     * @return &lt;if test="_parameter != null"&gt; 标签包装的 xml 结构
+     * <code>ifParameterNotNull</code>
+     * <p>the parameter not null method.</p>
+     * @param content {@link io.github.nichetoolkit.mybatis.MybatisSqlScript.LinefeedSupplier} <p>the content parameter is <code>LinefeedSupplier</code> type.</p>
+     * @return {@link java.lang.String} <p>the parameter not null return object is <code>String</code> type.</p>
+     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>the rest exception is <code>RestException</code> type.</p>
+     * @see io.github.nichetoolkit.mybatis.MybatisSqlScript.LinefeedSupplier
+     * @see java.lang.String
+     * @see io.github.nichetoolkit.rest.RestException
      */
     default String ifParameterNotNull(LinefeedSupplier content) throws RestException {
         return String.format("<if test=\"_parameter != null\">%s\n</if> ", content.withLinefeed());
     }
 
     /**
-     * 增加对参数的校验，参数不能为空
-     * @param message 提示信息
-     * @return 在代码基础上增加一段校验
+     * <code>parameterNotNull</code>
+     * <p>the not null method.</p>
+     * @param message {@link java.lang.String} <p>the message parameter is <code>String</code> type.</p>
+     * @return {@link java.lang.String} <p>the not null return object is <code>String</code> type.</p>
+     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>the rest exception is <code>RestException</code> type.</p>
+     * @see java.lang.String
+     * @see io.github.nichetoolkit.rest.RestException
      */
     default String parameterNotNull(String message) throws RestException {
         return variableNotNull("_parameter", message);
     }
 
     /**
-     * 增加对参数的校验，参数必须为 true
-     * @param variable 参数, 值为 boolean
-     * @param message  提示信息
-     * @return 在代码基础上增加一段校验
+     * <code>variableIsTrue</code>
+     * <p>the is true method.</p>
+     * @param variable {@link java.lang.String} <p>the variable parameter is <code>String</code> type.</p>
+     * @param message  {@link java.lang.String} <p>the message parameter is <code>String</code> type.</p>
+     * @return {@link java.lang.String} <p>the is true return object is <code>String</code> type.</p>
+     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>the rest exception is <code>RestException</code> type.</p>
+     * @see java.lang.String
+     * @see io.github.nichetoolkit.rest.RestException
      */
     default String variableIsTrue(String variable, String message) throws RestException {
         OptionalHelper.falseable(Boolean.parseBoolean(variable), message, error -> new MybatisAssertErrorException("isTrue","variable",error));
@@ -129,10 +184,14 @@ public interface MybatisSqlScript {
     }
 
     /**
-     * 增加对参数的校验，参数必须为 false
-     * @param variable 参数, 值为 boolean
-     * @param message  提示信息
-     * @return 在代码基础上增加一段校验
+     * <code>variableIsFalse</code>
+     * <p>the is false method.</p>
+     * @param variable {@link java.lang.String} <p>the variable parameter is <code>String</code> type.</p>
+     * @param message  {@link java.lang.String} <p>the message parameter is <code>String</code> type.</p>
+     * @return {@link java.lang.String} <p>the is false return object is <code>String</code> type.</p>
+     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>the rest exception is <code>RestException</code> type.</p>
+     * @see java.lang.String
+     * @see io.github.nichetoolkit.rest.RestException
      */
     default String variableIsFalse(String variable, String message) throws RestException {
         OptionalHelper.trueable(Boolean.parseBoolean(variable), message, error -> new MybatisAssertErrorException("isFalse","variable",error));
@@ -140,10 +199,14 @@ public interface MybatisSqlScript {
     }
 
     /**
-     * 增加对参数的校验，参数不能为 null
-     * @param variable 参数
-     * @param message  提示信息
-     * @return 在代码基础上增加一段校验
+     * <code>variableNotNull</code>
+     * <p>the not null method.</p>
+     * @param variable {@link java.lang.String} <p>the variable parameter is <code>String</code> type.</p>
+     * @param message  {@link java.lang.String} <p>the message parameter is <code>String</code> type.</p>
+     * @return {@link java.lang.String} <p>the not null return object is <code>String</code> type.</p>
+     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>the rest exception is <code>RestException</code> type.</p>
+     * @see java.lang.String
+     * @see io.github.nichetoolkit.rest.RestException
      */
     default String variableNotNull(String variable, String message) throws RestException {
         OptionalHelper.falseable(variable != null, message, error -> new MybatisAssertErrorException("notNull","variable",error));
@@ -151,9 +214,14 @@ public interface MybatisSqlScript {
     }
 
     /**
-     * 增加对参数的校验，参数不能为空
-     * @param message 提示信息
-     * @return 在代码基础上增加一段校验
+     * <code>variableNotEmpty</code>
+     * <p>the not empty method.</p>
+     * @param variable {@link java.lang.String} <p>the variable parameter is <code>String</code> type.</p>
+     * @param message  {@link java.lang.String} <p>the message parameter is <code>String</code> type.</p>
+     * @return {@link java.lang.String} <p>the not empty return object is <code>String</code> type.</p>
+     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>the rest exception is <code>RestException</code> type.</p>
+     * @see java.lang.String
+     * @see io.github.nichetoolkit.rest.RestException
      */
     default String variableNotEmpty(String variable, String message) throws RestException {
         OptionalHelper.falseable(GeneralUtils.isNotEmpty(variable), message, error -> new MybatisAssertErrorException("notEmpty","variable",error));
@@ -161,23 +229,33 @@ public interface MybatisSqlScript {
     }
 
     /**
-     * 生成 when 标签包装的 xml 结构
-     * @param test    when 的判断条件
-     * @param content 标签中的内容
-     * @return when 标签包装的 xml 结构
+     * <code>whenTest</code>
+     * <p>the test method.</p>
+     * @param test    {@link java.lang.String} <p>the test parameter is <code>String</code> type.</p>
+     * @param content {@link io.github.nichetoolkit.mybatis.MybatisSqlScript.LinefeedSupplier} <p>the content parameter is <code>LinefeedSupplier</code> type.</p>
+     * @return {@link java.lang.String} <p>the test return object is <code>String</code> type.</p>
+     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>the rest exception is <code>RestException</code> type.</p>
+     * @see java.lang.String
+     * @see io.github.nichetoolkit.mybatis.MybatisSqlScript.LinefeedSupplier
+     * @see io.github.nichetoolkit.rest.RestException
      */
     default String whenTest(String test, LinefeedSupplier content) throws RestException {
         return String.format("\n<when test=\"%s\">%s\n</when> ", test, content.withLinefeed());
     }
 
     /**
-     * 生成 trim 标签包装的 xml 结构
-     * @param prefix          前缀
-     * @param suffix          后缀
-     * @param prefixOverrides 前缀替换内容
-     * @param suffixOverrides 后缀替换内容
-     * @param content         标签中的内容
-     * @return trim 标签包装的 xml 结构
+     * <code>trim</code>
+     * <p>the method.</p>
+     * @param prefix          {@link java.lang.String} <p>the prefix parameter is <code>String</code> type.</p>
+     * @param suffix          {@link java.lang.String} <p>the suffix parameter is <code>String</code> type.</p>
+     * @param prefixOverrides {@link java.lang.String} <p>the prefix overrides parameter is <code>String</code> type.</p>
+     * @param suffixOverrides {@link java.lang.String} <p>the suffix overrides parameter is <code>String</code> type.</p>
+     * @param content         {@link io.github.nichetoolkit.mybatis.MybatisSqlScript.LinefeedSupplier} <p>the content parameter is <code>LinefeedSupplier</code> type.</p>
+     * @return {@link java.lang.String} <p>the return object is <code>String</code> type.</p>
+     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>the rest exception is <code>RestException</code> type.</p>
+     * @see java.lang.String
+     * @see io.github.nichetoolkit.mybatis.MybatisSqlScript.LinefeedSupplier
+     * @see io.github.nichetoolkit.rest.RestException
      */
     default String trim(String prefix, String suffix, String prefixOverrides, String suffixOverrides, LinefeedSupplier content) throws RestException {
         return String.format("\n<trim prefix=\"%s\" prefixOverrides=\"%s\" suffixOverrides=\"%s\" suffix=\"%s\">%s\n</trim> "
@@ -185,47 +263,67 @@ public interface MybatisSqlScript {
     }
 
     /**
-     * 生成 trim 标签包装的 xml 结构
-     * @param prefix          前缀
-     * @param suffix          后缀
-     * @param prefixOverrides 前缀替换内容
-     * @param content         标签中的内容
-     * @return trim 标签包装的 xml 结构
+     * <code>trimPrefixOverrides</code>
+     * <p>the prefix overrides method.</p>
+     * @param prefix          {@link java.lang.String} <p>the prefix parameter is <code>String</code> type.</p>
+     * @param suffix          {@link java.lang.String} <p>the suffix parameter is <code>String</code> type.</p>
+     * @param prefixOverrides {@link java.lang.String} <p>the prefix overrides parameter is <code>String</code> type.</p>
+     * @param content         {@link io.github.nichetoolkit.mybatis.MybatisSqlScript.LinefeedSupplier} <p>the content parameter is <code>LinefeedSupplier</code> type.</p>
+     * @return {@link java.lang.String} <p>the prefix overrides return object is <code>String</code> type.</p>
+     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>the rest exception is <code>RestException</code> type.</p>
+     * @see java.lang.String
+     * @see io.github.nichetoolkit.mybatis.MybatisSqlScript.LinefeedSupplier
+     * @see io.github.nichetoolkit.rest.RestException
      */
     default String trimPrefixOverrides(String prefix, String suffix, String prefixOverrides, LinefeedSupplier content) throws RestException {
         return String.format("\n<trim prefix=\"%s\" prefixOverrides=\"%s\" suffix=\"%s\">%s\n</trim> ", prefix, prefixOverrides, suffix, content.withLinefeed());
     }
 
     /**
-     * 生成 trim 标签包装的 xml 结构
-     * @param prefix          前缀
-     * @param suffix          后缀
-     * @param suffixOverrides 后缀替换内容
-     * @param content         标签中的内容
-     * @return trim 标签包装的 xml 结构
+     * <code>trimSuffixOverrides</code>
+     * <p>the suffix overrides method.</p>
+     * @param prefix          {@link java.lang.String} <p>the prefix parameter is <code>String</code> type.</p>
+     * @param suffix          {@link java.lang.String} <p>the suffix parameter is <code>String</code> type.</p>
+     * @param suffixOverrides {@link java.lang.String} <p>the suffix overrides parameter is <code>String</code> type.</p>
+     * @param content         {@link io.github.nichetoolkit.mybatis.MybatisSqlScript.LinefeedSupplier} <p>the content parameter is <code>LinefeedSupplier</code> type.</p>
+     * @return {@link java.lang.String} <p>the suffix overrides return object is <code>String</code> type.</p>
+     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>the rest exception is <code>RestException</code> type.</p>
+     * @see java.lang.String
+     * @see io.github.nichetoolkit.mybatis.MybatisSqlScript.LinefeedSupplier
+     * @see io.github.nichetoolkit.rest.RestException
      */
     default String trimSuffixOverrides(String prefix, String suffix, String suffixOverrides, LinefeedSupplier content) throws RestException {
         return String.format("\n<trim prefix=\"%s\" suffixOverrides=\"%s\" suffix=\"%s\">%s\n</trim> ", prefix, suffixOverrides, suffix, content.withLinefeed());
     }
 
     /**
-     * 生成 foreach 标签包装的 xml 结构
-     * @param collection 遍历的对象
-     * @param item       对象名
-     * @param content    标签中的内容
-     * @return foreach 标签包装的 xml 结构
+     * <code>foreach</code>
+     * <p>the method.</p>
+     * @param collection {@link java.lang.String} <p>the collection parameter is <code>String</code> type.</p>
+     * @param item       {@link java.lang.String} <p>the item parameter is <code>String</code> type.</p>
+     * @param content    {@link io.github.nichetoolkit.mybatis.MybatisSqlScript.LinefeedSupplier} <p>the content parameter is <code>LinefeedSupplier</code> type.</p>
+     * @return {@link java.lang.String} <p>the return object is <code>String</code> type.</p>
+     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>the rest exception is <code>RestException</code> type.</p>
+     * @see java.lang.String
+     * @see io.github.nichetoolkit.mybatis.MybatisSqlScript.LinefeedSupplier
+     * @see io.github.nichetoolkit.rest.RestException
      */
     default String foreach(String collection, String item, LinefeedSupplier content) throws RestException {
         return String.format("\n<foreach collection=\"%s\" item=\"%s\">%s\n</foreach> ", collection, item, content.withLinefeed());
     }
 
     /**
-     * 生成 foreach 标签包装的 xml 结构
-     * @param collection 遍历的对象
-     * @param item       对象名
-     * @param separator  连接符
-     * @param content    标签中的内容
-     * @return foreach 标签包装的 xml 结构
+     * <code>foreach</code>
+     * <p>the method.</p>
+     * @param collection {@link java.lang.String} <p>the collection parameter is <code>String</code> type.</p>
+     * @param item       {@link java.lang.String} <p>the item parameter is <code>String</code> type.</p>
+     * @param separator  {@link java.lang.String} <p>the separator parameter is <code>String</code> type.</p>
+     * @param content    {@link io.github.nichetoolkit.mybatis.MybatisSqlScript.LinefeedSupplier} <p>the content parameter is <code>LinefeedSupplier</code> type.</p>
+     * @return {@link java.lang.String} <p>the return object is <code>String</code> type.</p>
+     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>the rest exception is <code>RestException</code> type.</p>
+     * @see java.lang.String
+     * @see io.github.nichetoolkit.mybatis.MybatisSqlScript.LinefeedSupplier
+     * @see io.github.nichetoolkit.rest.RestException
      */
     default String foreach(String collection, String item, String separator, LinefeedSupplier content) throws RestException {
         return String.format("\n<foreach collection=\"%s\" item=\"%s\" separator=\"%s\">%s\n</foreach> "
@@ -233,14 +331,19 @@ public interface MybatisSqlScript {
     }
 
     /**
-     * 生成 foreach 标签包装的 xml 结构
-     * @param collection 遍历的对象
-     * @param item       对象名
-     * @param separator  连接符
-     * @param open       开始符号
-     * @param close      结束符号
-     * @param content    标签中的内容
-     * @return foreach 标签包装的 xml 结构
+     * <code>foreach</code>
+     * <p>the method.</p>
+     * @param collection {@link java.lang.String} <p>the collection parameter is <code>String</code> type.</p>
+     * @param item       {@link java.lang.String} <p>the item parameter is <code>String</code> type.</p>
+     * @param separator  {@link java.lang.String} <p>the separator parameter is <code>String</code> type.</p>
+     * @param open       {@link java.lang.String} <p>the open parameter is <code>String</code> type.</p>
+     * @param close      {@link java.lang.String} <p>the close parameter is <code>String</code> type.</p>
+     * @param content    {@link io.github.nichetoolkit.mybatis.MybatisSqlScript.LinefeedSupplier} <p>the content parameter is <code>LinefeedSupplier</code> type.</p>
+     * @return {@link java.lang.String} <p>the return object is <code>String</code> type.</p>
+     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>the rest exception is <code>RestException</code> type.</p>
+     * @see java.lang.String
+     * @see io.github.nichetoolkit.mybatis.MybatisSqlScript.LinefeedSupplier
+     * @see io.github.nichetoolkit.rest.RestException
      */
     default String foreach(String collection, String item, String separator, String open, String close, LinefeedSupplier content) throws RestException {
         return String.format("\n<foreach collection=\"%s\" item=\"%s\" open=\"%s\" close=\"%s\" separator=\"%s\">%s\n</foreach> "
@@ -248,15 +351,20 @@ public interface MybatisSqlScript {
     }
 
     /**
-     * 生成 foreach 标签包装的 xml 结构
-     * @param collection 遍历的对象
-     * @param item       对象名
-     * @param separator  连接符
-     * @param open       开始符号
-     * @param close      结束符号
-     * @param index      索引名（list为索引，map为key）
-     * @param content    标签中的内容
-     * @return foreach 标签包装的 xml 结构
+     * <code>foreach</code>
+     * <p>the method.</p>
+     * @param collection {@link java.lang.String} <p>the collection parameter is <code>String</code> type.</p>
+     * @param item       {@link java.lang.String} <p>the item parameter is <code>String</code> type.</p>
+     * @param separator  {@link java.lang.String} <p>the separator parameter is <code>String</code> type.</p>
+     * @param open       {@link java.lang.String} <p>the open parameter is <code>String</code> type.</p>
+     * @param close      {@link java.lang.String} <p>the close parameter is <code>String</code> type.</p>
+     * @param index      {@link java.lang.String} <p>the index parameter is <code>String</code> type.</p>
+     * @param content    {@link io.github.nichetoolkit.mybatis.MybatisSqlScript.LinefeedSupplier} <p>the content parameter is <code>LinefeedSupplier</code> type.</p>
+     * @return {@link java.lang.String} <p>the return object is <code>String</code> type.</p>
+     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>the rest exception is <code>RestException</code> type.</p>
+     * @see java.lang.String
+     * @see io.github.nichetoolkit.mybatis.MybatisSqlScript.LinefeedSupplier
+     * @see io.github.nichetoolkit.rest.RestException
      */
     default String foreach(String collection, String item, String separator, String open, String close, String index, LinefeedSupplier content) throws RestException {
         return String.format("\n<foreach collection=\"%s\" item=\"%s\" index=\"%s\" open=\"%s\" close=\"%s\" separator=\"%s\">%s\n</foreach> "
@@ -264,20 +372,34 @@ public interface MybatisSqlScript {
     }
 
     /**
-     * 生成 bind 标签包装的 xml 结构
-     * @param name  变量名
-     * @param value 变量值
-     * @return bind 标签包装的 xml 结构
+     * <code>bind</code>
+     * <p>the method.</p>
+     * @param name  {@link java.lang.String} <p>the name parameter is <code>String</code> type.</p>
+     * @param value {@link java.lang.String} <p>the value parameter is <code>String</code> type.</p>
+     * @return {@link java.lang.String} <p>the return object is <code>String</code> type.</p>
+     * @see java.lang.String
      */
     default String bind(String name, String value) {
         return String.format("\n<bind name=\"%s\" value=\"%s\"/>", name, value);
     }
 
     /**
-     * 保证所有字符串前面都有换行符
+     * <code>LinefeedSupplier</code>
+     * <p>The type linefeed supplier interface.</p>
+     * @author Cyan (snow22314@outlook.com)
+     * @see io.github.nichetoolkit.rest.actuator.SupplierActuator
+     * @since Jdk1.8
      */
     interface LinefeedSupplier extends SupplierActuator<String> {
 
+        /**
+         * <code>withLinefeed</code>
+         * <p>the linefeed method.</p>
+         * @return {@link java.lang.String} <p>the linefeed return object is <code>String</code> type.</p>
+         * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>the rest exception is <code>RestException</code> type.</p>
+         * @see java.lang.String
+         * @see io.github.nichetoolkit.rest.RestException
+         */
         default String withLinefeed() throws RestException {
             String linefeed = get();
             if (!linefeed.isEmpty() && linefeed.charAt(0) == LINEFEED.charAt(0)) {
@@ -289,7 +411,10 @@ public interface MybatisSqlScript {
     }
 
     /**
-     * 支持简单写法
+     * <code>SimpleSqlScript</code>
+     * <p>The type simple sql script interface.</p>
+     * @author Cyan (snow22314@outlook.com)
+     * @since Jdk1.8
      */
     interface SimpleSqlScript extends MybatisSqlScript {
 
@@ -299,10 +424,15 @@ public interface MybatisSqlScript {
         }
 
         /**
-         * 生成对应的 SQL，支持动态标签
-         * @param table     实体类信息
-         * @param sqlScript 当前对象的引用，可以在 lambda 中使用当前对象的方法
-         * @return 对应的 SQL，支持动态标签
+         * <code>sql</code>
+         * <p>the method.</p>
+         * @param table     {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>the table parameter is <code>MybatisTable</code> type.</p>
+         * @param sqlScript {@link io.github.nichetoolkit.mybatis.MybatisSqlScript} <p>the sql script parameter is <code>MybatisSqlScript</code> type.</p>
+         * @return {@link java.lang.String} <p>the return object is <code>String</code> type.</p>
+         * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>the rest exception is <code>RestException</code> type.</p>
+         * @see io.github.nichetoolkit.mybatis.MybatisTable
+         * @see java.lang.String
+         * @see io.github.nichetoolkit.rest.RestException
          */
         String sql(MybatisTable table, MybatisSqlScript sqlScript) throws RestException;
 

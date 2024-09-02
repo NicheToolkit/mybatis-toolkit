@@ -6,9 +6,12 @@ import java.io.Serializable;
 import java.util.Objects;
 
 /**
- * <p>TemplateKey</p>
+ * <code>TemplateKey</code>
+ * <p>The type template key class.</p>
  * @author Cyan (snow22314@outlook.com)
- * @version v1.0.0
+ * @see java.io.Serializable
+ * @see lombok.Data
+ * @since Jdk1.8
  */
 @Data
 public class TemplateKey implements Serializable {
@@ -16,9 +19,20 @@ public class TemplateKey implements Serializable {
 
     private String templatePk2;
 
+    /**
+     * <code>TemplateKey</code>
+     * Instantiates a new template key.
+     */
     public TemplateKey() {
     }
 
+    /**
+     * <code>TemplateKey</code>
+     * Instantiates a new template key.
+     * @param templatePk1 {@link java.lang.String} <p>the template pk 1 parameter is <code>String</code> type.</p>
+     * @param templatePk2 {@link java.lang.String} <p>the template pk 2 parameter is <code>String</code> type.</p>
+     * @see java.lang.String
+     */
     public TemplateKey(String templatePk1, String templatePk2) {
         this.templatePk1 = templatePk1;
         this.templatePk2 = templatePk2;

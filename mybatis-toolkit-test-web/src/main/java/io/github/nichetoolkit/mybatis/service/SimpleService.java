@@ -6,9 +6,12 @@ import io.github.nichetoolkit.rice.service.FilterService;
 import io.github.nichetoolkit.rice.service.extend.SingleService;
 
 /**
- * <p>SimpleService</p>
+ * <code>SimpleService</code>
+ * <p>The type simple service interface.</p>
  * @author Cyan (snow22314@outlook.com)
- * @version v1.0.0
+ * @see io.github.nichetoolkit.rice.service.FilterService
+ * @see io.github.nichetoolkit.rice.service.extend.SingleService
+ * @since Jdk1.8
  */
 public interface SimpleService extends FilterService<String, String, SimpleModel, SimpleFilter>, SingleService<String, String, SimpleModel> {
 }

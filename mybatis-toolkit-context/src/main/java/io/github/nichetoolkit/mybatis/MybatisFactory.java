@@ -12,16 +12,21 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * <p>MybatisFactory</p>
+ * <code>MybatisFactory</code>
+ * <p>The type mybatis factory class.</p>
  * @author Cyan (snow22314@outlook.com)
- * @version v1.0.0
+ * @since Jdk1.8
  */
 public abstract class MybatisFactory {
     /**
-     * 获取类型对应的实体信息
-     * @param mapperType   接口
-     * @param mapperMethod 方法
-     * @return 实体类信息
+     * <code>createTable</code>
+     * <p>the table method.</p>
+     * @param mapperType   {@link java.lang.Class} <p>the mapper type parameter is <code>Class</code> type.</p>
+     * @param mapperMethod {@link java.lang.reflect.Method} <p>the mapper method parameter is <code>Method</code> type.</p>
+     * @return {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>the table return object is <code>MybatisTable</code> type.</p>
+     * @see java.lang.Class
+     * @see java.lang.reflect.Method
+     * @see io.github.nichetoolkit.mybatis.MybatisTable
      */
     public static MybatisTable createTable(Class<?> mapperType, Method mapperMethod) {
         Optional<Class<?>> optionalClass = MybatisClassFinder.findClass(mapperType, mapperMethod);
@@ -33,9 +38,12 @@ public abstract class MybatisFactory {
     }
 
     /**
-     * 获取类型对应的实体信息
-     * @param clazz 实体类类型
-     * @return 实体类信息
+     * <code>createTable</code>
+     * <p>the table method.</p>
+     * @param clazz {@link java.lang.Class} <p>the clazz parameter is <code>Class</code> type.</p>
+     * @return {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>the table return object is <code>MybatisTable</code> type.</p>
+     * @see java.lang.Class
+     * @see io.github.nichetoolkit.mybatis.MybatisTable
      */
     public static MybatisTable createTable(Class<?> clazz) {
         /** 处理MybatisTable */
@@ -90,8 +98,10 @@ public abstract class MybatisFactory {
     }
 
     /**
-     * 反转排序
-     * @param array 数组
+     * <code>reverse</code>
+     * <p>the method.</p>
+     * @param array {@link java.lang.Object} <p>the array parameter is <code>Object</code> type.</p>
+     * @see java.lang.Object
      */
     protected static void reverse(Object[] array) {
         for (int i = 0; i < array.length / 2; i++) {
@@ -102,15 +112,20 @@ public abstract class MybatisFactory {
     }
 
     /**
-     * 实例
+     * <code>Instance</code>
+     * <p>The type instance class.</p>
+     * @author Cyan (snow22314@outlook.com)
+     * @since Jdk1.8
      */
     static class Instance {
         private static volatile MybatisTableFactory.Chain TABLE_FACTORY_CHAIN;
         private static volatile MybatisColumnFactory.Chain COLUMN_FACTORY_CHAIN;
 
         /**
-         * 获取处理实体的工厂链
-         * @return 实例
+         * <code>tableFactoryChain</code>
+         * <p>the factory chain method.</p>
+         * @return {@link io.github.nichetoolkit.mybatis.MybatisTableFactory.Chain} <p>the factory chain return object is <code>Chain</code> type.</p>
+         * @see io.github.nichetoolkit.mybatis.MybatisTableFactory.Chain
          */
         public static MybatisTableFactory.Chain tableFactoryChain() {
             if (TABLE_FACTORY_CHAIN == null) {
@@ -125,8 +140,10 @@ public abstract class MybatisFactory {
         }
 
         /**
-         * 获取处理列的工厂链
-         * @return 实例
+         * <code>columnFactoryChain</code>
+         * <p>the factory chain method.</p>
+         * @return {@link io.github.nichetoolkit.mybatis.MybatisColumnFactory.Chain} <p>the factory chain return object is <code>Chain</code> type.</p>
+         * @see io.github.nichetoolkit.mybatis.MybatisColumnFactory.Chain
          */
         public static MybatisColumnFactory.Chain columnFactoryChain() {
             if (COLUMN_FACTORY_CHAIN == null) {

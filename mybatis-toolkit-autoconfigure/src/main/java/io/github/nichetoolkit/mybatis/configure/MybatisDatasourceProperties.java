@@ -6,17 +6,19 @@ import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
- * <p>MybatisDatasourceProperties</p>
+ * <code>MybatisDatasourceProperties</code>
+ * <p>The type mybatis datasource properties class.</p>
  * @author Cyan (snow22314@outlook.com)
- * @version v1.0.0
+ * @see lombok.Setter
+ * @see lombok.Getter
+ * @see org.springframework.boot.context.properties.ConfigurationProperties
+ * @since Jdk1.8
  */
 @Setter
 @Getter
 @ConfigurationProperties(prefix = "nichetoolkit.mybatis.datasource")
 public class MybatisDatasourceProperties {
-    /** 是否开启自动注入 */
     private boolean enabled = true;
-    /** 数据源类型 */
     private ConnectionPoolType type = ConnectionPoolType.HIKARI;
 
 }

@@ -12,7 +12,8 @@
         <module>mybatis-toolkit-context</module>
         <module>mybatis-toolkit-starter</module>
         <module>mybatis-toolkit-autoconfigure</module>
-<!--        <module>mybatis-toolkit-test-web</module>-->
+        <module>mybatis-toolkit-spring-starter</module>
+        <module>mybatis-toolkit-test-web</module>
     </modules>
 
     <name>mybatis-toolkit-parent</name>
@@ -91,6 +92,10 @@
         <tomcat.version>9.0.86</tomcat.version>
         <!-- fix okio:2.8.0 CVE-2023-3635 7.5 vulnerability       -->
         <squareup.version>3.4.0</squareup.version>
+        <!-- fix postgresql:42.3.8 CVE-2024-1597 10.0 vulnerability    -->
+        <postgresql.version>42.3.9</postgresql.version>
+        <!-- fix json-path:2.7.0 CVE-2023-51074 5.3 vulnerability    -->
+        <jsonpath.version>2.9.0</jsonpath.version>
 
         <rest-toolkit.version>1.0.7-SNAPSHOT</rest-toolkit.version>
         <rice-toolkit.version>1.0.6-SNAPSHOT</rice-toolkit.version>
@@ -104,7 +109,9 @@
         <pagehelper.version>6.1.0</pagehelper.version>
         <pagehelper-starter.version>2.1.0</pagehelper-starter.version>
 
-        <mybatis.version>3.5.16</mybatis.version>
+        <mybatis.version>3.5.14</mybatis.version>
+        <spring-mybatis.version>2.1.2</spring-mybatis.version>
+
         <alibaba-druid.version>1.2.23</alibaba-druid.version>
 
     </properties>
@@ -178,22 +185,24 @@
                 <artifactId>mybatis-toolkit-core</artifactId>
                 <version>${mybatis-toolkit.version}</version>
             </dependency>
-
             <dependency>
                 <groupId>io.github.nichetoolkit</groupId>
                 <artifactId>mybatis-toolkit-context</artifactId>
                 <version>${mybatis-toolkit.version}</version>
             </dependency>
-
             <dependency>
                 <groupId>io.github.nichetoolkit</groupId>
                 <artifactId>mybatis-toolkit-starter</artifactId>
                 <version>${mybatis-toolkit.version}</version>
             </dependency>
-
             <dependency>
                 <groupId>io.github.nichetoolkit</groupId>
                 <artifactId>mybatis-toolkit-autoconfigure</artifactId>
+                <version>${mybatis-toolkit.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.github.nichetoolkit</groupId>
+                <artifactId>mybatis-toolkit-spring-starter</artifactId>
                 <version>${mybatis-toolkit.version}</version>
             </dependency>
 
@@ -203,6 +212,24 @@
                 <version>${mybatis.version}</version>
             </dependency>
 
+            <dependency>
+                <groupId>org.mybatis</groupId>
+                <artifactId>mybatis-spring</artifactId>
+                <version>${spring-mybatis.version}</version>
+            </dependency>
+
+            <!-- fix CVE  vulnerability  -->
+            <dependency>
+                <groupId>org.postgresql</groupId>
+                <artifactId>postgresql</artifactId>
+                <version>${postgresql.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.jayway.jsonpath</groupId>
+                <artifactId>json-path</artifactId>
+                <version>${jsonpath.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 

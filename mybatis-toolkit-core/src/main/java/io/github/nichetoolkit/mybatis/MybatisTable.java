@@ -27,6 +27,14 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+/**
+ * <code>MybatisTable</code>
+ * <p>The type mybatis table class.</p>
+ * @author Cyan (snow22314@outlook.com)
+ * @see io.github.nichetoolkit.mybatis.MybatisProperty
+ * @see lombok.Data
+ * @since Jdk1.8
+ */
 /*
  * <code>MybatisTable</code>
  * <p>The type mybatis table class.</p>
@@ -38,6 +46,11 @@ import java.util.stream.Stream;
 @Data
 public class MybatisTable extends MybatisProperty<MybatisTable> {
 
+    /**
+     * <code>DELIMITER</code>
+     * {@link java.util.regex.Pattern} <p>the constant <code>DELIMITER</code> field.</p>
+     * @see java.util.regex.Pattern
+     */
     /*
      * <code>DELIMITER</code>
      * {@link java.util.regex.Pattern} <p>the constant <code>DELIMITER</code> field.</p>
@@ -45,6 +58,11 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
      */
     public static final Pattern DELIMITER = Pattern.compile("^[`\\[\"]?(.*?)[`\\]\"]?$");
 
+    /**
+     * <code>DEFAULT_RESULT_MAP_NAME</code>
+     * {@link java.lang.String} <p>the constant <code>DEFAULT_RESULT_MAP_NAME</code> field.</p>
+     * @see java.lang.String
+     */
     /*
      * <code>DEFAULT_RESULT_MAP_NAME</code>
      * {@link java.lang.String} <p>the constant <code>DEFAULT_RESULT_MAP_NAME</code> field.</p>
@@ -52,200 +70,366 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
      */
     public static final String DEFAULT_RESULT_MAP_NAME = "defaultResultMap";
 
+    /**
+     * <code>table</code>
+     * {@link java.lang.String} <p>the <code>table</code> field.</p>
+     * @see java.lang.String
+     */
     /*
      * <code>table</code>
      * {@link java.lang.String} <p>the <code>table</code> field.</p>
      * @see java.lang.String
      */
     protected String table;
+    /**
+     * <code>entity</code>
+     * {@link java.lang.Class} <p>the <code>entity</code> field.</p>
+     * @see java.lang.Class
+     */
     /*
      * <code>entity</code>
      * {@link java.lang.Class} <p>the <code>entity</code> field.</p>
      * @see java.lang.Class
      */
     protected Class<?> entity;
+    /**
+     * <code>unionKeys</code>
+     * {@link java.util.List} <p>the <code>unionKeys</code> field.</p>
+     * @see java.util.List
+     */
     /*
      * <code>unionKeys</code>
      * {@link java.util.List} <p>the <code>unionKeys</code> field.</p>
      * @see java.util.List
      */
     protected List<String> unionKeys;
+    /**
+     * <code>unionIgnoreKeys</code>
+     * {@link java.util.List} <p>the <code>unionIgnoreKeys</code> field.</p>
+     * @see java.util.List
+     */
     /*
      * <code>unionIgnoreKeys</code>
      * {@link java.util.List} <p>the <code>unionIgnoreKeys</code> field.</p>
      * @see java.util.List
      */
     protected List<String> unionIgnoreKeys;
+    /**
+     * <code>unionIdentity</code>
+     * <p>the <code>unionIdentity</code> field.</p>
+     */
     /*
      * <code>unionIdentity</code>
      * <p>the <code>unionIdentity</code> field.</p>
      */
     protected boolean unionIdentity;
+    /**
+     * <code>useUnionKey</code>
+     * <p>the <code>useUnionKey</code> field.</p>
+     */
     /*
      * <code>useUnionKey</code>
      * <p>the <code>useUnionKey</code> field.</p>
      */
     protected boolean useUnionKey;
+    /**
+     * <code>linkKeys</code>
+     * {@link java.util.List} <p>the <code>linkKeys</code> field.</p>
+     * @see java.util.List
+     */
     /*
      * <code>linkKeys</code>
      * {@link java.util.List} <p>the <code>linkKeys</code> field.</p>
      * @see java.util.List
      */
     protected List<String> linkKeys;
+    /**
+     * <code>linkIgnoreKeys</code>
+     * {@link java.util.List} <p>the <code>linkIgnoreKeys</code> field.</p>
+     * @see java.util.List
+     */
     /*
      * <code>linkIgnoreKeys</code>
      * {@link java.util.List} <p>the <code>linkIgnoreKeys</code> field.</p>
      * @see java.util.List
      */
     protected List<String> linkIgnoreKeys;
+    /**
+     * <code>uniqueKeys</code>
+     * {@link java.util.List} <p>the <code>uniqueKeys</code> field.</p>
+     * @see java.util.List
+     */
     /*
      * <code>uniqueKeys</code>
      * {@link java.util.List} <p>the <code>uniqueKeys</code> field.</p>
      * @see java.util.List
      */
     protected List<String> uniqueKeys;
+    /**
+     * <code>uniqueIgnoreKeys</code>
+     * {@link java.util.List} <p>the <code>uniqueIgnoreKeys</code> field.</p>
+     * @see java.util.List
+     */
     /*
      * <code>uniqueIgnoreKeys</code>
      * {@link java.util.List} <p>the <code>uniqueIgnoreKeys</code> field.</p>
      * @see java.util.List
      */
     protected List<String> uniqueIgnoreKeys;
+    /**
+     * <code>alertKeys</code>
+     * {@link java.util.List} <p>the <code>alertKeys</code> field.</p>
+     * @see java.util.List
+     */
     /*
      * <code>alertKeys</code>
      * {@link java.util.List} <p>the <code>alertKeys</code> field.</p>
      * @see java.util.List
      */
     protected List<String> alertKeys;
+    /**
+     * <code>alertIgnoreKeys</code>
+     * {@link java.util.List} <p>the <code>alertIgnoreKeys</code> field.</p>
+     * @see java.util.List
+     */
     /*
      * <code>alertIgnoreKeys</code>
      * {@link java.util.List} <p>the <code>alertIgnoreKeys</code> field.</p>
      * @see java.util.List
      */
     protected List<String> alertIgnoreKeys;
+    /**
+     * <code>catalog</code>
+     * {@link java.lang.String} <p>the <code>catalog</code> field.</p>
+     * @see java.lang.String
+     */
     /*
      * <code>catalog</code>
      * {@link java.lang.String} <p>the <code>catalog</code> field.</p>
      * @see java.lang.String
      */
     protected String catalog;
+    /**
+     * <code>schema</code>
+     * {@link java.lang.String} <p>the <code>schema</code> field.</p>
+     * @see java.lang.String
+     */
     /*
      * <code>schema</code>
      * {@link java.lang.String} <p>the <code>schema</code> field.</p>
      * @see java.lang.String
      */
     protected String schema;
+    /**
+     * <code>styleName</code>
+     * {@link java.lang.String} <p>the <code>styleName</code> field.</p>
+     * @see java.lang.String
+     */
     /*
      * <code>styleName</code>
      * {@link java.lang.String} <p>the <code>styleName</code> field.</p>
      * @see java.lang.String
      */
     protected String styleName;
+    /**
+     * <code>styleType</code>
+     * {@link io.github.nichetoolkit.mybatis.enums.StyleType} <p>the <code>styleType</code> field.</p>
+     * @see io.github.nichetoolkit.mybatis.enums.StyleType
+     */
     /*
      * <code>styleType</code>
      * {@link io.github.nichetoolkit.mybatis.enums.StyleType} <p>the <code>styleType</code> field.</p>
      * @see io.github.nichetoolkit.mybatis.enums.StyleType
      */
     protected StyleType styleType;
+    /**
+     * <code>resultMap</code>
+     * {@link java.lang.String} <p>the <code>resultMap</code> field.</p>
+     * @see java.lang.String
+     */
     /*
      * <code>resultMap</code>
      * {@link java.lang.String} <p>the <code>resultMap</code> field.</p>
      * @see java.lang.String
      */
     protected String resultMap;
+    /**
+     * <code>autoResultMap</code>
+     * <p>the <code>autoResultMap</code> field.</p>
+     */
     /*
      * <code>autoResultMap</code>
      * <p>the <code>autoResultMap</code> field.</p>
      */
     protected boolean autoResultMap;
+    /**
+     * <code>autoResultMaps</code>
+     * {@link java.util.List} <p>the <code>autoResultMaps</code> field.</p>
+     * @see java.util.List
+     */
     /*
      * <code>autoResultMaps</code>
      * {@link java.util.List} <p>the <code>autoResultMaps</code> field.</p>
      * @see java.util.List
      */
     protected List<ResultMap> autoResultMaps;
+    /**
+     * <code>excludeFields</code>
+     * {@link java.util.List} <p>the <code>excludeFields</code> field.</p>
+     * @see java.util.List
+     */
     /*
      * <code>excludeFields</code>
      * {@link java.util.List} <p>the <code>excludeFields</code> field.</p>
      * @see java.util.List
      */
     protected List<String> excludeFields;
+    /**
+     * <code>excludeFieldTypes</code>
+     * {@link java.util.List} <p>the <code>excludeFieldTypes</code> field.</p>
+     * @see java.util.List
+     */
     /*
      * <code>excludeFieldTypes</code>
      * {@link java.util.List} <p>the <code>excludeFieldTypes</code> field.</p>
      * @see java.util.List
      */
     protected List<Class<?>> excludeFieldTypes;
+    /**
+     * <code>excludeSuperClasses</code>
+     * {@link java.util.List} <p>the <code>excludeSuperClasses</code> field.</p>
+     * @see java.util.List
+     */
     /*
      * <code>excludeSuperClasses</code>
      * {@link java.util.List} <p>the <code>excludeSuperClasses</code> field.</p>
      * @see java.util.List
      */
     protected List<Class<?>> excludeSuperClasses;
+    /**
+     * <code>excludeIgnoreKeys</code>
+     * {@link java.util.List} <p>the <code>excludeIgnoreKeys</code> field.</p>
+     * @see java.util.List
+     */
     /*
      * <code>excludeIgnoreKeys</code>
      * {@link java.util.List} <p>the <code>excludeIgnoreKeys</code> field.</p>
      * @see java.util.List
      */
     protected List<String> excludeIgnoreKeys;
+    /**
+     * <code>allColumns</code>
+     * {@link java.util.List} <p>the <code>allColumns</code> field.</p>
+     * @see java.util.List
+     */
     /*
      * <code>allColumns</code>
      * {@link java.util.List} <p>the <code>allColumns</code> field.</p>
      * @see java.util.List
      */
     protected List<MybatisColumn> allColumns;
+    /**
+     * <code>identityColumn</code>
+     * {@link io.github.nichetoolkit.mybatis.MybatisColumn} <p>the <code>identityColumn</code> field.</p>
+     * @see io.github.nichetoolkit.mybatis.MybatisColumn
+     */
     /*
      * <code>identityColumn</code>
      * {@link io.github.nichetoolkit.mybatis.MybatisColumn} <p>the <code>identityColumn</code> field.</p>
      * @see io.github.nichetoolkit.mybatis.MybatisColumn
      */
     protected MybatisColumn identityColumn;
+    /**
+     * <code>logicColumn</code>
+     * {@link io.github.nichetoolkit.mybatis.MybatisColumn} <p>the <code>logicColumn</code> field.</p>
+     * @see io.github.nichetoolkit.mybatis.MybatisColumn
+     */
     /*
      * <code>logicColumn</code>
      * {@link io.github.nichetoolkit.mybatis.MybatisColumn} <p>the <code>logicColumn</code> field.</p>
      * @see io.github.nichetoolkit.mybatis.MybatisColumn
      */
     protected MybatisColumn logicColumn;
+    /**
+     * <code>operateColumn</code>
+     * {@link io.github.nichetoolkit.mybatis.MybatisColumn} <p>the <code>operateColumn</code> field.</p>
+     * @see io.github.nichetoolkit.mybatis.MybatisColumn
+     */
     /*
      * <code>operateColumn</code>
      * {@link io.github.nichetoolkit.mybatis.MybatisColumn} <p>the <code>operateColumn</code> field.</p>
      * @see io.github.nichetoolkit.mybatis.MybatisColumn
      */
     protected MybatisColumn operateColumn;
+    /**
+     * <code>alertColumn</code>
+     * {@link io.github.nichetoolkit.mybatis.MybatisColumn} <p>the <code>alertColumn</code> field.</p>
+     * @see io.github.nichetoolkit.mybatis.MybatisColumn
+     */
     /*
      * <code>alertColumn</code>
      * {@link io.github.nichetoolkit.mybatis.MybatisColumn} <p>the <code>alertColumn</code> field.</p>
      * @see io.github.nichetoolkit.mybatis.MybatisColumn
      */
     protected MybatisColumn alertColumn;
+    /**
+     * <code>linkColumn</code>
+     * {@link io.github.nichetoolkit.mybatis.MybatisColumn} <p>the <code>linkColumn</code> field.</p>
+     * @see io.github.nichetoolkit.mybatis.MybatisColumn
+     */
     /*
      * <code>linkColumn</code>
      * {@link io.github.nichetoolkit.mybatis.MybatisColumn} <p>the <code>linkColumn</code> field.</p>
      * @see io.github.nichetoolkit.mybatis.MybatisColumn
      */
     protected MybatisColumn linkColumn;
+    /**
+     * <code>uniqueColumns</code>
+     * {@link java.util.List} <p>the <code>uniqueColumns</code> field.</p>
+     * @see java.util.List
+     */
     /*
      * <code>uniqueColumns</code>
      * {@link java.util.List} <p>the <code>uniqueColumns</code> field.</p>
      * @see java.util.List
      */
     protected List<MybatisColumn> uniqueColumns;
+    /**
+     * <code>unionColumns</code>
+     * {@link java.util.List} <p>the <code>unionColumns</code> field.</p>
+     * @see java.util.List
+     */
     /*
      * <code>unionColumns</code>
      * {@link java.util.List} <p>the <code>unionColumns</code> field.</p>
      * @see java.util.List
      */
     protected List<MybatisColumn> unionColumns;
+    /**
+     * <code>ready</code>
+     * <p>the <code>ready</code> field.</p>
+     */
     /*
      * <code>ready</code>
      * <p>the <code>ready</code> field.</p>
      */
     protected boolean ready;
+    /**
+     * <code>initiates</code>
+     * {@link java.util.Set} <p>the <code>initiates</code> field.</p>
+     * @see java.util.Set
+     */
     /*
      * <code>initiates</code>
      * {@link java.util.Set} <p>the <code>initiates</code> field.</p>
      * @see java.util.Set
      */
     protected Set<Configuration> initiates = new HashSet<>();
+    /**
+     * <code>fieldColumns</code>
+     * {@link java.util.Map} <p>the <code>fieldColumns</code> field.</p>
+     * @see java.util.Map
+     */
     /*
      * <code>fieldColumns</code>
      * {@link java.util.Map} <p>the <code>fieldColumns</code> field.</p>
@@ -253,6 +437,12 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
      */
     protected Map<String, MybatisColumn> fieldColumns = new HashMap<>();
 
+    /**
+     * <code>MybatisTable</code>
+     * Instantiates a new mybatis table.
+     * @param entity {@link java.lang.Class} <p>the entity parameter is <code>Class</code> type.</p>
+     * @see java.lang.Class
+     */
     /*
      * <code>MybatisTable</code>
      * Instantiates a new mybatis table.
@@ -266,6 +456,14 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
         this.unionColumns = new ArrayList<>();
     }
 
+    /**
+     * <code>MybatisTable</code>
+     * Instantiates a new mybatis table.
+     * @param properties {@link java.util.Map} <p>the properties parameter is <code>Map</code> type.</p>
+     * @param entity     {@link java.lang.Class} <p>the entity parameter is <code>Class</code> type.</p>
+     * @see java.util.Map
+     * @see java.lang.Class
+     */
     /*
      * <code>MybatisTable</code>
      * Instantiates a new mybatis table.
@@ -282,6 +480,13 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
         this.unionColumns = new ArrayList<>();
     }
 
+    /**
+     * <code>of</code>
+     * <p>the method.</p>
+     * @param clazz {@link java.lang.Class} <p>the clazz parameter is <code>Class</code> type.</p>
+     * @return {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>the return object is <code>MybatisTable</code> type.</p>
+     * @see java.lang.Class
+     */
     /*
      * <code>of</code>
      * <p>the method.</p>
@@ -293,6 +498,15 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
         return new MybatisTable(clazz);
     }
 
+    /**
+     * <code>of</code>
+     * <p>the method.</p>
+     * @param clazz      {@link java.lang.Class} <p>the clazz parameter is <code>Class</code> type.</p>
+     * @param properties {@link java.util.Map} <p>the properties parameter is <code>Map</code> type.</p>
+     * @return {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>the return object is <code>MybatisTable</code> type.</p>
+     * @see java.lang.Class
+     * @see java.util.Map
+     */
     /*
      * <code>of</code>
      * <p>the method.</p>
@@ -310,6 +524,12 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
         }
     }
 
+    /**
+     * <code>tableName</code>
+     * <p>the name method.</p>
+     * @return {@link java.lang.String} <p>the name return object is <code>String</code> type.</p>
+     * @see java.lang.String
+     */
     /*
      * <code>tableName</code>
      * <p>the name method.</p>
@@ -322,6 +542,12 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
                 .collect(Collectors.joining("."));
     }
 
+    /**
+     * <code>fields</code>
+     * <p>the method.</p>
+     * @return {@link java.util.List} <p>the return object is <code>List</code> type.</p>
+     * @see java.util.List
+     */
     /*
      * <code>fields</code>
      * <p>the method.</p>
@@ -332,6 +558,12 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
         return this.allColumns.stream().map(MybatisColumn::getField).collect(Collectors.toList());
     }
 
+    /**
+     * <code>columnNames</code>
+     * <p>the names method.</p>
+     * @return {@link java.util.List} <p>the names return object is <code>List</code> type.</p>
+     * @see java.util.List
+     */
     /*
      * <code>columnNames</code>
      * <p>the names method.</p>
@@ -342,6 +574,12 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
         return this.allColumns.stream().map(MybatisColumn::getColumnName).collect(Collectors.toList());
     }
 
+    /**
+     * <code>fieldNames</code>
+     * <p>the names method.</p>
+     * @return {@link java.util.List} <p>the names return object is <code>List</code> type.</p>
+     * @see java.util.List
+     */
     /*
      * <code>fieldNames</code>
      * <p>the names method.</p>
@@ -352,6 +590,10 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
         return this.allColumns.stream().map(MybatisColumn::property).collect(Collectors.toList());
     }
 
+    /**
+     * <code>readyColumns</code>
+     * <p>the columns method.</p>
+     */
     /*
      * <code>readyColumns</code>
      * <p>the columns method.</p>
@@ -482,6 +724,12 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
         }
     }
 
+    /**
+     * <code>addColumn</code>
+     * <p>the column method.</p>
+     * @param column {@link io.github.nichetoolkit.mybatis.MybatisColumn} <p>the column parameter is <code>MybatisColumn</code> type.</p>
+     * @see io.github.nichetoolkit.mybatis.MybatisColumn
+     */
     /*
      * <code>addColumn</code>
      * <p>the column method.</p>
@@ -518,6 +766,14 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
         }
     }
 
+    /**
+     * <code>refreshColumn</code>
+     * <p>the column method.</p>
+     * @param columns {@link java.util.List} <p>the columns parameter is <code>List</code> type.</p>
+     * @param column  {@link io.github.nichetoolkit.mybatis.MybatisColumn} <p>the column parameter is <code>MybatisColumn</code> type.</p>
+     * @see java.util.List
+     * @see io.github.nichetoolkit.mybatis.MybatisColumn
+     */
     /*
      * <code>refreshColumn</code>
      * <p>the column method.</p>
@@ -536,6 +792,15 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
         }
     }
 
+    /**
+     * <code>canUseResultMaps</code>
+     * <p>the use result maps method.</p>
+     * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>the provider context parameter is <code>ProviderContext</code> type.</p>
+     * @param cacheKey        {@link java.lang.String} <p>the cache key parameter is <code>String</code> type.</p>
+     * @return boolean <p>the use result maps return object is <code>boolean</code> type.</p>
+     * @see org.apache.ibatis.builder.annotation.ProviderContext
+     * @see java.lang.String
+     */
     /*
      * <code>canUseResultMaps</code>
      * <p>the use result maps method.</p>
@@ -561,6 +826,11 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
         return false;
     }
 
+    /**
+     * <code>useResultMaps</code>
+     * <p>the result maps method.</p>
+     * @return boolean <p>the result maps return object is <code>boolean</code> type.</p>
+     */
     /*
      * <code>useResultMaps</code>
      * <p>the result maps method.</p>
@@ -570,6 +840,15 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
         return this.autoResultMaps != null || this.autoResultMap || GeneralUtils.isNotEmpty(this.resultMap);
     }
 
+    /**
+     * <code>hasBeenReplaced</code>
+     * <p>the been replaced method.</p>
+     * @param configuration {@link org.apache.ibatis.session.Configuration} <p>the configuration parameter is <code>Configuration</code> type.</p>
+     * @param cacheKey      {@link java.lang.String} <p>the cache key parameter is <code>String</code> type.</p>
+     * @return boolean <p>the been replaced return object is <code>boolean</code> type.</p>
+     * @see org.apache.ibatis.session.Configuration
+     * @see java.lang.String
+     */
     /*
      * <code>hasBeenReplaced</code>
      * <p>the been replaced method.</p>
@@ -587,6 +866,16 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
         return false;
     }
 
+    /**
+     * <code>initContext</code>
+     * <p>the context method.</p>
+     * @param configuration   {@link org.apache.ibatis.session.Configuration} <p>the configuration parameter is <code>Configuration</code> type.</p>
+     * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>the provider context parameter is <code>ProviderContext</code> type.</p>
+     * @param cacheKey        {@link java.lang.String} <p>the cache key parameter is <code>String</code> type.</p>
+     * @see org.apache.ibatis.session.Configuration
+     * @see org.apache.ibatis.builder.annotation.ProviderContext
+     * @see java.lang.String
+     */
     /*
      * <code>initContext</code>
      * <p>the context method.</p>
@@ -613,6 +902,16 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
         }
     }
 
+    /**
+     * <code>initResultMap</code>
+     * <p>the result map method.</p>
+     * @param configuration   {@link org.apache.ibatis.session.Configuration} <p>the configuration parameter is <code>Configuration</code> type.</p>
+     * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>the provider context parameter is <code>ProviderContext</code> type.</p>
+     * @param cacheKey        {@link java.lang.String} <p>the cache key parameter is <code>String</code> type.</p>
+     * @see org.apache.ibatis.session.Configuration
+     * @see org.apache.ibatis.builder.annotation.ProviderContext
+     * @see java.lang.String
+     */
     /*
      * <code>initResultMap</code>
      * <p>the result map method.</p>
@@ -652,6 +951,15 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
         }
     }
 
+    /**
+     * <code>generateResultMapId</code>
+     * <p>the result map id method.</p>
+     * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>the provider context parameter is <code>ProviderContext</code> type.</p>
+     * @param resultMapId     {@link java.lang.String} <p>the result map id parameter is <code>String</code> type.</p>
+     * @return {@link java.lang.String} <p>the result map id return object is <code>String</code> type.</p>
+     * @see org.apache.ibatis.builder.annotation.ProviderContext
+     * @see java.lang.String
+     */
     /*
      * <code>generateResultMapId</code>
      * <p>the result map id method.</p>
@@ -668,6 +976,18 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
         return providerContext.getMapperType().getName() + "." + resultMapId;
     }
 
+    /**
+     * <code>autoResultMap</code>
+     * <p>the result map method.</p>
+     * @param configuration   {@link org.apache.ibatis.session.Configuration} <p>the configuration parameter is <code>Configuration</code> type.</p>
+     * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>the provider context parameter is <code>ProviderContext</code> type.</p>
+     * @param cacheKey        {@link java.lang.String} <p>the cache key parameter is <code>String</code> type.</p>
+     * @return {@link org.apache.ibatis.mapping.ResultMap} <p>the result map return object is <code>ResultMap</code> type.</p>
+     * @see org.apache.ibatis.session.Configuration
+     * @see org.apache.ibatis.builder.annotation.ProviderContext
+     * @see java.lang.String
+     * @see org.apache.ibatis.mapping.ResultMap
+     */
     /*
      * <code>autoResultMap</code>
      * <p>the result map method.</p>
@@ -713,6 +1033,15 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
     }
 
 
+    /**
+     * <code>getTypeHandlerInstance</code>
+     * <p>the type handler instance getter method.</p>
+     * @param javaTypeClass    {@link java.lang.Class} <p>the java type class parameter is <code>Class</code> type.</p>
+     * @param typeHandlerClass {@link java.lang.Class} <p>the type handler class parameter is <code>Class</code> type.</p>
+     * @return {@link org.apache.ibatis.type.TypeHandler} <p>the type handler instance return object is <code>TypeHandler</code> type.</p>
+     * @see java.lang.Class
+     * @see org.apache.ibatis.type.TypeHandler
+     */
     /*
      * <code>getTypeHandlerInstance</code>
      * <p>the type handler instance getter method.</p>
@@ -741,6 +1070,12 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
         }
     }
 
+    /**
+     * <code>allColumns</code>
+     * <p>the columns method.</p>
+     * @return {@link java.util.List} <p>the columns return object is <code>List</code> type.</p>
+     * @see java.util.List
+     */
     /*
      * <code>allColumns</code>
      * <p>the columns method.</p>
@@ -751,6 +1086,14 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
         return this.allColumns;
     }
 
+    /**
+     * <code>fieldColumn</code>
+     * <p>the column method.</p>
+     * @param fieldName {@link java.lang.String} <p>the field name parameter is <code>String</code> type.</p>
+     * @return {@link io.github.nichetoolkit.mybatis.MybatisColumn} <p>the column return object is <code>MybatisColumn</code> type.</p>
+     * @see java.lang.String
+     * @see io.github.nichetoolkit.mybatis.MybatisColumn
+     */
     /*
      * <code>fieldColumn</code>
      * <p>the column method.</p>
@@ -766,6 +1109,12 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
         return this.fieldColumns.get(fieldName);
     }
 
+    /**
+     * <code>identityColumns</code>
+     * <p>the columns method.</p>
+     * @return {@link java.util.List} <p>the columns return object is <code>List</code> type.</p>
+     * @see java.util.List
+     */
     /*
      * <code>identityColumns</code>
      * <p>the columns method.</p>
@@ -779,6 +1128,12 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
         return Collections.singletonList(this.identityColumn);
     }
 
+    /**
+     * <code>normalColumns</code>
+     * <p>the columns method.</p>
+     * @return {@link java.util.List} <p>the columns return object is <code>List</code> type.</p>
+     * @see java.util.List
+     */
     /*
      * <code>normalColumns</code>
      * <p>the columns method.</p>
@@ -790,6 +1145,12 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
                 && !column.isUnionKey() && !column.isLogic() && !column.isOperate()).collect(Collectors.toList());
     }
 
+    /**
+     * <code>selectColumns</code>
+     * <p>the columns method.</p>
+     * @return {@link java.util.List} <p>the columns return object is <code>List</code> type.</p>
+     * @see java.util.List
+     */
     /*
      * <code>selectColumns</code>
      * <p>the columns method.</p>
@@ -800,6 +1161,12 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
         return this.allColumns.stream().filter(MybatisColumn::isSelect).collect(Collectors.toList());
     }
 
+    /**
+     * <code>whereColumns</code>
+     * <p>the columns method.</p>
+     * @return {@link java.util.List} <p>the columns return object is <code>List</code> type.</p>
+     * @see java.util.List
+     */
     /*
      * <code>whereColumns</code>
      * <p>the columns method.</p>
@@ -810,6 +1177,12 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
         return this.allColumns;
     }
 
+    /**
+     * <code>uniqueColumns</code>
+     * <p>the columns method.</p>
+     * @return {@link java.util.List} <p>the columns return object is <code>List</code> type.</p>
+     * @see java.util.List
+     */
     /*
      * <code>uniqueColumns</code>
      * <p>the columns method.</p>
@@ -820,6 +1193,12 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
         return this.unionColumns;
     }
 
+    /**
+     * <code>insertColumns</code>
+     * <p>the columns method.</p>
+     * @return {@link java.util.List} <p>the columns return object is <code>List</code> type.</p>
+     * @see java.util.List
+     */
     /*
      * <code>insertColumns</code>
      * <p>the columns method.</p>
@@ -830,6 +1209,12 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
         return this.allColumns.stream().filter(MybatisColumn::isInsert).collect(Collectors.toList());
     }
 
+    /**
+     * <code>updateColumns</code>
+     * <p>the columns method.</p>
+     * @return {@link java.util.List} <p>the columns return object is <code>List</code> type.</p>
+     * @see java.util.List
+     */
     /*
      * <code>updateColumns</code>
      * <p>the columns method.</p>
@@ -840,6 +1225,12 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
         return this.allColumns.stream().filter(MybatisColumn::isUpdate).collect(Collectors.toList());
     }
 
+    /**
+     * <code>forceInsertColumns</code>
+     * <p>the insert columns method.</p>
+     * @return {@link java.util.List} <p>the insert columns return object is <code>List</code> type.</p>
+     * @see java.util.List
+     */
     /*
      * <code>forceInsertColumns</code>
      * <p>the insert columns method.</p>
@@ -850,6 +1241,12 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
         return this.allColumns.stream().filter(MybatisColumn::isForceInsert).collect(Collectors.toList());
     }
 
+    /**
+     * <code>forceUpdateColumns</code>
+     * <p>the update columns method.</p>
+     * @return {@link java.util.List} <p>the update columns return object is <code>List</code> type.</p>
+     * @see java.util.List
+     */
     /*
      * <code>forceUpdateColumns</code>
      * <p>the update columns method.</p>
@@ -860,6 +1257,12 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
         return this.allColumns.stream().filter(MybatisColumn::isForceUpdate).collect(Collectors.toList());
     }
 
+    /**
+     * <code>groupByColumns</code>
+     * <p>the by columns method.</p>
+     * @return {@link java.util.Optional} <p>the by columns return object is <code>Optional</code> type.</p>
+     * @see java.util.Optional
+     */
     /*
      * <code>groupByColumns</code>
      * <p>the by columns method.</p>
@@ -870,6 +1273,12 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
         return Optional.empty();
     }
 
+    /**
+     * <code>havingColumns</code>
+     * <p>the columns method.</p>
+     * @return {@link java.util.Optional} <p>the columns return object is <code>Optional</code> type.</p>
+     * @see java.util.Optional
+     */
     /*
      * <code>havingColumns</code>
      * <p>the columns method.</p>
@@ -880,6 +1289,12 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
         return Optional.empty();
     }
 
+    /**
+     * <code>orderByColumns</code>
+     * <p>the by columns method.</p>
+     * @return {@link java.util.Optional} <p>the by columns return object is <code>Optional</code> type.</p>
+     * @see java.util.Optional
+     */
     /*
      * <code>orderByColumns</code>
      * <p>the by columns method.</p>
@@ -897,6 +1312,12 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
         return Optional.empty();
     }
 
+    /**
+     * <code>baseColumnList</code>
+     * <p>the column list method.</p>
+     * @return {@link java.lang.String} <p>the column list return object is <code>String</code> type.</p>
+     * @see java.lang.String
+     */
     /*
      * <code>baseColumnList</code>
      * <p>the column list method.</p>
@@ -907,6 +1328,12 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
         return selectColumns().stream().map(MybatisColumn::getColumnName).collect(Collectors.joining(", "));
     }
 
+    /**
+     * <code>baseColumnAsPropertyList</code>
+     * <p>the column as property list method.</p>
+     * @return {@link java.lang.String} <p>the column as property list return object is <code>String</code> type.</p>
+     * @see java.lang.String
+     */
     /*
      * <code>baseColumnAsPropertyList</code>
      * <p>the column as property list method.</p>
@@ -921,6 +1348,12 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
         return selectColumns().stream().map(MybatisColumn::columnAsProperty).collect(Collectors.joining(", "));
     }
 
+    /**
+     * <code>selectColumnList</code>
+     * <p>the column list method.</p>
+     * @return {@link java.lang.String} <p>the column list return object is <code>String</code> type.</p>
+     * @see java.lang.String
+     */
     /*
      * <code>selectColumnList</code>
      * <p>the column list method.</p>
@@ -931,6 +1364,12 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
         return selectColumns().stream().map(MybatisColumn::getColumnName).distinct().collect(Collectors.joining(", "));
     }
 
+    /**
+     * <code>insertColumnList</code>
+     * <p>the column list method.</p>
+     * @return {@link java.lang.String} <p>the column list return object is <code>String</code> type.</p>
+     * @see java.lang.String
+     */
     /*
      * <code>insertColumnList</code>
      * <p>the column list method.</p>
@@ -941,6 +1380,12 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
         return insertColumns().stream().map(MybatisColumn::getColumnName).distinct().collect(Collectors.joining(", "));
     }
 
+    /**
+     * <code>identityColumnList</code>
+     * <p>the column list method.</p>
+     * @return {@link java.lang.String} <p>the column list return object is <code>String</code> type.</p>
+     * @see java.lang.String
+     */
     /*
      * <code>identityColumnList</code>
      * <p>the column list method.</p>
@@ -951,6 +1396,12 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
         return identityColumns().stream().map(MybatisColumn::getColumnName).distinct().collect(Collectors.joining(", "));
     }
 
+    /**
+     * <code>groupByColumnList</code>
+     * <p>the by column list method.</p>
+     * @return {@link java.util.Optional} <p>the by column list return object is <code>Optional</code> type.</p>
+     * @see java.util.Optional
+     */
     /*
      * <code>groupByColumnList</code>
      * <p>the by column list method.</p>
@@ -963,6 +1414,12 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
                 .collect(Collectors.joining(", ")));
     }
 
+    /**
+     * <code>groupByColumn</code>
+     * <p>the by column method.</p>
+     * @return {@link java.util.Optional} <p>the by column return object is <code>Optional</code> type.</p>
+     * @see java.util.Optional
+     */
     /*
      * <code>groupByColumn</code>
      * <p>the by column method.</p>
@@ -974,6 +1431,12 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
         return groupByColumnList.map(s -> " GROUP BY " + s);
     }
 
+    /**
+     * <code>havingColumnList</code>
+     * <p>the column list method.</p>
+     * @return {@link java.util.Optional} <p>the column list return object is <code>Optional</code> type.</p>
+     * @see java.util.Optional
+     */
     /*
      * <code>havingColumnList</code>
      * <p>the column list method.</p>
@@ -986,6 +1449,12 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
                 .collect(Collectors.joining(", ")));
     }
 
+    /**
+     * <code>havingColumn</code>
+     * <p>the column method.</p>
+     * @return {@link java.util.Optional} <p>the column return object is <code>Optional</code> type.</p>
+     * @see java.util.Optional
+     */
     /*
      * <code>havingColumn</code>
      * <p>the column method.</p>
@@ -997,6 +1466,12 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
         return havingColumnList.map(s -> " HAVING " + s);
     }
 
+    /**
+     * <code>orderByColumnList</code>
+     * <p>the by column list method.</p>
+     * @return {@link java.util.Optional} <p>the by column list return object is <code>Optional</code> type.</p>
+     * @see java.util.Optional
+     */
     /*
      * <code>orderByColumnList</code>
      * <p>the by column list method.</p>
@@ -1010,6 +1485,12 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
                 .collect(Collectors.joining(", ")));
     }
 
+    /**
+     * <code>orderByColumn</code>
+     * <p>the by column method.</p>
+     * @return {@link java.util.Optional} <p>the by column return object is <code>Optional</code> type.</p>
+     * @see java.util.Optional
+     */
     /*
      * <code>orderByColumn</code>
      * <p>the by column method.</p>
@@ -1021,6 +1502,13 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
         return orderColumnList.map(s -> " ORDER BY " + s);
     }
 
+    /**
+     * <code>isExcludeSuperClass</code>
+     * <p>the exclude super class method.</p>
+     * @param superClass {@link java.lang.Class} <p>the super class parameter is <code>Class</code> type.</p>
+     * @return boolean <p>the exclude super class return object is <code>boolean</code> type.</p>
+     * @see java.lang.Class
+     */
     /*
      * <code>isExcludeSuperClass</code>
      * <p>the exclude super class method.</p>
@@ -1039,6 +1527,13 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
         return false;
     }
 
+    /**
+     * <code>isExcludeField</code>
+     * <p>the exclude field method.</p>
+     * @param field {@link io.github.nichetoolkit.mybatis.MybatisField} <p>the field parameter is <code>MybatisField</code> type.</p>
+     * @return boolean <p>the exclude field return object is <code>boolean</code> type.</p>
+     * @see io.github.nichetoolkit.mybatis.MybatisField
+     */
     /*
      * <code>isExcludeField</code>
      * <p>the exclude field method.</p>

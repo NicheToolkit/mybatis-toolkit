@@ -7,9 +7,12 @@ import io.github.nichetoolkit.rice.service.FilterService;
 import io.github.nichetoolkit.rice.service.extend.SingleService;
 
 /**
- * <p>TemplateService</p>
+ * <code>TemplateService</code>
+ * <p>The type template service interface.</p>
  * @author Cyan (snow22314@outlook.com)
- * @version v1.0.0
+ * @see io.github.nichetoolkit.rice.service.FilterService
+ * @see io.github.nichetoolkit.rice.service.extend.SingleService
+ * @since Jdk1.8
  */
 public interface TemplateService extends FilterService<String, TemplateKey, TemplateModel, TemplateFilter>, SingleService<String, TemplateKey, TemplateModel> {
 }

@@ -11,9 +11,12 @@ import org.apache.ibatis.annotations.SelectProvider;
 import java.util.Collection;
 
 /**
- * <p>MybatisAlertFieldMapper</p>
+ * <code>MybatisAlertFieldMapper</code>
+ * <p>The type mybatis alert field mapper interface.</p>
+ * @param <I> {@link java.lang.Object} <p>the parameter can be of any type.</p>
  * @author Cyan (snow22314@outlook.com)
- * @version v1.0.0
+ * @see io.github.nichetoolkit.rice.mapper.AlertFieldMapper
+ * @since Jdk1.8
  */
 public interface MybatisAlertFieldMapper<I> extends AlertFieldMapper<I> {
 

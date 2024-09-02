@@ -16,9 +16,15 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Date;
 
 /**
- * <p>SimpleController</p>
+ * <code>SimpleController</code>
+ * <p>The type simple controller class.</p>
  * @author Cyan (snow22314@outlook.com)
- * @version v1.0.0
+ * @see io.github.nichetoolkit.rice.stereotype.RestSkip
+ * @see org.springframework.web.bind.annotation.CrossOrigin
+ * @see io.github.nichetoolkit.rest.userlog.stereotype.RestNotelog
+ * @see org.springframework.web.bind.annotation.RestController
+ * @see org.springframework.web.bind.annotation.RequestMapping
+ * @since Jdk1.8
  */
 @RestSkip
 @CrossOrigin
@@ -27,49 +33,123 @@ import java.util.Date;
 @RequestMapping("/simple")
 public class SimpleController {
 
+    private final SimpleService simpleService;
+
+    /**
+     * <code>SimpleController</code>
+     * Instantiates a new simple controller.
+     * @param simpleService {@link io.github.nichetoolkit.mybatis.service.SimpleService} <p>the simple service parameter is <code>SimpleService</code> type.</p>
+     * @see io.github.nichetoolkit.mybatis.service.SimpleService
+     * @see org.springframework.beans.factory.annotation.Autowired
+     */
     @Autowired
-    private SimpleService simpleService;
-
-    @GetMapping("/test")
-    public ResponseEntity<RestResult<SimpleModel>> test() throws RestException {
-        SimpleModel simpleModel = new SimpleModel();
-        simpleModel.setTime(new Date());
-        simpleModel.setName(GeneralUtils.uuid());
-        SimpleModel save = simpleService.save(simpleModel);
-        return RestResult.ok(save);
+    public SimpleController(SimpleService simpleService) {
+        this.simpleService = simpleService;
     }
 
+    /**
+     * <code>create</code>
+     * <p>the method.</p>
+     * @param simpleModel {@link io.github.nichetoolkit.mybatis.simple.SimpleModel} <p>the simple model parameter is <code>SimpleModel</code> type.</p>
+     * @return {@link io.github.nichetoolkit.rest.RestResult} <p>the return object is <code>RestResult</code> type.</p>
+     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>the rest exception is <code>RestException</code> type.</p>
+     * @see io.github.nichetoolkit.mybatis.simple.SimpleModel
+     * @see org.springframework.web.bind.annotation.RequestBody
+     * @see io.github.nichetoolkit.rest.RestResult
+     * @see org.springframework.web.bind.annotation.PostMapping
+     * @see io.github.nichetoolkit.rest.RestException
+     */
     @PostMapping("/create")
-    public ResponseEntity<RestResult<SimpleModel>> create(@RequestBody SimpleModel simpleModel) throws RestException {
-        return RestResult.ok(simpleService.create(simpleModel));
+    public RestResult<SimpleModel> create(@RequestBody SimpleModel simpleModel) throws RestException {
+        return RestResult.success(simpleService.create(simpleModel));
     }
 
+    /**
+     * <code>update</code>
+     * <p>the method.</p>
+     * @param simpleModel {@link io.github.nichetoolkit.mybatis.simple.SimpleModel} <p>the simple model parameter is <code>SimpleModel</code> type.</p>
+     * @return {@link io.github.nichetoolkit.rest.RestResult} <p>the return object is <code>RestResult</code> type.</p>
+     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>the rest exception is <code>RestException</code> type.</p>
+     * @see io.github.nichetoolkit.mybatis.simple.SimpleModel
+     * @see org.springframework.web.bind.annotation.RequestBody
+     * @see io.github.nichetoolkit.rest.RestResult
+     * @see org.springframework.web.bind.annotation.PostMapping
+     * @see io.github.nichetoolkit.rest.RestException
+     */
     @PostMapping("/update")
-    public ResponseEntity<RestResult<SimpleModel>> update(@RequestBody SimpleModel simpleModel) throws RestException {
-        return RestResult.ok(simpleService.update(simpleModel));
+    public RestResult<SimpleModel> update(@RequestBody SimpleModel simpleModel) throws RestException {
+        return RestResult.success(simpleService.update(simpleModel));
     }
 
+    /**
+     * <code>queryById</code>
+     * <p>the by id method.</p>
+     * @param id {@link java.lang.String} <p>the id parameter is <code>String</code> type.</p>
+     * @return {@link io.github.nichetoolkit.rest.RestResult} <p>the by id return object is <code>RestResult</code> type.</p>
+     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>the rest exception is <code>RestException</code> type.</p>
+     * @see java.lang.String
+     * @see org.springframework.web.bind.annotation.PathVariable
+     * @see io.github.nichetoolkit.rest.RestResult
+     * @see org.springframework.web.bind.annotation.GetMapping
+     * @see io.github.nichetoolkit.rest.RestException
+     */
     @GetMapping("/query/{id}")
-    public ResponseEntity<RestResult<SimpleModel>> queryById(@PathVariable("id") String id) throws RestException {
+    public RestResult<SimpleModel> queryById(@PathVariable("id") String id) throws RestException {
         SimpleModel simpleModel = simpleService.queryById(id);
-        return RestResult.ok(simpleModel);
+        return RestResult.success(simpleModel);
     }
 
+    /**
+     * <code>queryByFilter</code>
+     * <p>the by filter method.</p>
+     * @param filter {@link io.github.nichetoolkit.mybatis.simple.SimpleFilter} <p>the filter parameter is <code>SimpleFilter</code> type.</p>
+     * @return {@link io.github.nichetoolkit.rest.RestResult} <p>the by filter return object is <code>RestResult</code> type.</p>
+     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>the rest exception is <code>RestException</code> type.</p>
+     * @see io.github.nichetoolkit.mybatis.simple.SimpleFilter
+     * @see org.springframework.web.bind.annotation.RequestBody
+     * @see io.github.nichetoolkit.rest.RestResult
+     * @see org.springframework.web.bind.annotation.PostMapping
+     * @see io.github.nichetoolkit.rest.RestException
+     */
     @PostMapping("/query/filter")
-    public ResponseEntity<RestResult<RestPage<SimpleModel>>> queryByFilter(@RequestBody SimpleFilter filter) throws RestException {
+    public RestResult<RestPage<SimpleModel>> queryByFilter(@RequestBody SimpleFilter filter) throws RestException {
         RestPage<SimpleModel> restPage = simpleService.queryAllWithFilter(filter);
-        return RestResult.ok(restPage);
+        return RestResult.success(restPage);
     }
 
+    /**
+     * <code>deleteById</code>
+     * <p>the by id method.</p>
+     * @param id {@link java.lang.String} <p>the id parameter is <code>String</code> type.</p>
+     * @return {@link io.github.nichetoolkit.rest.RestResult} <p>the by id return object is <code>RestResult</code> type.</p>
+     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>the rest exception is <code>RestException</code> type.</p>
+     * @see java.lang.String
+     * @see org.springframework.web.bind.annotation.RequestParam
+     * @see io.github.nichetoolkit.rest.RestResult
+     * @see org.springframework.web.bind.annotation.DeleteMapping
+     * @see io.github.nichetoolkit.rest.RestException
+     */
     @DeleteMapping("/delete")
-    public ResponseEntity deleteById(@RequestParam("id") String id) throws RestException {
+    public RestResult<?> deleteById(@RequestParam("id") String id) throws RestException {
         simpleService.deleteById(id);
-        return RestResult.ok();
+        return RestResult.success();
     }
 
+    /**
+     * <code>deleteByFilter</code>
+     * <p>the by filter method.</p>
+     * @param filter {@link io.github.nichetoolkit.mybatis.simple.SimpleFilter} <p>the filter parameter is <code>SimpleFilter</code> type.</p>
+     * @return {@link io.github.nichetoolkit.rest.RestResult} <p>the by filter return object is <code>RestResult</code> type.</p>
+     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>the rest exception is <code>RestException</code> type.</p>
+     * @see io.github.nichetoolkit.mybatis.simple.SimpleFilter
+     * @see org.springframework.web.bind.annotation.RequestBody
+     * @see io.github.nichetoolkit.rest.RestResult
+     * @see org.springframework.web.bind.annotation.PostMapping
+     * @see io.github.nichetoolkit.rest.RestException
+     */
     @PostMapping("/delete/filter")
-    public ResponseEntity deleteByFilter(@RequestBody SimpleFilter filter) throws RestException {
+    public RestResult<?> deleteByFilter(@RequestBody SimpleFilter filter) throws RestException {
         simpleService.deleteAllWithFilter(filter);
-        return RestResult.ok();
+        return RestResult.success();
     }
 }

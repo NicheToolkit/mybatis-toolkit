@@ -14,14 +14,20 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * <p>DefaultColumnFactory</p>
+ * <code>DefaultColumnFactory</code>
+ * <p>The type default column factory class.</p>
  * @author Cyan (snow22314@outlook.com)
- * @version v1.0.0
+ * @see io.github.nichetoolkit.mybatis.MybatisColumnFactory
+ * @since Jdk1.8
  */
 public class DefaultColumnFactory implements MybatisColumnFactory {
 
     private final MybatisTableProperties tableProperties;
 
+    /**
+     * <code>DefaultColumnFactory</code>
+     * Instantiates a new default column factory.
+     */
     public DefaultColumnFactory() {
         this.tableProperties = ContextUtils.getBean(MybatisTableProperties.class);
     }

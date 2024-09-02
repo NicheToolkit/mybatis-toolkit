@@ -1,0 +1,32 @@
+{
+  "groups": [
+    {
+      "name": "nichetoolkit.mybatis.record",
+      "sourceType": "io.github.nichetoolkit.mybatis.configure.MybatisRecordProperties",
+      "type": "io.github.nichetoolkit.mybatis.configure.MybatisRecordProperties"
+    }
+  ],
+  "properties": [
+    {
+      "name": "nichetoolkit.mybatis.record.enabled",
+      "type": "java.lang.Boolean",
+      "sourceType": "java.lang.Boolean",
+      "description": "mybatis record enabled."
+    }
+  ],
+  "hints": [
+    {
+      "name": "nichetoolkit.mybatis.record.enabled",
+      "values": [
+        {
+          "value": false,
+          "description": "mybatis record enabled close."
+        },
+        {
+          "value": true,
+          "description": "mybatis record enabled open."
+        }
+      ]
+    }
+  ]
+}

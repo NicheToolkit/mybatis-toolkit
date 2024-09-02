@@ -7,16 +7,27 @@ import io.github.nichetoolkit.rest.RestKey;
 import java.util.Optional;
 
 /**
- * <p>ConnectionPoolType</p>
+ * <code>ConnectionPoolType</code>
+ * <p>The type connection pool type enumeration.</p>
  * @author Cyan (snow22314@outlook.com)
- * @version v1.0.0
+ * @see io.github.nichetoolkit.rest.RestKey
+ * @since Jdk1.8
  */
 public enum ConnectionPoolType implements RestKey<String> {
-    /** 默认Hikari 数据源 */
+    /**
+     * <code>HIKARI</code>
+     * <p>the Hikari connection pool type field.</p>
+     */
     HIKARI("hikari"),
-    /** 阿里Druid 数据源 */
+    /**
+     * <code>DRUID</code>
+     * <p>the Druid connection pool type field.</p>
+     */
     DRUID("druid"),
-    /** 自定义数据源 JDBC Sharding 实现等*/
+    /**
+     * <code>CUSTOM</code>
+     * <p>the Custom connection pool type field.</p>
+     */
     CUSTOM("custom"),
     ;
     private final String key;
@@ -30,7 +41,15 @@ public enum ConnectionPoolType implements RestKey<String> {
     public String getKey() {
         return this.key;
     }
-    
+
+    /**
+     * <code>parseKey</code>
+     * <p>the key method.</p>
+     * @param key {@link java.lang.String} <p>the key parameter is <code>String</code> type.</p>
+     * @return {@link io.github.nichetoolkit.mybatis.datasource.ConnectionPoolType} <p>the key return object is <code>ConnectionPoolType</code> type.</p>
+     * @see java.lang.String
+     * @see com.fasterxml.jackson.annotation.JsonCreator
+     */
     @JsonCreator
     public static ConnectionPoolType parseKey(String key) {
         ConnectionPoolType datasourceType = RestKey.parseKey(ConnectionPoolType.class, key);

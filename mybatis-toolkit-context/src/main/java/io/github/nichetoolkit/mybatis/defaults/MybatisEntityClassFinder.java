@@ -12,9 +12,11 @@ import java.lang.reflect.Type;
 import java.util.Optional;
 
 /**
- * <p>DefaultEntityClassFinder</p>
+ * <code>MybatisEntityClassFinder</code>
+ * <p>The type mybatis entity class finder class.</p>
  * @author Cyan (snow22314@outlook.com)
- * @version v1.0.0
+ * @see io.github.nichetoolkit.mybatis.MybatisClassFinder
+ * @since Jdk1.8
  */
 public abstract class MybatisEntityClassFinder implements MybatisClassFinder {
 
@@ -42,10 +44,14 @@ public abstract class MybatisEntityClassFinder implements MybatisClassFinder {
     }
 
     /**
-     * 根据方法返回值获取
-     * @param mapperType   接口
-     * @param mapperMethod 方法
-     * @return 实体类类型
+     * <code>getEntityClassByMapperMethodReturnType</code>
+     * <p>the entity class by mapper method return type getter method.</p>
+     * @param mapperType   {@link java.lang.Class} <p>the mapper type parameter is <code>Class</code> type.</p>
+     * @param mapperMethod {@link java.lang.reflect.Method} <p>the mapper method parameter is <code>Method</code> type.</p>
+     * @return {@link java.util.Optional} <p>the entity class by mapper method return type return object is <code>Optional</code> type.</p>
+     * @see java.lang.Class
+     * @see java.lang.reflect.Method
+     * @see java.util.Optional
      */
     protected Optional<Class<?>> getEntityClassByMapperMethodReturnType(Class<?> mapperType, Method mapperMethod) {
         Class<?> returnType = MybatisGenericTypeResolver.resolveMapperReturnType(mapperMethod, mapperType);
@@ -53,38 +59,52 @@ public abstract class MybatisEntityClassFinder implements MybatisClassFinder {
     }
 
     /**
-     * 根据方法参数获取
-     * @param mapperType   接口
-     * @param mapperMethod 方法
-     * @return 实体类类型
+     * <code>getEntityClassByMapperMethodParamTypes</code>
+     * <p>the entity class by mapper method param types getter method.</p>
+     * @param mapperType   {@link java.lang.Class} <p>the mapper type parameter is <code>Class</code> type.</p>
+     * @param mapperMethod {@link java.lang.reflect.Method} <p>the mapper method parameter is <code>Method</code> type.</p>
+     * @return {@link java.util.Optional} <p>the entity class by mapper method param types return object is <code>Optional</code> type.</p>
+     * @see java.lang.Class
+     * @see java.lang.reflect.Method
+     * @see java.util.Optional
      */
     protected Optional<Class<?>> getEntityClassByMapperMethodParamTypes(Class<?> mapperType, Method mapperMethod) {
         return getEntityClassByTypes(MybatisGenericTypeResolver.resolveParamTypes(mapperMethod, mapperType));
     }
 
     /**
-     * 根据方法所在接口泛型获取，只有定义在泛型接口中的方法才能通过泛型获取，定义的最终使用类中的无法通过泛型获取
-     * @param mapperType   接口
-     * @param mapperMethod 方法
-     * @return 实体类类型
+     * <code>getEntityClassByMapperMethodAndMapperType</code>
+     * <p>the entity class by mapper method and mapper type getter method.</p>
+     * @param mapperType   {@link java.lang.Class} <p>the mapper type parameter is <code>Class</code> type.</p>
+     * @param mapperMethod {@link java.lang.reflect.Method} <p>the mapper method parameter is <code>Method</code> type.</p>
+     * @return {@link java.util.Optional} <p>the entity class by mapper method and mapper type return object is <code>Optional</code> type.</p>
+     * @see java.lang.Class
+     * @see java.lang.reflect.Method
+     * @see java.util.Optional
      */
     protected Optional<Class<?>> getEntityClassByMapperMethodAndMapperType(Class<?> mapperType, Method mapperMethod) {
         return getEntityClassByTypes(MybatisGenericTypeResolver.resolveMapperTypes(mapperMethod, mapperType));
     }
 
     /**
-     * 根据接口泛型获取，当前方法只根据接口泛型获取实体类，和当前执行的方法无关，是优先级最低的一种情况
-     * @param mapperType 接口
-     * @return 实体类类型
+     * <code>getEntityClassByMapperType</code>
+     * <p>the entity class by mapper type getter method.</p>
+     * @param mapperType {@link java.lang.Class} <p>the mapper type parameter is <code>Class</code> type.</p>
+     * @return {@link java.util.Optional} <p>the entity class by mapper type return object is <code>Optional</code> type.</p>
+     * @see java.lang.Class
+     * @see java.util.Optional
      */
     protected Optional<Class<?>> getEntityClassByMapperType(Class<?> mapperType) {
         return getEntityClassByTypes(MybatisGenericTypeResolver.resolveMapperTypes(mapperType));
     }
 
     /**
-     * 根据 type 获取可能的实体类型
-     * @param type 类型
-     * @return 实体类类型
+     * <code>getEntityClassByType</code>
+     * <p>the entity class by type getter method.</p>
+     * @param type {@link java.lang.reflect.Type} <p>the type parameter is <code>Type</code> type.</p>
+     * @return {@link java.util.Optional} <p>the entity class by type return object is <code>Optional</code> type.</p>
+     * @see java.lang.reflect.Type
+     * @see java.util.Optional
      */
     protected Optional<Class<?>> getEntityClassByType(Type type) {
         if (type instanceof Class) {
@@ -106,9 +126,12 @@ public abstract class MybatisEntityClassFinder implements MybatisClassFinder {
     }
 
     /**
-     * 遍历 types 获取可能的实体类型
-     * @param types 类型
-     * @return 实体类类型
+     * <code>getEntityClassByTypes</code>
+     * <p>the entity class by types getter method.</p>
+     * @param types {@link java.lang.reflect.Type} <p>the types parameter is <code>Type</code> type.</p>
+     * @return {@link java.util.Optional} <p>the entity class by types return object is <code>Optional</code> type.</p>
+     * @see java.lang.reflect.Type
+     * @see java.util.Optional
      */
     protected Optional<Class<?>> getEntityClassByTypes(Type[] types) {
         for (Type type : types) {

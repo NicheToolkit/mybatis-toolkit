@@ -7,16 +7,27 @@ import io.github.nichetoolkit.rest.RestKey;
 import java.util.Optional;
 
 /**
- * <p>DruidDatasourceType</p>
+ * <code>DruidRoutingType</code>
+ * <p>The type druid routing type enumeration.</p>
  * @author Cyan (snow22314@outlook.com)
- * @version v1.0.0
+ * @see io.github.nichetoolkit.rest.RestKey
+ * @since Jdk1.8
  */
 public enum DruidRoutingType implements RestKey<String> {
-    /** 主库 */
+    /**
+     * <code>DEFAULT</code>
+     * <p>the Default druid routing type field.</p>
+     */
     DEFAULT("default"),
-    /** 主库 */
+    /**
+     * <code>MASTER</code>
+     * <p>the Master druid routing type field.</p>
+     */
     MASTER("master"),
-    /** 从库 */
+    /**
+     * <code>SLAVE</code>
+     * <p>the Slave druid routing type field.</p>
+     */
     SLAVE("slave"),
     ;
     private final String key;
@@ -31,6 +42,14 @@ public enum DruidRoutingType implements RestKey<String> {
         return this.key;
     }
 
+    /**
+     * <code>parseKey</code>
+     * <p>the key method.</p>
+     * @param key {@link java.lang.String} <p>the key parameter is <code>String</code> type.</p>
+     * @return {@link io.github.nichetoolkit.mybatis.datasource.DruidRoutingType} <p>the key return object is <code>DruidRoutingType</code> type.</p>
+     * @see java.lang.String
+     * @see com.fasterxml.jackson.annotation.JsonCreator
+     */
     @JsonCreator
     public static DruidRoutingType parseKey(String key) {
         DruidRoutingType routingType = RestKey.parseKey(DruidRoutingType.class, key);

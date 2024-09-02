@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>io.github.nichetoolkit</groupId>
@@ -8,12 +9,12 @@
         <version>1.0.1-SNAPSHOT</version>
     </parent>
 
-    <artifactId>mybatis-toolkit-autoconfigure</artifactId>
+    <artifactId>mybatis-toolkit-spring-starter</artifactId>
     <version>1.0.1-SNAPSHOT</version>
-    <name>mybatis-toolkit-autoconfigure</name>
+    <name>mybatis-toolkit-spring-starter</name>
     <packaging>jar</packaging>
-    <description>mybatis toolkit autoconfigure project for Spring Boot</description>
-    <url>https://github.com/NicheToolkit/mybatis-toolkit/tree/master/mybatis-toolkit-autoconfigure</url>
+    <description>mybatis toolkit starter project for Spring Boot</description>
+    <url>https://github.com/NicheToolkit/mybatis-toolkit/tree/master/mybatis-toolkit-spring-starter</url>
 
     <properties>
         <java.version>1.8</java.version>
@@ -54,29 +55,17 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-configuration-processor</artifactId>
-            <optional>true</optional>
+            <groupId>io.github.nichetoolkit</groupId>
+            <artifactId>mybatis-toolkit-autoconfigure</artifactId>
         </dependency>
-
         <dependency>
             <groupId>io.github.nichetoolkit</groupId>
             <artifactId>mybatis-toolkit-starter</artifactId>
         </dependency>
-
         <dependency>
-            <groupId>com.zaxxer</groupId>
-            <artifactId>HikariCP</artifactId>
-            <optional>true</optional>
+            <groupId>org.mybatis.spring.boot</groupId>
+            <artifactId>mybatis-spring-boot-starter</artifactId>
         </dependency>
-
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>druid-spring-boot-starter</artifactId>
-            <version>${alibaba-druid.version}</version>
-            <optional>true</optional>
-        </dependency>
-
     </dependencies>
 
     <repositories>

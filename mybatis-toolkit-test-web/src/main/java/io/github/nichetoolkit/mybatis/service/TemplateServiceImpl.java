@@ -12,20 +12,22 @@ import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.Optional;
 
 /**
- * <p>TemplateServiceImpl</p>
+ * <code>TemplateServiceImpl</code>
+ * <p>The type template service class.</p>
  * @author Cyan (snow22314@outlook.com)
- * @version v1.0.0
+ * @see io.github.nichetoolkit.rice.RestInfoService
+ * @see org.springframework.stereotype.Service
+ * @since Jdk1.8
  */
 @Service
 public class TemplateServiceImpl extends RestInfoService<String, TemplateKey,TemplateModel, TemplateEntity, TemplateFilter> implements TemplateService {
 
     @Override
     protected void optionalInit(@NonNull TemplateModel model) throws RestException {
-        if (GeneralUtils.isNotEmpty(model.getTime())) {
-            model.setTime(new Date());
-        }
+        model.setTime(Optional.ofNullable(model.getTime()).orElse(new Date()));
     }
 
     @Override

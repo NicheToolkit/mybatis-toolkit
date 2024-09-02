@@ -6,18 +6,22 @@ import org.apache.ibatis.builder.annotation.ProviderContext;
 import java.util.List;
 
 /**
- * <p>MybatisSqlScriptWrapper</p>
- * 对最终的SQL进行处理
+ * <code>MybatisSqlScriptWrapper</code>
+ * <p>The type mybatis sql script wrapper interface.</p>
  * @author Cyan (snow22314@outlook.com)
- * @version v1.0.0
+ * @see io.github.nichetoolkit.mybatis.MybatisOrder
+ * @since Jdk1.8
  */
 public interface MybatisSqlScriptWrapper extends MybatisOrder {
     /**
-     * 包装 SQL
-     * @param context   当前接口和方法信息
-     * @param table     实体类
-     * @param sqlScript sql脚本
-     * @return sqlScript sql脚本
+     * <code>wrapSqlScript</code>
+     * <p>the sql script method.</p>
+     * @param context   {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>the context parameter is <code>ProviderContext</code> type.</p>
+     * @param table     {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>the table parameter is <code>MybatisTable</code> type.</p>
+     * @param sqlScript {@link io.github.nichetoolkit.mybatis.MybatisSqlScript} <p>the sql script parameter is <code>MybatisSqlScript</code> type.</p>
+     * @return {@link io.github.nichetoolkit.mybatis.MybatisSqlScript} <p>the sql script return object is <code>MybatisSqlScript</code> type.</p>
+     * @see org.apache.ibatis.builder.annotation.ProviderContext
+     * @see io.github.nichetoolkit.mybatis.MybatisTable
      */
     static MybatisSqlScript wrapSqlScript(ProviderContext context, MybatisTable table, MybatisSqlScript sqlScript) {
         for (MybatisSqlScriptWrapper wrapper : Instance.sqlScriptWrapperChain()) {
@@ -27,23 +31,31 @@ public interface MybatisSqlScriptWrapper extends MybatisOrder {
     }
 
     /**
-     * 对 script 包装中的 SQL 进行加工处理
-     * @param context   当前接口和方法信息
-     * @param table     实体类
-     * @param sqlScript sql脚本
-     * @return MybatisSqlScript
+     * <code>wrap</code>
+     * <p>the method.</p>
+     * @param context   {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>the context parameter is <code>ProviderContext</code> type.</p>
+     * @param table     {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>the table parameter is <code>MybatisTable</code> type.</p>
+     * @param sqlScript {@link io.github.nichetoolkit.mybatis.MybatisSqlScript} <p>the sql script parameter is <code>MybatisSqlScript</code> type.</p>
+     * @return {@link io.github.nichetoolkit.mybatis.MybatisSqlScript} <p>the return object is <code>MybatisSqlScript</code> type.</p>
+     * @see org.apache.ibatis.builder.annotation.ProviderContext
+     * @see io.github.nichetoolkit.mybatis.MybatisTable
      */
     MybatisSqlScript wrap(ProviderContext context, MybatisTable table, MybatisSqlScript sqlScript);
 
     /**
-     * 实例
+     * <code>Instance</code>
+     * <p>The type instance class.</p>
+     * @author Cyan (snow22314@outlook.com)
+     * @since Jdk1.8
      */
     class Instance {
         private static volatile List<MybatisSqlScriptWrapper> SQL_SCRIPT_WRAPPERS;
 
         /**
-         * 获取处理实体的工厂链
-         * @return 实例
+         * <code>sqlScriptWrapperChain</code>
+         * <p>the script wrapper chain method.</p>
+         * @return {@link java.util.List} <p>the script wrapper chain return object is <code>List</code> type.</p>
+         * @see java.util.List
          */
         public static List<MybatisSqlScriptWrapper> sqlScriptWrapperChain() {
             if (SQL_SCRIPT_WRAPPERS == null) {
