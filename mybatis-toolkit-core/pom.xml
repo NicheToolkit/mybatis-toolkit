@@ -5,11 +5,11 @@
     <parent>
         <groupId>io.github.nichetoolkit</groupId>
         <artifactId>mybatis-toolkit-parent</artifactId>
-        <version>1.0.1-SNAPSHOT</version>
+        <version>1.1.0-SNAPSHOT</version>
     </parent>
 
     <artifactId>mybatis-toolkit-core</artifactId>
-    <version>1.0.1-SNAPSHOT</version>
+    <version>1.1.0-SNAPSHOT</version>
     <name>mybatis-toolkit-core</name>
     <packaging>jar</packaging>
     <description>Mybatis toolkit core project for Spring Boot</description>

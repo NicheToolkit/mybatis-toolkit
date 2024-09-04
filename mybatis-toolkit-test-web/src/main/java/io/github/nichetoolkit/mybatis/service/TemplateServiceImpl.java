@@ -21,7 +21,7 @@ import java.util.Optional;
  * @since Jdk1.8
  */
 @Service
-public class TemplateServiceImpl extends DefaultInfoService<String, TemplateKey,TemplateModel, TemplateEntity, TemplateFilter> implements TemplateService {
+public class TemplateServiceImpl extends DefaultInfoService<TemplateModel, TemplateEntity, TemplateFilter, TemplateKey, String> implements TemplateService {
 
     @Override
     protected void optionalInit(@NonNull TemplateModel model) throws RestException {
