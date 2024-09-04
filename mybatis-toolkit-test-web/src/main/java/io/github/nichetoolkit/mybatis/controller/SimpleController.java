@@ -32,6 +32,11 @@ import java.util.Date;
 @RequestMapping("/simple")
 public class SimpleController {
 
+    /**
+     * <code>simpleService</code>
+     * {@link io.github.nichetoolkit.mybatis.service.SimpleService} <p>the <code>simpleService</code> field.</p>
+     * @see io.github.nichetoolkit.mybatis.service.SimpleService
+     */
     private final SimpleService simpleService;
 
     /**
@@ -101,7 +106,8 @@ public class SimpleController {
     /**
      * <code>queryById</code>
      * <p>the by id method.</p>
-     * @param id {@link java.lang.String} <p>the id parameter is <code>String</code> type.</p>
+     * @param id       {@link java.lang.String} <p>the id parameter is <code>String</code> type.</p>
+     * @param tablekey {@link java.lang.String} <p>the tablekey parameter is <code>String</code> type.</p>
      * @return {@link io.github.nichetoolkit.rest.RestResult} <p>the by id return object is <code>RestResult</code> type.</p>
      * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>the rest exception is <code>RestException</code> type.</p>
      * @see java.lang.String
@@ -112,7 +118,7 @@ public class SimpleController {
      */
     @GetMapping("/query/{id}/{tablekey}")
     public RestResult<SimpleModel> queryById(@PathVariable("id") String id, @PathVariable("tablekey") String tablekey) throws RestException {
-        SimpleModel simpleModel = simpleService.queryById(tablekey,id);
+        SimpleModel simpleModel = simpleService.queryById(tablekey, id);
         return RestResult.success(simpleModel);
     }
 
@@ -137,7 +143,8 @@ public class SimpleController {
     /**
      * <code>deleteById</code>
      * <p>the by id method.</p>
-     * @param id {@link java.lang.String} <p>the id parameter is <code>String</code> type.</p>
+     * @param id       {@link java.lang.String} <p>the id parameter is <code>String</code> type.</p>
+     * @param tablekey {@link java.lang.String} <p>the tablekey parameter is <code>String</code> type.</p>
      * @return {@link io.github.nichetoolkit.rest.RestResult} <p>the by id return object is <code>RestResult</code> type.</p>
      * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>the rest exception is <code>RestException</code> type.</p>
      * @see java.lang.String
@@ -147,8 +154,8 @@ public class SimpleController {
      * @see io.github.nichetoolkit.rest.RestException
      */
     @DeleteMapping("/delete")
-    public RestResult<?> deleteById(@RequestParam("id") String id,@RequestParam("tablekey") String tablekey) throws RestException {
-        simpleService.deleteById(tablekey,id);
+    public RestResult<?> deleteById(@RequestParam("id") String id, @RequestParam("tablekey") String tablekey) throws RestException {
+        simpleService.deleteById(tablekey, id);
         return RestResult.success();
     }
 

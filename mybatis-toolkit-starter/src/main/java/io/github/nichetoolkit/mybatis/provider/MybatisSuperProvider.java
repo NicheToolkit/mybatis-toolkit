@@ -32,6 +32,11 @@ import java.util.stream.Collectors;
  */
 public class MybatisSuperProvider implements InitializingBean {
 
+    /**
+     * <code>tableProperties</code>
+     * {@link io.github.nichetoolkit.mybatis.configure.MybatisTableProperties} <p>the <code>tableProperties</code> field.</p>
+     * @see io.github.nichetoolkit.mybatis.configure.MybatisTableProperties
+     */
     private final MybatisTableProperties tableProperties;
 
     /**
@@ -46,6 +51,10 @@ public class MybatisSuperProvider implements InitializingBean {
         this.tableProperties = tableProperties;
     }
 
+    /**
+     * <code>INSTANCE</code>
+     * {@link io.github.nichetoolkit.mybatis.provider.MybatisSuperProvider} <p>the constant <code>INSTANCE</code> field.</p>
+     */
     private static MybatisSuperProvider INSTANCE = null;
 
     /**
@@ -79,12 +88,15 @@ public class MybatisSuperProvider implements InitializingBean {
     /**
      * <code>saveUpsetSql</code>
      * <p>the upset sql method.</p>
-     * @param table {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>the table parameter is <code>MybatisTable</code> type.</p>
+     * @param tablename {@link java.lang.String} <p>the tablename parameter is <code>String</code> type.</p>
+     * @param table     {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>the table parameter is <code>MybatisTable</code> type.</p>
      * @return {@link java.lang.String} <p>the upset sql return object is <code>String</code> type.</p>
-     * @see io.github.nichetoolkit.mybatis.MybatisTable
      * @see java.lang.String
+     * @see org.springframework.lang.Nullable
+     * @see org.apache.ibatis.annotations.Param
+     * @see io.github.nichetoolkit.mybatis.MybatisTable
      */
-    public static String saveUpsetSql(@Nullable String dynamicTablename, MybatisTable table) {
+    public static String saveUpsetSql(@Nullable  @Param("tablename") String tablename, MybatisTable table) {
         DatabaseType databaseType = databaseType();
         List<MybatisColumn> updateColumns = table.updateColumns();
         boolean doNothing = false;
@@ -92,8 +104,8 @@ public class MybatisSuperProvider implements InitializingBean {
         if (GeneralUtils.isEmpty(updateColumns)) {
             doNothing = true;
         } else {
-            String tablename = Optional.ofNullable(dynamicTablename).orElse(table.tablename());
-            doUpdateSql = table.updateColumns().stream().map(column -> column.excluded(tablename)).collect(Collectors.joining(", "));
+            String dynamicTablename = Optional.ofNullable(tablename).orElse(table.tablename());
+            doUpdateSql = table.updateColumns().stream().map(column -> column.excluded(dynamicTablename)).collect(Collectors.joining(", "));
         }
         String upsetSql;
         switch (databaseType) {
