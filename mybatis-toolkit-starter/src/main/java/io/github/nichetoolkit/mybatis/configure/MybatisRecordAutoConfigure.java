@@ -20,7 +20,7 @@ import org.springframework.lang.NonNull;
  * <p>The type mybatis record auto configure class.</p>
  * @author Cyan (snow22314@outlook.com)
  * @see lombok.extern.slf4j.Slf4j
- * @see org.springframework.context.annotation.Configuration
+ * @see org.springframework.boot.autoconfigure.AutoConfiguration
  * @see org.springframework.context.annotation.ComponentScan
  * @see org.springframework.boot.context.properties.EnableConfigurationProperties
  * @see org.springframework.boot.autoconfigure.condition.ConditionalOnProperty

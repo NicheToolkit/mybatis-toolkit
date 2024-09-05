@@ -11,7 +11,8 @@
       "name": "nichetoolkit.mybatis.record.enabled",
       "type": "java.lang.Boolean",
       "sourceType": "java.lang.Boolean",
-      "description": "mybatis record enabled."
+      "description": "the switch of record auto configure on mybatis configuration.",
+      "defaultValue": false
     }
   ],
   "hints": [
@@ -20,11 +21,11 @@
       "values": [
         {
           "value": false,
-          "description": "mybatis record enabled close."
+          "description": "the switch of record auto configure is closed on mybatis configuration."
         },
         {
           "value": true,
-          "description": "mybatis record enabled open."
+          "description": "the switch of record auto configure is opened on mybatis configuration."
         }
       ]
     }
