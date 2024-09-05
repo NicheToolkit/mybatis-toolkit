@@ -3,6 +3,7 @@ package io.github.nichetoolkit.mybatis.configure;
 import io.github.nichetoolkit.mybatis.provider.MybatisSuperProvider;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.*;
@@ -21,7 +22,7 @@ import org.springframework.lang.NonNull;
  * @since Jdk1.8
  */
 @Slf4j
-@Configuration
+@AutoConfiguration
 @ComponentScan(basePackages = {"io.github.nichetoolkit.mybatis"})
 @Import({ MybatisStarterAutoConfigure.MybatisMapperAutoRegister.class})
 @ImportAutoConfiguration({MybatisRecordAutoConfigure.class})

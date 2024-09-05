@@ -1,10 +1,12 @@
 package io.github.nichetoolkit.mybatis.service;
 
+import io.github.nichetoolkit.mybatis.mapper.SimpleMapper;
 import io.github.nichetoolkit.mybatis.simple.SimpleEntity;
 import io.github.nichetoolkit.mybatis.simple.SimpleFilter;
 import io.github.nichetoolkit.mybatis.simple.SimpleModel;
 import io.github.nichetoolkit.rest.RestException;
 import io.github.nichetoolkit.rice.RestInfoService;
+import io.github.nichetoolkit.rice.stereotype.RestService;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +21,8 @@ import java.util.Optional;
  * @see org.springframework.stereotype.Service
  * @since Jdk1.8
  */
-@Service
+//@Service
+    @RestService(mapper = SimpleMapper.class)
 public class SimpleServiceImpl extends RestInfoService<SimpleModel, SimpleEntity, SimpleFilter> implements SimpleService {
 
     @Override

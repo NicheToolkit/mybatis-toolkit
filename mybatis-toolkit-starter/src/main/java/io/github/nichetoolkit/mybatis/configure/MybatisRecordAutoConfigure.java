@@ -27,7 +27,7 @@ import org.springframework.lang.NonNull;
  * @since Jdk1.8
  */
 @Slf4j
-@Configuration
+@AutoConfiguration
 @ComponentScan(basePackages = {"io.github.nichetoolkit.mybatis"})
 @EnableConfigurationProperties({MybatisRecordProperties.class})
 @ConditionalOnProperty(prefix = "nichetoolkit.mybatis.record", name="enabled", havingValue = "true", matchIfMissing = true)

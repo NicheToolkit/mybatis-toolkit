@@ -24,6 +24,11 @@
 > [Maven](https://maven.apache.org/) 3.6.3+\
 > [JDK](https://www.oracle.com/java/technologies/downloads/#java8) 1.8
 
+## Wiki Reference
+
+[Wiki Reference](https://github.com/NicheToolkit/mybatis-toolkit/wiki): https://github.com/NicheToolkit/mybatis-toolkit/wiki
+
+
 ## Instructions
 
 ### Maven Usages
@@ -82,58 +87,130 @@
 
 ### Configure Properties
 
-#### bean configuration
+#### cache configuration
 
 * prefix
 
 >
-> nichetoolkit.rice.bean
+> nichetoolkit.mybatis.cache
 >
 
 * values
 
 |             value             |     type     | defaultValue |                                                             description                                                             |
 |:-----------------------------:|:------------:|:------------:|:-----------------------------------------------------------------------------------------------------------------------------------:|
-|    `model.unique-enabled`     |  `Boolean`   |   `false`    |                                   the switch of unique model check on rest service saving handle.                                   |
-| `model.dynamic-table-enabled` |  `Boolean`   |   `false`    |                                         the switch of dynamic table on rest service handle.                                         |
-|     `name.unique-enabled`     |  `Boolean`   |    `true`    |                      the switch of unique name check on rest service saving handle.(model name must be unique)                      |
-|    `name.nonnull-enabled`     |  `Boolean`   |    `true`    |                     the switch of nonnull name check on rest service saving handle.(model name can not be null)                     |
-|     `key.invade-enabled`      |  `Boolean`   |   `false`    |                  the switch of invade model key on rest service saving handle.(the model id can be external input)                  |
-|      `key.exist-enabled`      |  `Boolean`   |    `true`    | the switch of model key exist check on rest service updating handle.(the model of key not exist maybe to save when updating handle) |
-|    `partition.query-size`     |  `Integer`   |    `2000`    |          the partition size of `in` sql usage on rest service query handle.(the size of sql param: in (p1,p2,p3...p2000))           |
-|     `partition.save-size`     |  `Integer`   |    `500`     |                                      the partition size of  model on rest service save handle.                                      |
-|    `partition.delete-size`    |  `Integer`   |    `1000`    |          the partition size of `in` sql usage on rest service delete handle.(the size of sql param: in (p1,p2,p3...p1000))          |
-|     `delete.delete-mode`      | `DeleteMode` |    `none`    |                   the delete mode of data on rest service delete handle.(the logical delete implementation mode)                    |
-|     `delete.remove-mode`      | `RemoveMode` |   `number`   |                   the remove mode of data on rest service remove handle.(the logical remove implementation mode)                   |
-|     `delete.before-skip`      |  `Boolean`   |    `true`    |                               the switch of skip delete before handle on rest service delete handle.                                |
-|      `delete.after-skip`      |  `Boolean`   |    `true`    |                                the switch of skip delete after handle on rest service delete handle.                                |
-|     `delete.pinpoint-sign`     |  `Boolean`   |   `false`    |                               the switch of remove data with pinpoint sign on rest service query handle.                               |
-|     `delete.boolean-sign`     |  `Boolean`   |    `true`    |                                   the sign of delete data when logical remove model is `boolean`.                                   |
-|    `delete.boolean-value`     |  `Boolean`   |   `false`    |                                  the value of default data when logical remove model is `boolean`.                                  |
-|     `delete.number-sign`      |  `Integer`   |     `2`      |                                   the sign of delete data when logical remove model is `number`.                                    |
-|     `delete.number-value`     |  `Integer`   |     `1`      |                                  the value of default data when logical remove model is `number`.                                   |
+| `init-size` | `Integer` |   `1024`   |                                   the initiate size of table cache on mybatis `sql` handle.                                   |
+| `use-once` |  `Boolean`   |   `false`    |                                         the switch of table cache used once on mybatis `sql ` handle.                                         |
 
 * properties
 
 ```properties
-nichetoolkit.rice.bean.model.unique-enabled=false
-nichetoolkit.rice.bean.model.dynamic-table-enabled=true
-nichetoolkit.rice.bean.name.unique-enabled=true
-nichetoolkit.rice.bean.name.nonnull-enabled=true
-nichetoolkit.rice.bean.key.invade-enabled=false
-nichetoolkit.rice.bean.key.exist-enabled=true
-nichetoolkit.rice.bean.partition.query-size=2000
-nichetoolkit.rice.bean.partition.save-size=500
-nichetoolkit.rice.bean.partition.delete-size=1000
-nichetoolkit.rice.bean.delete.delete-mode=none
-nichetoolkit.rice.bean.delete.remove-mode=number
-nichetoolkit.rice.bean.delete.before-skip=true
-nichetoolkit.rice.bean.delete.after-skip=true
-nichetoolkit.rice.bean.delete.pinpoint-sign=false
-nichetoolkit.rice.bean.delete.boolean-sign=true
-nichetoolkit.rice.bean.delete.boolean-value=false
-nichetoolkit.rice.bean.delete.number-sign=2
-nichetoolkit.rice.bean.delete.number-value=1
+nichetoolkit.mybatis.cache.init-size=1024
+nichetoolkit.mybatis.cache.use-once=false
+```
+
+#### table configuration
+
+* prefix
+
+>
+> nichetoolkit.mybatis.table
+>
+
+* values
+
+|             value             |     type     | defaultValue |                                                             description                                                             |
+|:-----------------------------:|:------------:|:------------:|:-----------------------------------------------------------------------------------------------------------------------------------:|
+| `catalog` | `String` |      |                                   the global catalog of table on mybatis configuration.                                   |
+| `schema` | `String` |       |                                         the global schema of table on mybatis configuration.                                         |
+| `database-type` | `DatabaseType` | `postgresql` | the global database type of table on mybatis configuration. |
+| `style-type` | `StyleType` | `lower_underline` | the global sql style type of table on mybatis configuration. |
+| `properties` | `Map` |  | the global properties of table on mybatis configuration. |
+| `excludes` | `String[]` |  | the global excludes of table on mybatis configuration. |
+
+* properties
+
+```properties
+nichetoolkit.mybatis.table.catalog=
+nichetoolkit.mybatis.table.schema=
+nichetoolkit.mybatis.table.database-type=postgresql
+nichetoolkit.mybatis.table.style-type=lower_underline
+nichetoolkit.mybatis.table.excludes=operate
+```
+
+#### datasource configuration
+
+* prefix
+
+>
+> nichetoolkit.mybatis.datasource
+>
+
+* values
+
+|             value             |     type     | defaultValue |                                                             description                                                             |
+|:-----------------------------:|:------------:|:------------:|:-----------------------------------------------------------------------------------------------------------------------------------:|
+| `enabled` | `String` | `true` |                                   the switch of datasource auto config on mybatis configuration.                                   |
+| `connect-pool-type` | `ConnectPoolType` | `hikari` |                                         the connect pool type of datasource on mybatis configuration.                                         |
+
+* properties
+
+```properties
+nichetoolkit.mybatis.datasource.enabled=true
+nichetoolkit.mybatis.datasource.connect-pool-type=hikari
+```
+
+#### alibaba druid configuration
+
+* reference
+
+[alibaba druid configuration](https://github.com/alibaba/druid/blob/master/druid-spring-boot-starter/README_EN.md): https://github.com/alibaba/druid/blob/master/druid-spring-boot-starter
+
+* prefix
+
+>
+> spring.datasource.druid
+>
+
+* values
+
+|             value             |     type     | defaultValue |                                                             description                                                             |
+|:-----------------------------:|:------------:|:------------:|:-----------------------------------------------------------------------------------------------------------------------------------:|
+| `initial-size` | `Integer` | `5` |                                   the initial size of druid connection pool on mybatis configuration.                                   |
+| `min-idle` | `Integer` | `10` |                                         the min idle size of druid connection pool on mybatis configuration.                                         |
+| `max-active` | `Integer` | `20` | the max active size of druid connection pool on mybatis configuration. |
+| `max-wait` | `Integer` | `60000` | the max wait time of druid connection pool on mybatis configuration. |
+| `time-between-eviction-runs-millis` | `Integer` | `60000` | the time between eviction runs of druid connection pool on mybatis configuration. |
+| `min-evictable-idle-time-millis` | `Integer` | `300000` | the min evictable idle of druid connection pool on mybatis configuration. |
+| `max-evictable-idle-time-millis` | `Integer` | `900000` | the max evictable idle of druid connection pool on mybatis configuration. |
+| `validation-query` | `String` | `SELECT 1` | the validation query of druid connection pool on mybatis configuration. |
+| `test-while-idle` | `Boolean` | `true` | the idle test switch of druid connection pool on mybatis configuration. |
+| `test-on-borrow` | `Boolean` | `false` | the borrow test switch of druid connection pool on mybatis configuration. |
+| `test-on-return` | `Boolean` | `false` | the return test switch of druid connection pool on mybatis configuration. |
+| `master.enabled` | `Boolean` | `false` | the master datasource switch of druid connection pool on mybatis configuration. |
+| `slave.enabled` | `Boolean` | `false` | the slave datasource  switch of druid connection pool on mybatis configuration. |
+
+* properties
+
+```properties
+spring.datasource.type=com.alibaba.druid.pool.DruidDataSource
+spring.datasource.driverClassName=org.postgresql.Driver
+spring.datasource.druid.initial-size=5
+spring.datasource.druid.min-idle=10
+spring.datasource.druid.max-active=20
+spring.datasource.druid.max-wait=60000
+spring.datasource.druid.time-between-eviction-runs-millis=60000
+spring.datasource.druid.min-evictable-idle-time-millis=300000
+spring.datasource.druid.max-evictable-idle-time-millis=900000
+spring.datasource.druid.validation-query=SELECT 1
+spring.datasource.druid.test-on-borrow=true
+spring.datasource.druid.test-on-return=false
+spring.datasource.druid.test-while-idle=false
+spring.datasource.druid.master.enabled=true
+spring.datasource.druid.master.url=jdbc:postgresql://localhost:5432/simple_db?stringtype=unspecified
+spring.datasource.druid.master.username=postgres
+spring.datasource.druid.master.password=2314
+spring.datasource.druid.slave.enabled=false
 ```
 
 ## Test Example
