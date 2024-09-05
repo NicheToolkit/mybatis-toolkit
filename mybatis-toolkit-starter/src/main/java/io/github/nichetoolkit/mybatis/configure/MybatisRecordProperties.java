@@ -15,5 +15,9 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @Data
 @ConfigurationProperties(prefix = "nichetoolkit.mybatis.record")
 public class MybatisRecordProperties {
+    /**
+     * <code>enabled</code>
+     * <p>the <code>enabled</code> field.</p>
+     */
     private boolean enabled = false;
 }

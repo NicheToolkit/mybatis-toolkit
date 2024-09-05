@@ -52,6 +52,18 @@ public class AnnotationSqlScriptWrapper implements MybatisSqlScriptWrapper {
         return sqlScript;
     }
 
+    /**
+     * <code>parseAnnotations</code>
+     * <p>the annotations method.</p>
+     * @param target      {@link java.lang.Object} <p>the target parameter is <code>Object</code> type.</p>
+     * @param type        {@link java.lang.annotation.ElementType} <p>the type parameter is <code>ElementType</code> type.</p>
+     * @param annotations {@link java.lang.annotation.Annotation} <p>the annotations parameter is <code>Annotation</code> type.</p>
+     * @return {@link java.util.List} <p>the annotations return object is <code>List</code> type.</p>
+     * @see java.lang.Object
+     * @see java.lang.annotation.ElementType
+     * @see java.lang.annotation.Annotation
+     * @see java.util.List
+     */
     private List<AnnotationSqlWrapper> parseAnnotations(Object target, ElementType type, Annotation[] annotations) {
         List<Class<? extends AnnotationSqlWrapper>> classes = new ArrayList<>();
         for (int i = 0; i < annotations.length; i++) {

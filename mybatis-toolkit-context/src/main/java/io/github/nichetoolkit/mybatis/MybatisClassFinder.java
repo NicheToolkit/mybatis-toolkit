@@ -66,6 +66,11 @@ public interface MybatisClassFinder extends MybatisOrder {
      * @since Jdk1.8
      */
     class ClassFinderInstance {
+        /**
+         * <code>INSTANCES</code>
+         * {@link java.util.List} <p>the constant <code>INSTANCES</code> field.</p>
+         * @see java.util.List
+         */
         private static volatile List<MybatisClassFinder> INSTANCES;
 
         /**

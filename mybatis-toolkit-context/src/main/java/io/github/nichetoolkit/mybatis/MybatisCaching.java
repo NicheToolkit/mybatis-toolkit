@@ -29,10 +29,24 @@ import java.util.Objects;
 @Slf4j
 public class MybatisCaching extends XMLLanguageDriver {
 
+    /**
+     * <code>cacheKey</code>
+     * <p>the key method.</p>
+     * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>the provider context parameter is <code>ProviderContext</code> type.</p>
+     * @return {@link java.lang.String} <p>the key return object is <code>String</code> type.</p>
+     * @see org.apache.ibatis.builder.annotation.ProviderContext
+     * @see java.lang.String
+     */
     private static String cacheKey(ProviderContext providerContext) {
         return (providerContext.getMapperType().getName() + "." + providerContext.getMapperMethod().getName()).intern();
     }
 
+    /**
+     * <code>isPresentLang</code>
+     * <p>the present lang method.</p>
+     * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>the provider context parameter is <code>ProviderContext</code> type.</p>
+     * @see org.apache.ibatis.builder.annotation.ProviderContext
+     */
     private static void isPresentLang(ProviderContext providerContext) {
         Method mapperMethod = providerContext.getMapperMethod();
         Lang lang = mapperMethod.getAnnotation(Lang.class);

@@ -16,8 +16,23 @@ public class MybatisSqlCache {
      * {@link io.github.nichetoolkit.mybatis.MybatisSqlCache} <p>the constant <code>NULL_SQL_CACHE</code> field.</p>
      */
     public static final MybatisSqlCache NULL_SQL_CACHE = new MybatisSqlCache(null, null, null);
+    /**
+     * <code>context</code>
+     * {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>the <code>context</code> field.</p>
+     * @see org.apache.ibatis.builder.annotation.ProviderContext
+     */
     private final ProviderContext context;
+    /**
+     * <code>table</code>
+     * {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>the <code>table</code> field.</p>
+     * @see io.github.nichetoolkit.mybatis.MybatisTable
+     */
     private final MybatisTable table;
+    /**
+     * <code>supplier</code>
+     * {@link io.github.nichetoolkit.rest.actuator.SupplierActuator} <p>the <code>supplier</code> field.</p>
+     * @see io.github.nichetoolkit.rest.actuator.SupplierActuator
+     */
     private final SupplierActuator<String> supplier;
 
     /**

@@ -11,6 +11,11 @@ import java.lang.reflect.Type;
  * @since Jdk1.8
  */
 public class MybatisGenericArrayType implements GenericArrayType {
+    /**
+     * <code>genericComponentType</code>
+     * {@link java.lang.reflect.Type} <p>the <code>genericComponentType</code> field.</p>
+     * @see java.lang.reflect.Type
+     */
     private final Type genericComponentType;
 
     /**

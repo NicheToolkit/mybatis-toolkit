@@ -13,8 +13,21 @@ import java.util.List;
  * @since Jdk1.8
  */
 public class DefaultTableFactoryChain implements MybatisTableFactory.Chain {
+    /**
+     * <code>factories</code>
+     * {@link java.util.List} <p>the <code>factories</code> field.</p>
+     * @see java.util.List
+     */
     private final List<MybatisTableFactory> factories;
+    /**
+     * <code>next</code>
+     * {@link io.github.nichetoolkit.mybatis.defaults.DefaultTableFactoryChain} <p>the <code>next</code> field.</p>
+     */
     private final DefaultTableFactoryChain next;
+    /**
+     * <code>index</code>
+     * <p>the <code>index</code> field.</p>
+     */
     private final int index;
 
     /**
@@ -27,6 +40,13 @@ public class DefaultTableFactoryChain implements MybatisTableFactory.Chain {
         this(factories, 0);
     }
 
+    /**
+     * <code>DefaultTableFactoryChain</code>
+     * Instantiates a new default table factory chain.
+     * @param factories {@link java.util.List} <p>the factories parameter is <code>List</code> type.</p>
+     * @param index     int <p>the index parameter is <code>int</code> type.</p>
+     * @see java.util.List
+     */
     private DefaultTableFactoryChain(List<MybatisTableFactory> factories, int index) {
         this.factories = factories;
         this.index = index;

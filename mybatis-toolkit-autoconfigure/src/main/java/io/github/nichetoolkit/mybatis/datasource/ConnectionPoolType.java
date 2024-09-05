@@ -30,8 +30,19 @@ public enum ConnectionPoolType implements RestKey<String> {
      */
     CUSTOM("custom"),
     ;
+    /**
+     * <code>key</code>
+     * {@link java.lang.String} <p>the <code>key</code> field.</p>
+     * @see java.lang.String
+     */
     private final String key;
-    
+
+    /**
+     * <code>ConnectionPoolType</code>
+     * Instantiates a new connection pool type.
+     * @param key {@link java.lang.String} <p>the key parameter is <code>String</code> type.</p>
+     * @see java.lang.String
+     */
     ConnectionPoolType(String key) {
         this.key = key;
     }

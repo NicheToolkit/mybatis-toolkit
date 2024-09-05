@@ -25,6 +25,11 @@ import java.util.List;
  */
 class SimpleServiceTest extends MybatisToolkitTestWebApplicationTests {
 
+    /**
+     * <code>simpleService</code>
+     * {@link io.github.nichetoolkit.mybatis.service.SimpleService} <p>the <code>simpleService</code> field.</p>
+     * @see org.springframework.beans.factory.annotation.Autowired
+     */
     @Autowired
     private SimpleService simpleService;
 

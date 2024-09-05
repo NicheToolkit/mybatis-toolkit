@@ -17,8 +17,21 @@ import java.util.Optional;
  * @since Jdk1.8
  */
 public class DefaultColumnFactoryChain implements MybatisColumnFactory.Chain {
+    /**
+     * <code>factories</code>
+     * {@link java.util.List} <p>the <code>factories</code> field.</p>
+     * @see java.util.List
+     */
     private final List<MybatisColumnFactory> factories;
+    /**
+     * <code>next</code>
+     * {@link io.github.nichetoolkit.mybatis.defaults.DefaultColumnFactoryChain} <p>the <code>next</code> field.</p>
+     */
     private final DefaultColumnFactoryChain next;
+    /**
+     * <code>index</code>
+     * <p>the <code>index</code> field.</p>
+     */
     private final int index;
 
     /**
@@ -31,6 +44,13 @@ public class DefaultColumnFactoryChain implements MybatisColumnFactory.Chain {
         this(factories, 0);
     }
 
+    /**
+     * <code>DefaultColumnFactoryChain</code>
+     * Instantiates a new default column factory chain.
+     * @param factories {@link java.util.List} <p>the factories parameter is <code>List</code> type.</p>
+     * @param index     int <p>the index parameter is <code>int</code> type.</p>
+     * @see java.util.List
+     */
     private DefaultColumnFactoryChain(List<MybatisColumnFactory> factories, int index) {
         this.factories = factories;
         this.index = index;

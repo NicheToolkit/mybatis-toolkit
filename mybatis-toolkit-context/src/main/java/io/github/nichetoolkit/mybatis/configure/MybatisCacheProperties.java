@@ -14,7 +14,16 @@ import org.springframework.stereotype.Component;
 @Component
 @ConfigurationProperties(prefix = "nichetoolkit.mybatis.cache")
 public class MybatisCacheProperties {
+    /**
+     * <code>initSize</code>
+     * {@link java.lang.Integer} <p>the <code>initSize</code> field.</p>
+     * @see java.lang.Integer
+     */
     private Integer initSize = 1024;
+    /**
+     * <code>useOnce</code>
+     * <p>the <code>useOnce</code> field.</p>
+     */
     private boolean useOnce = false;
 
     /**

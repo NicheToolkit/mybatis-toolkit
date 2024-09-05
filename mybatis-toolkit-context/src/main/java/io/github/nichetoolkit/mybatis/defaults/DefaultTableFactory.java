@@ -24,6 +24,11 @@ import java.util.Optional;
  */
 public class DefaultTableFactory implements MybatisTableFactory {
 
+    /**
+     * <code>tableProperties</code>
+     * {@link io.github.nichetoolkit.mybatis.configure.MybatisTableProperties} <p>the <code>tableProperties</code> field.</p>
+     * @see io.github.nichetoolkit.mybatis.configure.MybatisTableProperties
+     */
     private final MybatisTableProperties tableProperties;
 
     /**

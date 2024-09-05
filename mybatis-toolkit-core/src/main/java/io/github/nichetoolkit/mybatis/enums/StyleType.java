@@ -42,8 +42,19 @@ public enum StyleType implements RestKey<String> {
     UPPER_UNDERLINE(StyleConstants.UPPER_UNDERLINE),
     ;
 
+    /**
+     * <code>key</code>
+     * {@link java.lang.String} <p>the <code>key</code> field.</p>
+     * @see java.lang.String
+     */
     private final String key;
 
+    /**
+     * <code>StyleType</code>
+     * Instantiates a new style type.
+     * @param key {@link java.lang.String} <p>the key parameter is <code>String</code> type.</p>
+     * @see java.lang.String
+     */
     StyleType(String key) {
         this.key = key;
     }

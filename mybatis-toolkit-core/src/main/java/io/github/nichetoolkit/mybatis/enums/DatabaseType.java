@@ -71,9 +71,26 @@ public enum DatabaseType implements RestValue<String, String> {
      */
     CASSANDRA("cassandra", DriverConstants.CASSANDRA),
     ;
+    /**
+     * <code>key</code>
+     * {@link java.lang.String} <p>the <code>key</code> field.</p>
+     * @see java.lang.String
+     */
     private final String key;
+    /**
+     * <code>value</code>
+     * {@link java.lang.String} <p>the <code>value</code> field.</p>
+     * @see java.lang.String
+     */
     private final String value;
 
+    /**
+     * <code>DatabaseType</code>
+     * Instantiates a new database type.
+     * @param key   {@link java.lang.String} <p>the key parameter is <code>String</code> type.</p>
+     * @param value {@link java.lang.String} <p>the value parameter is <code>String</code> type.</p>
+     * @see java.lang.String
+     */
     DatabaseType(String key, String value) {
         this.key = key;
         this.value = value;

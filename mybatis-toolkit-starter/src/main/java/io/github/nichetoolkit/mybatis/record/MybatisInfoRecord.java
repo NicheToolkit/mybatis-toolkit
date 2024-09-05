@@ -34,12 +34,12 @@ import io.github.nichetoolkit.rice.InfoEntity;
  */
 public interface MybatisInfoRecord<M extends MybatisInfoMapper<E, I>, E extends InfoEntity<I>, I> extends MybatisEntityMapper<E> {
 
-  /**
-   * <code>infoMapper</code>
-   * <p>the mapper method.</p>
-   * @return M <p>the mapper return object is <code>M</code> type.</p>
-   */
-  default M infoMapper() {
+    /**
+     * <code>infoMapper</code>
+     * <p>the mapper method.</p>
+     * @return M <p>the mapper return object is <code>M</code> type.</p>
+     */
+    default M infoMapper() {
     return MybatisRecordProvider.<M,E, I>defaultInstance().superMapper(clazz());
   }
 

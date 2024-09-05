@@ -31,9 +31,26 @@ public enum SortType implements RestValue<String,String> {
     DESC("DESC","降序")
     ;
 
+    /**
+     * <code>key</code>
+     * {@link java.lang.String} <p>the <code>key</code> field.</p>
+     * @see java.lang.String
+     */
     private final String key;
+    /**
+     * <code>value</code>
+     * {@link java.lang.String} <p>the <code>value</code> field.</p>
+     * @see java.lang.String
+     */
     private final String value;
 
+    /**
+     * <code>SortType</code>
+     * Instantiates a new sort type.
+     * @param key   {@link java.lang.String} <p>the key parameter is <code>String</code> type.</p>
+     * @param value {@link java.lang.String} <p>the value parameter is <code>String</code> type.</p>
+     * @see java.lang.String
+     */
     SortType(String key, String value) {
         this.key = key;
         this.value = value;

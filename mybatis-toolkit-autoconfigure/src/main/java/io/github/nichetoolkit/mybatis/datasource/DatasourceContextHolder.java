@@ -12,6 +12,11 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class DatasourceContextHolder {
 
+    /**
+     * <code>CONTEXT_HOLDER</code>
+     * {@link java.lang.ThreadLocal} <p>the constant <code>CONTEXT_HOLDER</code> field.</p>
+     * @see java.lang.ThreadLocal
+     */
     private static final ThreadLocal<String> CONTEXT_HOLDER = new ThreadLocal<>();
 
     /**

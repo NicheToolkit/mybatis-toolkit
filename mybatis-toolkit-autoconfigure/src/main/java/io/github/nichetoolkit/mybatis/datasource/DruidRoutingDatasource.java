@@ -9,7 +9,7 @@ import java.util.Map;
  * <code>DruidRoutingDatasource</code>
  * <p>The type druid routing datasource class.</p>
  * @author Cyan (snow22314@outlook.com)
- * @see AbstractRoutingDataSource
+ * @see org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource
  * @since Jdk1.8
  */
 public class DruidRoutingDatasource extends AbstractRoutingDataSource {
@@ -28,13 +28,6 @@ public class DruidRoutingDatasource extends AbstractRoutingDataSource {
         super.afterPropertiesSet();
     }
 
-    /**
-     * <code>determineCurrentLookupKey</code>
-     * <p>the current lookup key method.</p>
-     * @return {@link java.lang.Object} <p>the current lookup key return object is <code>Object</code> type.</p>
-     * @see java.lang.Object
-     * @see java.lang.Override
-     */
     @Override
     protected Object determineCurrentLookupKey() {
         return DatasourceContextHolder.getDatasourceType();

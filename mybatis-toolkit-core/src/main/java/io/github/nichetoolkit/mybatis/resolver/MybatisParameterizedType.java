@@ -12,10 +12,25 @@ import java.util.Arrays;
  * @since Jdk1.8
  */
 public class MybatisParameterizedType implements ParameterizedType {
+    /**
+     * <code>rawType</code>
+     * {@link java.lang.Class} <p>the <code>rawType</code> field.</p>
+     * @see java.lang.Class
+     */
     private final Class<?> rawType;
 
+    /**
+     * <code>ownerType</code>
+     * {@link java.lang.reflect.Type} <p>the <code>ownerType</code> field.</p>
+     * @see java.lang.reflect.Type
+     */
     private final Type ownerType;
 
+    /**
+     * <code>actualTypeArguments</code>
+     * {@link java.lang.reflect.Type} <p>the <code>actualTypeArguments</code> field.</p>
+     * @see java.lang.reflect.Type
+     */
     private final Type[] actualTypeArguments;
 
     /**

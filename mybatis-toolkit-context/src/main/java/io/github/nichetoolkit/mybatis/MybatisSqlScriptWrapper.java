@@ -49,6 +49,11 @@ public interface MybatisSqlScriptWrapper extends MybatisOrder {
      * @since Jdk1.8
      */
     class Instance {
+        /**
+         * <code>SQL_SCRIPT_WRAPPERS</code>
+         * {@link java.util.List} <p>the constant <code>SQL_SCRIPT_WRAPPERS</code> field.</p>
+         * @see java.util.List
+         */
         private static volatile List<MybatisSqlScriptWrapper> SQL_SCRIPT_WRAPPERS;
 
         /**

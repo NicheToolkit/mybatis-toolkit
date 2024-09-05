@@ -49,6 +49,13 @@ public interface MybatisEntityMapper<E> {
          */
         static Map<Class<?>, Class<?>> CLASS_MAP = new ConcurrentHashMap<>();
 
+        /**
+         * <code>clazz</code>
+         * <p>the method.</p>
+         * @param clazz {@link java.lang.Class} <p>the clazz parameter is <code>Class</code> type.</p>
+         * @return {@link java.lang.Class} <p>the return object is <code>Class</code> type.</p>
+         * @see java.lang.Class
+         */
         private static Class<?> clazz(Class<?> clazz) {
             if (!CLASS_MAP.containsKey(clazz)) {
                 CLASS_MAP.put(clazz, MybatisGenericTypeResolver.resolveTypeToClass(MybatisGenericTypeResolver.resolveType(

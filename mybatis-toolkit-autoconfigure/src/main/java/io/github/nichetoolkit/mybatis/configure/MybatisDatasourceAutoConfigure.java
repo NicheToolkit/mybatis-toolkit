@@ -60,7 +60,7 @@ public class MybatisDatasourceAutoConfigure {
      * <p>The type hikari datasource auto configure class.</p>
      * @author Cyan (snow22314@outlook.com)
      * @see org.springframework.context.annotation.Configuration
-     * @see EnableTransactionManagement
+     * @see org.springframework.transaction.annotation.EnableTransactionManagement
      * @see org.springframework.boot.autoconfigure.condition.ConditionalOnClass
      * @see org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
      * @since Jdk1.8
@@ -121,9 +121,10 @@ public class MybatisDatasourceAutoConfigure {
          * <code>transactionManager</code>
          * <p>the manager method.</p>
          * @param dataSource {@link javax.sql.DataSource} <p>the data source parameter is <code>DataSource</code> type.</p>
-         * @return DataSourceTransactionManager <p>the manager return object is <code>DataSourceTransactionManager</code> type.</p>
+         * @return {@link org.springframework.jdbc.datasource.DataSourceTransactionManager} <p>the manager return object is <code>DataSourceTransactionManager</code> type.</p>
          * @see javax.sql.DataSource
          * @see org.springframework.beans.factory.annotation.Qualifier
+         * @see org.springframework.jdbc.datasource.DataSourceTransactionManager
          * @see org.springframework.context.annotation.Bean
          */
         @Bean(name = "transactionManager")
@@ -139,7 +140,7 @@ public class MybatisDatasourceAutoConfigure {
      * <p>The type druid datasource auto configure class.</p>
      * @author Cyan (snow22314@outlook.com)
      * @see org.springframework.context.annotation.Configuration
-     * @see EnableTransactionManagement
+     * @see org.springframework.transaction.annotation.EnableTransactionManagement
      * @see org.springframework.boot.autoconfigure.condition.ConditionalOnClass
      * @see org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
      * @since Jdk1.8
@@ -293,9 +294,10 @@ public class MybatisDatasourceAutoConfigure {
          * <code>transactionManager</code>
          * <p>the manager method.</p>
          * @param druidDatasource {@link javax.sql.DataSource} <p>the druid datasource parameter is <code>DataSource</code> type.</p>
-         * @return DataSourceTransactionManager <p>the manager return object is <code>DataSourceTransactionManager</code> type.</p>
+         * @return {@link org.springframework.jdbc.datasource.DataSourceTransactionManager} <p>the manager return object is <code>DataSourceTransactionManager</code> type.</p>
          * @see javax.sql.DataSource
          * @see org.springframework.beans.factory.annotation.Qualifier
+         * @see org.springframework.jdbc.datasource.DataSourceTransactionManager
          * @see org.springframework.context.annotation.Bean
          */
         @Bean(name = "transactionManager")
@@ -303,6 +305,14 @@ public class MybatisDatasourceAutoConfigure {
             return new DataSourceTransactionManager(druidDatasource);
         }
 
+        /**
+         * <code>druidDatasourceConfig</code>
+         * <p>the datasource config method.</p>
+         * @param datasource          {@link com.alibaba.druid.pool.DruidDataSource} <p>the datasource parameter is <code>DruidDataSource</code> type.</p>
+         * @param druidPoolProperties {@link io.github.nichetoolkit.mybatis.configure.MybatisDruidPoolProperties} <p>the druid pool properties parameter is <code>MybatisDruidPoolProperties</code> type.</p>
+         * @see com.alibaba.druid.pool.DruidDataSource
+         * @see io.github.nichetoolkit.mybatis.configure.MybatisDruidPoolProperties
+         */
         private void druidDatasourceConfig(DruidDataSource datasource, MybatisDruidPoolProperties druidPoolProperties) {
             /** 配置线程初始化核心数量、最小空闲数量、最大工作数量 */
             datasource.setInitialSize(druidPoolProperties.getInitialSize());

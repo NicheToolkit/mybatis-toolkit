@@ -15,8 +15,18 @@ import java.util.Objects;
  */
 @Data
 public class TemplateKey implements Serializable {
+    /**
+     * <code>templatePk1</code>
+     * {@link java.lang.String} <p>the <code>templatePk1</code> field.</p>
+     * @see java.lang.String
+     */
     private String templatePk1;
 
+    /**
+     * <code>templatePk2</code>
+     * {@link java.lang.String} <p>the <code>templatePk2</code> field.</p>
+     * @see java.lang.String
+     */
     private String templatePk2;
 
     /**

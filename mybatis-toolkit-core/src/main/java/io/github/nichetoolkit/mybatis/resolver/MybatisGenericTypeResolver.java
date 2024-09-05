@@ -247,6 +247,17 @@ public class MybatisGenericTypeResolver {
         }
     }
 
+    /**
+     * <code>resolveGenericArrayType</code>
+     * <p>the generic array type method.</p>
+     * @param genericArrayType {@link java.lang.reflect.GenericArrayType} <p>the generic array type parameter is <code>GenericArrayType</code> type.</p>
+     * @param srcType          {@link java.lang.reflect.Type} <p>the src type parameter is <code>Type</code> type.</p>
+     * @param declaringClass   {@link java.lang.Class} <p>the declaring class parameter is <code>Class</code> type.</p>
+     * @return {@link java.lang.reflect.Type} <p>the generic array type return object is <code>Type</code> type.</p>
+     * @see java.lang.reflect.GenericArrayType
+     * @see java.lang.reflect.Type
+     * @see java.lang.Class
+     */
     private static Type resolveGenericArrayType(GenericArrayType genericArrayType, Type srcType, Class<?> declaringClass) {
         Type componentType = genericArrayType.getGenericComponentType();
         Type resolvedComponentType = null;
@@ -264,6 +275,17 @@ public class MybatisGenericTypeResolver {
         }
     }
 
+    /**
+     * <code>resolveParameterizedType</code>
+     * <p>the parameterized type method.</p>
+     * @param parameterizedType {@link java.lang.reflect.ParameterizedType} <p>the parameterized type parameter is <code>ParameterizedType</code> type.</p>
+     * @param srcType           {@link java.lang.reflect.Type} <p>the src type parameter is <code>Type</code> type.</p>
+     * @param declaringClass    {@link java.lang.Class} <p>the declaring class parameter is <code>Class</code> type.</p>
+     * @return {@link java.lang.reflect.ParameterizedType} <p>the parameterized type return object is <code>ParameterizedType</code> type.</p>
+     * @see java.lang.reflect.ParameterizedType
+     * @see java.lang.reflect.Type
+     * @see java.lang.Class
+     */
     private static ParameterizedType resolveParameterizedType(ParameterizedType parameterizedType, Type srcType, Class<?> declaringClass) {
         Class<?> rawType = (Class<?>) parameterizedType.getRawType();
         Type[] typeArgs = parameterizedType.getActualTypeArguments();
@@ -282,12 +304,33 @@ public class MybatisGenericTypeResolver {
         return new MybatisParameterizedType(rawType, null, args);
     }
 
+    /**
+     * <code>resolveWildcardType</code>
+     * <p>the wildcard type method.</p>
+     * @param wildcardType   {@link java.lang.reflect.WildcardType} <p>the wildcard type parameter is <code>WildcardType</code> type.</p>
+     * @param srcType        {@link java.lang.reflect.Type} <p>the src type parameter is <code>Type</code> type.</p>
+     * @param declaringClass {@link java.lang.Class} <p>the declaring class parameter is <code>Class</code> type.</p>
+     * @return {@link java.lang.reflect.Type} <p>the wildcard type return object is <code>Type</code> type.</p>
+     * @see java.lang.reflect.WildcardType
+     * @see java.lang.reflect.Type
+     * @see java.lang.Class
+     */
     private static Type resolveWildcardType(WildcardType wildcardType, Type srcType, Class<?> declaringClass) {
         Type[] lowerBounds = resolveWildcardTypeBounds(wildcardType.getLowerBounds(), srcType, declaringClass);
         Type[] upperBounds = resolveWildcardTypeBounds(wildcardType.getUpperBounds(), srcType, declaringClass);
         return new MybatisWildcardType(lowerBounds, upperBounds);
     }
 
+    /**
+     * <code>resolveWildcardTypeBounds</code>
+     * <p>the wildcard type bounds method.</p>
+     * @param bounds         {@link java.lang.reflect.Type} <p>the bounds parameter is <code>Type</code> type.</p>
+     * @param srcType        {@link java.lang.reflect.Type} <p>the src type parameter is <code>Type</code> type.</p>
+     * @param declaringClass {@link java.lang.Class} <p>the declaring class parameter is <code>Class</code> type.</p>
+     * @return {@link java.lang.reflect.Type} <p>the wildcard type bounds return object is <code>Type</code> type.</p>
+     * @see java.lang.reflect.Type
+     * @see java.lang.Class
+     */
     private static Type[] resolveWildcardTypeBounds(Type[] bounds, Type srcType, Class<?> declaringClass) {
         Type[] result = new Type[bounds.length];
         for (int i = 0; i < bounds.length; i++) {
@@ -304,6 +347,16 @@ public class MybatisGenericTypeResolver {
         return result;
     }
 
+    /**
+     * <code>resolveTypeVar</code>
+     * <p>the type var method.</p>
+     * @param typeVar        {@link java.lang.reflect.TypeVariable} <p>the type var parameter is <code>TypeVariable</code> type.</p>
+     * @param srcType        {@link java.lang.reflect.Type} <p>the src type parameter is <code>Type</code> type.</p>
+     * @param declaringClass {@link java.lang.Class} <p>the declaring class parameter is <code>Class</code> type.</p>
+     * @return {@link java.lang.reflect.Type} <p>the type var return object is <code>Type</code> type.</p>
+     * @see java.lang.reflect.TypeVariable
+     * @see java.lang.Class
+     */
     private static Type resolveTypeVar(TypeVariable<?> typeVar, Type srcType, Class<?> declaringClass) {
         Type result;
         Class<?> clazz;
@@ -340,6 +393,18 @@ public class MybatisGenericTypeResolver {
         return Object.class;
     }
 
+    /**
+     * <code>scanSuperTypes</code>
+     * <p>the super types method.</p>
+     * @param typeVar        {@link java.lang.reflect.TypeVariable} <p>the type var parameter is <code>TypeVariable</code> type.</p>
+     * @param srcType        {@link java.lang.reflect.Type} <p>the src type parameter is <code>Type</code> type.</p>
+     * @param declaringClass {@link java.lang.Class} <p>the declaring class parameter is <code>Class</code> type.</p>
+     * @param clazz          {@link java.lang.Class} <p>the clazz parameter is <code>Class</code> type.</p>
+     * @param superclass     {@link java.lang.reflect.Type} <p>the superclass parameter is <code>Type</code> type.</p>
+     * @return {@link java.lang.reflect.Type} <p>the super types return object is <code>Type</code> type.</p>
+     * @see java.lang.reflect.TypeVariable
+     * @see java.lang.Class
+     */
     private static Type scanSuperTypes(TypeVariable<?> typeVar, Type srcType, Class<?> declaringClass, Class<?> clazz, Type superclass) {
         if (superclass instanceof ParameterizedType) {
             ParameterizedType parentAsType = (ParameterizedType) superclass;
@@ -364,6 +429,16 @@ public class MybatisGenericTypeResolver {
         return null;
     }
 
+    /**
+     * <code>translateParentTypeVars</code>
+     * <p>the parent type vars method.</p>
+     * @param srcType    {@link java.lang.reflect.ParameterizedType} <p>the src type parameter is <code>ParameterizedType</code> type.</p>
+     * @param srcClass   {@link java.lang.Class} <p>the src class parameter is <code>Class</code> type.</p>
+     * @param parentType {@link java.lang.reflect.ParameterizedType} <p>the parent type parameter is <code>ParameterizedType</code> type.</p>
+     * @return {@link java.lang.reflect.ParameterizedType} <p>the parent type vars return object is <code>ParameterizedType</code> type.</p>
+     * @see java.lang.reflect.ParameterizedType
+     * @see java.lang.Class
+     */
     private static ParameterizedType translateParentTypeVars(ParameterizedType srcType, Class<?> srcClass, ParameterizedType parentType) {
         Type[] parentTypeArgs = parentType.getActualTypeArguments();
         Type[] srcTypeArgs = srcType.getActualTypeArguments();

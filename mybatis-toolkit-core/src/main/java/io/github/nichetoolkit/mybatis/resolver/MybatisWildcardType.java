@@ -11,8 +11,18 @@ import java.lang.reflect.WildcardType;
  * @since Jdk1.8
  */
 public class MybatisWildcardType implements WildcardType {
+    /**
+     * <code>lowerBounds</code>
+     * {@link java.lang.reflect.Type} <p>the <code>lowerBounds</code> field.</p>
+     * @see java.lang.reflect.Type
+     */
     private final Type[] lowerBounds;
 
+    /**
+     * <code>upperBounds</code>
+     * {@link java.lang.reflect.Type} <p>the <code>upperBounds</code> field.</p>
+     * @see java.lang.reflect.Type
+     */
     private final Type[] upperBounds;
 
     /**

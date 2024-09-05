@@ -18,7 +18,16 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @Getter
 @ConfigurationProperties(prefix = "nichetoolkit.mybatis.datasource")
 public class MybatisDatasourceProperties {
+    /**
+     * <code>enabled</code>
+     * <p>the <code>enabled</code> field.</p>
+     */
     private boolean enabled = true;
+    /**
+     * <code>type</code>
+     * {@link io.github.nichetoolkit.mybatis.datasource.ConnectionPoolType} <p>the <code>type</code> field.</p>
+     * @see io.github.nichetoolkit.mybatis.datasource.ConnectionPoolType
+     */
     private ConnectionPoolType type = ConnectionPoolType.HIKARI;
 
 }

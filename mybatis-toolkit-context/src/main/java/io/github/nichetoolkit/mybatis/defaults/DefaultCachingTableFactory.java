@@ -14,6 +14,11 @@ import java.util.concurrent.ConcurrentHashMap;
  * @since Jdk1.8
  */
 public class DefaultCachingTableFactory implements MybatisTableFactory {
+    /**
+     * <code>CLASS_TABLE_MAP</code>
+     * {@link java.util.Map} <p>the <code>CLASS_TABLE_MAP</code> field.</p>
+     * @see java.util.Map
+     */
     private final Map<Class<?>, MybatisTable> CLASS_TABLE_MAP = new ConcurrentHashMap<>();
 
     @Override

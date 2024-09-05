@@ -67,6 +67,11 @@ public class MybatisRecordAutoConfigure {
      */
     @AutoConfiguration
     public static class MybatisRecordAutoRegister implements InitializingBean {
+        /**
+         * <code>recordProvider</code>
+         * {@link io.github.nichetoolkit.mybatis.record.MybatisRecordProvider} <p>the <code>recordProvider</code> field.</p>
+         * @see io.github.nichetoolkit.mybatis.record.MybatisRecordProvider
+         */
         private final MybatisRecordProvider<?,?,?> recordProvider;
 
         /**

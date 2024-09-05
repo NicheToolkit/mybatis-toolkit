@@ -19,6 +19,13 @@ import java.util.Date;
  * @since Jdk1.8
  */
 public class SimpleModel extends RestInfoModel<SimpleModel,SimpleEntity> implements RestTablekey<String> {
+    /**
+     * <code>time</code>
+     * {@link java.util.Date} <p>the <code>time</code> field.</p>
+     * @see java.util.Date
+     * @see org.springframework.format.annotation.DateTimeFormat
+     * @see com.fasterxml.jackson.annotation.JsonFormat
+     */
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date time;

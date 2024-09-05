@@ -30,8 +30,19 @@ public enum DruidRoutingType implements RestKey<String> {
      */
     SLAVE("slave"),
     ;
+    /**
+     * <code>key</code>
+     * {@link java.lang.String} <p>the <code>key</code> field.</p>
+     * @see java.lang.String
+     */
     private final String key;
 
+    /**
+     * <code>DruidRoutingType</code>
+     * Instantiates a new druid routing type.
+     * @param key {@link java.lang.String} <p>the key parameter is <code>String</code> type.</p>
+     * @see java.lang.String
+     */
     DruidRoutingType(String key) {
         this.key = key;
     }

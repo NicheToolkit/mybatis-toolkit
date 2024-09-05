@@ -118,7 +118,17 @@ public abstract class MybatisFactory {
      * @since Jdk1.8
      */
     static class Instance {
+        /**
+         * <code>TABLE_FACTORY_CHAIN</code>
+         * {@link io.github.nichetoolkit.mybatis.MybatisTableFactory.Chain} <p>the constant <code>TABLE_FACTORY_CHAIN</code> field.</p>
+         * @see io.github.nichetoolkit.mybatis.MybatisTableFactory.Chain
+         */
         private static volatile MybatisTableFactory.Chain TABLE_FACTORY_CHAIN;
+        /**
+         * <code>COLUMN_FACTORY_CHAIN</code>
+         * {@link io.github.nichetoolkit.mybatis.MybatisColumnFactory.Chain} <p>the constant <code>COLUMN_FACTORY_CHAIN</code> field.</p>
+         * @see io.github.nichetoolkit.mybatis.MybatisColumnFactory.Chain
+         */
         private static volatile MybatisColumnFactory.Chain COLUMN_FACTORY_CHAIN;
 
         /**

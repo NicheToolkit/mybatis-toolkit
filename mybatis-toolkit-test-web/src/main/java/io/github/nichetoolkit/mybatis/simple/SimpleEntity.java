@@ -18,6 +18,12 @@ import java.util.Date;
 @RestEntity(name = "ntr_simple")
 public class SimpleEntity extends RestInfoEntity<SimpleEntity, SimpleModel> {
 
+    /**
+     * <code>time</code>
+     * {@link java.util.Date} <p>the <code>time</code> field.</p>
+     * @see java.util.Date
+     * @see io.github.nichetoolkit.mybatis.stereotype.column.RestForceInsert
+     */
     @RestForceInsert("now()")
     private Date time;
 

@@ -19,11 +19,41 @@ import java.util.*;
 @Component
 @ConfigurationProperties(prefix = "nichetoolkit.mybatis.table")
 public class MybatisTableProperties {
+    /**
+     * <code>catalog</code>
+     * {@link java.lang.String} <p>the <code>catalog</code> field.</p>
+     * @see java.lang.String
+     */
     private String catalog;
+    /**
+     * <code>schema</code>
+     * {@link java.lang.String} <p>the <code>schema</code> field.</p>
+     * @see java.lang.String
+     */
     private String schema;
+    /**
+     * <code>databaseType</code>
+     * {@link io.github.nichetoolkit.mybatis.enums.DatabaseType} <p>the <code>databaseType</code> field.</p>
+     * @see io.github.nichetoolkit.mybatis.enums.DatabaseType
+     */
     private DatabaseType databaseType = DatabaseType.POSTGRESQL;
+    /**
+     * <code>styleType</code>
+     * {@link io.github.nichetoolkit.mybatis.enums.StyleType} <p>the <code>styleType</code> field.</p>
+     * @see io.github.nichetoolkit.mybatis.enums.StyleType
+     */
     private StyleType styleType = StyleType.LOWER_UNDERLINE;
+    /**
+     * <code>properties</code>
+     * {@link java.util.Map} <p>the <code>properties</code> field.</p>
+     * @see java.util.Map
+     */
     private Map<String, String> properties = new HashMap<>();
+    /**
+     * <code>excludes</code>
+     * {@link java.lang.String} <p>the <code>excludes</code> field.</p>
+     * @see java.lang.String
+     */
     private String[] excludes;
 
     /**
