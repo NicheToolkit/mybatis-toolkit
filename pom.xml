@@ -216,7 +216,6 @@
                 <groupId>com.alibaba</groupId>
                 <artifactId>druid-spring-boot-starter</artifactId>
                 <version>${alibaba-druid.version}</version>
-                <optional>true</optional>
             </dependency>
 
             <!-- fix CVE  vulnerability  -->
