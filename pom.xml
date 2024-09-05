@@ -191,17 +191,12 @@
             </dependency>
             <dependency>
                 <groupId>io.github.nichetoolkit</groupId>
-                <artifactId>mybatis-toolkit-starter</artifactId>
-                <version>${mybatis-toolkit.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>io.github.nichetoolkit</groupId>
                 <artifactId>mybatis-toolkit-autoconfigure</artifactId>
                 <version>${mybatis-toolkit.version}</version>
             </dependency>
             <dependency>
                 <groupId>io.github.nichetoolkit</groupId>
-                <artifactId>mybatis-toolkit-spring-starter</artifactId>
+                <artifactId>mybatis-toolkit-starter</artifactId>
                 <version>${mybatis-toolkit.version}</version>
             </dependency>
 
@@ -215,6 +210,13 @@
                 <groupId>org.mybatis</groupId>
                 <artifactId>mybatis-spring</artifactId>
                 <version>${spring-mybatis.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>druid-spring-boot-starter</artifactId>
+                <version>${alibaba-druid.version}</version>
+                <optional>true</optional>
             </dependency>
 
             <!-- fix CVE  vulnerability  -->

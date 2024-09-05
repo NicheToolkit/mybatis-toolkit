@@ -5,15 +5,18 @@
 Use this section to tell people about which versions of your project are
 currently being supported with security updates.
 
-| Version | Supported          |
-| ------- | ------------------ |
-| Spring boot 2.6.0+   | :white_check_mark: |
-| < 2.6.0   | :x:                |
-| Maven 3.6.0+   | :white_check_mark: |
-| < 3.6.0   | :x:                |
-| JDK 1.8  | :white_check_mark: |               |
-| Rest-Toolkit 1.0.2+   | :white_check_mark: |
-| < 1.0.2  | :x: 
+| Version             | Supported          |
+|---------------------| ------------------ |
+| Spring boot 2.7.18+ | :white_check_mark: |
+| < 2.7.18            | :x:                |
+| Maven 3.6.3+        | :white_check_mark: |
+| < 3.6.3             | :x:                |
+| JDK 1.8             | :white_check_mark: |               |
+| Rest-Toolkit 1.1.0+ | :white_check_mark: |
+| < 1.1.0             | :x: 
+| Rice-Toolkit 1.1.0+ | :white_check_mark: |
+| < 1.1.0             | :x: 
+
 ## Reporting a Vulnerability
 
 Use this section to tell people how to report a vulnerability.
