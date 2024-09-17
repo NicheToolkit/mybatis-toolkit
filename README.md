@@ -28,7 +28,6 @@
 
 [Wiki Reference](https://github.com/NicheToolkit/mybatis-toolkit/wiki): https://github.com/NicheToolkit/mybatis-toolkit/wiki
 
-
 ## Instructions
 
 ### Rice & Mybatis Toolkit Usages
@@ -44,18 +43,17 @@
 
 <!-- use mybatis super/info mapper -->
 <dependency>
-    <groupId>io.github.nichetoolkit</groupId>
-    <artifactId>mybatis-toolkit-starter</artifactId>
+	<groupId>io.github.nichetoolkit</groupId>
+	<artifactId>mybatis-toolkit-starter</artifactId>
 </dependency>
 
 <!-- set mybatis default configuration -->
 <dependency>
-    <groupId>org.mybatis.spring.boot</groupId>
-    <artifactId>mybatis-spring-boot-starter</artifactId>
+	<groupId>org.mybatis.spring.boot</groupId>
+	<artifactId>mybatis-spring-boot-starter</artifactId>
 </dependency>
 
 ```
-
 
 ### Maven Usages
 
@@ -123,10 +121,10 @@
 
 * values
 
-|             value             |     type     | defaultValue |                                                             description                                                             |
-|:-----------------------------:|:------------:|:------------:|:-----------------------------------------------------------------------------------------------------------------------------------:|
-| `init-size` | `Integer` |   `1024`   |                                   the initiate size of table cache on mybatis `sql` handle.                                   |
-| `use-once` |  `Boolean`   |   `false`    |                                         the switch of table cache used once on mybatis `sql ` handle.                                         |
+|    value    |   type    | defaultValue |                          description                          |
+|:-----------:|:---------:|:------------:|:-------------------------------------------------------------:|
+| `init-size` | `Integer` |    `1024`    |   the initiate size of table cache on mybatis `sql` handle.   |
+| `use-once`  | `Boolean` |   `false`    | the switch of table cache used once on mybatis `sql ` handle. |
 
 * properties
 
@@ -145,14 +143,14 @@ nichetoolkit.mybatis.cache.use-once=false
 
 * values
 
-|             value             |     type     | defaultValue |                                                             description                                                             |
-|:-----------------------------:|:------------:|:------------:|:-----------------------------------------------------------------------------------------------------------------------------------:|
-| `catalog` | `String` |      |                                   the global catalog of table on mybatis configuration.                                   |
-| `schema` | `String` |       |                                         the global schema of table on mybatis configuration.                                         |
-| `database-type` | `DatabaseType` | `postgresql` | the global database type of table on mybatis configuration. |
-| `style-type` | `StyleType` | `lower_underline` | the global sql style type of table on mybatis configuration. |
-| `properties` | `Map` |  | the global properties of table on mybatis configuration. |
-| `excludes` | `String[]` |  | the global excludes of table on mybatis configuration. |
+|      value      |      type      |   defaultValue    |                         description                          |
+|:---------------:|:--------------:|:-----------------:|:------------------------------------------------------------:|
+|    `catalog`    |    `String`    |                   |    the global catalog of table on mybatis configuration.     |
+|    `schema`     |    `String`    |                   |     the global schema of table on mybatis configuration.     |
+| `database-type` | `DatabaseType` |   `postgresql`    | the global database type of table on mybatis configuration.  |
+|  `style-type`   |  `StyleType`   | `lower_underline` | the global sql style type of table on mybatis configuration. |
+|  `properties`   |     `Map`      |                   |   the global properties of table on mybatis configuration.   |
+|   `excludes`    |   `String[]`   |                   |    the global excludes of table on mybatis configuration.    |
 
 * properties
 
@@ -169,75 +167,22 @@ nichetoolkit.mybatis.table.excludes=operate
 * prefix
 
 >
-> nichetoolkit.mybatis.datasource
+> nichetoolkit.mybatis.record
 >
 
 * values
 
-|             value             |     type     | defaultValue |                                                             description                                                             |
-|:-----------------------------:|:------------:|:------------:|:-----------------------------------------------------------------------------------------------------------------------------------:|
-| `enabled` | `String` | `true` |                                   the switch of datasource auto config on mybatis configuration.                                   |
-| `connect-pool-type` | `ConnectPoolType` | `hikari` |                                         the connect pool type of datasource on mybatis configuration.                                         |
+|   value   |   type    | defaultValue |                          description                          |
+|:---------:|:---------:|:------------:|:-------------------------------------------------------------:|
+| `enabled` | `Boolean` |    `true`    | the switch of record auto configure on mybatis configuration. |
 
 * properties
 
 ```properties
-nichetoolkit.mybatis.datasource.enabled=true
-nichetoolkit.mybatis.datasource.connect-pool-type=hikari
+nichetoolkit.mybatis.record.enabled=false
 ```
 
-#### alibaba druid configuration
-
-* reference
-
-[alibaba druid configuration](https://github.com/alibaba/druid/blob/master/druid-spring-boot-starter/README_EN.md): https://github.com/alibaba/druid/blob/master/druid-spring-boot-starter
-
-* prefix
-
->
-> spring.datasource.druid
->
-
-* values
-
-|             value             |     type     | defaultValue |                                                             description                                                             |
-|:-----------------------------:|:------------:|:------------:|:-----------------------------------------------------------------------------------------------------------------------------------:|
-| `initial-size` | `Integer` | `5` |                                   the initial size of druid connection pool on mybatis configuration.                                   |
-| `min-idle` | `Integer` | `10` |                                         the min idle size of druid connection pool on mybatis configuration.                                         |
-| `max-active` | `Integer` | `20` | the max active size of druid connection pool on mybatis configuration. |
-| `max-wait` | `Integer` | `60000` | the max wait time of druid connection pool on mybatis configuration. |
-| `time-between-eviction-runs-millis` | `Integer` | `60000` | the time between eviction runs of druid connection pool on mybatis configuration. |
-| `min-evictable-idle-time-millis` | `Integer` | `300000` | the min evictable idle of druid connection pool on mybatis configuration. |
-| `max-evictable-idle-time-millis` | `Integer` | `900000` | the max evictable idle of druid connection pool on mybatis configuration. |
-| `validation-query` | `String` | `SELECT 1` | the validation query of druid connection pool on mybatis configuration. |
-| `test-while-idle` | `Boolean` | `true` | the idle test switch of druid connection pool on mybatis configuration. |
-| `test-on-borrow` | `Boolean` | `false` | the borrow test switch of druid connection pool on mybatis configuration. |
-| `test-on-return` | `Boolean` | `false` | the return test switch of druid connection pool on mybatis configuration. |
-| `master.enabled` | `Boolean` | `false` | the master datasource switch of druid connection pool on mybatis configuration. |
-| `slave.enabled` | `Boolean` | `false` | the slave datasource  switch of druid connection pool on mybatis configuration. |
-
-* properties
-
-```properties
-spring.datasource.type=com.alibaba.druid.pool.DruidDataSource
-spring.datasource.driverClassName=org.postgresql.Driver
-spring.datasource.druid.initial-size=5
-spring.datasource.druid.min-idle=10
-spring.datasource.druid.max-active=20
-spring.datasource.druid.max-wait=60000
-spring.datasource.druid.time-between-eviction-runs-millis=60000
-spring.datasource.druid.min-evictable-idle-time-millis=300000
-spring.datasource.druid.max-evictable-idle-time-millis=900000
-spring.datasource.druid.validation-query=SELECT 1
-spring.datasource.druid.test-on-borrow=true
-spring.datasource.druid.test-on-return=false
-spring.datasource.druid.test-while-idle=false
-spring.datasource.druid.master.enabled=true
-spring.datasource.druid.master.url=jdbc:postgresql://localhost:5432/simple_db?stringtype=unspecified
-spring.datasource.druid.master.username=postgres
-spring.datasource.druid.master.password=2314
-spring.datasource.druid.slave.enabled=false
-```
+### Model & Entity & Filter
 
 ## Test Example
 

@@ -1,6 +1,6 @@
 package io.github.nichetoolkit.mybatis;
 
-import io.github.nichetoolkit.mybatis.resolver.MybatisGenericTypeResolver;
+import io.github.nichetoolkit.rest.resolver.RestGenericTypeResolver;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -58,7 +58,7 @@ public interface MybatisEntityMapper<E> {
          */
         private static Class<?> clazz(Class<?> clazz) {
             if (!CLASS_MAP.containsKey(clazz)) {
-                CLASS_MAP.put(clazz, MybatisGenericTypeResolver.resolveTypeToClass(MybatisGenericTypeResolver.resolveType(
+                CLASS_MAP.put(clazz, RestGenericTypeResolver.resolveClass(RestGenericTypeResolver.resolveType(
                         MybatisEntityMapper.class.getTypeParameters()[0], clazz, MybatisEntityMapper.class)));
             }
             return CLASS_MAP.get(clazz);

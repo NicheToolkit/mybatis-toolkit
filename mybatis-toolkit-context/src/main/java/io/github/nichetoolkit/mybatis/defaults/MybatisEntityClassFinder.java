@@ -2,10 +2,7 @@ package io.github.nichetoolkit.mybatis.defaults;
 
 
 import io.github.nichetoolkit.mybatis.MybatisClassFinder;
-import io.github.nichetoolkit.mybatis.resolver.MybatisGenericArrayType;
 import io.github.nichetoolkit.mybatis.resolver.MybatisGenericTypeResolver;
-import io.github.nichetoolkit.mybatis.resolver.MybatisParameterizedType;
-import io.github.nichetoolkit.mybatis.resolver.MybatisWildcardType;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
