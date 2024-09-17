@@ -10,8 +10,8 @@ import io.github.nichetoolkit.mybatis.error.MybatisTableErrorException;
 import io.github.nichetoolkit.mybatis.error.MybatisUnrealizedLackError;
 import io.github.nichetoolkit.mybatis.error.MybatisUnsupportedErrorException;
 import io.github.nichetoolkit.rest.RestException;
-import io.github.nichetoolkit.rest.helper.OptionalHelper;
 import io.github.nichetoolkit.rest.util.GeneralUtils;
+import io.github.nichetoolkit.rest.util.OptionalUtils;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.builder.annotation.ProviderContext;
 import org.springframework.beans.factory.InitializingBean;
@@ -170,10 +170,10 @@ public class MybatisSuperProvider implements InitializingBean {
      * @see io.github.nichetoolkit.rest.RestException
      */
     public static <E> String saveDynamic(ProviderContext providerContext, @Param("tablename") String tablename, @Param("entity") E entity) throws RestException {
-        OptionalHelper.falseable(GeneralUtils.isNotEmpty(entity), "the entity param of 'save' method cannot be empty!", message -> new MybatisParamErrorException("save", "entity", message));
+        OptionalUtils.falseable(GeneralUtils.isNotEmpty(entity), "the entity param of 'save' method cannot be empty!", message -> new MybatisParamErrorException("save", "entity", message));
         return MybatisSqlScript.caching(providerContext, table -> {
-            OptionalHelper.falseable(GeneralUtils.isNotEmpty(table.insertColumns()), "the insert columns of table with 'save' method cannot be empty!", message -> new MybatisTableErrorException("save", "insertColumns", message));
-            OptionalHelper.falseable(GeneralUtils.isNotEmpty(table.identityColumns()), "the identity columns of table with 'save' method cannot be empty!", message -> new MybatisTableErrorException("save", "identityColumns", message));
+            OptionalUtils.falseable(GeneralUtils.isNotEmpty(table.insertColumns()), "the insert columns of table with 'save' method cannot be empty!", message -> new MybatisTableErrorException("save", "insertColumns", message));
+            OptionalUtils.falseable(GeneralUtils.isNotEmpty(table.identityColumns()), "the identity columns of table with 'save' method cannot be empty!", message -> new MybatisTableErrorException("save", "identityColumns", message));
             return "INSERT INTO " + Optional.ofNullable(tablename).orElse(table.tablename())
                     + " (" + table.insertColumnList() + ")"
                     + " VALUES (" + table.insertColumns().stream()
@@ -216,12 +216,12 @@ public class MybatisSuperProvider implements InitializingBean {
      * @see io.github.nichetoolkit.rest.RestException
      */
     public static <E> String saveDynamicAll(ProviderContext providerContext, @Param("tablename") String tablename, @Param("entityList") Collection<E> entityList) throws RestException {
-        OptionalHelper.falseable(GeneralUtils.isNotEmpty(entityList), "the entity list param of 'saveAll' method cannot be empty!", message -> new MybatisParamErrorException("saveAll", "entityList", message));
+        OptionalUtils.falseable(GeneralUtils.isNotEmpty(entityList), "the entity list param of 'saveAll' method cannot be empty!", message -> new MybatisParamErrorException("saveAll", "entityList", message));
         return MybatisSqlScript.caching(providerContext, new MybatisSqlScript() {
             @Override
             public String sql(MybatisTable table) throws RestException {
-                OptionalHelper.falseable(GeneralUtils.isNotEmpty(table.insertColumns()), "the insert columns of table with 'saveAll' method cannot be empty!", message -> new MybatisTableErrorException("saveAll", "insertColumns", message));
-                OptionalHelper.falseable(GeneralUtils.isNotEmpty(table.identityColumns()), "the identity columns of table with 'saveAll' method cannot be empty!", message -> new MybatisTableErrorException("saveAll", "identityColumns", message));
+                OptionalUtils.falseable(GeneralUtils.isNotEmpty(table.insertColumns()), "the insert columns of table with 'saveAll' method cannot be empty!", message -> new MybatisTableErrorException("saveAll", "insertColumns", message));
+                OptionalUtils.falseable(GeneralUtils.isNotEmpty(table.identityColumns()), "the identity columns of table with 'saveAll' method cannot be empty!", message -> new MybatisTableErrorException("saveAll", "identityColumns", message));
                 return "INSERT INTO " + Optional.ofNullable(tablename).orElse(table.tablename())
                         + " (" + table.insertColumnList() + ") VALUES "
                         + foreach("entityList", "entity", ", ", () ->
@@ -263,9 +263,9 @@ public class MybatisSuperProvider implements InitializingBean {
      * @see io.github.nichetoolkit.rest.RestException
      */
     public static <I> String deleteDynamicById(ProviderContext providerContext, @Param("tablename") String tablename, @Param("id") I id) throws RestException {
-        OptionalHelper.falseable(GeneralUtils.isNotEmpty(id), "the id param of 'deleteById' method cannot be empty!", message -> new MybatisParamErrorException("deleteById", "id", message));
+        OptionalUtils.falseable(GeneralUtils.isNotEmpty(id), "the id param of 'deleteById' method cannot be empty!", message -> new MybatisParamErrorException("deleteById", "id", message));
         return MybatisSqlScript.caching(providerContext, table -> {
-            OptionalHelper.trueable(table.isUseUnionKey(), "the union keys of table with 'deleteById' method is unsupported!", message -> new MybatisUnsupportedErrorException("deleteById", "unionKeys", message));
+            OptionalUtils.trueable(table.isUseUnionKey(), "the union keys of table with 'deleteById' method is unsupported!", message -> new MybatisUnsupportedErrorException("deleteById", "unionKeys", message));
             return "DELETE FROM " + Optional.ofNullable(tablename).orElse(table.tablename())
                     + " WHERE " + table.getIdentityColumn().columnEqualsProperty();
         });
@@ -305,11 +305,11 @@ public class MybatisSuperProvider implements InitializingBean {
      * @see io.github.nichetoolkit.rest.RestException
      */
     public static <I> String deleteDynamicByAll(ProviderContext providerContext, @Param("tablename") String tablename, @Param("idList") Collection<I> idList) throws RestException {
-        OptionalHelper.falseable(GeneralUtils.isNotEmpty(idList), "the id list param of 'deleteByAll' method cannot be empty!", message -> new MybatisParamErrorException("deleteByAll", "idList", message));
+        OptionalUtils.falseable(GeneralUtils.isNotEmpty(idList), "the id list param of 'deleteByAll' method cannot be empty!", message -> new MybatisParamErrorException("deleteByAll", "idList", message));
         return MybatisSqlScript.caching(providerContext, new MybatisSqlScript() {
             @Override
             public String sql(MybatisTable table) throws RestException {
-                OptionalHelper.trueable(table.isUseUnionKey(), "the union keys of table with 'deleteByAll' method is unsupported!", message -> new MybatisUnsupportedErrorException("deleteByAll", "unionKeys", message));
+                OptionalUtils.trueable(table.isUseUnionKey(), "the union keys of table with 'deleteByAll' method is unsupported!", message -> new MybatisUnsupportedErrorException("deleteByAll", "unionKeys", message));
                 return "DELETE FROM " + Optional.ofNullable(tablename).orElse(table.tablename())
                         + " WHERE " + table.getIdentityColumn().getColumnName() + " IN " + foreach("idList", "id", ", ", "(", ")", () -> table.getIdentityColumn().variable());
             }
@@ -348,10 +348,10 @@ public class MybatisSuperProvider implements InitializingBean {
      * @see io.github.nichetoolkit.rest.RestException
      */
     public static <I> String findDynamicById(ProviderContext providerContext, @Param("tablename") String tablename, @Param("id") I id) throws RestException {
-        OptionalHelper.falseable(GeneralUtils.isNotEmpty(id), "the id param of 'findById' method cannot be empty!", message -> new MybatisParamErrorException("findById", "id", message));
+        OptionalUtils.falseable(GeneralUtils.isNotEmpty(id), "the id param of 'findById' method cannot be empty!", message -> new MybatisParamErrorException("findById", "id", message));
         return MybatisSqlScript.caching(providerContext, table -> {
-            OptionalHelper.falseable(GeneralUtils.isNotEmpty(table.selectColumns()), "the select columns of table with 'findById' method cannot be empty!", message -> new MybatisTableErrorException("findById", "selectColumns", message));
-            OptionalHelper.trueable(table.isUseUnionKey(), "the union keys of table with 'findById' method is unsupported!", message -> new MybatisUnsupportedErrorException("findById", "unionKeys", message));
+            OptionalUtils.falseable(GeneralUtils.isNotEmpty(table.selectColumns()), "the select columns of table with 'findById' method cannot be empty!", message -> new MybatisTableErrorException("findById", "selectColumns", message));
+            OptionalUtils.trueable(table.isUseUnionKey(), "the union keys of table with 'findById' method is unsupported!", message -> new MybatisUnsupportedErrorException("findById", "unionKeys", message));
             return "SELECT " + table.selectColumnList()
                     + " FROM " + Optional.ofNullable(tablename).orElse(table.tablename())
                     + " WHERE " + table.getIdentityColumn().columnEqualsProperty();
@@ -393,12 +393,12 @@ public class MybatisSuperProvider implements InitializingBean {
      * @see io.github.nichetoolkit.rest.RestException
      */
     public static <I> String findDynamicByAll(ProviderContext providerContext, @Param("tablename") String tablename, @Param("idList") Collection<I> idList) throws RestException {
-        OptionalHelper.falseable(GeneralUtils.isNotEmpty(idList), "the id list param of 'findByAll' method cannot be empty!", message -> new MybatisParamErrorException("findByAll", "idList", message));
+        OptionalUtils.falseable(GeneralUtils.isNotEmpty(idList), "the id list param of 'findByAll' method cannot be empty!", message -> new MybatisParamErrorException("findByAll", "idList", message));
         return MybatisSqlScript.caching(providerContext, new MybatisSqlScript() {
             @Override
             public String sql(MybatisTable table) throws RestException {
-                OptionalHelper.falseable(GeneralUtils.isNotEmpty(table.selectColumns()), "the select columns of table with 'findByAll' method cannot be empty!", message -> new MybatisTableErrorException("findByAll", "selectColumns", message));
-                OptionalHelper.trueable(table.isUseUnionKey(), "the union keys of table with 'findByAll' method is unsupported!", message -> new MybatisUnsupportedErrorException("findByAll", "unionKeys", message));
+                OptionalUtils.falseable(GeneralUtils.isNotEmpty(table.selectColumns()), "the select columns of table with 'findByAll' method cannot be empty!", message -> new MybatisTableErrorException("findByAll", "selectColumns", message));
+                OptionalUtils.trueable(table.isUseUnionKey(), "the union keys of table with 'findByAll' method is unsupported!", message -> new MybatisUnsupportedErrorException("findByAll", "unionKeys", message));
                 return "SELECT " + table.selectColumnList()
                         + " FROM " + Optional.ofNullable(tablename).orElse(table.tablename())
                         + " WHERE " + table.getIdentityColumn().getColumnName() + " IN " + foreach("idList", "id", ", ", "(", ")", () -> table.getIdentityColumn().variable());
@@ -437,11 +437,11 @@ public class MybatisSuperProvider implements InitializingBean {
      * @see io.github.nichetoolkit.rest.RestException
      */
     public static String findDynamicAllByWhere(ProviderContext providerContext, @Param("tablename") String tablename, @Param("whereSql") String whereSql) throws RestException {
-        OptionalHelper.falseable(GeneralUtils.isNotEmpty(whereSql), "the where sql param of 'findAllByWhere' method cannot be empty!", message -> new MybatisParamErrorException("findAllByWhere", "whereSql", message));
+        OptionalUtils.falseable(GeneralUtils.isNotEmpty(whereSql), "the where sql param of 'findAllByWhere' method cannot be empty!", message -> new MybatisParamErrorException("findAllByWhere", "whereSql", message));
         return MybatisSqlScript.caching(providerContext, new MybatisSqlScript() {
             @Override
             public String sql(MybatisTable table) throws RestException {
-                OptionalHelper.falseable(GeneralUtils.isNotEmpty(table.selectColumns()), "the select columns of table with 'findAllByWhere' method cannot be empty!", message -> new MybatisTableErrorException("findAllByWhere", "selectColumns", message));
+                OptionalUtils.falseable(GeneralUtils.isNotEmpty(table.selectColumns()), "the select columns of table with 'findAllByWhere' method cannot be empty!", message -> new MybatisTableErrorException("findAllByWhere", "selectColumns", message));
                 return "SELECT " + table.selectColumnList()
                         + " FROM " + Optional.ofNullable(tablename).orElse(table.tablename())
                         + " WHERE 1=1 "
@@ -480,7 +480,7 @@ public class MybatisSuperProvider implements InitializingBean {
      * @see io.github.nichetoolkit.rest.RestException
      */
     public static String deleteDynamicAllByWhere(ProviderContext providerContext, @Param("tablename") String tablename, @Param("whereSql") String whereSql) throws RestException {
-        OptionalHelper.falseable(GeneralUtils.isNotEmpty(whereSql), "the where sql param of 'deleteAllByWhere' method cannot be empty!", message -> new MybatisParamErrorException("deleteAllByWhere", "whereSql", message));
+        OptionalUtils.falseable(GeneralUtils.isNotEmpty(whereSql), "the where sql param of 'deleteAllByWhere' method cannot be empty!", message -> new MybatisParamErrorException("deleteAllByWhere", "whereSql", message));
         return MybatisSqlScript.caching(providerContext, new MybatisSqlScript() {
             @Override
             public String sql(MybatisTable table) throws RestException {

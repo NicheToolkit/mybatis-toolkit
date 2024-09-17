@@ -1,7 +1,7 @@
 package io.github.nichetoolkit.mybatis;
 
-import io.github.nichetoolkit.mybatis.resolver.MybatisGenericTypeResolver;
 import io.github.nichetoolkit.rest.error.lack.AccessibleLackError;
+import io.github.nichetoolkit.rest.resolver.RestGenericTypeResolver;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import org.springframework.core.annotation.AnnotationUtils;
@@ -81,7 +81,7 @@ public class MybatisField {
      * @see java.lang.Class
      */
     public Class<?> fieldType() {
-        return MybatisGenericTypeResolver.resolveFieldClass(field, clazz);
+        return RestGenericTypeResolver.resolveClass(field, clazz);
     }
 
     /**

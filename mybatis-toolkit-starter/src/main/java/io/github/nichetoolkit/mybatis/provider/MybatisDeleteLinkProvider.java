@@ -5,8 +5,8 @@ import io.github.nichetoolkit.mybatis.MybatisTable;
 import io.github.nichetoolkit.mybatis.error.MybatisParamErrorException;
 import io.github.nichetoolkit.mybatis.error.MybatisTableErrorException;
 import io.github.nichetoolkit.rest.RestException;
-import io.github.nichetoolkit.rest.helper.OptionalHelper;
 import io.github.nichetoolkit.rest.util.GeneralUtils;
+import io.github.nichetoolkit.rest.util.OptionalUtils;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.builder.annotation.ProviderContext;
 
@@ -54,9 +54,9 @@ public class MybatisDeleteLinkProvider {
      * @see io.github.nichetoolkit.rest.RestException
      */
     public static <I> String deleteDynamicByLinkId(ProviderContext providerContext, @Param("tablename") String tablename, @Param("linkId") I linkId) throws RestException {
-        OptionalHelper.falseable(GeneralUtils.isNotEmpty(linkId), "the link id param of 'deleteByLinkId' method cannot be empty!", message -> new MybatisTableErrorException("deleteByLinkId", "linkId", message));
+        OptionalUtils.falseable(GeneralUtils.isNotEmpty(linkId), "the link id param of 'deleteByLinkId' method cannot be empty!", message -> new MybatisTableErrorException("deleteByLinkId", "linkId", message));
         return MybatisSqlScript.caching(providerContext, table -> {
-            OptionalHelper.falseable(GeneralUtils.isNotEmpty(table.getOperateColumn()), "the delete column of table with 'deleteByLinkId' method cannot be empty!", message -> new MybatisTableErrorException("deleteByLinkId", "deleteColumn", message));
+            OptionalUtils.falseable(GeneralUtils.isNotEmpty(table.getOperateColumn()), "the delete column of table with 'deleteByLinkId' method cannot be empty!", message -> new MybatisTableErrorException("deleteByLinkId", "deleteColumn", message));
             return "DELETE FROM " + Optional.ofNullable(tablename).orElse(table.tablename())
                     + " WHERE " + table.getLinkColumn().columnEqualsLink();
         });
@@ -96,11 +96,11 @@ public class MybatisDeleteLinkProvider {
      * @see io.github.nichetoolkit.rest.RestException
      */
     public static <I> String deleteDynamicAllByLinkIds(ProviderContext providerContext, @Param("tablename") String tablename, @Param("linkIdList") Collection<I> linkIdList) throws RestException {
-        OptionalHelper.falseable(GeneralUtils.isNotEmpty(linkIdList), "the link id list param of 'deleteAllByLinkIds' method cannot be empty!", message -> new MybatisParamErrorException("deleteAllByLinkIds", "idList", message));
+        OptionalUtils.falseable(GeneralUtils.isNotEmpty(linkIdList), "the link id list param of 'deleteAllByLinkIds' method cannot be empty!", message -> new MybatisParamErrorException("deleteAllByLinkIds", "idList", message));
         return MybatisSqlScript.caching(providerContext, new MybatisSqlScript() {
             @Override
             public String sql(MybatisTable table) throws RestException {
-                OptionalHelper.falseable(GeneralUtils.isNotEmpty(table.getOperateColumn()), "the delete column of table with 'deleteAllByLinkIds' method cannot be empty!", message -> new MybatisTableErrorException("deleteAllByLinkIds", "deleteColumn", message));
+                OptionalUtils.falseable(GeneralUtils.isNotEmpty(table.getOperateColumn()), "the delete column of table with 'deleteAllByLinkIds' method cannot be empty!", message -> new MybatisTableErrorException("deleteAllByLinkIds", "deleteColumn", message));
                 return "DELETE FROM " + Optional.ofNullable(tablename).orElse(table.tablename())
                         + " WHERE " + table.getLinkColumn().getColumnName() + " IN " + foreach("linkIdList", "linkId", ", ", "(", ")", () -> "#{linkId}");
 

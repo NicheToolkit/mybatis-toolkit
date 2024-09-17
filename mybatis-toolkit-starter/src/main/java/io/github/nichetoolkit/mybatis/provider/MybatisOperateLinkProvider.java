@@ -4,10 +4,9 @@ import io.github.nichetoolkit.mybatis.MybatisSqlScript;
 import io.github.nichetoolkit.mybatis.MybatisTable;
 import io.github.nichetoolkit.mybatis.error.MybatisParamErrorException;
 import io.github.nichetoolkit.mybatis.error.MybatisTableErrorException;
-import io.github.nichetoolkit.mybatis.error.MybatisUnsupportedErrorException;
 import io.github.nichetoolkit.rest.RestException;
-import io.github.nichetoolkit.rest.helper.OptionalHelper;
 import io.github.nichetoolkit.rest.util.GeneralUtils;
+import io.github.nichetoolkit.rest.util.OptionalUtils;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.builder.annotation.ProviderContext;
 
@@ -59,10 +58,10 @@ public class MybatisOperateLinkProvider {
      * @see io.github.nichetoolkit.rest.RestException
      */
     public static <I> String operateDynamicByLinkId(ProviderContext providerContext, @Param("tablename") String tablename, @Param("linkId") I linkId, @Param("operate") Integer operate) throws RestException {
-        OptionalHelper.falseable(GeneralUtils.isNotEmpty(linkId), "the link id param of 'operateByLinkId' method cannot be empty!", message -> new MybatisTableErrorException("operateByLinkId", "linkId", message));
-        OptionalHelper.falseable(GeneralUtils.isNotEmpty(operate), "the operate param of 'operateByLinkId' method cannot be empty!", message -> new MybatisParamErrorException("operateByLinkId", "operate", message));
+        OptionalUtils.falseable(GeneralUtils.isNotEmpty(linkId), "the link id param of 'operateByLinkId' method cannot be empty!", message -> new MybatisTableErrorException("operateByLinkId", "linkId", message));
+        OptionalUtils.falseable(GeneralUtils.isNotEmpty(operate), "the operate param of 'operateByLinkId' method cannot be empty!", message -> new MybatisParamErrorException("operateByLinkId", "operate", message));
         return MybatisSqlScript.caching(providerContext, table -> {
-            OptionalHelper.falseable(GeneralUtils.isNotEmpty(table.getOperateColumn()), "the operate column of table with 'operateByLinkId' method cannot be empty!", message -> new MybatisTableErrorException("operateByLinkId", "operateColumn", message));
+            OptionalUtils.falseable(GeneralUtils.isNotEmpty(table.getOperateColumn()), "the operate column of table with 'operateByLinkId' method cannot be empty!", message -> new MybatisTableErrorException("operateByLinkId", "operateColumn", message));
             return "UPDATE " + Optional.ofNullable(tablename).orElse(table.tablename())
                     + " SET " + table.getOperateColumn().columnEqualsOperate()
                     + " WHERE " + table.getLinkColumn().columnEqualsLink();

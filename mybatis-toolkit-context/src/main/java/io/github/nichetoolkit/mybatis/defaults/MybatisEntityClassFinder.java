@@ -3,6 +3,10 @@ package io.github.nichetoolkit.mybatis.defaults;
 
 import io.github.nichetoolkit.mybatis.MybatisClassFinder;
 import io.github.nichetoolkit.mybatis.resolver.MybatisGenericTypeResolver;
+import io.github.nichetoolkit.rest.resolver.DefaultGenericArrayType;
+import io.github.nichetoolkit.rest.resolver.DefaultParameterizedType;
+import io.github.nichetoolkit.rest.resolver.DefaultWildcardType;
+import io.github.nichetoolkit.rest.resolver.RestGenericTypeResolver;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
@@ -19,19 +23,19 @@ public abstract class MybatisEntityClassFinder implements MybatisClassFinder {
 
     @Override
     public Optional<Class<?>> findEntity(Class<?> mapperType, Method mapperMethod) {
-        /** 先判断返回值 */
+        /* 先判断返回值 */
         Optional<Class<?>> optionalClass;
         if (mapperMethod != null) {
             optionalClass = getEntityClassByMapperMethodReturnType(mapperType, mapperMethod);
             if (optionalClass.isPresent()) {
                 return optionalClass;
             }
-            /** 再判断参数 */
+            /* 再判断参数 */
             optionalClass = getEntityClassByMapperMethodParamTypes(mapperType, mapperMethod);
             if (optionalClass.isPresent()) {
                 return optionalClass;
             }
-            /** 最后从接口泛型中获取 */
+            /* 最后从接口泛型中获取 */
             optionalClass = getEntityClassByMapperMethodAndMapperType(mapperType, mapperMethod);
             if (optionalClass.isPresent()) {
                 return optionalClass;
@@ -66,7 +70,7 @@ public abstract class MybatisEntityClassFinder implements MybatisClassFinder {
      * @see java.util.Optional
      */
     protected Optional<Class<?>> getEntityClassByMapperMethodParamTypes(Class<?> mapperType, Method mapperMethod) {
-        return getEntityClassByTypes(MybatisGenericTypeResolver.resolveParamTypes(mapperMethod, mapperType));
+        return getEntityClassByTypes(RestGenericTypeResolver.resolveParamTypes(mapperMethod, mapperType));
     }
 
     /**
@@ -108,16 +112,16 @@ public abstract class MybatisEntityClassFinder implements MybatisClassFinder {
             if (isEntity((Class<?>) type)) {
                 return Optional.of((Class<?>) type);
             }
-        } else if (type instanceof MybatisParameterizedType) {
-            return getEntityClassByTypes(((MybatisParameterizedType) type).getActualTypeArguments());
-        } else if (type instanceof MybatisWildcardType) {
-            Optional<Class<?>> optionalClass = getEntityClassByTypes(((MybatisWildcardType) type).getLowerBounds());
+        } else if (type instanceof DefaultParameterizedType) {
+            return getEntityClassByTypes(((DefaultParameterizedType) type).getActualTypeArguments());
+        } else if (type instanceof DefaultWildcardType) {
+            Optional<Class<?>> optionalClass = getEntityClassByTypes(((DefaultWildcardType) type).getLowerBounds());
             if (optionalClass.isPresent()) {
                 return optionalClass;
             }
-            return getEntityClassByTypes(((MybatisWildcardType) type).getUpperBounds());
-        } else if (type instanceof MybatisGenericArrayType) {
-            return getEntityClassByType(((MybatisGenericArrayType) type).getGenericComponentType());
+            return getEntityClassByTypes(((DefaultWildcardType) type).getUpperBounds());
+        } else if (type instanceof DefaultGenericArrayType) {
+            return getEntityClassByType(((DefaultGenericArrayType) type).getGenericComponentType());
         }
         return Optional.empty();
     }

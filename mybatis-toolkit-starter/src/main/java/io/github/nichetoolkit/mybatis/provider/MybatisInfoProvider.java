@@ -6,7 +6,6 @@ import io.github.nichetoolkit.mybatis.error.MybatisParamErrorException;
 import io.github.nichetoolkit.mybatis.error.MybatisTableErrorException;
 import io.github.nichetoolkit.mybatis.error.MybatisUnsupportedErrorException;
 import io.github.nichetoolkit.rest.RestException;
-import io.github.nichetoolkit.rest.helper.OptionalHelper;
 import io.github.nichetoolkit.rest.util.GeneralUtils;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.builder.annotation.ProviderContext;
@@ -54,9 +53,9 @@ public class MybatisInfoProvider {
      * @see io.github.nichetoolkit.rest.RestException
      */
     public static String findDynamicByName(ProviderContext providerContext, @Param("tablename") String tablename, @Param("name") String name, @Param("sign") String sign) throws RestException {
-        OptionalHelper.falseable(GeneralUtils.isNotEmpty(name), "the name param of 'findByName' method cannot be empty!", message -> new MybatisParamErrorException("findByName", "name", message));
+        OptionalUtils.falseable(GeneralUtils.isNotEmpty(name), "the name param of 'findByName' method cannot be empty!", message -> new MybatisParamErrorException("findByName", "name", message));
         return MybatisSqlScript.caching(providerContext, table -> {
-            OptionalHelper.falseable(GeneralUtils.isNotEmpty(table.selectColumns()), "the select columns of table with 'findAllByWhere' method cannot be empty!", message -> new MybatisTableErrorException("findByName", "selectColumns", message));
+            OptionalUtils.falseable(GeneralUtils.isNotEmpty(table.selectColumns()), "the select columns of table with 'findAllByWhere' method cannot be empty!", message -> new MybatisTableErrorException("findByName", "selectColumns", message));
             return "SELECT " + table.selectColumnList()
                     + " FROM " + Optional.ofNullable(tablename).orElse(table.tablename())
                     + " WHERE " + Optional.ofNullable(table.fieldColumn("name"))
@@ -102,10 +101,10 @@ public class MybatisInfoProvider {
      * @see io.github.nichetoolkit.rest.RestException
      */
     public static <I> String findDynamicByNameAndNotId(ProviderContext providerContext, @Param("tablename") String tablename, @Param("name") String name, @Param("id") I id, @Param("sign") String sign) throws RestException {
-        OptionalHelper.falseable(GeneralUtils.isNotEmpty(id) && GeneralUtils.isNotEmpty(name), "the id and name params of 'findByNameAndNotId' method cannot be empty!", message -> new MybatisParamErrorException("findByNameAndNotId", "id and name", message));
+        OptionalUtils.falseable(GeneralUtils.isNotEmpty(id) && GeneralUtils.isNotEmpty(name), "the id and name params of 'findByNameAndNotId' method cannot be empty!", message -> new MybatisParamErrorException("findByNameAndNotId", "id and name", message));
         return MybatisSqlScript.caching(providerContext, table -> {
-            OptionalHelper.falseable(GeneralUtils.isNotEmpty(table.selectColumns()), "the select columns of table with 'findByNameAndNotId' method cannot be empty!", message -> new MybatisTableErrorException("findByNameAndNotId", "selectColumns", message));
-            OptionalHelper.trueable(table.isUseUnionKey(), "the union keys of table with 'findByNameAndNotId' method is unsupported!", message -> new MybatisUnsupportedErrorException("findByNameAndNotId", "unionKeys", message));
+            OptionalUtils.falseable(GeneralUtils.isNotEmpty(table.selectColumns()), "the select columns of table with 'findByNameAndNotId' method cannot be empty!", message -> new MybatisTableErrorException("findByNameAndNotId", "selectColumns", message));
+            OptionalUtils.trueable(table.isUseUnionKey(), "the union keys of table with 'findByNameAndNotId' method is unsupported!", message -> new MybatisUnsupportedErrorException("findByNameAndNotId", "unionKeys", message));
             return "SELECT " + table.selectColumnList()
                     + " FROM " + Optional.ofNullable(tablename).orElse(table.tablename())
                     + " WHERE " + Optional.ofNullable(table.fieldColumn("name"))
@@ -150,10 +149,10 @@ public class MybatisInfoProvider {
      * @see io.github.nichetoolkit.rest.RestException
      */
     public static <E> String findDynamicByEntity(ProviderContext providerContext, @Param("tablename") String tablename, @Param("entity") E entity, @Param("sign") String sign) throws RestException {
-        OptionalHelper.falseable(GeneralUtils.isNotEmpty(entity), "the entity param of 'findByEntity' method cannot be empty!", message -> new MybatisParamErrorException("findByEntity", "entity", message));
+        OptionalUtils.falseable(GeneralUtils.isNotEmpty(entity), "the entity param of 'findByEntity' method cannot be empty!", message -> new MybatisParamErrorException("findByEntity", "entity", message));
         return MybatisSqlScript.caching(providerContext, table -> {
-            OptionalHelper.falseable(GeneralUtils.isNotEmpty(table.uniqueColumns()), "the unique columns of table with 'findByEntity' method cannot be empty!", message -> new MybatisTableErrorException("findByEntity", "uniqueColumns", message));
-            OptionalHelper.falseable(GeneralUtils.isNotEmpty(table.selectColumns()), "the select columns of table with 'findByEntity' method cannot be empty!", message -> new MybatisTableErrorException("findByEntity", "selectColumns", message));
+            OptionalUtils.falseable(GeneralUtils.isNotEmpty(table.uniqueColumns()), "the unique columns of table with 'findByEntity' method cannot be empty!", message -> new MybatisTableErrorException("findByEntity", "uniqueColumns", message));
+            OptionalUtils.falseable(GeneralUtils.isNotEmpty(table.selectColumns()), "the select columns of table with 'findByEntity' method cannot be empty!", message -> new MybatisTableErrorException("findByEntity", "selectColumns", message));
             return "SELECT " + table.selectColumnList()
                   + " FROM " + Optional.ofNullable(tablename).orElse(table.tablename())
                   + " WHERE (" + table.uniqueColumns().stream()
@@ -202,11 +201,11 @@ public class MybatisInfoProvider {
      * @see io.github.nichetoolkit.rest.RestException
      */
     public static <I, E> String findDynamicByEntityAndNotId(ProviderContext providerContext, @Param("tablename") String tablename, @Param("entity") E entity, @Param("id") I id, @Param("sign") String sign) throws RestException {
-        OptionalHelper.falseable(GeneralUtils.isNotEmpty(id) && GeneralUtils.isNotEmpty(entity), "the id and entity params of 'findByEntityAndNotId' method cannot be empty!", message -> new MybatisParamErrorException("findByEntityAndNotId", "id and entity", message));
+        OptionalUtils.falseable(GeneralUtils.isNotEmpty(id) && GeneralUtils.isNotEmpty(entity), "the id and entity params of 'findByEntityAndNotId' method cannot be empty!", message -> new MybatisParamErrorException("findByEntityAndNotId", "id and entity", message));
         return MybatisSqlScript.caching(providerContext, table -> {
-            OptionalHelper.falseable(GeneralUtils.isNotEmpty(table.uniqueColumns()), "the unique columns of table with 'findByEntityAndNotId' method cannot be empty!", message -> new MybatisTableErrorException("findByEntityAndNotId", "uniqueColumns", message));
-            OptionalHelper.falseable(GeneralUtils.isNotEmpty(table.selectColumns()), "the select columns of table with 'findByEntityAndNotId' method cannot be empty!", message -> new MybatisTableErrorException("findByEntityAndNotId", "selectColumns", message));
-            OptionalHelper.trueable(table.isUseUnionKey(), "the union keys of table with 'findByEntityAndNotId' method is unsupported!", message -> new MybatisUnsupportedErrorException("findByEntityAndNotId", "unionKeys", message));
+            OptionalUtils.falseable(GeneralUtils.isNotEmpty(table.uniqueColumns()), "the unique columns of table with 'findByEntityAndNotId' method cannot be empty!", message -> new MybatisTableErrorException("findByEntityAndNotId", "uniqueColumns", message));
+            OptionalUtils.falseable(GeneralUtils.isNotEmpty(table.selectColumns()), "the select columns of table with 'findByEntityAndNotId' method cannot be empty!", message -> new MybatisTableErrorException("findByEntityAndNotId", "selectColumns", message));
+            OptionalUtils.trueable(table.isUseUnionKey(), "the union keys of table with 'findByEntityAndNotId' method is unsupported!", message -> new MybatisUnsupportedErrorException("findByEntityAndNotId", "unionKeys", message));
             return "SELECT " + table.selectColumnList()
                    + " FROM " + Optional.ofNullable(tablename).orElse(table.tablename())
                    + " WHERE (" + table.uniqueColumns().stream()
