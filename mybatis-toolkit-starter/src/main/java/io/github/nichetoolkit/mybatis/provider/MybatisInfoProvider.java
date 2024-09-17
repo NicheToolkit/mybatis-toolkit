@@ -7,6 +7,7 @@ import io.github.nichetoolkit.mybatis.error.MybatisTableErrorException;
 import io.github.nichetoolkit.mybatis.error.MybatisUnsupportedErrorException;
 import io.github.nichetoolkit.rest.RestException;
 import io.github.nichetoolkit.rest.util.GeneralUtils;
+import io.github.nichetoolkit.rest.util.OptionalUtils;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.builder.annotation.ProviderContext;
 

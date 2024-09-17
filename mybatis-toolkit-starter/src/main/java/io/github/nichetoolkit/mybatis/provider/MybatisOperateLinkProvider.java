@@ -106,12 +106,12 @@ public class MybatisOperateLinkProvider {
      * @see io.github.nichetoolkit.rest.RestException
      */
     public static <I> String operateDynamicAllByLinkIds(ProviderContext providerContext, @Param("tablename") String tablename, @Param("linkIdList") Collection<I> linkIdList, @Param("operate") Integer operate) throws RestException {
-        OptionalHelper.falseable(GeneralUtils.isNotEmpty(linkIdList), "the link id list param of 'operateAllByLinkIds' method cannot be empty!", message -> new MybatisParamErrorException("operateAllByLinkIds", "idList", message));
-        OptionalHelper.falseable(GeneralUtils.isNotEmpty(operate), "the operate param of 'operateAllByLinkIds' method cannot be empty!", message -> new MybatisParamErrorException("operateAllByLinkIds", "operate", message));
+        OptionalUtils.falseable(GeneralUtils.isNotEmpty(linkIdList), "the link id list param of 'operateAllByLinkIds' method cannot be empty!", message -> new MybatisParamErrorException("operateAllByLinkIds", "idList", message));
+        OptionalUtils.falseable(GeneralUtils.isNotEmpty(operate), "the operate param of 'operateAllByLinkIds' method cannot be empty!", message -> new MybatisParamErrorException("operateAllByLinkIds", "operate", message));
         return MybatisSqlScript.caching(providerContext, new MybatisSqlScript() {
             @Override
             public String sql(MybatisTable table) throws RestException {
-                OptionalHelper.falseable(GeneralUtils.isNotEmpty(table.getOperateColumn()), "the operate column of table with 'operateAllByLinkIds' method cannot be empty!", message -> new MybatisTableErrorException("operateAllByLinkIds", "operateColumn", message));
+                OptionalUtils.falseable(GeneralUtils.isNotEmpty(table.getOperateColumn()), "the operate column of table with 'operateAllByLinkIds' method cannot be empty!", message -> new MybatisTableErrorException("operateAllByLinkIds", "operateColumn", message));
                 return "UPDATE " + Optional.ofNullable(tablename).orElse(table.tablename())
                         + " SET " + table.getOperateColumn().columnEqualsOperate()
                         + " WHERE " + table.getLinkColumn().getColumnName() + " IN " + foreach("linkIdList", "linkId", ", ", "(", ")", () -> "#{linkId}");
