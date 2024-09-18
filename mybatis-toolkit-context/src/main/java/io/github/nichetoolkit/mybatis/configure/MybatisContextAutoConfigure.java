@@ -28,7 +28,7 @@ public class MybatisContextAutoConfigure {
      * Instantiates a new mybatis context auto configure.
      */
     public MybatisContextAutoConfigure() {
-        log.debug("================= mybatis-context-auto-config initiated ！ ===================");
+        log.debug("the auto configuration for [mybatis-context] initiated");
     }
 
     /**

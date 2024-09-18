@@ -8,11 +8,11 @@
         <version>1.1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>mybatis-toolkit-test-web</artifactId>
+    <artifactId>mybatis-toolkit-example</artifactId>
     <version>1.1.0-SNAPSHOT</version>
-    <name>mybatis-toolkit-test-web</name>
+    <name>mybatis-toolkit-example</name>
     <packaging>jar</packaging>
-    <description>Rice toolkit test web project for Spring Boot</description>
+    <description>Rice toolkit test example project for Spring Boot</description>
 
     <properties>
         <java.version>1.8</java.version>

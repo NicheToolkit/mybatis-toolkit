@@ -1,6 +1,5 @@
-package io.github.nichetoolkit.mybatis.mapper;
+package io.github.nichetoolkit.mybatis;
 
-import io.github.nichetoolkit.mybatis.MybatisCaching;
 import io.github.nichetoolkit.mybatis.provider.MybatisRemoveProvider;
 import io.github.nichetoolkit.rice.mapper.RemoveMapper;
 import org.apache.ibatis.annotations.Lang;
@@ -22,30 +21,30 @@ public interface MybatisRemoveMapper<I> extends RemoveMapper<I> {
     @Override
     @Lang(MybatisCaching.class)
     @UpdateProvider(type = MybatisRemoveProvider.class, method = "removeById")
-    Integer removeById(@Param("id") I id, @Param("sign") String sign);
+    Integer removeById(@Param("id") I id, @Param("logicSign") String logicSign);
 
     @Override
     @Lang(MybatisCaching.class)
     @UpdateProvider(type = MybatisRemoveProvider.class, method = "removeDynamicById")
-    Integer removeDynamicById(@Param("tablename") String tablename, @Param("id") I id, @Param("sign") String sign);
+    Integer removeDynamicById(@Param("tablename") String tablename, @Param("id") I id, @Param("logicSign") String logicSign);
 
     @Override
     @Lang(MybatisCaching.class)
     @UpdateProvider(type = MybatisRemoveProvider.class, method = "removeAll")
-    Integer removeAll(@Param("idList") Collection<I> idList, @Param("sign") String sign);
+    Integer removeAll(@Param("idList") Collection<I> idList, @Param("logicSign") String logicSign);
 
     @Override
     @Lang(MybatisCaching.class)
     @UpdateProvider(type = MybatisRemoveProvider.class, method = "removeDynamicAll")
-    Integer removeDynamicAll(@Param("tablename") String tablename, @Param("idList") Collection<I> idList, @Param("sign") String sign);
+    Integer removeDynamicAll(@Param("tablename") String tablename, @Param("idList") Collection<I> idList, @Param("logicSign") String logicSign);
 
     @Override
     @Lang(MybatisCaching.class)
     @UpdateProvider(type = MybatisRemoveProvider.class, method = "removeAllByWhere")
-    Integer removeAllByWhere(@Param("whereSql") String whereSql, @Param("sign") String sign);
+    Integer removeAllByWhere(@Param("whereSql") String whereSql, @Param("logicSign") String logicSign);
 
     @Override
     @Lang(MybatisCaching.class)
     @UpdateProvider(type = MybatisRemoveProvider.class, method = "removeDynamicAllByWhere")
-    Integer removeDynamicAllByWhere(@Param("tablename") String tablename, @Param("whereSql") String whereSql, @Param("sign") String sign);
+    Integer removeDynamicAllByWhere(@Param("tablename") String tablename, @Param("whereSql") String whereSql, @Param("logicSign") String logicSign);
 }

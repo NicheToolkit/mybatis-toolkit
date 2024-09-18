@@ -1,9 +1,7 @@
-package io.github.nichetoolkit.mybatis.mapper;
+package io.github.nichetoolkit.mybatis;
 
-import io.github.nichetoolkit.mybatis.MybatisCaching;
 import io.github.nichetoolkit.mybatis.provider.MybatisOperateProvider;
 import io.github.nichetoolkit.rice.mapper.OperateMapper;
-import io.github.nichetoolkit.rice.mapper.RemoveMapper;
 import org.apache.ibatis.annotations.Lang;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.UpdateProvider;

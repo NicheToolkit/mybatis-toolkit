@@ -28,7 +28,7 @@ public class MybatisRemoveLinkProvider {
      * @param <I>             {@link java.lang.Object} <p>the parameter can be of any type.</p>
      * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>the provider context parameter is <code>ProviderContext</code> type.</p>
      * @param linkId          I <p>the link id parameter is <code>I</code> type.</p>
-     * @param sign            {@link java.lang.String} <p>the sign parameter is <code>String</code> type.</p>
+     * @param logicSign            {@link java.lang.String} <p>the logicSign parameter is <code>String</code> type.</p>
      * @return {@link java.lang.String} <p>the by link id return object is <code>String</code> type.</p>
      * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>the rest exception is <code>RestException</code> type.</p>
      * @see org.apache.ibatis.builder.annotation.ProviderContext
@@ -36,8 +36,8 @@ public class MybatisRemoveLinkProvider {
      * @see java.lang.String
      * @see io.github.nichetoolkit.rest.RestException
      */
-    public static <I> String removeByLinkId(ProviderContext providerContext, @Param("linkId") I linkId, @Param("sign") String sign) throws RestException {
-        return removeDynamicByLinkId(providerContext, null, linkId, sign);
+    public static <I> String removeByLinkId(ProviderContext providerContext, @Param("linkId") I linkId, @Param("logicSign") String logicSign) throws RestException {
+        return removeDynamicByLinkId(providerContext, null, linkId, logicSign);
     }
 
     /**
@@ -47,7 +47,7 @@ public class MybatisRemoveLinkProvider {
      * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>the provider context parameter is <code>ProviderContext</code> type.</p>
      * @param tablename       {@link java.lang.String} <p>the tablename parameter is <code>String</code> type.</p>
      * @param linkId          I <p>the link id parameter is <code>I</code> type.</p>
-     * @param sign            {@link java.lang.String} <p>the sign parameter is <code>String</code> type.</p>
+     * @param logicSign            {@link java.lang.String} <p>the logicSign parameter is <code>String</code> type.</p>
      * @return {@link java.lang.String} <p>the dynamic by link id return object is <code>String</code> type.</p>
      * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>the rest exception is <code>RestException</code> type.</p>
      * @see org.apache.ibatis.builder.annotation.ProviderContext
@@ -55,9 +55,9 @@ public class MybatisRemoveLinkProvider {
      * @see org.apache.ibatis.annotations.Param
      * @see io.github.nichetoolkit.rest.RestException
      */
-    public static <I> String removeDynamicByLinkId(ProviderContext providerContext, @Param("tablename") String tablename, @Param("linkId") I linkId, @Param("sign") String sign) throws RestException {
+    public static <I> String removeDynamicByLinkId(ProviderContext providerContext, @Param("tablename") String tablename, @Param("linkId") I linkId, @Param("logicSign") String logicSign) throws RestException {
         OptionalUtils.falseable(GeneralUtils.isNotEmpty(linkId), "the link id param of 'removeByLinkId' method cannot be empty!", message -> new MybatisParamErrorException("removeByLinkId", "linkId", message));
-        OptionalUtils.falseable(GeneralUtils.isNotEmpty(sign), "the sign param of 'removeByLinkId' method cannot be empty!", message -> new MybatisParamErrorException("removeByLinkId", "sign", message));
+        OptionalUtils.falseable(GeneralUtils.isNotEmpty(logicSign), "the logicSign param of 'removeByLinkId' method cannot be empty!", message -> new MybatisParamErrorException("removeByLinkId", "logicSign", message));
         return MybatisSqlScript.caching(providerContext, table -> {
             OptionalUtils.falseable(GeneralUtils.isNotEmpty(table.getLogicColumn()), "the logic column of table with 'removeByLinkId' method cannot be empty!", message -> new MybatisTableErrorException("removeByLinkId", "logicColumn", message));
             return "UPDATE " + Optional.ofNullable(tablename).orElse(table.tablename())
@@ -72,7 +72,7 @@ public class MybatisRemoveLinkProvider {
      * @param <I>             {@link java.lang.Object} <p>the parameter can be of any type.</p>
      * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>the provider context parameter is <code>ProviderContext</code> type.</p>
      * @param linkIdList      {@link java.util.Collection} <p>the link id list parameter is <code>Collection</code> type.</p>
-     * @param sign            {@link java.lang.String} <p>the sign parameter is <code>String</code> type.</p>
+     * @param logicSign            {@link java.lang.String} <p>the logicSign parameter is <code>String</code> type.</p>
      * @return {@link java.lang.String} <p>the all by link ids return object is <code>String</code> type.</p>
      * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>the rest exception is <code>RestException</code> type.</p>
      * @see org.apache.ibatis.builder.annotation.ProviderContext
@@ -81,8 +81,8 @@ public class MybatisRemoveLinkProvider {
      * @see java.lang.String
      * @see io.github.nichetoolkit.rest.RestException
      */
-    public static <I> String removeAllByLinkIds(ProviderContext providerContext, @Param("linkIdList") Collection<I> linkIdList, @Param("sign") String sign) throws RestException {
-        return removeDynamicAllByLinkIds(providerContext, null, linkIdList, sign);
+    public static <I> String removeAllByLinkIds(ProviderContext providerContext, @Param("linkIdList") Collection<I> linkIdList, @Param("logicSign") String logicSign) throws RestException {
+        return removeDynamicAllByLinkIds(providerContext, null, linkIdList, logicSign);
     }
 
     /**
@@ -92,7 +92,7 @@ public class MybatisRemoveLinkProvider {
      * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>the provider context parameter is <code>ProviderContext</code> type.</p>
      * @param tablename       {@link java.lang.String} <p>the tablename parameter is <code>String</code> type.</p>
      * @param linkIdList      {@link java.util.Collection} <p>the link id list parameter is <code>Collection</code> type.</p>
-     * @param sign            {@link java.lang.String} <p>the sign parameter is <code>String</code> type.</p>
+     * @param logicSign            {@link java.lang.String} <p>the logicSign parameter is <code>String</code> type.</p>
      * @return {@link java.lang.String} <p>the dynamic all by link ids return object is <code>String</code> type.</p>
      * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>the rest exception is <code>RestException</code> type.</p>
      * @see org.apache.ibatis.builder.annotation.ProviderContext
@@ -101,9 +101,9 @@ public class MybatisRemoveLinkProvider {
      * @see java.util.Collection
      * @see io.github.nichetoolkit.rest.RestException
      */
-    public static <I> String removeDynamicAllByLinkIds(ProviderContext providerContext, @Param("tablename") String tablename, @Param("linkIdList") Collection<I> linkIdList, @Param("sign") String sign) throws RestException {
+    public static <I> String removeDynamicAllByLinkIds(ProviderContext providerContext, @Param("tablename") String tablename, @Param("linkIdList") Collection<I> linkIdList, @Param("logicSign") String logicSign) throws RestException {
         OptionalUtils.falseable(GeneralUtils.isNotEmpty(linkIdList), "the link id list param of 'removeAllByLinkIds' method cannot be empty!", message -> new MybatisParamErrorException("removeAllByLinkIds", "idList", message));
-        OptionalUtils.falseable(GeneralUtils.isNotEmpty(sign), "the sign param of 'removeAllByLinkIds' method cannot be empty!", message -> new MybatisParamErrorException("removeAllByLinkIds", "sign", message));
+        OptionalUtils.falseable(GeneralUtils.isNotEmpty(logicSign), "the logicSign param of 'removeAllByLinkIds' method cannot be empty!", message -> new MybatisParamErrorException("removeAllByLinkIds", "logicSign", message));
         return MybatisSqlScript.caching(providerContext, new MybatisSqlScript() {
             @Override
             public String sql(MybatisTable table) throws RestException {

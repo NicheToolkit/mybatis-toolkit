@@ -1,6 +1,7 @@
 package io.github.nichetoolkit.mybatis.configure;
 
-import io.github.nichetoolkit.mybatis.provider.MybatisSuperProvider;
+import io.github.nichetoolkit.mybatis.provider.MybatisMapperProvider;
+import io.github.nichetoolkit.mybatis.provider.MybatisSaveProvider;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
@@ -33,25 +34,25 @@ public class MybatisStarterAutoConfigure {
      * Instantiates a new mybatis starter auto configure.
      */
     public MybatisStarterAutoConfigure() {
-        log.debug("================= mybatis-starter-auto-config initiated ！ ===================");
+        log.debug("the auto configuration for [mybatis-starter] initiated");
     }
 
     /**
      * <code>mybatisProvider</code>
      * <p>the provider method.</p>
      * @param tableProperties {@link io.github.nichetoolkit.mybatis.configure.MybatisTableProperties} <p>the table properties parameter is <code>MybatisTableProperties</code> type.</p>
-     * @return {@link io.github.nichetoolkit.mybatis.provider.MybatisSuperProvider} <p>the provider return object is <code>MybatisSuperProvider</code> type.</p>
+     * @return {@link MybatisSaveProvider} <p>the provider return object is <code>MybatisSuperProvider</code> type.</p>
      * @see io.github.nichetoolkit.mybatis.configure.MybatisTableProperties
-     * @see io.github.nichetoolkit.mybatis.provider.MybatisSuperProvider
+     * @see MybatisSaveProvider
      * @see org.springframework.context.annotation.Bean
      * @see org.springframework.context.annotation.Primary
      * @see org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
      */
     @Bean
     @Primary
-    @ConditionalOnMissingBean(MybatisSuperProvider.class)
-    public MybatisSuperProvider mybatisProvider(MybatisTableProperties tableProperties) {
-        return new MybatisSuperProvider(tableProperties);
+    @ConditionalOnMissingBean(MybatisMapperProvider.class)
+    public MybatisMapperProvider mybatisProvider(MybatisTableProperties tableProperties) {
+        return new MybatisSaveProvider(tableProperties);
     }
 
     /**

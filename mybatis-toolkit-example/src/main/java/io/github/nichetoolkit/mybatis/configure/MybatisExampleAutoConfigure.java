@@ -5,8 +5,8 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * <code>MybatisTestWebAutoConfigure</code>
- * <p>The type mybatis test web auto configure class.</p>
+ * <code>MybatisExampleAutoConfigure</code>
+ * <p>The type mybatis example auto configure class.</p>
  * @author Cyan (snow22314@outlook.com)
  * @see lombok.extern.slf4j.Slf4j
  * @see org.springframework.context.annotation.Configuration
@@ -16,12 +16,12 @@ import org.springframework.context.annotation.Configuration;
 @Slf4j
 @Configuration
 @ComponentScan(basePackages = {"io.github.nichetoolkit.mybatis"})
-public class MybatisTestWebAutoConfigure {
+public class MybatisExampleAutoConfigure {
     /**
-     * <code>MybatisTestWebAutoConfigure</code>
-     * Instantiates a new mybatis test web auto configure.
+     * <code>MybatisExampleAutoConfigure</code>
+     * Instantiates a new mybatis example auto configure.
      */
-    public MybatisTestWebAutoConfigure() {
-        log.debug("================= mybatis-toolkit-test-web initiated ！ ===================");
+    public MybatisExampleAutoConfigure() {
+        log.debug("the auto configuration for [mybatis-example] initiated");
     }
 }

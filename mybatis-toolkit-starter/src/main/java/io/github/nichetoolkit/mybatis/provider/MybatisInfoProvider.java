@@ -27,7 +27,7 @@ public class MybatisInfoProvider {
      * <p>the by name method.</p>
      * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>the provider context parameter is <code>ProviderContext</code> type.</p>
      * @param name            {@link java.lang.String} <p>the name parameter is <code>String</code> type.</p>
-     * @param sign            {@link java.lang.String} <p>the sign parameter is <code>String</code> type.</p>
+     * @param logicValue            {@link java.lang.String} <p>the logicValue parameter is <code>String</code> type.</p>
      * @return {@link java.lang.String} <p>the by name return object is <code>String</code> type.</p>
      * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>the rest exception is <code>RestException</code> type.</p>
      * @see org.apache.ibatis.builder.annotation.ProviderContext
@@ -35,8 +35,8 @@ public class MybatisInfoProvider {
      * @see org.apache.ibatis.annotations.Param
      * @see io.github.nichetoolkit.rest.RestException
      */
-    public static String findByName(ProviderContext providerContext, @Param("name") String name, @Param("sign") String sign) throws RestException {
-        return findDynamicByName(providerContext, null, name, sign);
+    public static String findByName(ProviderContext providerContext, @Param("name") String name, @Param("logicValue") String logicValue) throws RestException {
+        return findDynamicByName(providerContext, null, name, logicValue);
     }
 
     /**
@@ -45,7 +45,7 @@ public class MybatisInfoProvider {
      * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>the provider context parameter is <code>ProviderContext</code> type.</p>
      * @param tablename       {@link java.lang.String} <p>the tablename parameter is <code>String</code> type.</p>
      * @param name            {@link java.lang.String} <p>the name parameter is <code>String</code> type.</p>
-     * @param sign            {@link java.lang.String} <p>the sign parameter is <code>String</code> type.</p>
+     * @param logicValue            {@link java.lang.String} <p>the logicValue parameter is <code>String</code> type.</p>
      * @return {@link java.lang.String} <p>the dynamic by name return object is <code>String</code> type.</p>
      * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>the rest exception is <code>RestException</code> type.</p>
      * @see org.apache.ibatis.builder.annotation.ProviderContext
@@ -53,7 +53,7 @@ public class MybatisInfoProvider {
      * @see org.apache.ibatis.annotations.Param
      * @see io.github.nichetoolkit.rest.RestException
      */
-    public static String findDynamicByName(ProviderContext providerContext, @Param("tablename") String tablename, @Param("name") String name, @Param("sign") String sign) throws RestException {
+    public static String findDynamicByName(ProviderContext providerContext, @Param("tablename") String tablename, @Param("name") String name, @Param("logicValue") String logicValue) throws RestException {
         OptionalUtils.falseable(GeneralUtils.isNotEmpty(name), "the name param of 'findByName' method cannot be empty!", message -> new MybatisParamErrorException("findByName", "name", message));
         return MybatisSqlScript.caching(providerContext, table -> {
             OptionalUtils.falseable(GeneralUtils.isNotEmpty(table.selectColumns()), "the select columns of table with 'findAllByWhere' method cannot be empty!", message -> new MybatisTableErrorException("findByName", "selectColumns", message));
@@ -73,7 +73,7 @@ public class MybatisInfoProvider {
      * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>the provider context parameter is <code>ProviderContext</code> type.</p>
      * @param name            {@link java.lang.String} <p>the name parameter is <code>String</code> type.</p>
      * @param id              I <p>the id parameter is <code>I</code> type.</p>
-     * @param sign            {@link java.lang.String} <p>the sign parameter is <code>String</code> type.</p>
+     * @param logicValue            {@link java.lang.String} <p>the logicValue parameter is <code>String</code> type.</p>
      * @return {@link java.lang.String} <p>the by name and not id return object is <code>String</code> type.</p>
      * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>the rest exception is <code>RestException</code> type.</p>
      * @see org.apache.ibatis.builder.annotation.ProviderContext
@@ -81,8 +81,8 @@ public class MybatisInfoProvider {
      * @see org.apache.ibatis.annotations.Param
      * @see io.github.nichetoolkit.rest.RestException
      */
-    public static <I> String findByNameAndNotId(ProviderContext providerContext, @Param("name") String name, @Param("id") I id, @Param("sign") String sign) throws RestException {
-        return findDynamicByNameAndNotId(providerContext, null, name, id, sign);
+    public static <I> String findByNameAndNotId(ProviderContext providerContext, @Param("name") String name, @Param("id") I id, @Param("logicValue") String logicValue) throws RestException {
+        return findDynamicByNameAndNotId(providerContext, null, name, id, logicValue);
     }
 
     /**
@@ -93,7 +93,7 @@ public class MybatisInfoProvider {
      * @param tablename       {@link java.lang.String} <p>the tablename parameter is <code>String</code> type.</p>
      * @param name            {@link java.lang.String} <p>the name parameter is <code>String</code> type.</p>
      * @param id              I <p>the id parameter is <code>I</code> type.</p>
-     * @param sign            {@link java.lang.String} <p>the sign parameter is <code>String</code> type.</p>
+     * @param logicValue            {@link java.lang.String} <p>the logicValue parameter is <code>String</code> type.</p>
      * @return {@link java.lang.String} <p>the dynamic by name and not id return object is <code>String</code> type.</p>
      * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>the rest exception is <code>RestException</code> type.</p>
      * @see org.apache.ibatis.builder.annotation.ProviderContext
@@ -101,7 +101,7 @@ public class MybatisInfoProvider {
      * @see org.apache.ibatis.annotations.Param
      * @see io.github.nichetoolkit.rest.RestException
      */
-    public static <I> String findDynamicByNameAndNotId(ProviderContext providerContext, @Param("tablename") String tablename, @Param("name") String name, @Param("id") I id, @Param("sign") String sign) throws RestException {
+    public static <I> String findDynamicByNameAndNotId(ProviderContext providerContext, @Param("tablename") String tablename, @Param("name") String name, @Param("id") I id, @Param("logicValue") String logicValue) throws RestException {
         OptionalUtils.falseable(GeneralUtils.isNotEmpty(id) && GeneralUtils.isNotEmpty(name), "the id and name params of 'findByNameAndNotId' method cannot be empty!", message -> new MybatisParamErrorException("findByNameAndNotId", "id and name", message));
         return MybatisSqlScript.caching(providerContext, table -> {
             OptionalUtils.falseable(GeneralUtils.isNotEmpty(table.selectColumns()), "the select columns of table with 'findByNameAndNotId' method cannot be empty!", message -> new MybatisTableErrorException("findByNameAndNotId", "selectColumns", message));
@@ -122,7 +122,7 @@ public class MybatisInfoProvider {
      * @param <E>             {@link java.lang.Object} <p>the parameter can be of any type.</p>
      * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>the provider context parameter is <code>ProviderContext</code> type.</p>
      * @param entity          E <p>the entity parameter is <code>E</code> type.</p>
-     * @param sign            {@link java.lang.String} <p>the sign parameter is <code>String</code> type.</p>
+     * @param logicValue            {@link java.lang.String} <p>the logicValue parameter is <code>String</code> type.</p>
      * @return {@link java.lang.String} <p>the by entity return object is <code>String</code> type.</p>
      * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>the rest exception is <code>RestException</code> type.</p>
      * @see org.apache.ibatis.builder.annotation.ProviderContext
@@ -130,8 +130,8 @@ public class MybatisInfoProvider {
      * @see java.lang.String
      * @see io.github.nichetoolkit.rest.RestException
      */
-    public static <E> String findByEntity(ProviderContext providerContext, @Param("entity") E entity, @Param("sign") String sign) throws RestException {
-        return findDynamicByEntity(providerContext, null, entity, sign);
+    public static <E> String findByEntity(ProviderContext providerContext, @Param("entity") E entity, @Param("logicValue") String logicValue) throws RestException {
+        return findDynamicByEntity(providerContext, null, entity, logicValue);
     }
 
     /**
@@ -141,7 +141,7 @@ public class MybatisInfoProvider {
      * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>the provider context parameter is <code>ProviderContext</code> type.</p>
      * @param tablename       {@link java.lang.String} <p>the tablename parameter is <code>String</code> type.</p>
      * @param entity          E <p>the entity parameter is <code>E</code> type.</p>
-     * @param sign            {@link java.lang.String} <p>the sign parameter is <code>String</code> type.</p>
+     * @param logicValue            {@link java.lang.String} <p>the logicValue parameter is <code>String</code> type.</p>
      * @return {@link java.lang.String} <p>the dynamic by entity return object is <code>String</code> type.</p>
      * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>the rest exception is <code>RestException</code> type.</p>
      * @see org.apache.ibatis.builder.annotation.ProviderContext
@@ -149,7 +149,7 @@ public class MybatisInfoProvider {
      * @see org.apache.ibatis.annotations.Param
      * @see io.github.nichetoolkit.rest.RestException
      */
-    public static <E> String findDynamicByEntity(ProviderContext providerContext, @Param("tablename") String tablename, @Param("entity") E entity, @Param("sign") String sign) throws RestException {
+    public static <E> String findDynamicByEntity(ProviderContext providerContext, @Param("tablename") String tablename, @Param("entity") E entity, @Param("logicValue") String logicValue) throws RestException {
         OptionalUtils.falseable(GeneralUtils.isNotEmpty(entity), "the entity param of 'findByEntity' method cannot be empty!", message -> new MybatisParamErrorException("findByEntity", "entity", message));
         return MybatisSqlScript.caching(providerContext, table -> {
             OptionalUtils.falseable(GeneralUtils.isNotEmpty(table.uniqueColumns()), "the unique columns of table with 'findByEntity' method cannot be empty!", message -> new MybatisTableErrorException("findByEntity", "uniqueColumns", message));
@@ -172,7 +172,7 @@ public class MybatisInfoProvider {
      * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>the provider context parameter is <code>ProviderContext</code> type.</p>
      * @param entity          E <p>the entity parameter is <code>E</code> type.</p>
      * @param id              I <p>the id parameter is <code>I</code> type.</p>
-     * @param sign            {@link java.lang.String} <p>the sign parameter is <code>String</code> type.</p>
+     * @param logicValue            {@link java.lang.String} <p>the logicValue parameter is <code>String</code> type.</p>
      * @return {@link java.lang.String} <p>the by entity and not id return object is <code>String</code> type.</p>
      * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>the rest exception is <code>RestException</code> type.</p>
      * @see org.apache.ibatis.builder.annotation.ProviderContext
@@ -180,8 +180,8 @@ public class MybatisInfoProvider {
      * @see java.lang.String
      * @see io.github.nichetoolkit.rest.RestException
      */
-    public static <I, E> String findByEntityAndNotId(ProviderContext providerContext, @Param("entity") E entity, @Param("id") I id, @Param("sign") String sign) throws RestException {
-        return findDynamicByEntityAndNotId(providerContext, null, entity, id, sign);
+    public static <I, E> String findByEntityAndNotId(ProviderContext providerContext, @Param("entity") E entity, @Param("id") I id, @Param("logicValue") String logicValue) throws RestException {
+        return findDynamicByEntityAndNotId(providerContext, null, entity, id, logicValue);
     }
 
     /**
@@ -193,7 +193,7 @@ public class MybatisInfoProvider {
      * @param tablename       {@link java.lang.String} <p>the tablename parameter is <code>String</code> type.</p>
      * @param entity          E <p>the entity parameter is <code>E</code> type.</p>
      * @param id              I <p>the id parameter is <code>I</code> type.</p>
-     * @param sign            {@link java.lang.String} <p>the sign parameter is <code>String</code> type.</p>
+     * @param logicValue            {@link java.lang.String} <p>the logicValue parameter is <code>String</code> type.</p>
      * @return {@link java.lang.String} <p>the dynamic by entity and not id return object is <code>String</code> type.</p>
      * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>the rest exception is <code>RestException</code> type.</p>
      * @see org.apache.ibatis.builder.annotation.ProviderContext
@@ -201,7 +201,7 @@ public class MybatisInfoProvider {
      * @see org.apache.ibatis.annotations.Param
      * @see io.github.nichetoolkit.rest.RestException
      */
-    public static <I, E> String findDynamicByEntityAndNotId(ProviderContext providerContext, @Param("tablename") String tablename, @Param("entity") E entity, @Param("id") I id, @Param("sign") String sign) throws RestException {
+    public static <I, E> String findDynamicByEntityAndNotId(ProviderContext providerContext, @Param("tablename") String tablename, @Param("entity") E entity, @Param("id") I id, @Param("logicValue") String logicValue) throws RestException {
         OptionalUtils.falseable(GeneralUtils.isNotEmpty(id) && GeneralUtils.isNotEmpty(entity), "the id and entity params of 'findByEntityAndNotId' method cannot be empty!", message -> new MybatisParamErrorException("findByEntityAndNotId", "id and entity", message));
         return MybatisSqlScript.caching(providerContext, table -> {
             OptionalUtils.falseable(GeneralUtils.isNotEmpty(table.uniqueColumns()), "the unique columns of table with 'findByEntityAndNotId' method cannot be empty!", message -> new MybatisTableErrorException("findByEntityAndNotId", "uniqueColumns", message));

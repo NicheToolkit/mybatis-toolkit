@@ -11,7 +11,7 @@
         <module>mybatis-toolkit-core</module>
         <module>mybatis-toolkit-context</module>
         <module>mybatis-toolkit-starter</module>
-<!--        <module>mybatis-toolkit-test-web</module>-->
+<!--        <module>mybatis-toolkit-example</module>-->
     </modules>
 
     <name>mybatis-toolkit-parent</name>

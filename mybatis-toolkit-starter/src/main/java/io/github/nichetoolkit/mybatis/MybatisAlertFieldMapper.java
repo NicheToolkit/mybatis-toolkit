@@ -1,9 +1,7 @@
-package io.github.nichetoolkit.mybatis.mapper;
+package io.github.nichetoolkit.mybatis;
 
-import io.github.nichetoolkit.mybatis.MybatisCaching;
 import io.github.nichetoolkit.mybatis.provider.MybatisAlertFieldProvider;
 import io.github.nichetoolkit.rice.mapper.AlertFieldMapper;
-import io.github.nichetoolkit.rice.mapper.AlertMapper;
 import org.apache.ibatis.annotations.Lang;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.SelectProvider;

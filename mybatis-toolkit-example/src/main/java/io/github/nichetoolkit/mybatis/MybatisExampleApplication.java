@@ -17,7 +17,7 @@ import org.springframework.context.annotation.ComponentScan;
  */
 @SpringBootApplication
 @ComponentScan(basePackages = "io.github.nichetoolkit")
-public class MybatisToolkitTestWebApplication extends SpringBootServletInitializer {
+public class MybatisExampleApplication extends SpringBootServletInitializer {
 
     /**
      * <code>main</code>
@@ -26,12 +26,12 @@ public class MybatisToolkitTestWebApplication extends SpringBootServletInitializ
      * @see java.lang.String
      */
     public static void main(String[] args) {
-        SpringApplication.run(MybatisToolkitTestWebApplication.class, args);
+        SpringApplication.run(MybatisExampleApplication.class, args);
     }
 
 
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-        return application.sources(MybatisToolkitTestWebApplication.class);
+        return application.sources(MybatisExampleApplication.class);
     }
 }

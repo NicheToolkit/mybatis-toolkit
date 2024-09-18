@@ -2,17 +2,17 @@
 package io.github.nichetoolkit.mybatis.record;
 
 import io.github.nichetoolkit.mybatis.MybatisEntityMapper;
-import io.github.nichetoolkit.mybatis.mapper.MybatisSuperMapper;
+import io.github.nichetoolkit.mybatis.MybatisSuperMapper;
 import io.github.nichetoolkit.rice.IdEntity;
 
 /**
  * <code>MybatisSuperRecord</code>
  * <p>The type mybatis super record interface.</p>
- * @param <M> {@link io.github.nichetoolkit.mybatis.mapper.MybatisSuperMapper} <p>the generic parameter is <code>MybatisSuperMapper</code> type.</p>
+ * @param <M> {@link MybatisSuperMapper} <p>the generic parameter is <code>MybatisSuperMapper</code> type.</p>
  * @param <E> {@link io.github.nichetoolkit.rice.IdEntity} <p>the generic parameter is <code>IdEntity</code> type.</p>
  * @param <I> {@link java.lang.Object} <p>the parameter can be of any type.</p>
  * @author Cyan (snow22314@outlook.com)
- * @see io.github.nichetoolkit.mybatis.mapper.MybatisSuperMapper
+ * @see MybatisSuperMapper
  * @see io.github.nichetoolkit.rice.IdEntity
  * @see io.github.nichetoolkit.mybatis.MybatisEntityMapper
  * @since Jdk1.8

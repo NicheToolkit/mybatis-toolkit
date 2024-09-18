@@ -23,7 +23,7 @@ public class MybatisCoreAutoConfigure {
      * Instantiates a new mybatis core auto configure.
      */
     public MybatisCoreAutoConfigure() {
-        log.debug("================= mybatis-core-auto-config initiated ！ ===================");
+        log.debug("the auto configuration for [mybatis-core] initiated");
     }
 
 }

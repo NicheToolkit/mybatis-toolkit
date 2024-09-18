@@ -38,7 +38,7 @@ public class MybatisRecordAutoConfigure {
      * Instantiates a new mybatis record auto configure.
      */
     public MybatisRecordAutoConfigure() {
-        log.debug("================= mybatis-record-auto-config initiated ！ ===================");
+        log.debug("the auto configuration for [mybatis-record] initiated");
     }
 
     /**

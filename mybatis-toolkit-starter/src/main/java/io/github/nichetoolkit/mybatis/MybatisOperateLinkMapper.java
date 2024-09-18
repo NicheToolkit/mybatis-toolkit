@@ -1,9 +1,7 @@
-package io.github.nichetoolkit.mybatis.mapper;
+package io.github.nichetoolkit.mybatis;
 
-import io.github.nichetoolkit.mybatis.MybatisCaching;
 import io.github.nichetoolkit.mybatis.provider.MybatisOperateLinkProvider;
 import io.github.nichetoolkit.rice.mapper.OperateLinkMapper;
-import io.github.nichetoolkit.rice.mapper.OperateMapper;
 import org.apache.ibatis.annotations.Lang;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.UpdateProvider;
@@ -16,7 +14,7 @@ import java.util.Collection;
  * @param <I> {@link java.lang.Object} <p>the parameter can be of any type.</p>
  * @author Cyan (snow22314@outlook.com)
  * @see io.github.nichetoolkit.rice.mapper.OperateLinkMapper
- * @see io.github.nichetoolkit.mybatis.mapper.MybatisOperateMapper
+ * @see MybatisOperateMapper
  * @since Jdk1.8
  */
 public interface MybatisOperateLinkMapper<I> extends OperateLinkMapper<I>, MybatisOperateMapper<I> {
