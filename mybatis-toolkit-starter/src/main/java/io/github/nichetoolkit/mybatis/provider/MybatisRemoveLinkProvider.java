@@ -60,7 +60,7 @@ public class MybatisRemoveLinkProvider {
         OptionalUtils.falseable(GeneralUtils.isNotEmpty(logicSign), "the logicSign param of 'removeByLinkId' method cannot be empty!", message -> new MybatisParamErrorException("removeByLinkId", "logicSign", message));
         return MybatisSqlScript.caching(providerContext, table -> {
             OptionalUtils.falseable(GeneralUtils.isNotEmpty(table.getLogicColumn()), "the logic column of table with 'removeByLinkId' method cannot be empty!", message -> new MybatisTableErrorException("removeByLinkId", "logicColumn", message));
-            return "UPDATE " + Optional.ofNullable(tablename).orElse(table.tablename())
+            return "UPDATE " + table.tablename(tablename)
                     + " SET " + table.getLogicColumn().columnEqualsSign()
                     + " WHERE " + table.getLinkColumn().columnEqualsLink();
         });
@@ -108,9 +108,9 @@ public class MybatisRemoveLinkProvider {
             @Override
             public String sql(MybatisTable table) throws RestException {
                 OptionalUtils.falseable(GeneralUtils.isNotEmpty(table.getLogicColumn()), "the logic column of table with 'removeAllByLinkIds' method cannot be empty!", message -> new MybatisTableErrorException("removeAllByLinkIds", "logicColumn", message));
-                return "UPDATE " + Optional.ofNullable(tablename).orElse(table.tablename())
+                return "UPDATE " + table.tablename(tablename)
                         + " SET " + table.getLogicColumn().columnEqualsSign()
-                        + " WHERE " + table.getLinkColumn().getColumnName() + " IN " + foreach("linkIdList", "linkId", ", ", "(", ")", () -> "#{linkId}");
+                        + " WHERE " + table.getLinkColumn().columnName() + " IN " + foreach("linkIdList", "linkId", ", ", "(", ")", () -> "#{linkId}");
 
             }
         });

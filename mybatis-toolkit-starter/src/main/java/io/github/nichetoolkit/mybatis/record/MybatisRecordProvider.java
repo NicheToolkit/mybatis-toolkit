@@ -133,7 +133,7 @@ public class MybatisRecordProvider<M extends MybatisSuperMapper<E, I>, E extends
             return;
         }
         if (MybatisSuperMapper.class.isAssignableFrom(entityClazz)) {
-            Optional<Class<?>> optionalClass = MybatisClassFinder.findClass(entityClazz, null);
+            Optional<Class<?>> optionalClass = MybatisClassFinder.findEntityClass(entityClazz, null);
             if (optionalClass.isPresent() && !SUPER_MAPPER_CACHE.containsKey(optionalClass.get())) {
                 SUPER_MAPPER_CACHE.put(optionalClass.get(), (MybatisSuperMapper<E, I>) mapper);
             }

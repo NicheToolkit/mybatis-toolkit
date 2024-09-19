@@ -62,9 +62,9 @@ public class MybatisRemoveProvider {
         return MybatisSqlScript.caching(providerContext, table -> {
             OptionalUtils.falseable(GeneralUtils.isNotEmpty(table.getLogicColumn()), "the logic column of table with 'removeById' method cannot be empty!", message -> new MybatisTableErrorException("removeById", "logicColumn", message));
             OptionalUtils.trueable(table.isUseUnionKey(), "the union keys of table with 'removeById' method is unsupported!", message -> new MybatisUnsupportedErrorException("removeById", "unionKeys", message));
-            return "UPDATE " + Optional.ofNullable(tablename).orElse(table.tablename())
+            return "UPDATE " + table.tablename(tablename)
                     + " SET " + table.getLogicColumn().columnEqualsSign()
-                    + " WHERE " + table.getIdentityColumn().columnEqualsProperty();
+                    + " WHERE " + table.identityColumnEqualsProperty();
         });
     }
 
@@ -111,9 +111,9 @@ public class MybatisRemoveProvider {
             public String sql(MybatisTable table) throws RestException {
                 OptionalUtils.falseable(GeneralUtils.isNotEmpty(table.getLogicColumn()), "the logic column of table with 'removeAll' method cannot be empty!", message -> new MybatisTableErrorException("removeAll", "logicColumn", message));
                 OptionalUtils.trueable(table.isUseUnionKey(), "the union keys of table with 'removeAll' method is unsupported!", message -> new MybatisUnsupportedErrorException("removeAll", "unionKeys", message));
-                return "UPDATE " + Optional.ofNullable(tablename).orElse(table.tablename())
+                return "UPDATE " + table.tablename(tablename)
                         + " SET " + table.getLogicColumn().columnEqualsSign()
-                        + " WHERE " + table.getIdentityColumn().getColumnName() + " IN " + foreach("idList", "id", ", ", "(", ")", () -> table.getIdentityColumn().variable());
+                        + " WHERE " + table.getIdentityColumn().columnName() + " IN " + foreach("idList", "id", ", ", "(", ")", () -> table.getIdentityColumn().variable());
 
             }
         });
@@ -158,7 +158,7 @@ public class MybatisRemoveProvider {
             public String sql(MybatisTable table) throws RestException {
                 OptionalUtils.falseable(GeneralUtils.isNotEmpty(table.getLogicColumn()), "the logic column of table with 'removeAllByWhere' method cannot be empty!", message -> new MybatisTableErrorException("removeAllByWhere", "logicColumn", message));
                 OptionalUtils.trueable(table.isUseUnionKey(), "the union keys of table with 'removeAllByWhere' method is unsupported!", message -> new MybatisUnsupportedErrorException("removeAllByWhere", "unionKeys", message));
-                return "UPDATE " + Optional.ofNullable(tablename).orElse(table.tablename())
+                return "UPDATE " + table.tablename(tablename)
                         + " SET " + table.getLogicColumn().columnEqualsSign()
                         + " WHERE 1=1 "
                         + ifTest("whereSql!=null", () -> "${whereSql}");

@@ -62,7 +62,7 @@ public class MybatisOperateLinkProvider {
         OptionalUtils.falseable(GeneralUtils.isNotEmpty(operate), "the operate param of 'operateByLinkId' method cannot be empty!", message -> new MybatisParamErrorException("operateByLinkId", "operate", message));
         return MybatisSqlScript.caching(providerContext, table -> {
             OptionalUtils.falseable(GeneralUtils.isNotEmpty(table.getOperateColumn()), "the operate column of table with 'operateByLinkId' method cannot be empty!", message -> new MybatisTableErrorException("operateByLinkId", "operateColumn", message));
-            return "UPDATE " + Optional.ofNullable(tablename).orElse(table.tablename())
+            return "UPDATE " + table.tablename(tablename)
                     + " SET " + table.getOperateColumn().columnEqualsOperate()
                     + " WHERE " + table.getLinkColumn().columnEqualsLink();
         });
@@ -112,9 +112,9 @@ public class MybatisOperateLinkProvider {
             @Override
             public String sql(MybatisTable table) throws RestException {
                 OptionalUtils.falseable(GeneralUtils.isNotEmpty(table.getOperateColumn()), "the operate column of table with 'operateAllByLinkIds' method cannot be empty!", message -> new MybatisTableErrorException("operateAllByLinkIds", "operateColumn", message));
-                return "UPDATE " + Optional.ofNullable(tablename).orElse(table.tablename())
+                return "UPDATE " + table.tablename(tablename)
                         + " SET " + table.getOperateColumn().columnEqualsOperate()
-                        + " WHERE " + table.getLinkColumn().getColumnName() + " IN " + foreach("linkIdList", "linkId", ", ", "(", ")", () -> "#{linkId}");
+                        + " WHERE " + table.getLinkColumn().columnName() + " IN " + foreach("linkIdList", "linkId", ", ", "(", ")", () -> "#{linkId}");
 
             }
         });

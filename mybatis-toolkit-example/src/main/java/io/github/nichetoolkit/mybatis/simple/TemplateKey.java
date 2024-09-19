@@ -1,5 +1,6 @@
 package io.github.nichetoolkit.mybatis.simple;
 
+import io.github.nichetoolkit.mybatis.stereotype.RestIdentityKey;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -14,6 +15,7 @@ import java.util.Objects;
  * @since Jdk1.8
  */
 @Data
+@RestIdentityKey
 public class TemplateKey implements Serializable {
     /**
      * <code>templatePk1</code>

@@ -16,7 +16,7 @@ import java.util.Date;
  * @see io.github.nichetoolkit.mybatis.stereotype.table.RestEntity
  * @since Jdk1.8
  */
-@RestEntity(name = "ntr_simple")
+@RestEntity(name = "ntr_template")
 public class TemplateEntity extends DefaultInfoEntity<TemplateEntity, TemplateModel, TemplateKey> {
 
     /**

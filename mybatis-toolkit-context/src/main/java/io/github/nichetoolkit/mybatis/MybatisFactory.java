@@ -4,6 +4,8 @@ import io.github.nichetoolkit.mybatis.defaults.DefaultColumnFactoryChain;
 import io.github.nichetoolkit.mybatis.defaults.DefaultTableFactoryChain;
 import io.github.nichetoolkit.mybatis.helper.ServiceLoaderHelper;
 import io.github.nichetoolkit.rest.error.lack.InterfaceLackError;
+import org.springframework.lang.NonNull;
+import org.springframework.lang.Nullable;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -25,13 +27,17 @@ public abstract class MybatisFactory {
      * @param mapperMethod {@link java.lang.reflect.Method} <p>the mapper method parameter is <code>Method</code> type.</p>
      * @return {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>the table return object is <code>MybatisTable</code> type.</p>
      * @see java.lang.Class
+     * @see org.springframework.lang.NonNull
      * @see java.lang.reflect.Method
+     * @see org.springframework.lang.Nullable
      * @see io.github.nichetoolkit.mybatis.MybatisTable
      */
-    public static MybatisTable createTable(Class<?> mapperType, Method mapperMethod) {
-        Optional<Class<?>> optionalClass = MybatisClassFinder.findClass(mapperType, mapperMethod);
+    public static MybatisTable createTable(@NonNull Class<?> mapperType, @Nullable Method mapperMethod) {
+        Optional<Class<?>> optionalClass = MybatisClassFinder.findEntityClass(mapperType, mapperMethod);
         if (optionalClass.isPresent()) {
-            return createTable(optionalClass.get());
+            Class<?> entityType = optionalClass.get();
+            Optional<Class<?>> identityKeyClass = MybatisClassFinder.findIdentityKeyClass(mapperType, entityType);
+            return identityKeyClass.map(clazz -> createTable(entityType, clazz)).orElseGet(() -> createTable(entityType, (Class<?>) null));
         }
         throw new InterfaceLackError("Can't obtain " + (mapperMethod != null ?
                 mapperMethod.getName() + " method" : mapperType.getSimpleName() + " interface") + " corresponding mybatis class");
@@ -40,27 +46,30 @@ public abstract class MybatisFactory {
     /**
      * <code>createTable</code>
      * <p>the table method.</p>
-     * @param clazz {@link java.lang.Class} <p>the clazz parameter is <code>Class</code> type.</p>
+     * @param entityType      {@link java.lang.Class} <p>the entity type parameter is <code>Class</code> type.</p>
+     * @param identityKeyType {@link java.lang.Class} <p>the identity key type parameter is <code>Class</code> type.</p>
      * @return {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>the table return object is <code>MybatisTable</code> type.</p>
      * @see java.lang.Class
+     * @see org.springframework.lang.NonNull
+     * @see org.springframework.lang.Nullable
      * @see io.github.nichetoolkit.mybatis.MybatisTable
      */
-    public static MybatisTable createTable(Class<?> clazz) {
-        /** 处理MybatisTable */
+    public static MybatisTable createTable(@NonNull Class<?> entityType, @Nullable Class<?> identityKeyType) {
+        /* 处理MybatisTable */
         MybatisTableFactory.Chain tableFactoryChain = Instance.tableFactoryChain();
-        /** 创建 MybatisTable，不处理列（字段），此时返回的 MybatisTable 已经经过了所有处理链的加工 */
-        MybatisTable table = tableFactoryChain.createTable(clazz);
+        /* 创建 MybatisTable，不处理列（字段），此时返回的 MybatisTable 已经经过了所有处理链的加工 */
+        MybatisTable table = tableFactoryChain.createTable(entityType, identityKeyType);
         if (table == null) {
-            throw new NullPointerException("Unable to get " + clazz.getName() + " mybatis class information");
+            throw new NullPointerException("Unable to get " + entityType.getName() + " mybatis class information");
         }
-        /** 如果实体表已经处理好，直接返回 */
+        /* 如果实体表已经处理好，直接返回 */
         if (!table.isReady()) {
-            synchronized (clazz) {
+            synchronized (entityType) {
                 if (!table.isReady()) {
-                    /** 处理MybatisColumn */
+                    /* 处理MybatisColumn */
                     MybatisColumnFactory.Chain columnFactoryChain = Instance.columnFactoryChain();
-                    /** 未处理的需要获取字段 */
-                    Class<?> declaredClass = clazz;
+                    /* 未处理的需要获取字段 */
+                    Class<?> declaredClass = entityType;
                     boolean isSuperclass = false;
                     while (declaredClass != null && declaredClass != Object.class) {
                         Field[] declaredFields = declaredClass.getDeclaredFields();
@@ -69,10 +78,10 @@ public abstract class MybatisFactory {
                         }
                         for (Field declaredField : declaredFields) {
                             int modifiers = declaredField.getModifiers();
-                            /** 排除 static 和 transient 修饰的字段 */
+                            /* 排除 static 和 transient 修饰的字段 */
                             if (!Modifier.isStatic(modifiers) && !Modifier.isTransient(modifiers)) {
-                                MybatisField field = new MybatisField(clazz, declaredField);
-                                /** 是否需要排除字段 */
+                                MybatisField field = new MybatisField(entityType, declaredField);
+                                /* 是否需要排除字段 */
                                 if (table.isExcludeField(field)) {
                                     continue;
                                 }
@@ -80,16 +89,15 @@ public abstract class MybatisFactory {
                                 optionalColumns.ifPresent(columns -> columns.forEach(table::addColumn));
                             }
                         }
-                        /** 迭代获取父类 */
-                        declaredClass = declaredClass.getSuperclass();
-                        /** 排除父类 */
-                        while (table.isExcludeSuperClass(declaredClass) && declaredClass != Object.class) {
+                        /* 迭代获取父类 */
+                        /* 排除父类 */
+                        do {
                             declaredClass = declaredClass.getSuperclass();
-                        }
+                        } while (table.isExcludeSuperClass(declaredClass) && declaredClass != Object.class);
                         isSuperclass = true;
                     }
                     table.readyColumns();
-                    /** 标记处理完成 */
+                    /* 标记处理完成 */
                     table.setReady(true);
                 }
             }

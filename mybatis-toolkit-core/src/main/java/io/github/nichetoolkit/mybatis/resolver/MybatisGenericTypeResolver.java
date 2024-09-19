@@ -1,6 +1,6 @@
 package io.github.nichetoolkit.mybatis.resolver;
 
-import io.github.nichetoolkit.rest.resolver.RestGenericTypeResolver;
+import io.github.nichetoolkit.rest.reflect.GenericTypeResolver;
 import org.apache.ibatis.annotations.ResultType;
 import org.apache.ibatis.annotations.MapKey;
 import org.apache.ibatis.cursor.Cursor;
@@ -29,7 +29,7 @@ public class MybatisGenericTypeResolver {
      */
     public static Class<?> resolveMapperReturnType(Method mapperMethod, Class<?> mapperType) {
         Class<?> returnType = mapperMethod.getReturnType();
-        Type resolvedReturnType = RestGenericTypeResolver.resolveReturnType(mapperMethod, mapperType);
+        Type resolvedReturnType = GenericTypeResolver.resolveReturnType(mapperMethod, mapperType);
         if (resolvedReturnType instanceof Class) {
             /* resolvedReturnType 为具体类型 */
             returnType = (Class<?>) resolvedReturnType;
@@ -90,46 +90,6 @@ public class MybatisGenericTypeResolver {
             }
         }
         return returnType;
-    }
-
-    /**
-     * <code>resolveMapperTypes</code>
-     * <p>the mapper types method.</p>
-     * @param srcType {@link java.lang.Class} <p>the src type parameter is <code>Class</code> type.</p>
-     * @return {@link java.lang.reflect.Type} <p>the mapper types return object is <code>Type</code> type.</p>
-     * @see java.lang.Class
-     * @see java.lang.reflect.Type
-     */
-    public static Type[] resolveMapperTypes(Class<?> srcType) {
-        Type[] types = srcType.getGenericInterfaces();
-        List<Type> result = new ArrayList<>();
-        for (Type type : types) {
-            if (type instanceof Class) {
-                result.addAll(Arrays.asList(resolveMapperTypes((Class<?>) type)));
-            } else if (type instanceof ParameterizedType) {
-                Collections.addAll(result, ((ParameterizedType) type).getActualTypeArguments());
-            }
-        }
-        return result.toArray(new Type[]{});
-    }
-
-    /**
-     * <code>resolveMapperTypes</code>
-     * <p>the mapper types method.</p>
-     * @param method  {@link java.lang.reflect.Method} <p>the method parameter is <code>Method</code> type.</p>
-     * @param srcType {@link java.lang.reflect.Type} <p>the src type parameter is <code>Type</code> type.</p>
-     * @return {@link java.lang.reflect.Type} <p>the mapper types return object is <code>Type</code> type.</p>
-     * @see java.lang.reflect.Method
-     * @see java.lang.reflect.Type
-     */
-    public static Type[] resolveMapperTypes(Method method, Type srcType) {
-        Class<?> declaringClass = method.getDeclaringClass();
-        TypeVariable<? extends Class<?>>[] typeParameters = declaringClass.getTypeParameters();
-        Type[] result = new Type[typeParameters.length];
-        for (int i = 0; i < typeParameters.length; i++) {
-            result[i] = RestGenericTypeResolver.resolveType(typeParameters[i], srcType, declaringClass);
-        }
-        return result;
     }
 
 }

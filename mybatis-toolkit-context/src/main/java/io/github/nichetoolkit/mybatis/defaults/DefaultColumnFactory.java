@@ -39,32 +39,32 @@ public class DefaultColumnFactory implements MybatisColumnFactory {
 
     @Override
     public boolean supports(MybatisTable table, MybatisField field) {
-        /** 排除RestExclude 注解的字段 以及 RestExcludes 注解的字段 */
+        /* 排除RestExclude 注解的字段 以及 RestExcludes 注解的字段 */
         RestExclude restExclude = field.getAnnotation(RestExclude.class);
         String fieldName = field.fieldName();
         List<String> excludeIgnoreKeys= table.getExcludeIgnoreKeys();
         if (GeneralUtils.isNotEmpty(excludeIgnoreKeys)) {
-            /** 当前字段属于 需要排除的字段类型 返回 false */
+            /* 当前字段属于 需要排除的字段类型 返回 false */
             if (excludeIgnoreKeys.contains(fieldName)) {
                 return true;
             }
         }
         if (GeneralUtils.isNotEmpty(restExclude)) {
-            /** 当前字段被 RestExclude 修饰 且 exclude值为 true 时 返回 false */
+            /* 当前字段被 RestExclude 修饰 且 exclude值为 true 时 返回 false */
             if (restExclude.exclude()) {
                 return false;
             }
         }
         List<String> excludeFields = table.getExcludeFields();
         if (GeneralUtils.isNotEmpty(excludeFields)) {
-            /** 当前字段属于 需要排除的字段名称 返回 false */
+            /* 当前字段属于 需要排除的字段名称 返回 false */
             if (excludeFields.contains(fieldName)) {
                 return false;
             }
         }
         List<String> excludeGlobals = tableProperties.getExcludes();
         if (GeneralUtils.isNotEmpty(excludeGlobals)) {
-            /** 当前字段属于 需要排除的字段名称 返回 false */
+            /* 当前字段属于 需要排除的字段名称 返回 false */
             if (excludeGlobals.contains(fieldName)) {
                 return false;
             }
@@ -72,7 +72,7 @@ public class DefaultColumnFactory implements MybatisColumnFactory {
         Class<?> fieldType = field.fieldType();
         List<Class<?>> excludeFieldTypes = table.getExcludeFieldTypes();
         if (GeneralUtils.isNotEmpty(excludeFieldTypes)) {
-            /** 当前字段属于 需要排除的字段类型 返回 false */
+            /* 当前字段属于 需要排除的字段类型 返回 false */
             if (excludeFieldTypes.contains(fieldType)) {
                 return false;
             }
@@ -80,7 +80,7 @@ public class DefaultColumnFactory implements MybatisColumnFactory {
         Class<?> declaringClass = field.declaringClass();
         List<Class<?>> excludeSuperClasses = table.getExcludeSuperClasses();
         if (GeneralUtils.isNotEmpty(excludeSuperClasses)) {
-            /** 当前字段属于 需要排除的父类字段 返回 false  */
+            /* 当前字段属于 需要排除的父类字段 返回 false  */
             return !excludeSuperClasses.contains(declaringClass);
         }
         return true;
@@ -88,14 +88,17 @@ public class DefaultColumnFactory implements MybatisColumnFactory {
 
     @Override
     public Optional<List<MybatisColumn>> createColumn(MybatisTable mybatisTable, MybatisField field, Chain chain) {
-        /** 默认针对 entity 实体中的所有字段构建 column 数据 */
+        /* 默认针对 entity 实体中的所有字段构建 column 数据 */
         MybatisColumn mybatisColumn = MybatisColumn.of(field,tableProperties.getProperties());
         RestName restName = field.getAnnotation(RestName.class);
+        String columnName = Optional.ofNullable(restName).map(RestName::name).orElse(null);
+        String columnComment = Optional.ofNullable(restName).map(RestName::comment).orElse(null);
         MybatisStyle mybatisStyle = MybatisStyle.style(mybatisTable.getStyleName());
         if (GeneralUtils.isNotEmpty(restName)) {
-            mybatisColumn.setColumnName(GeneralUtils.isEmpty(restName.name()) ? mybatisStyle.columnName(mybatisTable, field) : restName.name());
+            mybatisColumn.setColumn(GeneralUtils.isEmpty(columnName) ? mybatisStyle.columnName(mybatisTable, field) : restName.name());
+            mybatisColumn.setComment(columnComment);
         } else {
-            mybatisColumn.setColumnName(mybatisStyle.columnName(mybatisTable, field));
+            mybatisColumn.setColumn(mybatisStyle.columnName(mybatisTable, field));
         }
         RestOrder restOrder = field.getAnnotation(RestOrder.class);
         if (GeneralUtils.isNotEmpty(restOrder)) {
@@ -173,7 +176,7 @@ public class DefaultColumnFactory implements MybatisColumnFactory {
         } else {
             mybatisColumn.setJdbcType(JdbcType.UNDEFINED);
         }
-        /** restProperty 注解处理 */
+        /* restProperty 注解处理 */
         RestProperty restProperty = field.getAnnotation(RestProperty.class);
         if (GeneralUtils.isNotEmpty(restProperty) && GeneralUtils.isNotEmpty(restProperty.name())) {
             mybatisColumn.setProperty(restProperty);

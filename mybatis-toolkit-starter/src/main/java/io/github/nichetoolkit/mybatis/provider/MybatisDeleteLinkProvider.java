@@ -57,7 +57,7 @@ public class MybatisDeleteLinkProvider {
         OptionalUtils.falseable(GeneralUtils.isNotEmpty(linkId), "the link id param of 'deleteByLinkId' method cannot be empty!", message -> new MybatisTableErrorException("deleteByLinkId", "linkId", message));
         return MybatisSqlScript.caching(providerContext, table -> {
             OptionalUtils.falseable(GeneralUtils.isNotEmpty(table.getOperateColumn()), "the delete column of table with 'deleteByLinkId' method cannot be empty!", message -> new MybatisTableErrorException("deleteByLinkId", "deleteColumn", message));
-            return "DELETE FROM " + Optional.ofNullable(tablename).orElse(table.tablename())
+            return "DELETE FROM " + table.tablename(tablename)
                     + " WHERE " + table.getLinkColumn().columnEqualsLink();
         });
     }
@@ -101,8 +101,8 @@ public class MybatisDeleteLinkProvider {
             @Override
             public String sql(MybatisTable table) throws RestException {
                 OptionalUtils.falseable(GeneralUtils.isNotEmpty(table.getOperateColumn()), "the delete column of table with 'deleteAllByLinkIds' method cannot be empty!", message -> new MybatisTableErrorException("deleteAllByLinkIds", "deleteColumn", message));
-                return "DELETE FROM " + Optional.ofNullable(tablename).orElse(table.tablename())
-                        + " WHERE " + table.getLinkColumn().getColumnName() + " IN " + foreach("linkIdList", "linkId", ", ", "(", ")", () -> "#{linkId}");
+                return "DELETE FROM " + table.tablename(tablename)
+                        + " WHERE " + table.getLinkColumn().columnName() + " IN " + foreach("linkIdList", "linkId", ", ", "(", ")", () -> "#{linkId}");
 
             }
         });

@@ -57,8 +57,8 @@ public class MybatisDeleteProvider {
         OptionalUtils.falseable(GeneralUtils.isNotEmpty(id), "the id param of 'deleteById' method cannot be empty!", message -> new MybatisParamErrorException("deleteById", "id", message));
         return MybatisSqlScript.caching(providerContext, table -> {
             OptionalUtils.trueable(table.isUseUnionKey(), "the union keys of table with 'deleteById' method is unsupported!", message -> new MybatisUnsupportedErrorException("deleteById", "unionKeys", message));
-            return "DELETE FROM " + Optional.ofNullable(tablename).orElse(table.tablename())
-                    + " WHERE " + table.getIdentityColumn().columnEqualsProperty();
+            return "DELETE FROM " + table.tablename(tablename)
+                    + " WHERE " + table.identityColumnEqualsProperty();
         });
     }
 
@@ -101,8 +101,8 @@ public class MybatisDeleteProvider {
             @Override
             public String sql(MybatisTable table) throws RestException {
                 OptionalUtils.trueable(table.isUseUnionKey(), "the union keys of table with 'deleteByAll' method is unsupported!", message -> new MybatisUnsupportedErrorException("deleteByAll", "unionKeys", message));
-                return "DELETE FROM " + Optional.ofNullable(tablename).orElse(table.tablename())
-                        + " WHERE " + table.getIdentityColumn().getColumnName() + " IN " + foreach("idList", "id", ", ", "(", ")", () -> table.getIdentityColumn().variable());
+                return "DELETE FROM " + table.tablename(tablename)
+                        + " WHERE " + table.getIdentityColumn().columnName() + " IN " + foreach("idList", "id", ", ", "(", ")", () -> table.getIdentityColumn().variable());
             }
         });
     }
@@ -141,7 +141,7 @@ public class MybatisDeleteProvider {
         return MybatisSqlScript.caching(providerContext, new MybatisSqlScript() {
             @Override
             public String sql(MybatisTable table) throws RestException {
-                return "DELETE FROM " + Optional.ofNullable(tablename).orElse(table.tablename())
+                return "DELETE FROM " + table.tablename(tablename)
                         + " WHERE 1=1 "
                         + ifTest("whereSql!=null", () -> "${whereSql}");
             }

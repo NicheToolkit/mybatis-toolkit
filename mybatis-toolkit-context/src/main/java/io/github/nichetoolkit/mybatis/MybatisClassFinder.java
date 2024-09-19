@@ -1,6 +1,7 @@
 package io.github.nichetoolkit.mybatis;
 
 import io.github.nichetoolkit.mybatis.helper.ServiceLoaderHelper;
+import org.springframework.lang.NonNull;
 
 import java.lang.reflect.Method;
 import java.util.List;
@@ -17,20 +18,41 @@ import java.util.Optional;
 public interface MybatisClassFinder extends MybatisOrder {
 
     /**
-     * <code>findClass</code>
-     * <p>the class method.</p>
+     * <code>findEntityClass</code>
+     * <p>the entity class method.</p>
      * @param mapperType   {@link java.lang.Class} <p>the mapper type parameter is <code>Class</code> type.</p>
      * @param mapperMethod {@link java.lang.reflect.Method} <p>the mapper method parameter is <code>Method</code> type.</p>
-     * @return {@link java.util.Optional} <p>the class return object is <code>Optional</code> type.</p>
+     * @return {@link java.util.Optional} <p>the entity class return object is <code>Optional</code> type.</p>
      * @see java.lang.Class
      * @see java.lang.reflect.Method
      * @see java.util.Optional
      */
-    static Optional<Class<?>> findClass(Class<?> mapperType, Method mapperMethod) {
+    static Optional<Class<?>> findEntityClass(Class<?> mapperType, Method mapperMethod) {
         Objects.requireNonNull(mapperType);
         List<MybatisClassFinder> instances = ClassFinderInstance.instances();
         for (MybatisClassFinder instance : ClassFinderInstance.instances()) {
             Optional<Class<?>> optionalClass = instance.findEntity(mapperType, mapperMethod);
+            if (optionalClass.isPresent()) {
+                return optionalClass;
+            }
+        }
+        return Optional.empty();
+    }
+
+    /**
+     * <code>findIdentityKeyClass</code>
+     * <p>the identity key class method.</p>
+     * @param mapperType {@link java.lang.Class} <p>the mapper type parameter is <code>Class</code> type.</p>
+     * @param entityType {@link java.lang.Class} <p>the entity type parameter is <code>Class</code> type.</p>
+     * @return {@link java.util.Optional} <p>the identity key class return object is <code>Optional</code> type.</p>
+     * @see java.lang.Class
+     * @see java.util.Optional
+     */
+    static Optional<Class<?>> findIdentityKeyClass(Class<?> mapperType, Class<?> entityType) {
+        Objects.requireNonNull(entityType);
+        List<MybatisClassFinder> instances = ClassFinderInstance.instances();
+        for (MybatisClassFinder instance : ClassFinderInstance.instances()) {
+            Optional<Class<?>> optionalClass = instance.findIdentityKey(mapperType, entityType);
             if (optionalClass.isPresent()) {
                 return optionalClass;
             }
@@ -45,10 +67,23 @@ public interface MybatisClassFinder extends MybatisOrder {
      * @param mapperMethod {@link java.lang.reflect.Method} <p>the mapper method parameter is <code>Method</code> type.</p>
      * @return {@link java.util.Optional} <p>the entity return object is <code>Optional</code> type.</p>
      * @see java.lang.Class
+     * @see org.springframework.lang.NonNull
      * @see java.lang.reflect.Method
      * @see java.util.Optional
      */
-    Optional<Class<?>> findEntity(Class<?> mapperType, Method mapperMethod);
+    Optional<Class<?>> findEntity(@NonNull Class<?> mapperType, Method mapperMethod);
+
+    /**
+     * <code>findIdentityKey</code>
+     * <p>the identity key method.</p>
+     * @param mapperType {@link java.lang.Class} <p>the mapper type parameter is <code>Class</code> type.</p>
+     * @param entityType {@link java.lang.Class} <p>the entity type parameter is <code>Class</code> type.</p>
+     * @return {@link java.util.Optional} <p>the identity key return object is <code>Optional</code> type.</p>
+     * @see java.lang.Class
+     * @see org.springframework.lang.NonNull
+     * @see java.util.Optional
+     */
+    Optional<Class<?>> findIdentityKey(@NonNull Class<?> mapperType, @NonNull Class<?> entityType);
 
     /**
      * <code>isEntity</code>
@@ -58,6 +93,15 @@ public interface MybatisClassFinder extends MybatisOrder {
      * @see java.lang.Class
      */
     boolean isEntity(Class<?> clazz);
+
+    /**
+     * <code>isIdentityKey</code>
+     * <p>the identity key method.</p>
+     * @param clazz {@link java.lang.Class} <p>the clazz parameter is <code>Class</code> type.</p>
+     * @return boolean <p>the identity key return object is <code>boolean</code> type.</p>
+     * @see java.lang.Class
+     */
+    boolean isIdentityKey(Class<?> clazz);
 
     /**
      * <code>ClassFinderInstance</code>

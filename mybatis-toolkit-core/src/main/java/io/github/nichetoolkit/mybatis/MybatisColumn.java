@@ -12,6 +12,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.regex.Matcher;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static io.github.nichetoolkit.mybatis.MybatisTable.DELIMITER;
 
@@ -42,7 +44,13 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
      * {@link java.lang.String} <p>the <code>columnName</code> field.</p>
      * @see java.lang.String
      */
-    protected String columnName;
+    protected String column;
+    /**
+     * <code>comment</code>
+     * {@link java.lang.String} <p>the <code>comment</code> field.</p>
+     * @see java.lang.String
+     */
+    protected String comment;
     /**
      * <code>order</code>
      * {@link java.lang.Integer} <p>the <code>order</code> field.</p>
@@ -218,6 +226,10 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
         }
     }
 
+    public String columnName() {
+        return this.column;
+    }
+
     /**
      * <code>fieldName</code>
      * <p>the name method.</p>
@@ -246,6 +258,22 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
      */
     public String property() {
         return property("");
+    }
+
+
+    /**
+     * <code>aliasColumn</code>
+     * <p>the column method.</p>
+     * @param alias {@link java.lang.String} <p>the alias parameter is <code>String</code> type.</p>
+     * @return {@link java.lang.String} <p>the column return object is <code>String</code> type.</p>
+     * @see java.lang.String
+     */
+    public String aliasColumn(String alias) {
+        if (GeneralUtils.isNotEmpty(alias)) {
+            return alias + "." + this.column;
+        } else {
+            return this.column;
+        }
     }
 
     /**
@@ -297,10 +325,10 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
      */
     public String excluded(@NonNull String tablename) {
         if (this.forceUpdate) {
-            return this.columnName + " = " + this.forceUpdateValue;
+            return this.columnName() + " = " + this.forceUpdateValue;
         } else {
-            return this.columnName + " = CASE WHEN EXCLUDED." + this.columnName + " IS NOT NULL THEN EXCLUDED." +
-                    this.columnName + " ELSE " + tablename + "." + this.columnName + " END";
+            return this.columnName() + " = CASE WHEN EXCLUDED." + this.columnName() + " IS NOT NULL THEN EXCLUDED." +
+                    this.columnName() + " ELSE " + tablename + "." + this.columnName() + " END";
         }
     }
 
@@ -311,7 +339,7 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
      * @see java.lang.String
      */
     public String excluded() {
-       return excluded(this.table.tablename());
+        return excluded(this.table.tablename());
     }
 
     /**
@@ -364,6 +392,17 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
     }
 
     /**
+     * <code>aliasColumnAsProperty</code>
+     * <p>the column as property method.</p>
+     * @param alias {@link java.lang.String} <p>the alias parameter is <code>String</code> type.</p>
+     * @return {@link java.lang.String} <p>the column as property return object is <code>String</code> type.</p>
+     * @see java.lang.String
+     */
+    public String aliasColumnAsProperty(String alias) {
+        return aliasColumnAsProperty(alias, "");
+    }
+
+    /**
      * <code>columnAsProperty</code>
      * <p>the as property method.</p>
      * @param prefix {@link java.lang.String} <p>the prefix parameter is <code>String</code> type.</p>
@@ -371,18 +410,31 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
      * @see java.lang.String
      */
     public String columnAsProperty(String prefix) {
+        return aliasColumnAsProperty("", prefix);
+    }
+
+    /**
+     * <code>aliasColumnAsProperty</code>
+     * <p>the column as property method.</p>
+     * @param alias  {@link java.lang.String} <p>the alias parameter is <code>String</code> type.</p>
+     * @param prefix {@link java.lang.String} <p>the prefix parameter is <code>String</code> type.</p>
+     * @return {@link java.lang.String} <p>the column as property return object is <code>String</code> type.</p>
+     * @see java.lang.String
+     */
+    public String aliasColumnAsProperty(String alias, String prefix) {
         /* 这里的column 和 property 的比较 应该是需要忽略界定符之后再比较 */
         /* mysql 中 【`order`】 应该认为是 和 field 的 【order】 相同 */
-        String column = this.columnName;
-        Matcher matcher = DELIMITER.matcher(this.columnName);
+        String column = this.columnName();
+        Matcher matcher = DELIMITER.matcher(this.columnName());
         if (matcher.find()) {
             column = matcher.group(1);
         }
         if (!Objects.equals(column, property(prefix))) {
-            return this.columnName + " AS " + property(prefix);
+            return aliasColumn(alias) + " AS " + property(prefix);
         }
-        return this.columnName;
+        return aliasColumn(alias);
     }
+
 
     /**
      * <code>columnEqualsKey</code>
@@ -391,7 +443,18 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
      * @see java.lang.String
      */
     public String columnEqualsKey() {
-        return this.columnName + " = " + "${key}";
+        return aliasColumnEqualsKey("");
+    }
+
+    /**
+     * <code>aliasColumnEqualsKey</code>
+     * <p>the column equals key method.</p>
+     * @param alias {@link java.lang.String} <p>the alias parameter is <code>String</code> type.</p>
+     * @return {@link java.lang.String} <p>the column equals key return object is <code>String</code> type.</p>
+     * @see java.lang.String
+     */
+    public String aliasColumnEqualsKey(String alias) {
+        return aliasColumn(alias) + " = " + "${key}";
     }
 
     /**
@@ -401,7 +464,18 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
      * @see java.lang.String
      */
     public String columnEqualsSign() {
-        return this.columnName + " = " + "${sign}";
+        return aliasColumnEqualsSign("");
+    }
+
+    /**
+     * <code>aliasColumnEqualsSign</code>
+     * <p>the column equals sign method.</p>
+     * @param alias {@link java.lang.String} <p>the alias parameter is <code>String</code> type.</p>
+     * @return {@link java.lang.String} <p>the column equals sign return object is <code>String</code> type.</p>
+     * @see java.lang.String
+     */
+    public String aliasColumnEqualsSign(String alias) {
+        return aliasColumn(alias) + " = " + "${logicSign}";
     }
 
     /**
@@ -411,7 +485,18 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
      * @see java.lang.String
      */
     public String columnEqualsOperate() {
-        return this.columnName + " = " + "${operate}";
+        return aliasColumnEqualsOperate("");
+    }
+
+    /**
+     * <code>aliasColumnEqualsOperate</code>
+     * <p>the column equals operate method.</p>
+     * @param alias {@link java.lang.String} <p>the alias parameter is <code>String</code> type.</p>
+     * @return {@link java.lang.String} <p>the column equals operate return object is <code>String</code> type.</p>
+     * @see java.lang.String
+     */
+    public String aliasColumnEqualsOperate(String alias) {
+        return aliasColumn(alias) + " = " + "${operate}";
     }
 
     /**
@@ -421,7 +506,18 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
      * @see java.lang.String
      */
     public String columnEqualsLink() {
-        return this.columnName + " = " + "#{linkId}";
+        return aliasColumnEqualsLink("");
+    }
+
+    /**
+     * <code>aliasColumnEqualsLink</code>
+     * <p>the column equals link method.</p>
+     * @param alias {@link java.lang.String} <p>the alias parameter is <code>String</code> type.</p>
+     * @return {@link java.lang.String} <p>the column equals link return object is <code>String</code> type.</p>
+     * @see java.lang.String
+     */
+    public String aliasColumnEqualsLink(String alias) {
+        return aliasColumn(alias) + " = " + "#{linkId}";
     }
 
     /**
@@ -431,7 +527,18 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
      * @see java.lang.String
      */
     public String columnEqualsProperty() {
-        return columnEqualsProperty("");
+        return aliasColumnEqualsProperty("");
+    }
+
+    /**
+     * <code>aliasColumnEqualsProperty</code>
+     * <p>the column equals property method.</p>
+     * @param alias {@link java.lang.String} <p>the alias parameter is <code>String</code> type.</p>
+     * @return {@link java.lang.String} <p>the column equals property return object is <code>String</code> type.</p>
+     * @see java.lang.String
+     */
+    public String aliasColumnEqualsProperty(String alias) {
+        return aliasColumnEqualsProperty(alias, "");
     }
 
     /**
@@ -441,7 +548,19 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
      * @see java.lang.String
      */
     public String columnNotEqualsProperty() {
-        return columnNotEqualsProperty("");
+        return aliasColumnNotEqualsProperty("");
+    }
+
+
+    /**
+     * <code>aliasColumnNotEqualsProperty</code>
+     * <p>the column not equals property method.</p>
+     * @param alias {@link java.lang.String} <p>the alias parameter is <code>String</code> type.</p>
+     * @return {@link java.lang.String} <p>the column not equals property return object is <code>String</code> type.</p>
+     * @see java.lang.String
+     */
+    public String aliasColumnNotEqualsProperty(String alias) {
+        return aliasColumnNotEqualsProperty(alias, "");
     }
 
     /**
@@ -452,7 +571,20 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
      * @see java.lang.String
      */
     public String columnEqualsProperty(String prefix) {
-        return this.columnName + " = " + variable(prefix);
+        return aliasColumnEqualsProperty("", prefix);
+    }
+
+
+    /**
+     * <code>aliasColumnEqualsProperty</code>
+     * <p>the column equals property method.</p>
+     * @param alias  {@link java.lang.String} <p>the alias parameter is <code>String</code> type.</p>
+     * @param prefix {@link java.lang.String} <p>the prefix parameter is <code>String</code> type.</p>
+     * @return {@link java.lang.String} <p>the column equals property return object is <code>String</code> type.</p>
+     * @see java.lang.String
+     */
+    public String aliasColumnEqualsProperty(String alias, String prefix) {
+        return aliasColumn(alias) + " = " + variable(prefix);
     }
 
     /**
@@ -463,7 +595,20 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
      * @see java.lang.String
      */
     public String columnNotEqualsProperty(String prefix) {
-        return this.columnName + " != " + variable(prefix);
+        return aliasColumnNotEqualsProperty("", prefix);
+    }
+
+
+    /**
+     * <code>aliasColumnNotEqualsProperty</code>
+     * <p>the column not equals property method.</p>
+     * @param alias  {@link java.lang.String} <p>the alias parameter is <code>String</code> type.</p>
+     * @param prefix {@link java.lang.String} <p>the prefix parameter is <code>String</code> type.</p>
+     * @return {@link java.lang.String} <p>the column not equals property return object is <code>String</code> type.</p>
+     * @see java.lang.String
+     */
+    public String aliasColumnNotEqualsProperty(String alias, String prefix) {
+        return aliasColumn(alias) + " != " + variable(prefix);
     }
 
     /**
@@ -516,12 +661,12 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
         if (this == o) return true;
         if (!(o instanceof MybatisColumn)) return false;
         MybatisColumn that = (MybatisColumn) o;
-        return this.columnName.equals(that.columnName);
+        return this.columnName().equals(that.columnName());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.columnName);
+        return Objects.hash(this.columnName());
     }
 
     @Override

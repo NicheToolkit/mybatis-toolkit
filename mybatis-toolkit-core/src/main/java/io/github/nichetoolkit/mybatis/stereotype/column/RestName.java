@@ -48,5 +48,5 @@ public @interface RestName {
      * @return {@link java.lang.String} <p>the return object is <code>String</code> type.</p>
      * @see java.lang.String
      */
-    String remark() default "";
+    String comment() default "";
 }

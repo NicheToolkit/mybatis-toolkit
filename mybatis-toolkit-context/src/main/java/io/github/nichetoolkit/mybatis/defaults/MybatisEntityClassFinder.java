@@ -3,14 +3,16 @@ package io.github.nichetoolkit.mybatis.defaults;
 
 import io.github.nichetoolkit.mybatis.MybatisClassFinder;
 import io.github.nichetoolkit.mybatis.resolver.MybatisGenericTypeResolver;
-import io.github.nichetoolkit.rest.resolver.DefaultGenericArrayType;
-import io.github.nichetoolkit.rest.resolver.DefaultParameterizedType;
-import io.github.nichetoolkit.rest.resolver.DefaultWildcardType;
-import io.github.nichetoolkit.rest.resolver.RestGenericTypeResolver;
+import io.github.nichetoolkit.rest.reflect.GenericTypeResolver;
+import io.github.nichetoolkit.rest.reflect.DefaultGenericArrayType;
+import io.github.nichetoolkit.rest.reflect.DefaultParameterizedType;
+import io.github.nichetoolkit.rest.reflect.DefaultWildcardType;
+import org.springframework.lang.NonNull;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.util.Optional;
+import java.util.function.Predicate;
 
 /**
  * <code>MybatisEntityClassFinder</code>
@@ -22,7 +24,7 @@ import java.util.Optional;
 public abstract class MybatisEntityClassFinder implements MybatisClassFinder {
 
     @Override
-    public Optional<Class<?>> findEntity(Class<?> mapperType, Method mapperMethod) {
+    public Optional<Class<?>> findEntity(@NonNull Class<?> mapperType, Method mapperMethod) {
         /* 先判断返回值 */
         Optional<Class<?>> optionalClass;
         if (mapperMethod != null) {
@@ -42,6 +44,17 @@ public abstract class MybatisEntityClassFinder implements MybatisClassFinder {
             }
         }
         return getEntityClassByMapperType(mapperType);
+    }
+
+    @Override
+    public Optional<Class<?>> findIdentityKey(@NonNull Class<?> mapperType, @NonNull Class<?> entityType) {
+        /* entityType 泛型寻找 */
+        Optional<Class<?>> optionalClass = getIdentityKeyClassByEntityType(entityType);
+        if (optionalClass.isPresent()) {
+            return optionalClass;
+        }
+        /* mapperType 泛型寻找 */
+        return getIdentityKeyClassByMapperType(mapperType);
     }
 
     /**
@@ -70,7 +83,7 @@ public abstract class MybatisEntityClassFinder implements MybatisClassFinder {
      * @see java.util.Optional
      */
     protected Optional<Class<?>> getEntityClassByMapperMethodParamTypes(Class<?> mapperType, Method mapperMethod) {
-        return getEntityClassByTypes(RestGenericTypeResolver.resolveParamTypes(mapperMethod, mapperType));
+        return getClassByTypes(GenericTypeResolver.resolveParamTypes(mapperMethod, mapperType), this::isEntity);
     }
 
     /**
@@ -84,7 +97,19 @@ public abstract class MybatisEntityClassFinder implements MybatisClassFinder {
      * @see java.util.Optional
      */
     protected Optional<Class<?>> getEntityClassByMapperMethodAndMapperType(Class<?> mapperType, Method mapperMethod) {
-        return getEntityClassByTypes(MybatisGenericTypeResolver.resolveMapperTypes(mapperMethod, mapperType));
+        return getClassByTypes(GenericTypeResolver.resolveMethodTypes(mapperMethod, mapperType), this::isEntity);
+    }
+
+    /**
+     * <code>getIdentityKeyClassByEntityType</code>
+     * <p>the identity key class by entity type getter method.</p>
+     * @param entityType {@link java.lang.Class} <p>the entity type parameter is <code>Class</code> type.</p>
+     * @return {@link java.util.Optional} <p>the identity key class by entity type return object is <code>Optional</code> type.</p>
+     * @see java.lang.Class
+     * @see java.util.Optional
+     */
+    protected Optional<Class<?>> getIdentityKeyClassByEntityType(Class<?> entityType) {
+        return getClassByTypes(GenericTypeResolver.resolveGenericTypes(entityType), this::isIdentityKey);
     }
 
     /**
@@ -96,47 +121,65 @@ public abstract class MybatisEntityClassFinder implements MybatisClassFinder {
      * @see java.util.Optional
      */
     protected Optional<Class<?>> getEntityClassByMapperType(Class<?> mapperType) {
-        return getEntityClassByTypes(MybatisGenericTypeResolver.resolveMapperTypes(mapperType));
+        return getClassByTypes(GenericTypeResolver.resolveGenericTypes(mapperType), this::isEntity);
     }
 
     /**
-     * <code>getEntityClassByType</code>
-     * <p>the entity class by type getter method.</p>
-     * @param type {@link java.lang.reflect.Type} <p>the type parameter is <code>Type</code> type.</p>
-     * @return {@link java.util.Optional} <p>the entity class by type return object is <code>Optional</code> type.</p>
-     * @see java.lang.reflect.Type
+     * <code>getIdentityKeyClassByMapperType</code>
+     * <p>the identity key class by mapper type getter method.</p>
+     * @param mapperType {@link java.lang.Class} <p>the mapper type parameter is <code>Class</code> type.</p>
+     * @return {@link java.util.Optional} <p>the identity key class by mapper type return object is <code>Optional</code> type.</p>
+     * @see java.lang.Class
      * @see java.util.Optional
      */
-    protected Optional<Class<?>> getEntityClassByType(Type type) {
+    protected Optional<Class<?>> getIdentityKeyClassByMapperType(Class<?> mapperType) {
+        return getClassByTypes(GenericTypeResolver.resolveGenericTypes(mapperType), this::isIdentityKey);
+    }
+
+
+    /**
+     * <code>getClassByType</code>
+     * <p>the class by type getter method.</p>
+     * @param type      {@link java.lang.reflect.Type} <p>the type parameter is <code>Type</code> type.</p>
+     * @param predicate {@link java.util.function.Predicate} <p>the predicate parameter is <code>Predicate</code> type.</p>
+     * @return {@link java.util.Optional} <p>the class by type return object is <code>Optional</code> type.</p>
+     * @see java.lang.reflect.Type
+     * @see java.util.function.Predicate
+     * @see java.util.Optional
+     */
+    protected Optional<Class<?>> getClassByType(Type type, Predicate<Class<?>> predicate) {
         if (type instanceof Class) {
-            if (isEntity((Class<?>) type)) {
+            Class<?> clazz = (Class<?>) type;
+            if (predicate.test(clazz)) {
                 return Optional.of((Class<?>) type);
             }
         } else if (type instanceof DefaultParameterizedType) {
-            return getEntityClassByTypes(((DefaultParameterizedType) type).getActualTypeArguments());
+            return getClassByTypes(((DefaultParameterizedType) type).getActualTypeArguments(), predicate);
         } else if (type instanceof DefaultWildcardType) {
-            Optional<Class<?>> optionalClass = getEntityClassByTypes(((DefaultWildcardType) type).getLowerBounds());
+            Optional<Class<?>> optionalClass = getClassByTypes(((DefaultWildcardType) type).getLowerBounds(), predicate);
             if (optionalClass.isPresent()) {
                 return optionalClass;
             }
-            return getEntityClassByTypes(((DefaultWildcardType) type).getUpperBounds());
+            return getClassByTypes(((DefaultWildcardType) type).getUpperBounds(), predicate);
         } else if (type instanceof DefaultGenericArrayType) {
-            return getEntityClassByType(((DefaultGenericArrayType) type).getGenericComponentType());
+            return getClassByType(((DefaultGenericArrayType) type).getGenericComponentType(), predicate);
         }
         return Optional.empty();
     }
 
     /**
-     * <code>getEntityClassByTypes</code>
-     * <p>the entity class by types getter method.</p>
-     * @param types {@link java.lang.reflect.Type} <p>the types parameter is <code>Type</code> type.</p>
-     * @return {@link java.util.Optional} <p>the entity class by types return object is <code>Optional</code> type.</p>
+     * <code>getClassByTypes</code>
+     * <p>the class by types getter method.</p>
+     * @param types     {@link java.lang.reflect.Type} <p>the types parameter is <code>Type</code> type.</p>
+     * @param predicate {@link java.util.function.Predicate} <p>the predicate parameter is <code>Predicate</code> type.</p>
+     * @return {@link java.util.Optional} <p>the class by types return object is <code>Optional</code> type.</p>
      * @see java.lang.reflect.Type
+     * @see java.util.function.Predicate
      * @see java.util.Optional
      */
-    protected Optional<Class<?>> getEntityClassByTypes(Type[] types) {
+    protected Optional<Class<?>> getClassByTypes(Type[] types, Predicate<Class<?>> predicate) {
         for (Type type : types) {
-            Optional<Class<?>> optionalClass = getEntityClassByType(type);
+            Optional<Class<?>> optionalClass = getClassByType(type, predicate);
             if (optionalClass.isPresent()) {
                 return optionalClass;
             }

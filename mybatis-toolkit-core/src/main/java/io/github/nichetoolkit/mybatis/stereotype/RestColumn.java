@@ -69,8 +69,8 @@ public @interface RestColumn {
      * @see java.lang.String
      * @see org.springframework.core.annotation.AliasFor
      */
-    @AliasFor(annotation = RestName.class, attribute = "remark")
-    String remark() default "";
+    @AliasFor(annotation = RestName.class, attribute = "comment")
+    String comment() default "";
 
     /**
      * <code>primaryKey</code>
@@ -89,7 +89,6 @@ public @interface RestColumn {
      */
     @AliasFor(annotation = RestLinkKey.class, attribute = "value")
     boolean linkKey() default false;
-
 
     /**
      * <code>alertKey</code>

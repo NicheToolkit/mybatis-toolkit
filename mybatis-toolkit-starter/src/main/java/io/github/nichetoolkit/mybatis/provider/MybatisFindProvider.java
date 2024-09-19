@@ -59,8 +59,8 @@ public class MybatisFindProvider {
             OptionalUtils.falseable(GeneralUtils.isNotEmpty(table.selectColumns()), "the select columns of table with 'findById' method cannot be empty!", message -> new MybatisTableErrorException("findById", "selectColumns", message));
             OptionalUtils.trueable(table.isUseUnionKey(), "the union keys of table with 'findById' method is unsupported!", message -> new MybatisUnsupportedErrorException("findById", "unionKeys", message));
             return "SELECT " + table.selectColumnList()
-                    + " FROM " + Optional.ofNullable(tablename).orElse(table.tablename())
-                    + " WHERE " + table.getIdentityColumn().columnEqualsProperty();
+                    + " FROM " + table.tablename(tablename)
+                    + " WHERE " + table.identityColumnEqualsProperty();
         });
 
     }
@@ -106,8 +106,8 @@ public class MybatisFindProvider {
                 OptionalUtils.falseable(GeneralUtils.isNotEmpty(table.selectColumns()), "the select columns of table with 'findByAll' method cannot be empty!", message -> new MybatisTableErrorException("findByAll", "selectColumns", message));
                 OptionalUtils.trueable(table.isUseUnionKey(), "the union keys of table with 'findByAll' method is unsupported!", message -> new MybatisUnsupportedErrorException("findByAll", "unionKeys", message));
                 return "SELECT " + table.selectColumnList()
-                        + " FROM " + Optional.ofNullable(tablename).orElse(table.tablename())
-                        + " WHERE " + table.getIdentityColumn().getColumnName() + " IN " + foreach("idList", "id", ", ", "(", ")", () -> table.getIdentityColumn().variable());
+                        + " FROM " + table.tablename(tablename)
+                        + " WHERE " + table.getIdentityColumn().columnName() + " IN " + foreach("idList", "id", ", ", "(", ")", () -> table.getIdentityColumn().variable());
 
             }
         });
@@ -149,7 +149,7 @@ public class MybatisFindProvider {
             public String sql(MybatisTable table) throws RestException {
                 OptionalUtils.falseable(GeneralUtils.isNotEmpty(table.selectColumns()), "the select columns of table with 'findAllByWhere' method cannot be empty!", message -> new MybatisTableErrorException("findAllByWhere", "selectColumns", message));
                 return "SELECT " + table.selectColumnList()
-                        + " FROM " + Optional.ofNullable(tablename).orElse(table.tablename())
+                        + " FROM " + table.tablename(tablename)
                         + " WHERE 1=1 "
                         + ifTest("whereSql!=null", () -> "${whereSql}");
             }

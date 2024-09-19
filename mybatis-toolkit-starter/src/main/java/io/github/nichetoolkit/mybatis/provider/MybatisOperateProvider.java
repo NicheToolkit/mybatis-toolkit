@@ -64,9 +64,9 @@ public class MybatisOperateProvider {
         return MybatisSqlScript.caching(providerContext, table -> {
             OptionalUtils.falseable(GeneralUtils.isNotEmpty(table.getOperateColumn()), "the operate column of table with 'operateById' method cannot be empty!", message -> new MybatisTableErrorException("operateById", "operateColumn", message));
             OptionalUtils.trueable(table.isUseUnionKey(), "the union keys of table with 'operateById' method is unsupported!", message -> new MybatisUnsupportedErrorException("operateById", "unionKeys", message));
-            return "UPDATE " + Optional.ofNullable(tablename).orElse(table.tablename())
+            return "UPDATE " + table.tablename(tablename)
                     + " SET " + table.getOperateColumn().columnEqualsOperate()
-                    + " WHERE " + table.getIdentityColumn().columnEqualsProperty();
+                    + " WHERE " + table.identityColumnEqualsProperty();
         });
     }
 
@@ -115,9 +115,9 @@ public class MybatisOperateProvider {
             public String sql(MybatisTable table) throws RestException {
                 OptionalUtils.falseable(GeneralUtils.isNotEmpty(table.getOperateColumn()), "the operate column of table with 'operateAll' method cannot be empty!", message -> new MybatisTableErrorException("operateAll", "operateColumn", message));
                 OptionalUtils.trueable(table.isUseUnionKey(), "the union keys of table with 'operateAll' method is unsupported!", message -> new MybatisUnsupportedErrorException("operateAll", "unionKeys", message));
-                return "UPDATE " + Optional.ofNullable(tablename).orElse(table.tablename())
+                return "UPDATE " + table.tablename(tablename)
                         + " SET " + table.getOperateColumn().columnEqualsOperate()
-                        + " WHERE " + table.getIdentityColumn().getColumnName() + " IN " + foreach("idList", "id", ", ", "(", ")", () -> table.getIdentityColumn().variable());
+                        + " WHERE " + table.getIdentityColumn().columnName() + " IN " + foreach("idList", "id", ", ", "(", ")", () -> table.getIdentityColumn().variable());
 
             }
         });
@@ -164,7 +164,7 @@ public class MybatisOperateProvider {
             public String sql(MybatisTable table) throws RestException {
                 OptionalUtils.falseable(GeneralUtils.isNotEmpty(table.getOperateColumn()), "the operate column of table with 'operateAllByWhere' method cannot be empty!", message -> new MybatisTableErrorException("operateAllByWhere", "operateColumn", message));
                 OptionalUtils.trueable(table.isUseUnionKey(), "the union keys of table with 'operateAllByWhere' method is unsupported!", message -> new MybatisUnsupportedErrorException("operateAllByWhere", "unionKeys", message));
-                return "UPDATE " + Optional.ofNullable(tablename).orElse(table.tablename())
+                return "UPDATE " + table.tablename(tablename)
                         + " SET " + table.getOperateColumn().columnEqualsOperate()
                         + " WHERE 1=1 "
                         + ifTest("whereSql!=null", () -> "${whereSql}");

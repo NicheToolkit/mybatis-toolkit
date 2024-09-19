@@ -58,7 +58,7 @@ public class MybatisInfoProvider {
         return MybatisSqlScript.caching(providerContext, table -> {
             OptionalUtils.falseable(GeneralUtils.isNotEmpty(table.selectColumns()), "the select columns of table with 'findAllByWhere' method cannot be empty!", message -> new MybatisTableErrorException("findByName", "selectColumns", message));
             return "SELECT " + table.selectColumnList()
-                    + " FROM " + Optional.ofNullable(tablename).orElse(table.tablename())
+                    + " FROM " + table.tablename(tablename)
                     + " WHERE " + Optional.ofNullable(table.fieldColumn("name"))
                     .map(MybatisColumn::columnEqualsProperty).orElse("name = #{name}")
                     + Optional.ofNullable(table.getLogicColumn()).map(logic -> "AND " + logic.columnEqualsSign()).orElse("");
@@ -107,7 +107,7 @@ public class MybatisInfoProvider {
             OptionalUtils.falseable(GeneralUtils.isNotEmpty(table.selectColumns()), "the select columns of table with 'findByNameAndNotId' method cannot be empty!", message -> new MybatisTableErrorException("findByNameAndNotId", "selectColumns", message));
             OptionalUtils.trueable(table.isUseUnionKey(), "the union keys of table with 'findByNameAndNotId' method is unsupported!", message -> new MybatisUnsupportedErrorException("findByNameAndNotId", "unionKeys", message));
             return "SELECT " + table.selectColumnList()
-                    + " FROM " + Optional.ofNullable(tablename).orElse(table.tablename())
+                    + " FROM " + table.tablename(tablename)
                     + " WHERE " + Optional.ofNullable(table.fieldColumn("name"))
                     .map(MybatisColumn::columnEqualsProperty).orElse("name = #{name}")
                     + " AND " + table.getIdentityColumn().columnNotEqualsProperty()
@@ -155,7 +155,7 @@ public class MybatisInfoProvider {
             OptionalUtils.falseable(GeneralUtils.isNotEmpty(table.uniqueColumns()), "the unique columns of table with 'findByEntity' method cannot be empty!", message -> new MybatisTableErrorException("findByEntity", "uniqueColumns", message));
             OptionalUtils.falseable(GeneralUtils.isNotEmpty(table.selectColumns()), "the select columns of table with 'findByEntity' method cannot be empty!", message -> new MybatisTableErrorException("findByEntity", "selectColumns", message));
             return "SELECT " + table.selectColumnList()
-                  + " FROM " + Optional.ofNullable(tablename).orElse(table.tablename())
+                  + " FROM " + table.tablename(tablename)
                   + " WHERE (" + table.uniqueColumns().stream()
                   .map(column -> column.columnEqualsProperty("entity."))
                   .collect(Collectors.joining(" OR ")) + ") "
@@ -208,7 +208,7 @@ public class MybatisInfoProvider {
             OptionalUtils.falseable(GeneralUtils.isNotEmpty(table.selectColumns()), "the select columns of table with 'findByEntityAndNotId' method cannot be empty!", message -> new MybatisTableErrorException("findByEntityAndNotId", "selectColumns", message));
             OptionalUtils.trueable(table.isUseUnionKey(), "the union keys of table with 'findByEntityAndNotId' method is unsupported!", message -> new MybatisUnsupportedErrorException("findByEntityAndNotId", "unionKeys", message));
             return "SELECT " + table.selectColumnList()
-                   + " FROM " + Optional.ofNullable(tablename).orElse(table.tablename())
+                   + " FROM " + table.tablename(tablename)
                    + " WHERE (" + table.uniqueColumns().stream()
                    .map(column -> column.columnEqualsProperty("entity."))
                    .collect(Collectors.joining(" OR ")) + ") "

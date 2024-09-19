@@ -55,8 +55,18 @@ public @interface RestTable {
      * @see java.lang.String
      * @see org.springframework.core.annotation.AliasFor
      */
-    @AliasFor(annotation = RestEntity.class, attribute = "remark")
-    String remark() default "";
+    @AliasFor(annotation = RestEntity.class, attribute = "comment")
+    String comment() default "";
+
+    /**
+     * <code>prefix</code>
+     * <p>the method.</p>
+     * @return {@link java.lang.String} <p>the return object is <code>String</code> type.</p>
+     * @see java.lang.String
+     * @see org.springframework.core.annotation.AliasFor
+     */
+    @AliasFor(annotation = RestEntity.class, attribute = "alias")
+    String alias() default "";
 
     /**
      * <code>entity</code>
@@ -65,8 +75,8 @@ public @interface RestTable {
      * @see java.lang.Class
      * @see org.springframework.core.annotation.AliasFor
      */
-    @AliasFor(annotation = RestEntity.class, attribute = "entity")
-    Class<?> entity() default Object.class;
+    @AliasFor(annotation = RestEntity.class, attribute = "entityType")
+    Class<?> entityType() default Object.class;
 
     /**
      * <code>unionKeys</code>

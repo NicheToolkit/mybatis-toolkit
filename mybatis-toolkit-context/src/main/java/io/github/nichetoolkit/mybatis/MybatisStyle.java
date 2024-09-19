@@ -130,6 +130,16 @@ public interface MybatisStyle {
     String tableName(Class<?> clazz);
 
     /**
+     * <code>tableAlias</code>
+     * <p>the alias method.</p>
+     * @param clazz {@link java.lang.Class} <p>the clazz parameter is <code>Class</code> type.</p>
+     * @return {@link java.lang.String} <p>the alias return object is <code>String</code> type.</p>
+     * @see java.lang.Class
+     * @see java.lang.String
+     */
+    String tableAlias(Class<?> clazz);
+
+    /**
      * <code>columnName</code>
      * <p>the name method.</p>
      * @param table {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>the table parameter is <code>MybatisTable</code> type.</p>

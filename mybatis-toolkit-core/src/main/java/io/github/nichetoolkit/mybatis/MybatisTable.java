@@ -57,11 +57,29 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
      */
     protected String table;
     /**
+     * <code>alias</code>
+     * {@link java.lang.String} <p>the <code>alias</code> field.</p>
+     * @see java.lang.String
+     */
+    protected String alias;
+    /**
+     * <code>comment</code>
+     * {@link java.lang.String} <p>the <code>comment</code> field.</p>
+     * @see java.lang.String
+     */
+    protected String comment;
+    /**
      * <code>entity</code>
      * {@link java.lang.Class} <p>the <code>entity</code> field.</p>
      * @see java.lang.Class
      */
     protected Class<?> entity;
+    /**
+     * <code>identityKey</code>
+     * {@link java.lang.Class} <p>the <code>identityKey</code> field.</p>
+     * @see java.lang.Class
+     */
+    protected Class<?> identityKey;
     /**
      * <code>unionKeys</code>
      * {@link java.util.List} <p>the <code>unionKeys</code> field.</p>
@@ -254,11 +272,13 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
     /**
      * <code>MybatisTable</code>
      * Instantiates a new mybatis table.
-     * @param entity {@link java.lang.Class} <p>the entity parameter is <code>Class</code> type.</p>
+     * @param entityType      {@link java.lang.Class} <p>the entity type parameter is <code>Class</code> type.</p>
+     * @param identityKeyType {@link java.lang.Class} <p>the identity key type parameter is <code>Class</code> type.</p>
      * @see java.lang.Class
      */
-    public MybatisTable(Class<?> entity) {
-        this.entity = entity;
+    public MybatisTable(Class<?> entityType, Class<?> identityKeyType) {
+        this.entity = entityType;
+        this.identityKey = identityKeyType;
         this.allColumns = new ArrayList<>();
         this.uniqueColumns = new ArrayList<>();
         this.unionColumns = new ArrayList<>();
@@ -267,14 +287,15 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
     /**
      * <code>MybatisTable</code>
      * Instantiates a new mybatis table.
-     * @param properties {@link java.util.Map} <p>the properties parameter is <code>Map</code> type.</p>
-     * @param entity     {@link java.lang.Class} <p>the entity parameter is <code>Class</code> type.</p>
-     * @see java.util.Map
+     * @param entityType      {@link java.lang.Class} <p>the entity type parameter is <code>Class</code> type.</p>
+     * @param identityKeyType {@link java.lang.Class} <p>the identity key type parameter is <code>Class</code> type.</p>
+     * @param properties      {@link java.util.Map} <p>the properties parameter is <code>Map</code> type.</p>
      * @see java.lang.Class
+     * @see java.util.Map
      */
-    public MybatisTable(Map<String, String> properties, Class<?> entity) {
+    public MybatisTable(Class<?> entityType, Class<?> identityKeyType, Map<String, String> properties) {
         super(properties);
-        this.entity = entity;
+        this.entity = entityType;
         this.allColumns = new ArrayList<>();
         this.uniqueColumns = new ArrayList<>();
         this.unionColumns = new ArrayList<>();
@@ -283,28 +304,30 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
     /**
      * <code>of</code>
      * <p>the method.</p>
-     * @param clazz {@link java.lang.Class} <p>the clazz parameter is <code>Class</code> type.</p>
+     * @param entityType      {@link java.lang.Class} <p>the entity type parameter is <code>Class</code> type.</p>
+     * @param identityKeyType {@link java.lang.Class} <p>the identity key type parameter is <code>Class</code> type.</p>
      * @return {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>the return object is <code>MybatisTable</code> type.</p>
      * @see java.lang.Class
      */
-    public static MybatisTable of(Class<?> clazz) {
-        return new MybatisTable(clazz);
+    public static MybatisTable of(Class<?> entityType, Class<?> identityKeyType) {
+        return new MybatisTable(entityType, identityKeyType);
     }
 
     /**
      * <code>of</code>
      * <p>the method.</p>
-     * @param clazz      {@link java.lang.Class} <p>the clazz parameter is <code>Class</code> type.</p>
-     * @param properties {@link java.util.Map} <p>the properties parameter is <code>Map</code> type.</p>
+     * @param entityType      {@link java.lang.Class} <p>the entity type parameter is <code>Class</code> type.</p>
+     * @param identityKeyType {@link java.lang.Class} <p>the identity key type parameter is <code>Class</code> type.</p>
+     * @param properties      {@link java.util.Map} <p>the properties parameter is <code>Map</code> type.</p>
      * @return {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>the return object is <code>MybatisTable</code> type.</p>
      * @see java.lang.Class
      * @see java.util.Map
      */
-    public static MybatisTable of(Class<?> clazz, Map<String, String> properties) {
+    public static MybatisTable of(Class<?> entityType, Class<?> identityKeyType, Map<String, String> properties) {
         if (GeneralUtils.isNotEmpty(properties)) {
-            return new MybatisTable(properties, clazz);
+            return new MybatisTable(entityType, identityKeyType, properties);
         } else {
-            return new MybatisTable(clazz);
+            return new MybatisTable(entityType, identityKeyType);
         }
     }
 
@@ -318,6 +341,28 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
         return Stream.of(this.catalog, this.schema, this.table)
                 .filter(GeneralUtils::isNotEmpty)
                 .collect(Collectors.joining("."));
+    }
+
+    /**
+     * <code>tablename</code>
+     * <p>the method.</p>
+     * @param tablename {@link java.lang.String} <p>the tablename parameter is <code>String</code> type.</p>
+     * @return {@link java.lang.String} <p>the return object is <code>String</code> type.</p>
+     * @see java.lang.String
+     */
+    public String tablename(String tablename) {
+        return Optional.ofNullable(tablename).orElse(tablename());
+    }
+
+    /**
+     * <code>tablenameAsAlias</code>
+     * <p>the as alias method.</p>
+     * @param tablename {@link java.lang.String} <p>the tablename parameter is <code>String</code> type.</p>
+     * @return {@link java.lang.String} <p>the as alias return object is <code>String</code> type.</p>
+     * @see java.lang.String
+     */
+    public String tablenameAsAlias(String tablename) {
+        return Optional.ofNullable(tablename).orElse(tablename()) + " AS " + this.alias;
     }
 
     /**
@@ -337,7 +382,17 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
      * @see java.util.List
      */
     public List<String> columnNames() {
-        return this.allColumns.stream().map(MybatisColumn::getColumnName).collect(Collectors.toList());
+        return this.allColumns.stream().map(MybatisColumn::columnName).collect(Collectors.toList());
+    }
+
+    /**
+     * <code>aliasColumnNames</code>
+     * <p>the column names method.</p>
+     * @return {@link java.util.List} <p>the column names return object is <code>List</code> type.</p>
+     * @see java.util.List
+     */
+    public List<String> aliasColumnNames() {
+        return this.allColumns.stream().map(column -> column.aliasColumn(this.alias)).collect(Collectors.toList());
     }
 
     /**
@@ -364,34 +419,34 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
         this.allColumns.forEach(column -> {
             if (column.isIdentity()) {
                 if (!identityColumns.contains(column)) {
-                    identityColumns.add(0,column);
+                    identityColumns.add(0, column);
                 } else {
                     identityColumns.remove(column);
-                    identityColumns.add(0,column);
+                    identityColumns.add(0, column);
                 }
             }
             if (column.isPrimaryKey()) {
                 if (!primaryKeyColumns.contains(column)) {
-                    primaryKeyColumns.add(0,column);
+                    primaryKeyColumns.add(0, column);
                 } else {
                     primaryKeyColumns.remove(column);
-                    primaryKeyColumns.add(0,column);
+                    primaryKeyColumns.add(0, column);
                 }
             }
             if (column.isLogic()) {
                 if (!logicColumns.contains(column)) {
-                    logicColumns.add(0,column);
+                    logicColumns.add(0, column);
                 } else {
                     logicColumns.remove(column);
-                    logicColumns.add(0,column);
+                    logicColumns.add(0, column);
                 }
             }
             if (column.isOperate()) {
                 if (!operateColumns.contains(column)) {
-                    operateColumns.add(0,column);
+                    operateColumns.add(0, column);
                 } else {
                     linkKeyColumns.remove(column);
-                    operateColumns.add(0,column);
+                    operateColumns.add(0, column);
                 }
             }
             /* 如果是联合主键 */
@@ -399,10 +454,10 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
             if (column.isUnionKey() || (GeneralUtils.isNotEmpty(this.unionKeys) && this.unionKeys.contains(fieldName))) {
                 column.setUnionKey(true);
                 if (!this.unionColumns.contains(column)) {
-                    refreshColumn(this.unionColumns,column);
+                    refreshColumn(this.unionColumns, column);
                 } else {
                     this.unionColumns.remove(column);
-                    refreshColumn(this.unionColumns,column);
+                    refreshColumn(this.unionColumns, column);
                 }
             }
             if (column.isUnionKey() && GeneralUtils.isNotEmpty(this.unionIgnoreKeys) && this.unionIgnoreKeys.contains(fieldName)) {
@@ -413,10 +468,10 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
             if (column.isLinkKey() || (GeneralUtils.isNotEmpty(this.linkKeys) && this.linkKeys.contains(fieldName))) {
                 column.setLinkKey(true);
                 if (!linkKeyColumns.contains(column)) {
-                    linkKeyColumns.add(0,column);
+                    linkKeyColumns.add(0, column);
                 } else {
                     linkKeyColumns.remove(column);
-                    linkKeyColumns.add(0,column);
+                    linkKeyColumns.add(0, column);
                 }
             }
             if (column.isLinkKey() && GeneralUtils.isNotEmpty(this.linkIgnoreKeys) && this.linkIgnoreKeys.contains(fieldName)) {
@@ -427,10 +482,10 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
             if (column.isAlertKey() || (GeneralUtils.isNotEmpty(this.alertKeys) && this.alertKeys.contains(fieldName))) {
                 column.setAlertKey(true);
                 if (!alertKeyColumns.contains(column)) {
-                    refreshColumn(alertKeyColumns,column);
+                    refreshColumn(alertKeyColumns, column);
                 } else {
                     alertKeyColumns.remove(column);
-                    refreshColumn(alertKeyColumns,column);
+                    refreshColumn(alertKeyColumns, column);
                 }
             }
             if (column.isAlertKey() && GeneralUtils.isNotEmpty(this.alertIgnoreKeys) && this.alertIgnoreKeys.contains(fieldName)) {
@@ -441,10 +496,10 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
             if (column.isUnique() || (GeneralUtils.isNotEmpty(this.uniqueKeys) && this.uniqueKeys.contains(fieldName))) {
                 column.setUnique(true);
                 if (!this.uniqueColumns.contains(column)) {
-                    refreshColumn(this.uniqueColumns,column);
+                    refreshColumn(this.uniqueColumns, column);
                 } else {
                     this.uniqueColumns.remove(column);
-                    refreshColumn(this.uniqueColumns,column);
+                    refreshColumn(this.uniqueColumns, column);
                 }
             }
             if (column.isUnique() && GeneralUtils.isNotEmpty(this.uniqueIgnoreKeys) && this.uniqueIgnoreKeys.contains(fieldName)) {
@@ -526,9 +581,9 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
      */
     protected void refreshColumn(List<MybatisColumn> columns, MybatisColumn column) {
         if (GeneralUtils.isValid(column.getUnionIndex())) {
-            columns.add(column.getUnionIndex(),column);
+            columns.add(column.getUnionIndex(), column);
         } else if (GeneralUtils.isValid(column.getOrder())) {
-            columns.add(column.getOrder(),column);
+            columns.add(column.getOrder(), column);
         } else {
             columns.add(column);
         }
@@ -681,7 +736,7 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
     protected ResultMap autoResultMap(Configuration configuration, ProviderContext providerContext, String cacheKey) {
         List<ResultMapping> resultMappings = new ArrayList<>();
         for (MybatisColumn column : selectColumns()) {
-            String columnName = column.getColumnName();
+            String columnName = column.columnName();
             /* 去掉可能存在的分隔符，例如：`order` */
             Matcher matcher = MybatisTable.DELIMITER.matcher(columnName);
             if (matcher.find()) {
@@ -896,13 +951,43 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
     }
 
     /**
+     * <code>identityColumnEqualsProperty</code>
+     * <p>the column equals property method.</p>
+     * @return {@link java.lang.String} <p>the column equals property return object is <code>String</code> type.</p>
+     * @see java.lang.String
+     */
+    public String identityColumnEqualsProperty() {
+        return this.identityColumn.columnEqualsProperty();
+    }
+
+    /**
+     * <code>identityAliasColumnEqualsProperty</code>
+     * <p>the alias column equals property method.</p>
+     * @return {@link java.lang.String} <p>the alias column equals property return object is <code>String</code> type.</p>
+     * @see java.lang.String
+     */
+    public String identityAliasColumnEqualsProperty() {
+        return this.identityColumn.aliasColumnEqualsProperty(this.alias);
+    }
+
+    /**
      * <code>baseColumnList</code>
      * <p>the column list method.</p>
      * @return {@link java.lang.String} <p>the column list return object is <code>String</code> type.</p>
      * @see java.lang.String
      */
     public String baseColumnList() {
-        return selectColumns().stream().map(MybatisColumn::getColumnName).collect(Collectors.joining(", "));
+        return selectColumns().stream().map(MybatisColumn::columnName).collect(Collectors.joining(", "));
+    }
+
+    /**
+     * <code>baseAliasColumnList</code>
+     * <p>the alias column list method.</p>
+     * @return {@link java.lang.String} <p>the alias column list return object is <code>String</code> type.</p>
+     * @see java.lang.String
+     */
+    public String baseAliasColumnList() {
+        return selectColumns().stream().map(column -> column.aliasColumn(this.alias)).collect(Collectors.joining(", "));
     }
 
     /**
@@ -920,13 +1005,37 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
     }
 
     /**
+     * <code>baseAliasColumnAsPropertyList</code>
+     * <p>the alias column as property list method.</p>
+     * @return {@link java.lang.String} <p>the alias column as property list return object is <code>String</code> type.</p>
+     * @see java.lang.String
+     */
+    public String baseAliasColumnAsPropertyList() {
+        //当存在 resultMaps 时，查询列不能用别名
+        if (useResultMaps()) {
+            return baseColumnList();
+        }
+        return selectColumns().stream().map(column -> column.aliasColumnAsProperty(this.alias)).collect(Collectors.joining(", "));
+    }
+
+    /**
      * <code>selectColumnList</code>
      * <p>the column list method.</p>
      * @return {@link java.lang.String} <p>the column list return object is <code>String</code> type.</p>
      * @see java.lang.String
      */
     public String selectColumnList() {
-        return selectColumns().stream().map(MybatisColumn::getColumnName).distinct().collect(Collectors.joining(", "));
+        return selectColumns().stream().map(MybatisColumn::columnName).distinct().collect(Collectors.joining(", "));
+    }
+
+    /**
+     * <code>selectAliasColumnList</code>
+     * <p>the alias column list method.</p>
+     * @return {@link java.lang.String} <p>the alias column list return object is <code>String</code> type.</p>
+     * @see java.lang.String
+     */
+    public String selectAliasColumnList() {
+        return selectColumns().stream().map(column -> column.aliasColumn(this.alias)).collect(Collectors.joining(", "));
     }
 
     /**
@@ -936,7 +1045,17 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
      * @see java.lang.String
      */
     public String insertColumnList() {
-        return insertColumns().stream().map(MybatisColumn::getColumnName).distinct().collect(Collectors.joining(", "));
+        return insertColumns().stream().map(MybatisColumn::columnName).distinct().collect(Collectors.joining(", "));
+    }
+
+    /**
+     * <code>insertAliasColumnList</code>
+     * <p>the alias column list method.</p>
+     * @return {@link java.lang.String} <p>the alias column list return object is <code>String</code> type.</p>
+     * @see java.lang.String
+     */
+    public String insertAliasColumnList() {
+        return insertColumns().stream().map(column -> column.aliasColumn(this.alias)).distinct().collect(Collectors.joining(", "));
     }
 
     /**
@@ -946,7 +1065,17 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
      * @see java.lang.String
      */
     public String identityColumnList() {
-        return identityColumns().stream().map(MybatisColumn::getColumnName).distinct().collect(Collectors.joining(", "));
+        return identityColumns().stream().map(MybatisColumn::columnName).distinct().collect(Collectors.joining(", "));
+    }
+
+    /**
+     * <code>identityAliasColumnList</code>
+     * <p>the alias column list method.</p>
+     * @return {@link java.lang.String} <p>the alias column list return object is <code>String</code> type.</p>
+     * @see java.lang.String
+     */
+    public String identityAliasColumnList() {
+        return identityColumns().stream().map(column -> column.aliasColumn(this.alias)).distinct().collect(Collectors.joining(", "));
     }
 
     /**
@@ -957,7 +1086,19 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
      */
     public Optional<String> groupByColumnList() {
         Optional<List<MybatisColumn>> groupByColumns = groupByColumns();
-        return groupByColumns.map(mybatisColumns -> mybatisColumns.stream().map(MybatisColumn::getColumnName)
+        return groupByColumns.map(mybatisColumns -> mybatisColumns.stream().map(MybatisColumn::columnName)
+                .collect(Collectors.joining(", ")));
+    }
+
+    /**
+     * <code>groupByAliasColumnList</code>
+     * <p>the by alias column list method.</p>
+     * @return {@link java.util.Optional} <p>the by alias column list return object is <code>Optional</code> type.</p>
+     * @see java.util.Optional
+     */
+    public Optional<String> groupByAliasColumnList() {
+        Optional<List<MybatisColumn>> groupByColumns = groupByColumns();
+        return groupByColumns.map(mybatisColumns -> mybatisColumns.stream().map(column -> column.aliasColumn(this.alias))
                 .collect(Collectors.joining(", ")));
     }
 
@@ -973,6 +1114,17 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
     }
 
     /**
+     * <code>groupByAliasColumn</code>
+     * <p>the by alias column method.</p>
+     * @return {@link java.util.Optional} <p>the by alias column return object is <code>Optional</code> type.</p>
+     * @see java.util.Optional
+     */
+    public Optional<String> groupByAliasColumn() {
+        Optional<String> groupByColumnList = groupByAliasColumnList();
+        return groupByColumnList.map(s -> " GROUP BY " + s);
+    }
+
+    /**
      * <code>havingColumnList</code>
      * <p>the column list method.</p>
      * @return {@link java.util.Optional} <p>the column list return object is <code>Optional</code> type.</p>
@@ -980,7 +1132,19 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
      */
     public Optional<String> havingColumnList() {
         Optional<List<MybatisColumn>> havingColumns = havingColumns();
-        return havingColumns.map(mybatisColumns -> mybatisColumns.stream().map(MybatisColumn::getColumnName)
+        return havingColumns.map(mybatisColumns -> mybatisColumns.stream().map(MybatisColumn::columnName)
+                .collect(Collectors.joining(", ")));
+    }
+
+    /**
+     * <code>havingAliasColumnList</code>
+     * <p>the alias column list method.</p>
+     * @return {@link java.util.Optional} <p>the alias column list return object is <code>Optional</code> type.</p>
+     * @see java.util.Optional
+     */
+    public Optional<String> havingAliasColumnList() {
+        Optional<List<MybatisColumn>> havingColumns = havingColumns();
+        return havingColumns.map(mybatisColumns -> mybatisColumns.stream().map(column -> column.aliasColumn(this.alias))
                 .collect(Collectors.joining(", ")));
     }
 
@@ -996,6 +1160,17 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
     }
 
     /**
+     * <code>havingAliasColumn</code>
+     * <p>the alias column method.</p>
+     * @return {@link java.util.Optional} <p>the alias column return object is <code>Optional</code> type.</p>
+     * @see java.util.Optional
+     */
+    public Optional<String> havingAliasColumn() {
+        Optional<String> havingColumnList = havingAliasColumnList();
+        return havingColumnList.map(s -> " HAVING " + s);
+    }
+
+    /**
      * <code>orderByColumnList</code>
      * <p>the by column list method.</p>
      * @return {@link java.util.Optional} <p>the by column list return object is <code>Optional</code> type.</p>
@@ -1004,7 +1179,20 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
     public Optional<String> orderByColumnList() {
         Optional<List<MybatisColumn>> orderByColumns = orderByColumns();
         return orderByColumns.map(mybatisColumns -> mybatisColumns.stream()
-                .map(column -> column.getColumnName() + " " + column.getSortType().getKey())
+                .map(column -> column.columnName() + " " + column.getSortType().getKey())
+                .collect(Collectors.joining(", ")));
+    }
+
+    /**
+     * <code>orderByAliasColumnList</code>
+     * <p>the by alias column list method.</p>
+     * @return {@link java.util.Optional} <p>the by alias column list return object is <code>Optional</code> type.</p>
+     * @see java.util.Optional
+     */
+    public Optional<String> orderByAliasColumnList() {
+        Optional<List<MybatisColumn>> orderByColumns = orderByColumns();
+        return orderByColumns.map(mybatisColumns -> mybatisColumns.stream()
+                .map(column -> column.aliasColumn(this.alias) + " " + column.getSortType().getKey())
                 .collect(Collectors.joining(", ")));
     }
 
@@ -1016,6 +1204,17 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
      */
     public Optional<String> orderByColumn() {
         Optional<String> orderColumnList = orderByColumnList();
+        return orderColumnList.map(s -> " ORDER BY " + s);
+    }
+
+    /**
+     * <code>orderByAliasColumn</code>
+     * <p>the by alias column method.</p>
+     * @return {@link java.util.Optional} <p>the by alias column return object is <code>Optional</code> type.</p>
+     * @see java.util.Optional
+     */
+    public Optional<String> orderByAliasColumn() {
+        Optional<String> orderColumnList = orderByAliasColumnList();
         return orderColumnList.map(s -> " ORDER BY " + s);
     }
 

@@ -4,6 +4,7 @@ import io.github.nichetoolkit.mybatis.MybatisField;
 import io.github.nichetoolkit.mybatis.MybatisStyle;
 import io.github.nichetoolkit.mybatis.MybatisTable;
 import io.github.nichetoolkit.mybatis.enums.StyleType;
+import io.github.nichetoolkit.rest.util.GeneralUtils;
 
 /**
  * <code>DefaultUpperStyle</code>
@@ -21,6 +22,12 @@ public class DefaultUpperStyle implements MybatisStyle {
     @Override
     public String tableName(Class<?> clazz) {
         return clazz.getSimpleName().toUpperCase();
+    }
+
+    @Override
+    public String tableAlias(Class<?> clazz) {
+        String tableName = clazz.getSimpleName();
+        return GeneralUtils.abbreviate(tableName).toUpperCase();
     }
 
     @Override

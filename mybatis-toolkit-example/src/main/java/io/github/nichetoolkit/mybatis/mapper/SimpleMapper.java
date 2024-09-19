@@ -14,6 +14,6 @@ import io.github.nichetoolkit.mybatis.stereotype.RestMapper;
  * @see io.github.nichetoolkit.mybatis.stereotype.RestMapper
  * @since Jdk1.8
  */
-@RestMapper
+@RestMapper(entityType = SimpleEntity.class)
 public interface SimpleMapper extends MybatisInfoMapper<SimpleEntity,String>, MybatisRemoveMapper<String> {
 }

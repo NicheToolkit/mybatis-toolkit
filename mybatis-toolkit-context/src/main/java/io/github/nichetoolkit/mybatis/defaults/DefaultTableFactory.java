@@ -10,6 +10,8 @@ import io.github.nichetoolkit.mybatis.enums.StyleType;
 import io.github.nichetoolkit.mybatis.stereotype.RestProperties;
 import io.github.nichetoolkit.mybatis.stereotype.table.*;
 import org.springframework.core.annotation.AnnotationUtils;
+import org.springframework.lang.NonNull;
+import org.springframework.lang.Nullable;
 
 import java.util.Arrays;
 import java.util.Map;
@@ -40,31 +42,37 @@ public class DefaultTableFactory implements MybatisTableFactory {
     }
 
     @Override
-    public boolean supports(Class<?> clazz) {
-        return clazz.isAnnotationPresent(RestEntity.class);
+    public boolean supports(@NonNull Class<?> entityType) {
+        return entityType.isAnnotationPresent(RestEntity.class);
     }
 
     @Override
-    public MybatisTable createTable(Class<?> clazz, Chain chain) {
-        RestEntity restEntity = AnnotationUtils.getAnnotation(clazz, RestEntity.class);
-        Class<?> entity = Optional.ofNullable(restEntity).map(RestEntity::entity).orElse(null);
+    public MybatisTable createTable(@NonNull Class<?> entityType, @Nullable Class<?> identityKeyType, Chain chain) {
+        RestEntity restEntity = AnnotationUtils.getAnnotation(entityType, RestEntity.class);
+        Class<?> entityClazz = Optional.ofNullable(restEntity).map(RestEntity::entityType).orElse(null);
         String tableName = Optional.ofNullable(restEntity).map(RestEntity::name).orElse(null);
+        String tableComment = Optional.ofNullable(restEntity).map(RestEntity::comment).orElse(null);
+        String tableAlias = Optional.ofNullable(restEntity).map(RestEntity::alias).orElse(null);
         MybatisTable mybatisTable;
-        if (GeneralUtils.isNotEmpty(entity) && entity != Object.class) {
-            mybatisTable = MybatisTable.of(entity, tableProperties.getProperties());
+        if (GeneralUtils.isNotEmpty(entityClazz) && entityClazz != Object.class) {
+            mybatisTable = MybatisTable.of(entityClazz, identityKeyType, tableProperties.getProperties());
         } else {
-            mybatisTable = MybatisTable.of(clazz, tableProperties.getProperties());
+            mybatisTable = MybatisTable.of(entityType, identityKeyType, tableProperties.getProperties());
         }
-        restUniqueKeys(clazz, mybatisTable);
-        restUnionKeys(clazz, mybatisTable);
-        restLinkKeys(clazz, mybatisTable);
-        restAlertKeys(clazz, mybatisTable);
-        MybatisStyle mybatisStyle = restStyle(clazz, mybatisTable);
+        mybatisTable.setComment(tableComment);
+        restUniqueKeys(entityType, mybatisTable);
+        restUnionKeys(entityType, mybatisTable);
+        restLinkKeys(entityType, mybatisTable);
+        restAlertKeys(entityType, mybatisTable);
+        MybatisStyle mybatisStyle = restStyle(entityType, mybatisTable);
         mybatisTable.setStyleName(mybatisStyle.getStyleName());
-        mybatisTable.setTable(GeneralUtils.isEmpty(tableName) ? mybatisStyle.tableName(clazz) : restEntity.name());
-        restResultMap(clazz, mybatisTable);
-        restProperties(clazz, mybatisTable);
-        restExcludes(clazz, mybatisTable);
+        tableAlias = GeneralUtils.isEmpty(tableAlias) ? (GeneralUtils.isEmpty(tableName) ? mybatisStyle.tableAlias(entityType) : GeneralUtils.abbreviate(tableName)) : restEntity.alias();
+        mybatisTable.setAlias(tableAlias);
+        tableName = GeneralUtils.isEmpty(tableName) ? mybatisStyle.tableName(entityType) : restEntity.name();
+        mybatisTable.setTable(tableName);
+        restResultMap(entityType, mybatisTable);
+        restProperties(entityType, mybatisTable);
+        restExcludes(entityType, mybatisTable);
         return mybatisTable;
     }
 
@@ -77,7 +85,7 @@ public class DefaultTableFactory implements MybatisTableFactory {
      * @see io.github.nichetoolkit.mybatis.MybatisTable
      */
     public void restUniqueKeys(Class<?> clazz, MybatisTable mybatisTable) {
-        /** restUniqueKeys 注解处理 */
+        /* restUniqueKeys 注解处理 */
         RestUniqueKeys restUniqueKeys = AnnotationUtils.getAnnotation(clazz, RestUniqueKeys.class);
         if (GeneralUtils.isNotEmpty(restUniqueKeys)) {
             if (GeneralUtils.isNotEmpty(restUniqueKeys.uniqueKeys())) {
@@ -98,7 +106,7 @@ public class DefaultTableFactory implements MybatisTableFactory {
      * @see io.github.nichetoolkit.mybatis.MybatisTable
      */
     public void restUnionKeys(Class<?> clazz, MybatisTable mybatisTable) {
-        /** restUnionKeys 注解处理 */
+        /* restUnionKeys 注解处理 */
         RestUnionKeys restUnionKeys = AnnotationUtils.getAnnotation(clazz, RestUnionKeys.class);
         if (GeneralUtils.isNotEmpty(restUnionKeys)) {
             mybatisTable.setUnionIdentity(restUnionKeys.unionIdentity());
@@ -120,7 +128,7 @@ public class DefaultTableFactory implements MybatisTableFactory {
      * @see io.github.nichetoolkit.mybatis.MybatisTable
      */
     public void restLinkKeys(Class<?> clazz, MybatisTable mybatisTable) {
-        /** restLinkKeys 注解处理 */
+        /* restLinkKeys 注解处理 */
         RestLinkKeys restLinkKeys = AnnotationUtils.getAnnotation(clazz, RestLinkKeys.class);
         if (GeneralUtils.isNotEmpty(restLinkKeys)) {
             if (GeneralUtils.isNotEmpty(restLinkKeys.linkKeys())) {
@@ -141,7 +149,7 @@ public class DefaultTableFactory implements MybatisTableFactory {
      * @see io.github.nichetoolkit.mybatis.MybatisTable
      */
     public void restAlertKeys(Class<?> clazz, MybatisTable mybatisTable) {
-        /** restAlertKeys 注解处理 */
+        /* restAlertKeys 注解处理 */
         RestAlertKeys restAlertKeys = AnnotationUtils.getAnnotation(clazz, RestAlertKeys.class);
         if (GeneralUtils.isNotEmpty(restAlertKeys)) {
             if (GeneralUtils.isNotEmpty(restAlertKeys.alertKeys())) {
@@ -164,7 +172,7 @@ public class DefaultTableFactory implements MybatisTableFactory {
      * @see io.github.nichetoolkit.mybatis.MybatisStyle
      */
     public MybatisStyle restStyle(Class<?> clazz, MybatisTable mybatisTable) {
-        /** restStyle 注解处理 */
+        /* restStyle 注解处理 */
         MybatisStyle mybatisStyle;
         RestStyle restStyle = AnnotationUtils.getAnnotation(clazz, RestStyle.class);
         if (GeneralUtils.isNotEmpty(restStyle)) {
@@ -199,7 +207,7 @@ public class DefaultTableFactory implements MybatisTableFactory {
      * @see io.github.nichetoolkit.mybatis.MybatisTable
      */
     public void restResultMap(Class<?> clazz, MybatisTable mybatisTable) {
-        /** restResultMap 注解处理 */
+        /* restResultMap 注解处理 */
         RestResultMap restResultMap = AnnotationUtils.getAnnotation(clazz, RestResultMap.class);
         if (GeneralUtils.isNotEmpty(restResultMap)) {
             mybatisTable.setResultMap(restResultMap.name());
@@ -216,7 +224,7 @@ public class DefaultTableFactory implements MybatisTableFactory {
      * @see io.github.nichetoolkit.mybatis.MybatisTable
      */
     public void restProperties(Class<?> clazz, MybatisTable mybatisTable) {
-        /** restResultMap 注解处理 */
+        /* restResultMap 注解处理 */
         RestProperties restProperties = AnnotationUtils.getAnnotation(clazz, RestProperties.class);
         if (GeneralUtils.isNotEmpty(restProperties) && GeneralUtils.isNotEmpty(restProperties.properties())) {
             mybatisTable.setProperties(restProperties.properties());
@@ -236,7 +244,7 @@ public class DefaultTableFactory implements MybatisTableFactory {
      * @see io.github.nichetoolkit.mybatis.MybatisTable
      */
     public void restExcludes(Class<?> clazz, MybatisTable mybatisTable) {
-        /** restExcludes 注解处理 */
+        /* restExcludes 注解处理 */
         RestExcludes restExcludes = AnnotationUtils.getAnnotation(clazz, RestExcludes.class);
         if (GeneralUtils.isNotEmpty(restExcludes)) {
             if (GeneralUtils.isNotEmpty(restExcludes.fields())) {

@@ -2,6 +2,8 @@ package io.github.nichetoolkit.mybatis.defaults;
 
 import io.github.nichetoolkit.mybatis.MybatisTable;
 import io.github.nichetoolkit.mybatis.MybatisTableFactory;
+import org.springframework.lang.NonNull;
+import org.springframework.lang.Nullable;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -22,25 +24,25 @@ public class DefaultCachingTableFactory implements MybatisTableFactory {
     private final Map<Class<?>, MybatisTable> CLASS_TABLE_MAP = new ConcurrentHashMap<>();
 
     @Override
-    public boolean supports(Class<?> clazz) {
+    public boolean supports(@NonNull Class<?> entityType) {
         return true;
     }
 
     @Override
-    public MybatisTable createTable(Class<?> clazz, Chain chain) {
-        if (CLASS_TABLE_MAP.get(clazz) == null) {
-            synchronized (clazz) {
-                if (CLASS_TABLE_MAP.get(clazz) == null) {
-                    MybatisTable mybatisTable = chain.createTable(clazz);
+    public MybatisTable createTable(@NonNull Class<?> entityType, @Nullable Class<?> identityKeyType, Chain chain) {
+        if (CLASS_TABLE_MAP.get(entityType) == null) {
+            synchronized (entityType) {
+                if (CLASS_TABLE_MAP.get(entityType) == null) {
+                    MybatisTable mybatisTable = chain.createTable(entityType, identityKeyType);
                     if (mybatisTable != null) {
-                        CLASS_TABLE_MAP.put(clazz, mybatisTable);
+                        CLASS_TABLE_MAP.put(entityType, mybatisTable);
                     } else {
                         return null;
                     }
                 }
             }
         }
-        return CLASS_TABLE_MAP.get(clazz);
+        return CLASS_TABLE_MAP.get(entityType);
     }
 
     @Override

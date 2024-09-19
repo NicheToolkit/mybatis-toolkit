@@ -47,7 +47,15 @@ public @interface RestEntity {
      * @return {@link java.lang.String} <p>the return object is <code>String</code> type.</p>
      * @see java.lang.String
      */
-    String remark() default "";
+    String comment() default "";
+
+    /**
+     * <code>prefix</code>
+     * <p>the method.</p>
+     * @return {@link java.lang.String} <p>the return object is <code>String</code> type.</p>
+     * @see java.lang.String
+     */
+    String alias() default "";
 
     /**
      * <code>entity</code>
@@ -55,6 +63,6 @@ public @interface RestEntity {
      * @return {@link java.lang.Class} <p>the return object is <code>Class</code> type.</p>
      * @see java.lang.Class
      */
-    Class<?> entity() default Object.class;
+    Class<?> entityType() default Object.class;
 
 }

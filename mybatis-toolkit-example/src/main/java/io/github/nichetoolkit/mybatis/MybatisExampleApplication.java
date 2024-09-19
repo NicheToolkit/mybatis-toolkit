@@ -7,8 +7,8 @@ import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
 import org.springframework.context.annotation.ComponentScan;
 
 /**
- * <code>MybatisToolkitTestWebApplication</code>
- * <p>The type mybatis toolkit test web application class.</p>
+ * <code>MybatisExampleApplication</code>
+ * <p>The type mybatis example application class.</p>
  * @author Cyan (snow22314@outlook.com)
  * @see org.springframework.boot.web.servlet.support.SpringBootServletInitializer
  * @see org.springframework.boot.autoconfigure.SpringBootApplication

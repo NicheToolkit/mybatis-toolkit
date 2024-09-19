@@ -96,7 +96,7 @@ public abstract class MybatisMapperProvider implements InitializingBean {
         if (GeneralUtils.isEmpty(updateColumns)) {
             doNothing = true;
         } else {
-            String dynamicTablename = Optional.ofNullable(tablename).orElse(table.tablename());
+            String dynamicTablename = table.tablename(tablename);
             doUpdateSql = table.updateColumns().stream().map(column -> column.excluded(dynamicTablename)).collect(Collectors.joining(", "));
         }
         String upsetSql;

@@ -12,7 +12,6 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.builder.annotation.ProviderContext;
 
 import java.util.Collection;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class MybatisSaveProvider extends MybatisMapperProvider {
@@ -30,7 +29,7 @@ public class MybatisSaveProvider extends MybatisMapperProvider {
         return MybatisSqlScript.caching(providerContext, table -> {
             OptionalUtils.falseable(GeneralUtils.isNotEmpty(table.insertColumns()), "the insert columns of table with 'save' method cannot be empty!", message -> new MybatisTableErrorException("save", "insertColumns", message));
             OptionalUtils.falseable(GeneralUtils.isNotEmpty(table.identityColumns()), "the identity columns of table with 'save' method cannot be empty!", message -> new MybatisTableErrorException("save", "identityColumns", message));
-            return "INSERT INTO " + Optional.ofNullable(tablename).orElse(table.tablename())
+            return "INSERT INTO " + table.tablename(tablename)
                     + " (" + table.insertColumnList() + ")"
                     + " VALUES (" + table.insertColumns().stream()
                     .map(column -> column.variable("entity.")).collect(Collectors.joining(", "))
@@ -49,7 +48,7 @@ public class MybatisSaveProvider extends MybatisMapperProvider {
             public String sql(MybatisTable table) throws RestException {
                 OptionalUtils.falseable(GeneralUtils.isNotEmpty(table.insertColumns()), "the insert columns of table with 'saveAll' method cannot be empty!", message -> new MybatisTableErrorException("saveAll", "insertColumns", message));
                 OptionalUtils.falseable(GeneralUtils.isNotEmpty(table.identityColumns()), "the identity columns of table with 'saveAll' method cannot be empty!", message -> new MybatisTableErrorException("saveAll", "identityColumns", message));
-                return "INSERT INTO " + Optional.ofNullable(tablename).orElse(table.tablename())
+                return "INSERT INTO " + table.tablename(tablename)
                         + " (" + table.insertColumnList() + ") VALUES "
                         + foreach("entityList", "entity", ", ", () ->
                         " (" + table.insertColumns().stream().map(column -> column.variable("entity.")).collect(Collectors.joining(", ")) + " )")

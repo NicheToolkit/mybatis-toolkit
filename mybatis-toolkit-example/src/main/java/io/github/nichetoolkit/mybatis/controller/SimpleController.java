@@ -6,13 +6,10 @@ import io.github.nichetoolkit.mybatis.simple.SimpleModel;
 import io.github.nichetoolkit.rest.RestException;
 import io.github.nichetoolkit.rest.RestResult;
 import io.github.nichetoolkit.rest.userlog.stereotype.RestNotelog;
-import io.github.nichetoolkit.rest.util.GeneralUtils;
 import io.github.nichetoolkit.rice.RestPage;
 import io.github.nichetoolkit.rice.stereotype.RestSkip;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Date;
 
 /**
  * <code>SimpleController</code>
@@ -49,24 +46,6 @@ public class SimpleController {
     @Autowired
     public SimpleController(SimpleService simpleService) {
         this.simpleService = simpleService;
-    }
-
-    /**
-     * <code>test</code>
-     * <p>the method.</p>
-     * @return {@link io.github.nichetoolkit.rest.RestResult} <p>the return object is <code>RestResult</code> type.</p>
-     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>the rest exception is <code>RestException</code> type.</p>
-     * @see io.github.nichetoolkit.rest.RestResult
-     * @see org.springframework.web.bind.annotation.GetMapping
-     * @see io.github.nichetoolkit.rest.RestException
-     */
-    @GetMapping("/test")
-    public RestResult<SimpleModel> test() throws RestException {
-        SimpleModel simpleModel = new SimpleModel();
-        simpleModel.setTime(new Date());
-        simpleModel.setName(GeneralUtils.uuid());
-        SimpleModel save = simpleService.save(simpleModel);
-        return RestResult.success(save);
     }
 
     /**
@@ -116,8 +95,8 @@ public class SimpleController {
      * @see org.springframework.web.bind.annotation.GetMapping
      * @see io.github.nichetoolkit.rest.RestException
      */
-    @GetMapping("/query/{id}/{tablekey}")
-    public RestResult<SimpleModel> queryById(@PathVariable("id") String id, @PathVariable("tablekey") String tablekey) throws RestException {
+    @GetMapping("/query/{tablekey}")
+    public RestResult<SimpleModel> queryById(@RequestParam("id") String id, @PathVariable("tablekey") String tablekey) throws RestException {
         SimpleModel simpleModel = simpleService.queryById(tablekey, id);
         return RestResult.success(simpleModel);
     }
@@ -153,8 +132,8 @@ public class SimpleController {
      * @see org.springframework.web.bind.annotation.DeleteMapping
      * @see io.github.nichetoolkit.rest.RestException
      */
-    @DeleteMapping("/delete")
-    public RestResult<?> deleteById(@RequestParam("id") String id, @RequestParam("tablekey") String tablekey) throws RestException {
+    @DeleteMapping("/delete/{tablekey}")
+    public RestResult<?> deleteById(@RequestParam("id") String id, @PathVariable("tablekey") String tablekey) throws RestException {
         simpleService.deleteById(tablekey, id);
         return RestResult.success();
     }

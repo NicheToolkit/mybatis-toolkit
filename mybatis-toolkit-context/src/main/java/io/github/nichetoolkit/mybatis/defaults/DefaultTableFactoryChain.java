@@ -2,6 +2,8 @@ package io.github.nichetoolkit.mybatis.defaults;
 
 import io.github.nichetoolkit.mybatis.MybatisTable;
 import io.github.nichetoolkit.mybatis.MybatisTableFactory;
+import org.springframework.lang.NonNull;
+import org.springframework.lang.Nullable;
 
 import java.util.List;
 
@@ -58,11 +60,11 @@ public class DefaultTableFactoryChain implements MybatisTableFactory.Chain {
     }
 
     @Override
-    public MybatisTable createTable(Class<?> clazz) {
+    public MybatisTable createTable(@NonNull Class<?> entityType, @Nullable Class<?> identityKeyType) {
         if (index < factories.size()) {
             MybatisTableFactory mybatisTableFactory = factories.get(index);
-            if (mybatisTableFactory.supports(clazz)) {
-                return mybatisTableFactory.createTable(clazz, next);
+            if (mybatisTableFactory.supports(entityType)) {
+                return mybatisTableFactory.createTable(entityType, identityKeyType, next);
             }
         }
         return null;
