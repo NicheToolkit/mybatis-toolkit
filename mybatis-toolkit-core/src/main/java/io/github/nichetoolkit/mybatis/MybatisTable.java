@@ -433,7 +433,7 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
                     primaryKeyColumns.add(0, column);
                 }
             }
-            if (column.isLogic()) {
+            if (column.isLogicKey()) {
                 if (!logicColumns.contains(column)) {
                     logicColumns.add(0, column);
                 } else {
@@ -441,7 +441,7 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
                     logicColumns.add(0, column);
                 }
             }
-            if (column.isOperate()) {
+            if (column.isOperateKey()) {
                 if (!operateColumns.contains(column)) {
                     operateColumns.add(0, column);
                 } else {
@@ -545,7 +545,7 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
         /* 不重复添加同名的列 */
         if (!this.allColumns.contains(column)) {
             if (column.getField().declaringClass() != this.entity) {
-                if (column.isForceInsert() || column.isForceUpdate() || column.isLogic() || column.isOperate()) {
+                if (column.isForceInsert() || column.isForceUpdate() || column.isLogicKey() || column.isOperateKey()) {
                     this.allColumns.add(column);
                 } else if (column.isUnionKey() || column.isLinkKey()) {
                     this.allColumns.add(1, column);
@@ -840,7 +840,7 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
      */
     public List<MybatisColumn> normalColumns() {
         return this.allColumns.stream().filter(column -> !column.isIdentityKey() && !column.isPrimaryKey()
-                && !column.isUnionKey() && !column.isLogic() && !column.isOperate()).collect(Collectors.toList());
+                && !column.isUnionKey() && !column.isLogicKey() && !column.isOperateKey()).collect(Collectors.toList());
     }
 
     /**
