@@ -47,14 +47,14 @@ public abstract class MybatisEntityClassFinder implements MybatisClassFinder {
     }
 
     @Override
-    public Optional<Class<?>> findIdentityKey(@NonNull Class<?> mapperType, @NonNull Class<?> entityType) {
+    public Optional<Class<?>> findIdentity(@NonNull Class<?> mapperType, @NonNull Class<?> entityType) {
         /* entityType 泛型寻找 */
-        Optional<Class<?>> optionalClass = getIdentityKeyClassByEntityType(entityType);
+        Optional<Class<?>> optionalClass = getIdentityClassByEntityType(entityType);
         if (optionalClass.isPresent()) {
             return optionalClass;
         }
         /* mapperType 泛型寻找 */
-        return getIdentityKeyClassByMapperType(mapperType);
+        return getIdentityClassByMapperType(mapperType);
     }
 
     /**
@@ -108,8 +108,8 @@ public abstract class MybatisEntityClassFinder implements MybatisClassFinder {
      * @see java.lang.Class
      * @see java.util.Optional
      */
-    protected Optional<Class<?>> getIdentityKeyClassByEntityType(Class<?> entityType) {
-        return getClassByTypes(GenericTypeResolver.resolveGenericTypes(entityType), this::isIdentityKey);
+    protected Optional<Class<?>> getIdentityClassByEntityType(Class<?> entityType) {
+        return getClassByTypes(GenericTypeResolver.resolveGenericTypes(entityType), this::isIdentity);
     }
 
     /**
@@ -132,8 +132,8 @@ public abstract class MybatisEntityClassFinder implements MybatisClassFinder {
      * @see java.lang.Class
      * @see java.util.Optional
      */
-    protected Optional<Class<?>> getIdentityKeyClassByMapperType(Class<?> mapperType) {
-        return getClassByTypes(GenericTypeResolver.resolveGenericTypes(mapperType), this::isIdentityKey);
+    protected Optional<Class<?>> getIdentityClassByMapperType(Class<?> mapperType) {
+        return getClassByTypes(GenericTypeResolver.resolveGenericTypes(mapperType), this::isIdentity);
     }
 
 

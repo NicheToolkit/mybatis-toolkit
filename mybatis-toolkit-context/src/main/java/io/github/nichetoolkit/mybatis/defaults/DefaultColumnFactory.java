@@ -2,9 +2,9 @@ package io.github.nichetoolkit.mybatis.defaults;
 
 import io.github.nichetoolkit.mybatis.*;
 import io.github.nichetoolkit.mybatis.configure.MybatisTableProperties;
+import io.github.nichetoolkit.mybatis.stereotype.RestIdentityKey;
 import io.github.nichetoolkit.rest.util.ContextUtils;
 import io.github.nichetoolkit.rest.util.GeneralUtils;
-import io.github.nichetoolkit.mybatis.stereotype.RestIdentity;
 import io.github.nichetoolkit.mybatis.stereotype.RestProperty;
 import io.github.nichetoolkit.mybatis.stereotype.column.*;
 import org.apache.ibatis.type.JdbcType;
@@ -42,7 +42,7 @@ public class DefaultColumnFactory implements MybatisColumnFactory {
         /* 排除RestExclude 注解的字段 以及 RestExcludes 注解的字段 */
         RestExclude restExclude = field.getAnnotation(RestExclude.class);
         String fieldName = field.fieldName();
-        List<String> excludeIgnoreKeys= table.getExcludeIgnoreKeys();
+        List<String> excludeIgnoreKeys = table.getExcludeIgnoreKeys();
         if (GeneralUtils.isNotEmpty(excludeIgnoreKeys)) {
             /* 当前字段属于 需要排除的字段类型 返回 false */
             if (excludeIgnoreKeys.contains(fieldName)) {
@@ -89,7 +89,7 @@ public class DefaultColumnFactory implements MybatisColumnFactory {
     @Override
     public Optional<List<MybatisColumn>> createColumn(MybatisTable mybatisTable, MybatisField field, Chain chain) {
         /* 默认针对 entity 实体中的所有字段构建 column 数据 */
-        MybatisColumn mybatisColumn = MybatisColumn.of(field,tableProperties.getProperties());
+        MybatisColumn mybatisColumn = MybatisColumn.of(field, tableProperties.getProperties());
         RestName restName = field.getAnnotation(RestName.class);
         String columnName = Optional.ofNullable(restName).map(RestName::name).orElse(null);
         String columnComment = Optional.ofNullable(restName).map(RestName::comment).orElse(null);
@@ -106,9 +106,9 @@ public class DefaultColumnFactory implements MybatisColumnFactory {
                 mybatisColumn.setOrder(restOrder.order());
             }
         }
-        RestIdentity restIdentity = field.getAnnotation(RestIdentity.class);
-        if (GeneralUtils.isNotEmpty(restIdentity)) {
-            mybatisColumn.setIdentity(true);
+        RestIdentityKey restIdentityKey = field.getAnnotation(RestIdentityKey.class);
+        if (GeneralUtils.isNotEmpty(restIdentityKey)) {
+            mybatisColumn.setIdentityKey(true);
         }
         RestPrimaryKey restPrimaryKey = field.getAnnotation(RestPrimaryKey.class);
         if (GeneralUtils.isNotEmpty(restPrimaryKey)) {

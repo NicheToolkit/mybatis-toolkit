@@ -16,7 +16,7 @@ import java.lang.annotation.*;
  * @since Jdk1.8
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.FIELD})
+@Target({ElementType.TYPE})
 @Documented
 @Indexed
 public @interface RestIdentity {

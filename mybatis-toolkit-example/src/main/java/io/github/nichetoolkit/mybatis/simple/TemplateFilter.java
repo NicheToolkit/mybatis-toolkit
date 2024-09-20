@@ -2,7 +2,6 @@ package io.github.nichetoolkit.mybatis.simple;
 
 
 import io.github.nichetoolkit.rice.DefaultFilter;
-import io.github.nichetoolkit.rice.RestFilter;
 
 /**
  * <code>TemplateFilter</code>
@@ -11,7 +10,7 @@ import io.github.nichetoolkit.rice.RestFilter;
  * @see io.github.nichetoolkit.rice.DefaultFilter
  * @since Jdk1.8
  */
-public class TemplateFilter extends DefaultFilter<TemplateKey,String> {
+public class TemplateFilter extends DefaultFilter<TemplateIdentity,String> {
     /**
      * <code>TemplateFilter</code>
      * Instantiates a new template filter.

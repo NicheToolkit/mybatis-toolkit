@@ -3,7 +3,9 @@ package io.github.nichetoolkit.mybatis;
 import io.github.nichetoolkit.mybatis.defaults.DefaultColumnFactoryChain;
 import io.github.nichetoolkit.mybatis.defaults.DefaultTableFactoryChain;
 import io.github.nichetoolkit.mybatis.helper.ServiceLoaderHelper;
+import io.github.nichetoolkit.mybatis.stereotype.RestIdentityKey;
 import io.github.nichetoolkit.rest.error.lack.InterfaceLackError;
+import io.github.nichetoolkit.rest.util.GeneralUtils;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 
@@ -36,7 +38,7 @@ public abstract class MybatisFactory {
         Optional<Class<?>> optionalClass = MybatisClassFinder.findEntityClass(mapperType, mapperMethod);
         if (optionalClass.isPresent()) {
             Class<?> entityType = optionalClass.get();
-            Optional<Class<?>> identityKeyClass = MybatisClassFinder.findIdentityKeyClass(mapperType, entityType);
+            Optional<Class<?>> identityKeyClass = MybatisClassFinder.findIdentityClass(mapperType, entityType);
             return identityKeyClass.map(clazz -> createTable(entityType, clazz)).orElseGet(() -> createTable(entityType, (Class<?>) null));
         }
         throw new InterfaceLackError("Can't obtain " + (mapperMethod != null ?
@@ -47,18 +49,19 @@ public abstract class MybatisFactory {
      * <code>createTable</code>
      * <p>the table method.</p>
      * @param entityType      {@link java.lang.Class} <p>the entity type parameter is <code>Class</code> type.</p>
-     * @param identityKeyType {@link java.lang.Class} <p>the identity key type parameter is <code>Class</code> type.</p>
+     * @param identityType {@link java.lang.Class} <p>the identity key type parameter is <code>Class</code> type.</p>
      * @return {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>the table return object is <code>MybatisTable</code> type.</p>
      * @see java.lang.Class
      * @see org.springframework.lang.NonNull
      * @see org.springframework.lang.Nullable
      * @see io.github.nichetoolkit.mybatis.MybatisTable
      */
-    public static MybatisTable createTable(@NonNull Class<?> entityType, @Nullable Class<?> identityKeyType) {
+    public static MybatisTable createTable(@NonNull Class<?> entityType, @Nullable Class<?> identityType) {
         /* 处理MybatisTable */
         MybatisTableFactory.Chain tableFactoryChain = Instance.tableFactoryChain();
         /* 创建 MybatisTable，不处理列（字段），此时返回的 MybatisTable 已经经过了所有处理链的加工 */
-        MybatisTable table = tableFactoryChain.createTable(entityType, identityKeyType);
+        MybatisTable table = tableFactoryChain.createTable(entityType, identityType);
+        Class<?> identityClass = identityType;
         if (table == null) {
             throw new NullPointerException("Unable to get " + entityType.getName() + " mybatis class information");
         }
@@ -85,6 +88,16 @@ public abstract class MybatisFactory {
                                 if (table.isExcludeField(field)) {
                                     continue;
                                 }
+                                /* 使用了自定义联合主键字 */
+                                if (GeneralUtils.isNotEmpty(identityClass)) {
+                                    /* 是否主键id字段 */
+                                    RestIdentityKey restIdentityKey = field.getAnnotation(RestIdentityKey.class);
+
+//                                    if (restIdentity) {
+//                                        identityKeyClass = null;
+//                                    }
+                                }
+
                                 Optional<List<MybatisColumn>> optionalColumns = columnFactoryChain.createColumn(table, field);
                                 optionalColumns.ifPresent(columns -> columns.forEach(table::addColumn));
                             }

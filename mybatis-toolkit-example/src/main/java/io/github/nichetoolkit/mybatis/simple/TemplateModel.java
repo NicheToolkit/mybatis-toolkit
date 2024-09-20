@@ -18,7 +18,7 @@ import java.util.Date;
  * @see io.github.nichetoolkit.rice.RestTablekey
  * @since Jdk1.8
  */
-public class TemplateModel extends DefaultInfoModel<TemplateModel, TemplateEntity, TemplateKey> implements RestTablekey<String> {
+public class TemplateModel extends DefaultInfoModel<TemplateModel, TemplateEntity, TemplateIdentity> implements RestTablekey<String> {
     /**
      * <code>time</code>
      * {@link java.util.Date} <p>the <code>time</code> field.</p>
@@ -40,10 +40,10 @@ public class TemplateModel extends DefaultInfoModel<TemplateModel, TemplateEntit
     /**
      * <code>TemplateModel</code>
      * Instantiates a new template model.
-     * @param id {@link io.github.nichetoolkit.mybatis.simple.TemplateKey} <p>the id parameter is <code>TemplateKey</code> type.</p>
-     * @see io.github.nichetoolkit.mybatis.simple.TemplateKey
+     * @param id {@link TemplateIdentity} <p>the id parameter is <code>TemplateKey</code> type.</p>
+     * @see TemplateIdentity
      */
-    public TemplateModel(TemplateKey id) {
+    public TemplateModel(TemplateIdentity id) {
         super(id);
     }
 
@@ -100,7 +100,7 @@ public class TemplateModel extends DefaultInfoModel<TemplateModel, TemplateEntit
      * @see io.github.nichetoolkit.rice.DefaultInfoModel.Builder
      * @since Jdk1.8
      */
-    public static class Builder extends DefaultInfoModel.Builder<TemplateModel, TemplateEntity, TemplateKey> {
+    public static class Builder extends DefaultInfoModel.Builder<TemplateModel, TemplateEntity, TemplateIdentity> {
         /**
          * <code>time</code>
          * {@link java.util.Date} <p>the <code>time</code> field.</p>
@@ -140,7 +140,7 @@ public class TemplateModel extends DefaultInfoModel<TemplateModel, TemplateEntit
         }
 
         @Override
-        public Builder id(TemplateKey id) {
+        public Builder id(TemplateIdentity id) {
             this.id = id;
             return this;
         }

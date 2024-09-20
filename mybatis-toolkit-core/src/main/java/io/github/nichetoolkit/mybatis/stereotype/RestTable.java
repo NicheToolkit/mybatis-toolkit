@@ -49,7 +49,7 @@ public @interface RestTable {
     String value() default "";
 
     /**
-     * <code>remark</code>
+     * <code>comment</code>
      * <p>the method.</p>
      * @return {@link java.lang.String} <p>the return object is <code>String</code> type.</p>
      * @see java.lang.String
@@ -59,7 +59,7 @@ public @interface RestTable {
     String comment() default "";
 
     /**
-     * <code>prefix</code>
+     * <code>alias</code>
      * <p>the method.</p>
      * @return {@link java.lang.String} <p>the return object is <code>String</code> type.</p>
      * @see java.lang.String
@@ -69,14 +69,24 @@ public @interface RestTable {
     String alias() default "";
 
     /**
-     * <code>entity</code>
-     * <p>the method.</p>
-     * @return {@link java.lang.Class} <p>the return object is <code>Class</code> type.</p>
+     * <code>entityType</code>
+     * <p>the type method.</p>
+     * @return {@link java.lang.Class} <p>the type return object is <code>Class</code> type.</p>
      * @see java.lang.Class
      * @see org.springframework.core.annotation.AliasFor
      */
     @AliasFor(annotation = RestEntity.class, attribute = "entityType")
     Class<?> entityType() default Object.class;
+
+    /**
+     * <code>identityType</code>
+     * <p>the type method.</p>
+     * @return {@link java.lang.Class} <p>the type return object is <code>Class</code> type.</p>
+     * @see java.lang.Class
+     * @see org.springframework.core.annotation.AliasFor
+     */
+    @AliasFor(annotation = RestEntity.class, attribute = "identityType")
+    Class<?> identityType() default Object.class;
 
     /**
      * <code>unionKeys</code>

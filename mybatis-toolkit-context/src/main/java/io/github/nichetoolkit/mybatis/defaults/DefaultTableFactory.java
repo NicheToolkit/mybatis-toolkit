@@ -47,7 +47,7 @@ public class DefaultTableFactory implements MybatisTableFactory {
     }
 
     @Override
-    public MybatisTable createTable(@NonNull Class<?> entityType, @Nullable Class<?> identityKeyType, Chain chain) {
+    public MybatisTable createTable(@NonNull Class<?> entityType, @Nullable Class<?> identityType, Chain chain) {
         RestEntity restEntity = AnnotationUtils.getAnnotation(entityType, RestEntity.class);
         Class<?> entityClazz = Optional.ofNullable(restEntity).map(RestEntity::entityType).orElse(null);
         String tableName = Optional.ofNullable(restEntity).map(RestEntity::name).orElse(null);
@@ -55,9 +55,9 @@ public class DefaultTableFactory implements MybatisTableFactory {
         String tableAlias = Optional.ofNullable(restEntity).map(RestEntity::alias).orElse(null);
         MybatisTable mybatisTable;
         if (GeneralUtils.isNotEmpty(entityClazz) && entityClazz != Object.class) {
-            mybatisTable = MybatisTable.of(entityClazz, identityKeyType, tableProperties.getProperties());
+            mybatisTable = MybatisTable.of(entityClazz, identityType, tableProperties.getProperties());
         } else {
-            mybatisTable = MybatisTable.of(entityType, identityKeyType, tableProperties.getProperties());
+            mybatisTable = MybatisTable.of(entityType, identityType, tableProperties.getProperties());
         }
         mybatisTable.setComment(tableComment);
         restUniqueKeys(entityType, mybatisTable);

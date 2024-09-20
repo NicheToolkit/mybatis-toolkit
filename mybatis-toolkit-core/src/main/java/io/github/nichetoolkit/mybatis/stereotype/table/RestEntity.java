@@ -65,4 +65,12 @@ public @interface RestEntity {
      */
     Class<?> entityType() default Object.class;
 
+    /**
+     * <code>identityType</code>
+     * <p>the type method.</p>
+     * @return {@link java.lang.Class} <p>the type return object is <code>Class</code> type.</p>
+     * @see java.lang.Class
+     */
+    Class<?> identityType() default Object.class;
+
 }

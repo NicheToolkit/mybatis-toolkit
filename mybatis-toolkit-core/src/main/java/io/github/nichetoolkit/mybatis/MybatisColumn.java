@@ -12,8 +12,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.regex.Matcher;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static io.github.nichetoolkit.mybatis.MybatisTable.DELIMITER;
 
@@ -58,10 +56,10 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
      */
     protected Integer order;
     /**
-     * <code>identity</code>
-     * <p>the <code>identity</code> field.</p>
+     * <code>identityKey</code>
+     * <p>the <code>identityKey</code> field.</p>
      */
-    protected boolean identity;
+    protected boolean identityKey;
     /**
      * <code>primaryKey</code>
      * <p>the <code>primaryKey</code> field.</p>

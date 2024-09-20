@@ -29,11 +29,11 @@ public class DefaultCachingTableFactory implements MybatisTableFactory {
     }
 
     @Override
-    public MybatisTable createTable(@NonNull Class<?> entityType, @Nullable Class<?> identityKeyType, Chain chain) {
+    public MybatisTable createTable(@NonNull Class<?> entityType, @Nullable Class<?> identityType, Chain chain) {
         if (CLASS_TABLE_MAP.get(entityType) == null) {
             synchronized (entityType) {
                 if (CLASS_TABLE_MAP.get(entityType) == null) {
-                    MybatisTable mybatisTable = chain.createTable(entityType, identityKeyType);
+                    MybatisTable mybatisTable = chain.createTable(entityType, identityType);
                     if (mybatisTable != null) {
                         CLASS_TABLE_MAP.put(entityType, mybatisTable);
                     } else {

@@ -2,7 +2,7 @@ package io.github.nichetoolkit.mybatis.controller;
 
 import io.github.nichetoolkit.mybatis.service.TemplateService;
 import io.github.nichetoolkit.mybatis.simple.TemplateFilter;
-import io.github.nichetoolkit.mybatis.simple.TemplateKey;
+import io.github.nichetoolkit.mybatis.simple.TemplateIdentity;
 import io.github.nichetoolkit.mybatis.simple.TemplateModel;
 import io.github.nichetoolkit.rest.RestException;
 import io.github.nichetoolkit.rest.RestResult;
@@ -37,7 +37,7 @@ public class TemplateController {
     }
 
     @GetMapping("/query/{tablekey}")
-    public RestResult<TemplateModel> queryById(TemplateKey id, @PathVariable("tablekey") String tablekey) throws RestException {
+    public RestResult<TemplateModel> queryById(TemplateIdentity id, @PathVariable("tablekey") String tablekey) throws RestException {
         TemplateModel templateModel = templateService.queryById(tablekey, id);
         return RestResult.success(templateModel);
     }
@@ -49,7 +49,7 @@ public class TemplateController {
     }
 
     @DeleteMapping("/delete/{tablekey}")
-    public RestResult<?> deleteById(TemplateKey id, @PathVariable("tablekey") String tablekey) throws RestException {
+    public RestResult<?> deleteById(TemplateIdentity id, @PathVariable("tablekey") String tablekey) throws RestException {
         templateService.deleteById(tablekey, id);
         return RestResult.success();
     }

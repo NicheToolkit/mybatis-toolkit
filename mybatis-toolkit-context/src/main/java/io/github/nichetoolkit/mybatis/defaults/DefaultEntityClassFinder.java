@@ -1,7 +1,7 @@
 package io.github.nichetoolkit.mybatis.defaults;
 
 
-import io.github.nichetoolkit.mybatis.stereotype.RestIdentityKey;
+import io.github.nichetoolkit.mybatis.stereotype.RestIdentity;
 import io.github.nichetoolkit.mybatis.stereotype.RestMapper;
 import io.github.nichetoolkit.mybatis.stereotype.table.RestEntity;
 import io.github.nichetoolkit.rest.util.GeneralUtils;
@@ -21,6 +21,14 @@ public class DefaultEntityClassFinder extends MybatisEntityClassFinder {
 
     @Override
     public Optional<Class<?>> findEntity(@NonNull Class<?> mapperType, Method mapperMethod) {
+        /* RestMapper 获取 */
+        if (mapperType.isAnnotationPresent(RestMapper.class)) {
+            RestMapper restMapper = mapperType.getAnnotation(RestMapper.class);
+            Class<?> entityType = restMapper.entityType();
+            if (GeneralUtils.isNotEmpty(entityType) && !entityType.equals(Object.class)) {
+                return Optional.of(entityType);
+            }
+        }
         if (mapperMethod != null) {
             /* 首先是接口方法 */
             if (mapperMethod.isAnnotationPresent(RestEntity.class)) {
@@ -31,29 +39,29 @@ public class DefaultEntityClassFinder extends MybatisEntityClassFinder {
         if (mapperType.isAnnotationPresent(RestEntity.class)) {
             return Optional.of(mapperType);
         }
-        /* RestMapper 获取 */
-        if (mapperType.isAnnotationPresent(RestMapper.class)) {
-            RestMapper restMapper = mapperType.getAnnotation(RestMapper.class);
-            Class<?> entityType = restMapper.entityType();
-            if (GeneralUtils.isNotEmpty(entityType) && !entityType.equals(Object.class)) {
-                return Optional.of(entityType);
-            }
-        }
         /* 没有明确指名的情况下，通过泛型获取 */
         return super.findEntity(mapperType, mapperMethod);
     }
 
     @Override
-    public Optional<Class<?>> findIdentityKey(@NonNull Class<?> mapperType, @NonNull Class<?> entityType) {
+    public Optional<Class<?>> findIdentity(@NonNull Class<?> mapperType, @NonNull Class<?> entityType) {
+        /* RestEntity 获取 */
+        if (entityType.isAnnotationPresent(RestEntity.class)) {
+            RestEntity restEntity = mapperType.getAnnotation(RestEntity.class);
+            Class<?> identityType = restEntity.identityType();
+            if (GeneralUtils.isNotEmpty(identityType) && !identityType.equals(Object.class)) {
+                return Optional.of(identityType);
+            }
+        }
         /* RestMapper 获取 */
         if (mapperType.isAnnotationPresent(RestMapper.class)) {
             RestMapper restMapper = mapperType.getAnnotation(RestMapper.class);
-            Class<?> identityKeyType = restMapper.identityKeyType();
-            if (GeneralUtils.isNotEmpty(identityKeyType) && !identityKeyType.equals(Object.class)) {
-                return Optional.of(identityKeyType);
+            Class<?> identityType = restMapper.identityType();
+            if (GeneralUtils.isNotEmpty(identityType) && !identityType.equals(Object.class)) {
+                return Optional.of(identityType);
             }
         }
-        return super.findIdentityKey(mapperType, entityType);
+        return super.findIdentity(mapperType, entityType);
     }
 
     @Override
@@ -62,7 +70,7 @@ public class DefaultEntityClassFinder extends MybatisEntityClassFinder {
     }
 
     @Override
-    public boolean isIdentityKey(Class<?> clazz) {
-        return clazz.isAnnotationPresent(RestIdentityKey.class);
+    public boolean isIdentity(Class<?> clazz) {
+        return clazz.isAnnotationPresent(RestIdentity.class);
     }
 }

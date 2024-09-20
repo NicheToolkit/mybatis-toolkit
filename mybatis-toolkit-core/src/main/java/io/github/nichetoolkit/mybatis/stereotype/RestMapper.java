@@ -40,19 +40,19 @@ public @interface RestMapper {
     String value() default "";
 
     /**
-     * <code>entity</code>
-     * <p>the method.</p>
-     * @return {@link java.lang.Class} <p>the return object is <code>Class</code> type.</p>
+     * <code>entityType</code>
+     * <p>the type method.</p>
+     * @return {@link java.lang.Class} <p>the type return object is <code>Class</code> type.</p>
      * @see java.lang.Class
      */
     Class<?> entityType() default Object.class;
 
     /**
-     * <code>identityKey</code>
-     * <p>the key method.</p>
-     * @return {@link java.lang.Class} <p>the key return object is <code>Class</code> type.</p>
+     * <code>identityType</code>
+     * <p>the type method.</p>
+     * @return {@link java.lang.Class} <p>the type return object is <code>Class</code> type.</p>
      * @see java.lang.Class
      */
-    Class<?> identityKeyType() default Object.class;
+    Class<?> identityType() default Object.class;
 
 }

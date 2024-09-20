@@ -48,11 +48,11 @@ public interface MybatisClassFinder extends MybatisOrder {
      * @see java.lang.Class
      * @see java.util.Optional
      */
-    static Optional<Class<?>> findIdentityKeyClass(Class<?> mapperType, Class<?> entityType) {
+    static Optional<Class<?>> findIdentityClass(Class<?> mapperType, Class<?> entityType) {
         Objects.requireNonNull(entityType);
         List<MybatisClassFinder> instances = ClassFinderInstance.instances();
         for (MybatisClassFinder instance : ClassFinderInstance.instances()) {
-            Optional<Class<?>> optionalClass = instance.findIdentityKey(mapperType, entityType);
+            Optional<Class<?>> optionalClass = instance.findIdentity(mapperType, entityType);
             if (optionalClass.isPresent()) {
                 return optionalClass;
             }
@@ -83,7 +83,7 @@ public interface MybatisClassFinder extends MybatisOrder {
      * @see org.springframework.lang.NonNull
      * @see java.util.Optional
      */
-    Optional<Class<?>> findIdentityKey(@NonNull Class<?> mapperType, @NonNull Class<?> entityType);
+    Optional<Class<?>> findIdentity(@NonNull Class<?> mapperType, @NonNull Class<?> entityType);
 
     /**
      * <code>isEntity</code>
@@ -101,7 +101,7 @@ public interface MybatisClassFinder extends MybatisOrder {
      * @return boolean <p>the identity key return object is <code>boolean</code> type.</p>
      * @see java.lang.Class
      */
-    boolean isIdentityKey(Class<?> clazz);
+    boolean isIdentity(Class<?> clazz);
 
     /**
      * <code>ClassFinderInstance</code>

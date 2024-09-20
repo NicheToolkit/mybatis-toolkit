@@ -2,7 +2,7 @@ package io.github.nichetoolkit.mybatis.service;
 
 import io.github.nichetoolkit.mybatis.simple.TemplateEntity;
 import io.github.nichetoolkit.mybatis.simple.TemplateFilter;
-import io.github.nichetoolkit.mybatis.simple.TemplateKey;
+import io.github.nichetoolkit.mybatis.simple.TemplateIdentity;
 import io.github.nichetoolkit.mybatis.simple.TemplateModel;
 import io.github.nichetoolkit.rest.RestException;
 import io.github.nichetoolkit.rice.DefaultInfoService;
@@ -21,7 +21,7 @@ import java.util.Optional;
  * @since Jdk1.8
  */
 @Service
-public class TemplateServiceImpl extends DefaultInfoService<TemplateModel, TemplateEntity, TemplateFilter, TemplateKey, String> implements TemplateService {
+public class TemplateServiceImpl extends DefaultInfoService<TemplateModel, TemplateEntity, TemplateFilter, TemplateIdentity, String> implements TemplateService {
 
     @Override
     protected void optionalInit(@NonNull TemplateModel model) throws RestException {

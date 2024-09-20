@@ -25,7 +25,7 @@ public interface MybatisTableFactory extends MybatisOrder {
      * <code>createTable</code>
      * <p>the table method.</p>
      * @param entityType      {@link java.lang.Class} <p>the entity type parameter is <code>Class</code> type.</p>
-     * @param identityKeyType {@link java.lang.Class} <p>the identity key type parameter is <code>Class</code> type.</p>
+     * @param identityType {@link java.lang.Class} <p>the identity key type parameter is <code>Class</code> type.</p>
      * @param chain           {@link io.github.nichetoolkit.mybatis.MybatisTableFactory.Chain} <p>the chain parameter is <code>Chain</code> type.</p>
      * @return {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>the table return object is <code>MybatisTable</code> type.</p>
      * @see java.lang.Class
@@ -33,7 +33,7 @@ public interface MybatisTableFactory extends MybatisOrder {
      * @see org.springframework.lang.Nullable
      * @see io.github.nichetoolkit.mybatis.MybatisTableFactory.Chain
      */
-    MybatisTable createTable(@NonNull Class<?> entityType, @Nullable Class<?> identityKeyType, Chain chain);
+    MybatisTable createTable(@NonNull Class<?> entityType, @Nullable Class<?> identityType, Chain chain);
 
     /**
      * <code>Chain</code>
@@ -46,12 +46,12 @@ public interface MybatisTableFactory extends MybatisOrder {
          * <code>createTable</code>
          * <p>the table method.</p>
          * @param entityType      {@link java.lang.Class} <p>the entity type parameter is <code>Class</code> type.</p>
-         * @param identityKeyType {@link java.lang.Class} <p>the identity key type parameter is <code>Class</code> type.</p>
+         * @param identityType {@link java.lang.Class} <p>the identity key type parameter is <code>Class</code> type.</p>
          * @return {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>the table return object is <code>MybatisTable</code> type.</p>
          * @see java.lang.Class
          * @see org.springframework.lang.NonNull
          * @see org.springframework.lang.Nullable
          */
-        MybatisTable createTable(@NonNull Class<?> entityType, @Nullable Class<?> identityKeyType);
+        MybatisTable createTable(@NonNull Class<?> entityType, @Nullable Class<?> identityType);
     }
 }

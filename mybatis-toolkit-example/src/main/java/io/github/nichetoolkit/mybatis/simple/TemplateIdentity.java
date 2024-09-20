@@ -1,6 +1,6 @@
 package io.github.nichetoolkit.mybatis.simple;
 
-import io.github.nichetoolkit.mybatis.stereotype.RestIdentityKey;
+import io.github.nichetoolkit.mybatis.stereotype.RestIdentity;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -15,8 +15,8 @@ import java.util.Objects;
  * @since Jdk1.8
  */
 @Data
-@RestIdentityKey
-public class TemplateKey implements Serializable {
+@RestIdentity
+public class TemplateIdentity implements Serializable {
     /**
      * <code>templatePk1</code>
      * {@link java.lang.String} <p>the <code>templatePk1</code> field.</p>
@@ -35,7 +35,7 @@ public class TemplateKey implements Serializable {
      * <code>TemplateKey</code>
      * Instantiates a new template key.
      */
-    public TemplateKey() {
+    public TemplateIdentity() {
     }
 
     /**
@@ -45,7 +45,7 @@ public class TemplateKey implements Serializable {
      * @param templatePk2 {@link java.lang.String} <p>the template pk 2 parameter is <code>String</code> type.</p>
      * @see java.lang.String
      */
-    public TemplateKey(String templatePk1, String templatePk2) {
+    public TemplateIdentity(String templatePk1, String templatePk2) {
         this.templatePk1 = templatePk1;
         this.templatePk2 = templatePk2;
     }
@@ -54,7 +54,7 @@ public class TemplateKey implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        TemplateKey that = (TemplateKey) o;
+        TemplateIdentity that = (TemplateIdentity) o;
         return Objects.equals(templatePk1, that.templatePk1) &&
                 Objects.equals(templatePk2, that.templatePk2);
     }

@@ -1,7 +1,6 @@
 package io.github.nichetoolkit.mybatis.simple;
 
 import io.github.nichetoolkit.rice.DefaultInfoEntity;
-import io.github.nichetoolkit.rice.RestInfoEntity;
 import io.github.nichetoolkit.mybatis.stereotype.column.RestForceInsert;
 import io.github.nichetoolkit.mybatis.stereotype.table.RestEntity;
 
@@ -17,7 +16,7 @@ import java.util.Date;
  * @since Jdk1.8
  */
 @RestEntity(name = "ntr_template")
-public class TemplateEntity extends DefaultInfoEntity<TemplateEntity, TemplateModel, TemplateKey> {
+public class TemplateEntity extends DefaultInfoEntity<TemplateEntity, TemplateModel, TemplateIdentity> {
 
     /**
      * <code>time</code>
@@ -38,10 +37,10 @@ public class TemplateEntity extends DefaultInfoEntity<TemplateEntity, TemplateMo
     /**
      * <code>TemplateEntity</code>
      * Instantiates a new template entity.
-     * @param id {@link io.github.nichetoolkit.mybatis.simple.TemplateKey} <p>the id parameter is <code>TemplateKey</code> type.</p>
-     * @see io.github.nichetoolkit.mybatis.simple.TemplateKey
+     * @param id {@link TemplateIdentity} <p>the id parameter is <code>TemplateKey</code> type.</p>
+     * @see TemplateIdentity
      */
-    public TemplateEntity(TemplateKey id) {
+    public TemplateEntity(TemplateIdentity id) {
         super(id);
     }
 
