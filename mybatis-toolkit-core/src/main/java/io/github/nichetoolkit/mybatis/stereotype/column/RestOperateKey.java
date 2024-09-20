@@ -5,8 +5,8 @@ import org.springframework.stereotype.Indexed;
 import java.lang.annotation.*;
 
 /**
- * <code>RestLogic</code>
- * <p>The type rest logic interface.</p>
+ * <code>RestOperateKey</code>
+ * <p>The type rest operate key interface.</p>
  * @author Cyan (snow22314@outlook.com)
  * @see java.lang.annotation.Annotation
  * @see java.lang.annotation.Retention
@@ -19,6 +19,6 @@ import java.lang.annotation.*;
 @Target({ElementType.FIELD})
 @Documented
 @Indexed
-public @interface RestLogic {
+public @interface RestOperateKey {
 }
 

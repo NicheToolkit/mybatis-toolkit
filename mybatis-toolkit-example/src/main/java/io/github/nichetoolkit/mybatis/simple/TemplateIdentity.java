@@ -1,6 +1,6 @@
 package io.github.nichetoolkit.mybatis.simple;
 
-import io.github.nichetoolkit.mybatis.stereotype.RestIdentity;
+import io.github.nichetoolkit.mybatis.stereotype.table.RestIdentity;
 import lombok.Data;
 
 import java.io.Serializable;

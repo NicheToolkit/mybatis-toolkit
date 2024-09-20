@@ -1,4 +1,4 @@
-package io.github.nichetoolkit.mybatis.stereotype;
+package io.github.nichetoolkit.mybatis.stereotype.table;
 
 import org.springframework.core.annotation.AliasFor;
 import org.springframework.stereotype.Indexed;
@@ -24,8 +24,8 @@ public @interface RestProperties {
     /**
      * <code>value</code>
      * <p>the method.</p>
-     * @return {@link io.github.nichetoolkit.mybatis.stereotype.RestProperty} <p>the return object is <code>RestProperty</code> type.</p>
-     * @see io.github.nichetoolkit.mybatis.stereotype.RestProperty
+     * @return {@link RestProperty} <p>the return object is <code>RestProperty</code> type.</p>
+     * @see RestProperty
      * @see org.springframework.core.annotation.AliasFor
      */
     @AliasFor("properties")
@@ -34,8 +34,8 @@ public @interface RestProperties {
     /**
      * <code>properties</code>
      * <p>the method.</p>
-     * @return {@link io.github.nichetoolkit.mybatis.stereotype.RestProperty} <p>the return object is <code>RestProperty</code> type.</p>
-     * @see io.github.nichetoolkit.mybatis.stereotype.RestProperty
+     * @return {@link RestProperty} <p>the return object is <code>RestProperty</code> type.</p>
+     * @see RestProperty
      */
     RestProperty[] properties() default {};
 }

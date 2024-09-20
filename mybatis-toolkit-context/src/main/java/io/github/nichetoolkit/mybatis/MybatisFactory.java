@@ -3,7 +3,7 @@ package io.github.nichetoolkit.mybatis;
 import io.github.nichetoolkit.mybatis.defaults.DefaultColumnFactoryChain;
 import io.github.nichetoolkit.mybatis.defaults.DefaultTableFactoryChain;
 import io.github.nichetoolkit.mybatis.helper.ServiceLoaderHelper;
-import io.github.nichetoolkit.mybatis.stereotype.RestIdentityKey;
+import io.github.nichetoolkit.mybatis.stereotype.column.RestIdentityKey;
 import io.github.nichetoolkit.rest.error.lack.InterfaceLackError;
 import io.github.nichetoolkit.rest.util.GeneralUtils;
 import org.springframework.lang.NonNull;

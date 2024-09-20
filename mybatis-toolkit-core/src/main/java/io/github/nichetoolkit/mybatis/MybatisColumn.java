@@ -133,12 +133,12 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
      * <code>logic</code>
      * <p>the <code>logic</code> field.</p>
      */
-    protected boolean logic;
+    protected boolean logicKey;
     /**
      * <code>operate</code>
      * <p>the <code>operate</code> field.</p>
      */
-    protected boolean operate;
+    protected boolean operateKey;
     /**
      * <code>select</code>
      * <p>the <code>select</code> field.</p>

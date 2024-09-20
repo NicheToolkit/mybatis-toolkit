@@ -7,7 +7,7 @@ import io.github.nichetoolkit.mybatis.configure.MybatisTableProperties;
 import io.github.nichetoolkit.rest.util.ContextUtils;
 import io.github.nichetoolkit.rest.util.GeneralUtils;
 import io.github.nichetoolkit.mybatis.enums.StyleType;
-import io.github.nichetoolkit.mybatis.stereotype.RestProperties;
+import io.github.nichetoolkit.mybatis.stereotype.table.RestProperties;
 import io.github.nichetoolkit.mybatis.stereotype.table.*;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.lang.NonNull;

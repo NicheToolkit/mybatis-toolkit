@@ -2,10 +2,10 @@ package io.github.nichetoolkit.mybatis.defaults;
 
 import io.github.nichetoolkit.mybatis.*;
 import io.github.nichetoolkit.mybatis.configure.MybatisTableProperties;
-import io.github.nichetoolkit.mybatis.stereotype.RestIdentityKey;
+import io.github.nichetoolkit.mybatis.stereotype.column.RestIdentityKey;
 import io.github.nichetoolkit.rest.util.ContextUtils;
 import io.github.nichetoolkit.rest.util.GeneralUtils;
-import io.github.nichetoolkit.mybatis.stereotype.RestProperty;
+import io.github.nichetoolkit.mybatis.stereotype.table.RestProperty;
 import io.github.nichetoolkit.mybatis.stereotype.column.*;
 import org.apache.ibatis.type.JdbcType;
 
@@ -90,9 +90,9 @@ public class DefaultColumnFactory implements MybatisColumnFactory {
     public Optional<List<MybatisColumn>> createColumn(MybatisTable mybatisTable, MybatisField field, Chain chain) {
         /* 默认针对 entity 实体中的所有字段构建 column 数据 */
         MybatisColumn mybatisColumn = MybatisColumn.of(field, tableProperties.getProperties());
-        RestName restName = field.getAnnotation(RestName.class);
-        String columnName = Optional.ofNullable(restName).map(RestName::name).orElse(null);
-        String columnComment = Optional.ofNullable(restName).map(RestName::comment).orElse(null);
+        RestColname restName = field.getAnnotation(RestColname.class);
+        String columnName = Optional.ofNullable(restName).map(RestColname::name).orElse(null);
+        String columnComment = Optional.ofNullable(restName).map(RestColname::comment).orElse(null);
         MybatisStyle mybatisStyle = MybatisStyle.style(mybatisTable.getStyleName());
         if (GeneralUtils.isNotEmpty(restName)) {
             mybatisColumn.setColumn(GeneralUtils.isEmpty(columnName) ? mybatisStyle.columnName(mybatisTable, field) : restName.name());
@@ -156,13 +156,13 @@ public class DefaultColumnFactory implements MybatisColumnFactory {
             mybatisColumn.setForceUpdate(true);
             mybatisColumn.setForceUpdateValue(restForceUpdate.value());
         }
-        RestLogic restLogic = field.getAnnotation(RestLogic.class);
-        if (GeneralUtils.isNotEmpty(restLogic)) {
-            mybatisColumn.setLogic(true);
+        RestLogicKey restLogicKey = field.getAnnotation(RestLogicKey.class);
+        if (GeneralUtils.isNotEmpty(restLogicKey)) {
+            mybatisColumn.setLogicKey(true);
         }
-        RestOperate restOperate = field.getAnnotation(RestOperate.class);
+        RestOperateKey restOperate = field.getAnnotation(RestOperateKey.class);
         if (GeneralUtils.isNotEmpty(restOperate)) {
-            mybatisColumn.setOperate(true);
+            mybatisColumn.setOperateKey(true);
         }
         RestSelect restSelect = field.getAnnotation(RestSelect.class);
         if (GeneralUtils.isNotEmpty(restSelect)) {

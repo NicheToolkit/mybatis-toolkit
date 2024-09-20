@@ -1,7 +1,7 @@
 package io.github.nichetoolkit.mybatis;
 
 import io.github.nichetoolkit.rest.util.GeneralUtils;
-import io.github.nichetoolkit.mybatis.stereotype.RestProperty;
+import io.github.nichetoolkit.mybatis.stereotype.table.RestProperty;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -146,8 +146,8 @@ public class MybatisProperty<P extends MybatisProperty<P>> {
     /**
      * <code>setProperty</code>
      * <p>the property setter method.</p>
-     * @param property {@link io.github.nichetoolkit.mybatis.stereotype.RestProperty} <p>the property parameter is <code>RestProperty</code> type.</p>
-     * @see io.github.nichetoolkit.mybatis.stereotype.RestProperty
+     * @param property {@link RestProperty} <p>the property parameter is <code>RestProperty</code> type.</p>
+     * @see RestProperty
      */
     public void setProperty(RestProperty property) {
         setProperty(property.name(), property.value());
@@ -172,9 +172,9 @@ public class MybatisProperty<P extends MybatisProperty<P>> {
     /**
      * <code>setProperties</code>
      * <p>the properties setter method.</p>
-     * @param properties {@link io.github.nichetoolkit.mybatis.stereotype.RestProperty} <p>the properties parameter is <code>RestProperty</code> type.</p>
+     * @param properties {@link RestProperty} <p>the properties parameter is <code>RestProperty</code> type.</p>
      * @return P <p>the properties return object is <code>P</code> type.</p>
-     * @see io.github.nichetoolkit.mybatis.stereotype.RestProperty
+     * @see RestProperty
      * @see java.lang.SuppressWarnings
      */
     @SuppressWarnings(value = "unchecked")

@@ -2,6 +2,8 @@ package io.github.nichetoolkit.mybatis.stereotype;
 
 import io.github.nichetoolkit.mybatis.enums.SortType;
 import io.github.nichetoolkit.mybatis.stereotype.column.*;
+import io.github.nichetoolkit.mybatis.stereotype.table.RestProperties;
+import io.github.nichetoolkit.mybatis.stereotype.table.RestProperty;
 import org.apache.ibatis.type.JdbcType;
 import org.apache.ibatis.type.TypeHandler;
 import org.apache.ibatis.type.UnknownTypeHandler;
@@ -19,7 +21,7 @@ import java.lang.annotation.*;
  * @see java.lang.annotation.Target
  * @see java.lang.annotation.Documented
  * @see org.springframework.stereotype.Indexed
- * @see io.github.nichetoolkit.mybatis.stereotype.column.RestName
+ * @see RestColname
  * @see io.github.nichetoolkit.mybatis.stereotype.column.RestExclude
  * @see io.github.nichetoolkit.mybatis.stereotype.column.RestInsert
  * @see io.github.nichetoolkit.mybatis.stereotype.column.RestUpdate
@@ -31,14 +33,14 @@ import java.lang.annotation.*;
  * @see io.github.nichetoolkit.mybatis.stereotype.column.RestUniqueKey
  * @see io.github.nichetoolkit.mybatis.stereotype.column.RestSortType
  * @see io.github.nichetoolkit.mybatis.stereotype.column.RestJdbcType
- * @see io.github.nichetoolkit.mybatis.stereotype.RestProperties
+ * @see RestProperties
  * @since Jdk1.8
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.FIELD})
 @Documented
 @Indexed
-@RestName
+@RestColname
 @RestExclude
 @RestInsert
 @RestUpdate
@@ -59,7 +61,7 @@ public @interface RestColumn {
      * @see java.lang.String
      * @see org.springframework.core.annotation.AliasFor
      */
-    @AliasFor(annotation = RestName.class, attribute = "name")
+    @AliasFor(annotation = RestColname.class, attribute = "name")
     String value() default "";
 
     /**
@@ -69,7 +71,7 @@ public @interface RestColumn {
      * @see java.lang.String
      * @see org.springframework.core.annotation.AliasFor
      */
-    @AliasFor(annotation = RestName.class, attribute = "comment")
+    @AliasFor(annotation = RestColname.class, attribute = "comment")
     String comment() default "";
 
     /**
@@ -205,8 +207,8 @@ public @interface RestColumn {
     /**
      * <code>properties</code>
      * <p>the method.</p>
-     * @return {@link io.github.nichetoolkit.mybatis.stereotype.RestProperty} <p>the return object is <code>RestProperty</code> type.</p>
-     * @see io.github.nichetoolkit.mybatis.stereotype.RestProperty
+     * @return {@link RestProperty} <p>the return object is <code>RestProperty</code> type.</p>
+     * @see RestProperty
      * @see org.springframework.core.annotation.AliasFor
      */
     @AliasFor(annotation = RestProperties.class, attribute = "properties")

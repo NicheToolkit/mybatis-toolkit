@@ -1,7 +1,7 @@
 package io.github.nichetoolkit.mybatis.defaults;
 
 
-import io.github.nichetoolkit.mybatis.stereotype.RestIdentity;
+import io.github.nichetoolkit.mybatis.stereotype.table.RestIdentity;
 import io.github.nichetoolkit.mybatis.stereotype.RestMapper;
 import io.github.nichetoolkit.mybatis.stereotype.table.RestEntity;
 import io.github.nichetoolkit.rest.util.GeneralUtils;

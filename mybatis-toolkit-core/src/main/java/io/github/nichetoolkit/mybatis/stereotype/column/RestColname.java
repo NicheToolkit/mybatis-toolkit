@@ -21,7 +21,7 @@ import java.lang.annotation.*;
 @Target({ElementType.FIELD, ElementType.ANNOTATION_TYPE})
 @Documented
 @Indexed
-public @interface RestName {
+public @interface RestColname {
     /**
      * <code>value</code>
      * <p>the method.</p>

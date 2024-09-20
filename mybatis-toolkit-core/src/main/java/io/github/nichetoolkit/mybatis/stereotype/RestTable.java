@@ -17,7 +17,7 @@ import java.lang.annotation.*;
  * @see io.github.nichetoolkit.mybatis.stereotype.table.RestEntity
  * @see io.github.nichetoolkit.mybatis.stereotype.table.RestStyle
  * @see io.github.nichetoolkit.mybatis.stereotype.table.RestResultMap
- * @see io.github.nichetoolkit.mybatis.stereotype.RestProperties
+ * @see RestProperties
  * @see io.github.nichetoolkit.mybatis.stereotype.table.RestExcludes
  * @see io.github.nichetoolkit.mybatis.stereotype.table.RestUnionKeys
  * @see io.github.nichetoolkit.mybatis.stereotype.table.RestLinkKeys
@@ -199,8 +199,8 @@ public @interface RestTable {
     /**
      * <code>properties</code>
      * <p>the method.</p>
-     * @return {@link io.github.nichetoolkit.mybatis.stereotype.RestProperty} <p>the return object is <code>RestProperty</code> type.</p>
-     * @see io.github.nichetoolkit.mybatis.stereotype.RestProperty
+     * @return {@link RestProperty} <p>the return object is <code>RestProperty</code> type.</p>
+     * @see RestProperty
      * @see org.springframework.core.annotation.AliasFor
      */
     @AliasFor(annotation = RestProperties.class, attribute = "properties")
