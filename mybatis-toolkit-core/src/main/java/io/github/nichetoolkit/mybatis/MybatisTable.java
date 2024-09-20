@@ -417,7 +417,7 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
         List<MybatisColumn> linkKeyColumns = new ArrayList<>();
         List<MybatisColumn> alertKeyColumns = new ArrayList<>();
         this.allColumns.forEach(column -> {
-            if (column.isIdentity()) {
+            if (column.isIdentityKey()) {
                 if (!identityColumns.contains(column)) {
                     identityColumns.add(0, column);
                 } else {
@@ -754,7 +754,7 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
                 }
             }
             List<ResultFlag> flags = new ArrayList<>();
-            if (column.isPrimaryKey() || column.isUnionKey() || column.isIdentity()) {
+            if (column.isPrimaryKey() || column.isUnionKey() || column.isIdentityKey()) {
                 flags.add(ResultFlag.ID);
             }
             builder.flags(flags);
@@ -839,7 +839,7 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
      * @see java.util.List
      */
     public List<MybatisColumn> normalColumns() {
-        return this.allColumns.stream().filter(column -> !column.isIdentity() && !column.isPrimaryKey()
+        return this.allColumns.stream().filter(column -> !column.isIdentityKey() && !column.isPrimaryKey()
                 && !column.isUnionKey() && !column.isLogic() && !column.isOperate()).collect(Collectors.toList());
     }
 
