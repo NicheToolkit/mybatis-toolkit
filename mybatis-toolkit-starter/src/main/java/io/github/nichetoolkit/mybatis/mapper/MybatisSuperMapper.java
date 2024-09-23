@@ -1,5 +1,6 @@
-package io.github.nichetoolkit.mybatis;
+package io.github.nichetoolkit.mybatis.mapper;
 
+import io.github.nichetoolkit.mybatis.MybatisEntityMapper;
 import io.github.nichetoolkit.rice.IdEntity;
 import io.github.nichetoolkit.rice.mapper.SuperMapper;
 

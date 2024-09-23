@@ -42,20 +42,25 @@ public enum MybatisErrorStatus implements RestStatus {
     MYBATIS_ASSERT_ERROR(21199,"mybatis assert error"),
 
     /**
+     * <code>MYBATIS_IDENTITY_LACK_ERROR</code>
+     * {@link io.github.nichetoolkit.mybatis.error.MybatisErrorStatus} <p>the <code>MYBATIS_IDENTITY_LACK_ERROR</code> field.</p>
+     */
+    MYBATIS_IDENTITY_LACK_ERROR(21200, "mybatis identity lack error"),
+    /**
      * <code>MYBATIS_UNREALIZED_LACK_ERROR</code>
      * {@link io.github.nichetoolkit.mybatis.error.MybatisErrorStatus} <p>the <code>MYBATIS_UNREALIZED_LACK_ERROR</code> field.</p>
      */
-    MYBATIS_UNREALIZED_LACK_ERROR(21200, "mybatis unrealized lack error"),
+    MYBATIS_UNREALIZED_LACK_ERROR(21201, "mybatis unrealized lack error"),
     /**
      * <code>MYBATIS_PROVIDER_LACK_ERROR</code>
      * {@link io.github.nichetoolkit.mybatis.error.MybatisErrorStatus} <p>the <code>MYBATIS_PROVIDER_LACK_ERROR</code> field.</p>
      */
-    MYBATIS_PROVIDER_LACK_ERROR(21201, "mybatis provider lack error"),
+    MYBATIS_PROVIDER_LACK_ERROR(21202, "mybatis provider lack error"),
     /**
      * <code>MYBATIS_SQL_SCRIPT_LACK_ERROR</code>
      * {@link io.github.nichetoolkit.mybatis.error.MybatisErrorStatus} <p>the <code>MYBATIS_SQL_SCRIPT_LACK_ERROR</code> field.</p>
      */
-    MYBATIS_SQL_SCRIPT_LACK_ERROR(21202, "mybatis sql script lack error"),
+    MYBATIS_SQL_SCRIPT_LACK_ERROR(21203, "mybatis sql script lack error"),
     ;
 
     /**

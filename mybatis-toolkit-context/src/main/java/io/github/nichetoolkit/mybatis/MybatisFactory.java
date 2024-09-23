@@ -61,7 +61,6 @@ public abstract class MybatisFactory {
         MybatisTableFactory.Chain tableFactoryChain = Instance.tableFactoryChain();
         /* 创建 MybatisTable，不处理列（字段），此时返回的 MybatisTable 已经经过了所有处理链的加工 */
         MybatisTable table = tableFactoryChain.createTable(entityType, identityType);
-        Class<?> identityClass = identityType;
         if (table == null) {
             throw new NullPointerException("Unable to get " + entityType.getName() + " mybatis class information");
         }
@@ -89,17 +88,16 @@ public abstract class MybatisFactory {
                                     continue;
                                 }
                                 /* 使用了自定义联合主键字 */
-                                if (GeneralUtils.isNotEmpty(identityClass)) {
+                                if (GeneralUtils.isNotEmpty(identityType) && Object.class.equals(declaredField.getType())) {
                                     /* 是否主键id字段 */
                                     RestIdentityKey restIdentityKey = field.getAnnotation(RestIdentityKey.class);
-
-//                                    if (restIdentity) {
-//                                        identityKeyClass = null;
-//                                    }
+                                    if (GeneralUtils.isNotEmpty(restIdentityKey)) {
+                                        resolveIdentityFields(table,entityType,identityType,columnFactoryChain);
+                                    }
+                                } else {
+                                    Optional<List<MybatisColumn>> optionalColumns = columnFactoryChain.createColumn(table, field);
+                                    optionalColumns.ifPresent(columns -> columns.forEach(table::addColumn));
                                 }
-
-                                Optional<List<MybatisColumn>> optionalColumns = columnFactoryChain.createColumn(table, field);
-                                optionalColumns.ifPresent(columns -> columns.forEach(table::addColumn));
                             }
                         }
                         /* 迭代获取父类 */
@@ -116,6 +114,34 @@ public abstract class MybatisFactory {
             }
         }
         return table;
+    }
+
+    protected static void resolveIdentityFields(MybatisTable table, Class<?> entityType, Class<?> identityType, MybatisColumnFactory.Chain columnFactoryChain) {
+        /* 未处理的需要获取字段 */
+        Class<?> declaredClass = identityType;
+        boolean isSuperclass = true;
+        while (declaredClass != null && declaredClass != Object.class) {
+            Field[] declaredFields = declaredClass.getDeclaredFields();
+            reverse(declaredFields);
+            for (Field declaredField : declaredFields) {
+                int modifiers = declaredField.getModifiers();
+                /* 排除 static 和 transient 修饰的字段 */
+                if (!Modifier.isStatic(modifiers) && !Modifier.isTransient(modifiers)) {
+                    MybatisField field = new MybatisField(entityType, identityType, declaredField);
+                    /* 是否需要排除字段 */
+                    if (table.isExcludeField(field)) {
+                        continue;
+                    }
+                    Optional<List<MybatisColumn>> optionalColumns = columnFactoryChain.createColumn(table, field);
+                    optionalColumns.ifPresent(columns -> columns.forEach(table::addColumn));
+                }
+            }
+            /* 迭代获取父类 */
+            /* 排除父类 */
+            do {
+                declaredClass = declaredClass.getSuperclass();
+            } while (table.isExcludeSuperClass(declaredClass) && declaredClass != Object.class);
+        }
     }
 
     /**

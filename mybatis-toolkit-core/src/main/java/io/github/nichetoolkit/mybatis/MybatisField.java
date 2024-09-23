@@ -2,17 +2,20 @@ package io.github.nichetoolkit.mybatis;
 
 import io.github.nichetoolkit.rest.error.lack.AccessibleLackError;
 import io.github.nichetoolkit.rest.reflect.GenericTypeResolver;
+import io.github.nichetoolkit.rest.util.GeneralUtils;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import org.springframework.core.annotation.AnnotationUtils;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
+import java.util.Optional;
 
 @Data
 @Accessors(fluent = true)
 public class MybatisField {
     protected Class<?> entity;
+    protected Class<?> identity;
     protected Field field;
 
     public MybatisField() {
@@ -22,6 +25,17 @@ public class MybatisField {
         this.entity = entity;
         this.field = field;
         this.field.setAccessible(true);
+    }
+
+    public MybatisField(Class<?> entity, Class<?> identity, Field field) {
+        this.entity = entity;
+        this.identity = identity;
+        this.field = field;
+        this.field.setAccessible(true);
+    }
+
+    public boolean isIdentityField() {
+        return Optional.ofNullable(this.identity).isPresent();
     }
 
     public Class<?> declaringClass() {
@@ -44,19 +58,19 @@ public class MybatisField {
         return field.getAnnotations();
     }
 
-    public Object get(Object key) {
+    public Object get(Object target) {
         try {
-            return field.get(key);
+            return field.get(target);
         } catch (IllegalAccessException exception) {
-            throw new AccessibleLackError("getting field value by reflect, error: " + exception.getMessage(),exception);
+            throw new AccessibleLackError("getting field value by reflect, error: " + exception.getMessage(), exception);
         }
     }
 
-    public void set(Object key, Object value) {
+    public void set(Object target, Object value) {
         try {
-            field.set(key, value);
+            field.set(target, value);
         } catch (IllegalAccessException exception) {
-            throw new AccessibleLackError("setting field value by reflect, error: " + exception.getMessage(),exception);
+            throw new AccessibleLackError("setting field value by reflect, error: " + exception.getMessage(), exception);
         }
     }
 }

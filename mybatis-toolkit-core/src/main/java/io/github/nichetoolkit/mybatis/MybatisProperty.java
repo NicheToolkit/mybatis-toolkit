@@ -2,6 +2,7 @@ package io.github.nichetoolkit.mybatis;
 
 import io.github.nichetoolkit.rest.util.GeneralUtils;
 import io.github.nichetoolkit.mybatis.stereotype.table.RestProperty;
+import io.github.nichetoolkit.rest.util.ValueUtils;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -88,7 +89,7 @@ public class MybatisProperty<P extends MybatisProperty<P>> {
      */
     public Integer getPropertyInt(String property) {
         String value = getProperty(property);
-        return GeneralUtils.toInteger(value);
+        return ValueUtils.toInteger(value);
     }
 
     /**

@@ -51,11 +51,4 @@ public @interface RestUnionKeys {
      */
     String[] ignores() default {};
 
-    /**
-     * <code>unionIdentity</code>
-     * <p>the identity method.</p>
-     * @return boolean <p>the identity return object is <code>boolean</code> type.</p>
-     */
-    boolean unionIdentity() default true;
-
 }

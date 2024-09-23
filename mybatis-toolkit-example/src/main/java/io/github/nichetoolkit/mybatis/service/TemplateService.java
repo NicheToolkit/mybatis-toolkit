@@ -5,6 +5,7 @@ import io.github.nichetoolkit.mybatis.simple.TemplateIdentity;
 import io.github.nichetoolkit.mybatis.simple.TemplateModel;
 import io.github.nichetoolkit.rice.service.FilterService;
 import io.github.nichetoolkit.rice.service.SingleService;
+import io.github.nichetoolkit.rice.service.extend.AlertFieldService;
 
 /**
  * <code>TemplateService</code>
@@ -14,5 +15,5 @@ import io.github.nichetoolkit.rice.service.SingleService;
  * @see io.github.nichetoolkit.rice.service.SingleService
  * @since Jdk1.8
  */
-public interface TemplateService extends FilterService<TemplateModel, TemplateFilter, TemplateIdentity, String>, SingleService<TemplateModel, TemplateIdentity, String> {
+public interface TemplateService extends FilterService<TemplateModel, TemplateFilter, TemplateIdentity, String>, AlertFieldService<TemplateIdentity>, SingleService<TemplateModel, TemplateIdentity, String> {
 }

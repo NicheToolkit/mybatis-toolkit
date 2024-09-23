@@ -12,17 +12,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.Nullable;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
- * <code>MybatisMapperProvider</code>
- * <p>The type mybatis mapper provider class.</p>
+ * <code>DefaultMapperProvider</code>
+ * <p>The type default mapper provider class.</p>
  * @author Cyan (snow22314@outlook.com)
  * @see org.springframework.beans.factory.InitializingBean
  * @since Jdk1.8
  */
-public abstract class MybatisMapperProvider implements InitializingBean {
+public abstract class DefaultMapperProvider implements InitializingBean {
 
     /**
      * <code>tableProperties</code>
@@ -32,29 +31,29 @@ public abstract class MybatisMapperProvider implements InitializingBean {
     private final MybatisTableProperties tableProperties;
 
     /**
-     * <code>MybatisMapperProvider</code>
-     * Instantiates a new mybatis mapper provider.
+     * <code>DefaultMapperProvider</code>
+     * Instantiates a new default mapper provider.
      * @param tableProperties {@link io.github.nichetoolkit.mybatis.configure.MybatisTableProperties} <p>the table properties parameter is <code>MybatisTableProperties</code> type.</p>
      * @see io.github.nichetoolkit.mybatis.configure.MybatisTableProperties
      * @see org.springframework.beans.factory.annotation.Autowired
      */
     @Autowired
-    public MybatisMapperProvider(MybatisTableProperties tableProperties) {
+    public DefaultMapperProvider(MybatisTableProperties tableProperties) {
         this.tableProperties = tableProperties;
     }
 
     /**
      * <code>INSTANCE</code>
-     * {@link io.github.nichetoolkit.mybatis.provider.MybatisMapperProvider} <p>the constant <code>INSTANCE</code> field.</p>
+     * {@link io.github.nichetoolkit.mybatis.provider.DefaultMapperProvider} <p>the constant <code>INSTANCE</code> field.</p>
      */
-    private static MybatisMapperProvider INSTANCE = null;
+    private static DefaultMapperProvider INSTANCE = null;
 
     /**
      * <code>instance</code>
      * <p>the method.</p>
-     * @return {@link io.github.nichetoolkit.mybatis.provider.MybatisMapperProvider} <p>the return object is <code>MybatisMapperProvider</code> type.</p>
+     * @return {@link io.github.nichetoolkit.mybatis.provider.DefaultMapperProvider} <p>the return object is <code>DefaultMapperProvider</code> type.</p>
      */
-    public static MybatisMapperProvider instance() {
+    public static DefaultMapperProvider instance() {
         return INSTANCE;
     }
 

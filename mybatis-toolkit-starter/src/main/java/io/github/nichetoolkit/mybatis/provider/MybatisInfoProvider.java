@@ -105,12 +105,11 @@ public class MybatisInfoProvider {
         OptionalUtils.falseable(GeneralUtils.isNotEmpty(id) && GeneralUtils.isNotEmpty(name), "the id and name params of 'findByNameAndNotId' method cannot be empty!", message -> new MybatisParamErrorException("findByNameAndNotId", "id and name", message));
         return MybatisSqlScript.caching(providerContext, table -> {
             OptionalUtils.falseable(GeneralUtils.isNotEmpty(table.selectColumns()), "the select columns of table with 'findByNameAndNotId' method cannot be empty!", message -> new MybatisTableErrorException("findByNameAndNotId", "selectColumns", message));
-            OptionalUtils.trueable(table.isUseUnionKey(), "the union keys of table with 'findByNameAndNotId' method is unsupported!", message -> new MybatisUnsupportedErrorException("findByNameAndNotId", "unionKeys", message));
             return "SELECT " + table.selectColumnList()
                     + " FROM " + table.tablename(tablename)
                     + " WHERE " + Optional.ofNullable(table.fieldColumn("name"))
                     .map(MybatisColumn::columnEqualsProperty).orElse("name = #{name}")
-                    + " AND " + table.getIdentityColumn().columnNotEqualsProperty()
+//                    + " AND " + table.getIdentityColumn().columnNotEqualsProperty()
                     + Optional.ofNullable(table.getLogicColumn()).map(logic -> "AND " + logic.columnEqualsSign()).orElse("");
         });
     }
@@ -206,13 +205,12 @@ public class MybatisInfoProvider {
         return MybatisSqlScript.caching(providerContext, table -> {
             OptionalUtils.falseable(GeneralUtils.isNotEmpty(table.uniqueColumns()), "the unique columns of table with 'findByEntityAndNotId' method cannot be empty!", message -> new MybatisTableErrorException("findByEntityAndNotId", "uniqueColumns", message));
             OptionalUtils.falseable(GeneralUtils.isNotEmpty(table.selectColumns()), "the select columns of table with 'findByEntityAndNotId' method cannot be empty!", message -> new MybatisTableErrorException("findByEntityAndNotId", "selectColumns", message));
-            OptionalUtils.trueable(table.isUseUnionKey(), "the union keys of table with 'findByEntityAndNotId' method is unsupported!", message -> new MybatisUnsupportedErrorException("findByEntityAndNotId", "unionKeys", message));
             return "SELECT " + table.selectColumnList()
                    + " FROM " + table.tablename(tablename)
                    + " WHERE (" + table.uniqueColumns().stream()
                    .map(column -> column.columnEqualsProperty("entity."))
                    .collect(Collectors.joining(" OR ")) + ") "
-                   + " AND " + table.getIdentityColumn().columnNotEqualsProperty()
+//                   + " AND " + table.getIdentityColumn().columnNotEqualsProperty()
                    + Optional.ofNullable(table.getLogicColumn()).map(logic -> "AND " + logic.columnEqualsSign()).orElse("");
         });
     }

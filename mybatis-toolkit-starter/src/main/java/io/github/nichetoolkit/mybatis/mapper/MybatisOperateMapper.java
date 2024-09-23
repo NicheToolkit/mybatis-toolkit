@@ -1,5 +1,6 @@
-package io.github.nichetoolkit.mybatis;
+package io.github.nichetoolkit.mybatis.mapper;
 
+import io.github.nichetoolkit.mybatis.MybatisCaching;
 import io.github.nichetoolkit.mybatis.provider.MybatisOperateProvider;
 import io.github.nichetoolkit.rice.mapper.OperateMapper;
 import org.apache.ibatis.annotations.Lang;

@@ -1,6 +1,6 @@
 package io.github.nichetoolkit.mybatis.configure;
 
-import io.github.nichetoolkit.mybatis.provider.MybatisMapperProvider;
+import io.github.nichetoolkit.mybatis.provider.DefaultMapperProvider;
 import io.github.nichetoolkit.mybatis.provider.MybatisSaveProvider;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
@@ -50,8 +50,8 @@ public class MybatisStarterAutoConfigure {
      */
     @Bean
     @Primary
-    @ConditionalOnMissingBean(MybatisMapperProvider.class)
-    public MybatisMapperProvider mybatisProvider(MybatisTableProperties tableProperties) {
+    @ConditionalOnMissingBean(DefaultMapperProvider.class)
+    public DefaultMapperProvider mybatisProvider(MybatisTableProperties tableProperties) {
         return new MybatisSaveProvider(tableProperties);
     }
 

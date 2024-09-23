@@ -2,6 +2,7 @@ package io.github.nichetoolkit.mybatis.simple;
 
 import io.github.nichetoolkit.mybatis.stereotype.column.RestForceInsert;
 import io.github.nichetoolkit.mybatis.stereotype.table.RestEntity;
+import io.github.nichetoolkit.rest.util.BeanUtils;
 import io.github.nichetoolkit.rice.RestInfoEntity;
 
 import java.util.Date;
@@ -66,12 +67,9 @@ public class SimpleEntity extends RestInfoEntity<SimpleEntity, SimpleModel> {
 
     @Override
     public SimpleModel toModel() {
-        SimpleModel.Builder builder = new SimpleModel.Builder();
-        builder.id(this.id)
-                .name(this.name)
-                .description(this.description)
-                .time(this.time);
-        return new SimpleModel(builder);
+        SimpleModel simpleModel = new SimpleModel();
+        BeanUtils.copyNonnullProperties(this,simpleModel);
+        return simpleModel;
     }
 
 }

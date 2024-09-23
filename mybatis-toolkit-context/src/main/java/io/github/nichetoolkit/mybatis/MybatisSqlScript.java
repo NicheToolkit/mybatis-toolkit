@@ -54,8 +54,8 @@ public interface MybatisSqlScript {
      * @see java.lang.String
      * @see io.github.nichetoolkit.rest.RestException
      */
-    static String cachingSimple(ProviderContext providerContext, SimpleSqlScript sqlScript) throws RestException {
-        return caching(providerContext, sqlScript);
+    static String caching(ProviderContext providerContext, SimpleSqlScript sqlScript) throws RestException {
+        return caching(providerContext, (MybatisSqlScript) sqlScript);
     }
 
     /**
@@ -179,7 +179,7 @@ public interface MybatisSqlScript {
      * @see io.github.nichetoolkit.rest.RestException
      */
     default String variableIsTrue(String variable, String message) throws RestException {
-        OptionalUtils.falseable(Boolean.parseBoolean(variable), message, error -> new MybatisAssertErrorException("isTrue","variable",error));
+        OptionalUtils.falseable(Boolean.parseBoolean(variable), message, error -> new MybatisAssertErrorException("isTrue", "variable", error));
         return variable;
     }
 
@@ -194,7 +194,7 @@ public interface MybatisSqlScript {
      * @see io.github.nichetoolkit.rest.RestException
      */
     default String variableIsFalse(String variable, String message) throws RestException {
-        OptionalUtils.trueable(Boolean.parseBoolean(variable), message, error -> new MybatisAssertErrorException("isFalse","variable",error));
+        OptionalUtils.trueable(Boolean.parseBoolean(variable), message, error -> new MybatisAssertErrorException("isFalse", "variable", error));
         return variable;
     }
 
@@ -209,7 +209,7 @@ public interface MybatisSqlScript {
      * @see io.github.nichetoolkit.rest.RestException
      */
     default String variableNotNull(String variable, String message) throws RestException {
-        OptionalUtils.falseable(variable != null, message, error -> new MybatisAssertErrorException("notNull","variable",error));
+        OptionalUtils.falseable(variable != null, message, error -> new MybatisAssertErrorException("notNull", "variable", error));
         return variable;
     }
 
@@ -224,7 +224,7 @@ public interface MybatisSqlScript {
      * @see io.github.nichetoolkit.rest.RestException
      */
     default String variableNotEmpty(String variable, String message) throws RestException {
-        OptionalUtils.falseable(GeneralUtils.isNotEmpty(variable), message, error -> new MybatisAssertErrorException("notEmpty","variable",error));
+        OptionalUtils.falseable(GeneralUtils.isNotEmpty(variable), message, error -> new MybatisAssertErrorException("notEmpty", "variable", error));
         return variable;
     }
 

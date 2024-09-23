@@ -3,16 +3,16 @@ package io.github.nichetoolkit.mybatis.provider;
 import io.github.nichetoolkit.mybatis.MybatisSqlScript;
 import io.github.nichetoolkit.mybatis.MybatisTable;
 import io.github.nichetoolkit.mybatis.error.MybatisParamErrorException;
-import io.github.nichetoolkit.mybatis.error.MybatisUnsupportedErrorException;
+import io.github.nichetoolkit.mybatis.error.MybatisTableErrorException;
 import io.github.nichetoolkit.rest.RestException;
 import io.github.nichetoolkit.rest.util.GeneralUtils;
 import io.github.nichetoolkit.rest.util.OptionalUtils;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.builder.annotation.ProviderContext;
-import org.springframework.beans.factory.InitializingBean;
 
 import java.util.Collection;
-import java.util.Optional;
+import java.util.List;
+import java.util.Map;
 
 /**
  * <code>MybatisDeleteProvider</code>
@@ -55,11 +55,8 @@ public class MybatisDeleteProvider {
      */
     public static <I> String deleteDynamicById(ProviderContext providerContext, @Param("tablename") String tablename, @Param("id") I id) throws RestException {
         OptionalUtils.falseable(GeneralUtils.isNotEmpty(id), "the id param of 'deleteById' method cannot be empty!", message -> new MybatisParamErrorException("deleteById", "id", message));
-        return MybatisSqlScript.caching(providerContext, table -> {
-            OptionalUtils.trueable(table.isUseUnionKey(), "the union keys of table with 'deleteById' method is unsupported!", message -> new MybatisUnsupportedErrorException("deleteById", "unionKeys", message));
-            return "DELETE FROM " + table.tablename(tablename)
-                    + " WHERE " + table.identityColumnEqualsProperty();
-        });
+        return MybatisSqlScript.caching(providerContext, table -> "DELETE FROM " + table.tablename(tablename)
+                + " WHERE " + table.identityColumnEqualsProperty());
     }
 
     /**
@@ -97,12 +94,14 @@ public class MybatisDeleteProvider {
      */
     public static <I> String deleteDynamicByAll(ProviderContext providerContext, @Param("tablename") String tablename, @Param("idList") Collection<I> idList) throws RestException {
         OptionalUtils.falseable(GeneralUtils.isNotEmpty(idList), "the id list param of 'deleteByAll' method cannot be empty!", message -> new MybatisParamErrorException("deleteByAll", "idList", message));
-        return MybatisSqlScript.caching(providerContext, new MybatisSqlScript() {
+
+        return MybatisSqlProvider.providing(providerContext,tablename,idList, new MybatisSqlProvider() {
             @Override
-            public String sql(MybatisTable table) throws RestException {
-                OptionalUtils.trueable(table.isUseUnionKey(), "the union keys of table with 'deleteByAll' method is unsupported!", message -> new MybatisUnsupportedErrorException("deleteByAll", "unionKeys", message));
+            public <IDENTITY> String provide(String tablename, MybatisTable table, Map<Integer, List<IDENTITY>> identitySliceMap, MybatisSqlScript sqlScript) throws RestException {
+                OptionalUtils.falseable(GeneralUtils.isNotEmpty(table.getLogicColumn()), "the logic column of table with 'removeAll' method cannot be empty!", message -> new MybatisTableErrorException("removeAll", "logicColumn", message));
                 return "DELETE FROM " + table.tablename(tablename)
-                        + " WHERE " + table.getIdentityColumn().columnName() + " IN " + foreach("idList", "id", ", ", "(", ")", () -> table.getIdentityColumn().variable());
+                        + " WHERE " + identitiesWhereSql(identitySliceMap,table,sqlScript);
+
             }
         });
     }

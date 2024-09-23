@@ -1,9 +1,9 @@
 package io.github.nichetoolkit.mybatis.simple;
 
+import io.github.nichetoolkit.mybatis.stereotype.column.RestUnionKey;
 import io.github.nichetoolkit.mybatis.stereotype.table.RestIdentity;
 import lombok.Data;
 
-import java.io.Serializable;
 import java.util.Objects;
 
 /**
@@ -16,19 +16,14 @@ import java.util.Objects;
  */
 @Data
 @RestIdentity
-public class TemplateIdentity implements Serializable {
-    /**
-     * <code>templatePk1</code>
-     * {@link java.lang.String} <p>the <code>templatePk1</code> field.</p>
-     * @see java.lang.String
-     */
-    private String templatePk1;
+public class TemplateIdentity extends IdentityModel {
 
     /**
      * <code>templatePk2</code>
      * {@link java.lang.String} <p>the <code>templatePk2</code> field.</p>
      * @see java.lang.String
      */
+    @RestUnionKey
     private String templatePk2;
 
     /**
@@ -46,7 +41,7 @@ public class TemplateIdentity implements Serializable {
      * @see java.lang.String
      */
     public TemplateIdentity(String templatePk1, String templatePk2) {
-        this.templatePk1 = templatePk1;
+        super(templatePk1);
         this.templatePk2 = templatePk2;
     }
 
@@ -54,13 +49,13 @@ public class TemplateIdentity implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
         TemplateIdentity that = (TemplateIdentity) o;
-        return Objects.equals(templatePk1, that.templatePk1) &&
-                Objects.equals(templatePk2, that.templatePk2);
+        return Objects.equals(templatePk2, that.templatePk2);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(templatePk1, templatePk2);
+        return Objects.hash(super.hashCode(), templatePk2);
     }
 }

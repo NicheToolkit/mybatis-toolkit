@@ -14,7 +14,7 @@ import org.apache.ibatis.builder.annotation.ProviderContext;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
-public class MybatisSaveProvider extends MybatisMapperProvider {
+public class MybatisSaveProvider extends DefaultMapperProvider {
     
     public MybatisSaveProvider(MybatisTableProperties tableProperties) {
         super(tableProperties);

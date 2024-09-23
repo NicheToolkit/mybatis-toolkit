@@ -12,6 +12,8 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.builder.annotation.ProviderContext;
 
 import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -63,7 +65,6 @@ public class MybatisOperateProvider {
         OptionalUtils.falseable(GeneralUtils.isNotEmpty(operate), "the operate param of 'operateById' method cannot be empty!", message -> new MybatisParamErrorException("operateById", "operate", message));
         return MybatisSqlScript.caching(providerContext, table -> {
             OptionalUtils.falseable(GeneralUtils.isNotEmpty(table.getOperateColumn()), "the operate column of table with 'operateById' method cannot be empty!", message -> new MybatisTableErrorException("operateById", "operateColumn", message));
-            OptionalUtils.trueable(table.isUseUnionKey(), "the union keys of table with 'operateById' method is unsupported!", message -> new MybatisUnsupportedErrorException("operateById", "unionKeys", message));
             return "UPDATE " + table.tablename(tablename)
                     + " SET " + table.getOperateColumn().columnEqualsOperate()
                     + " WHERE " + table.identityColumnEqualsProperty();
@@ -110,14 +111,14 @@ public class MybatisOperateProvider {
     public static <I> String operateDynamicAll(ProviderContext providerContext, @Param("tablename") String tablename, @Param("idList") Collection<I> idList, @Param("operate") Integer operate) throws RestException {
         OptionalUtils.falseable(GeneralUtils.isNotEmpty(idList), "the id list param of 'operateAll' method cannot be empty!", message -> new MybatisParamErrorException("operateAll", "idList", message));
         OptionalUtils.falseable(GeneralUtils.isNotEmpty(operate), "the operate param of 'operateAll' method cannot be empty!", message -> new MybatisParamErrorException("operateAll", "operate", message));
-        return MybatisSqlScript.caching(providerContext, new MybatisSqlScript() {
+
+        return MybatisSqlProvider.providing(providerContext,tablename,idList, new MybatisSqlProvider() {
             @Override
-            public String sql(MybatisTable table) throws RestException {
+            public <IDENTITY> String provide(String tablename, MybatisTable table, Map<Integer, List<IDENTITY>> identitySliceMap, MybatisSqlScript sqlScript) throws RestException {
                 OptionalUtils.falseable(GeneralUtils.isNotEmpty(table.getOperateColumn()), "the operate column of table with 'operateAll' method cannot be empty!", message -> new MybatisTableErrorException("operateAll", "operateColumn", message));
-                OptionalUtils.trueable(table.isUseUnionKey(), "the union keys of table with 'operateAll' method is unsupported!", message -> new MybatisUnsupportedErrorException("operateAll", "unionKeys", message));
                 return "UPDATE " + table.tablename(tablename)
                         + " SET " + table.getOperateColumn().columnEqualsOperate()
-                        + " WHERE " + table.getIdentityColumn().columnName() + " IN " + foreach("idList", "id", ", ", "(", ")", () -> table.getIdentityColumn().variable());
+                        + " WHERE " + identitiesWhereSql(identitySliceMap,table,sqlScript);
 
             }
         });
@@ -163,7 +164,6 @@ public class MybatisOperateProvider {
             @Override
             public String sql(MybatisTable table) throws RestException {
                 OptionalUtils.falseable(GeneralUtils.isNotEmpty(table.getOperateColumn()), "the operate column of table with 'operateAllByWhere' method cannot be empty!", message -> new MybatisTableErrorException("operateAllByWhere", "operateColumn", message));
-                OptionalUtils.trueable(table.isUseUnionKey(), "the union keys of table with 'operateAllByWhere' method is unsupported!", message -> new MybatisUnsupportedErrorException("operateAllByWhere", "unionKeys", message));
                 return "UPDATE " + table.tablename(tablename)
                         + " SET " + table.getOperateColumn().columnEqualsOperate()
                         + " WHERE 1=1 "

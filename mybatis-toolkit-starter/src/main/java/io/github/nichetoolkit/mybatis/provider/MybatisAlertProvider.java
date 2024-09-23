@@ -1,10 +1,8 @@
 package io.github.nichetoolkit.mybatis.provider;
 
 import io.github.nichetoolkit.mybatis.MybatisSqlScript;
-import io.github.nichetoolkit.mybatis.MybatisTable;
 import io.github.nichetoolkit.mybatis.error.MybatisParamErrorException;
 import io.github.nichetoolkit.mybatis.error.MybatisTableErrorException;
-import io.github.nichetoolkit.mybatis.error.MybatisUnsupportedErrorException;
 import io.github.nichetoolkit.rest.RestException;
 import io.github.nichetoolkit.rest.util.GeneralUtils;
 import io.github.nichetoolkit.rest.util.OptionalUtils;
@@ -12,7 +10,6 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.builder.annotation.ProviderContext;
 
 import java.util.Collection;
-import java.util.Optional;
 
 /**
  * <code>MybatisAlertProvider</code>
@@ -63,10 +60,7 @@ public class MybatisAlertProvider {
         OptionalUtils.falseable(GeneralUtils.isNotEmpty(key), "the key param of 'alertById' method cannot be empty!", message -> new MybatisParamErrorException("alertById", "key", message));
         return MybatisSqlScript.caching(providerContext, table -> {
             OptionalUtils.falseable(GeneralUtils.isNotEmpty(table.getAlertColumn()), "the alert column of table with 'alertById' method cannot be empty!", message -> new MybatisTableErrorException("alertById", "alertColumn", message));
-            OptionalUtils.trueable(table.isUseUnionKey(), "the union keys of table with 'alertById' method is unsupported!", message -> new MybatisUnsupportedErrorException("alertById", "unionKeys", message));
-            return "UPDATE " + table.tablename(tablename)
-                    + " SET " + table.getAlertColumn().columnEqualsKey()
-                    + " WHERE " + table.identityColumnEqualsProperty();
+            return MybatisSqlProvider.providing(providerContext, tablename, id, MybatisSqlProvider.ALERT_BY_ID);
         });
     }
 
@@ -110,16 +104,9 @@ public class MybatisAlertProvider {
     public static <I> String alertDynamicAll(ProviderContext providerContext, @Param("tablename") String tablename, @Param("idList") Collection<I> idList, @Param("key") Integer key) throws RestException {
         OptionalUtils.falseable(GeneralUtils.isNotEmpty(idList), "the id list param of 'alertAll' method cannot be empty!", message -> new MybatisParamErrorException("alertAll", "idList", message));
         OptionalUtils.falseable(GeneralUtils.isNotEmpty(key), "the key param of 'alertAll' method cannot be empty!", message -> new MybatisParamErrorException("alertAll", "key", message));
-        return MybatisSqlScript.caching(providerContext, new MybatisSqlScript() {
-            @Override
-            public String sql(MybatisTable table) throws RestException {
-                OptionalUtils.falseable(GeneralUtils.isNotEmpty(table.getAlertColumn()), "the alert column of table with 'alertAll' method cannot be empty!", message -> new MybatisTableErrorException("alertAll", "alertColumn", message));
-                OptionalUtils.trueable(table.isUseUnionKey(), "the union keys of table with 'alertAll' method is unsupported!", message -> new MybatisUnsupportedErrorException("alertAll", "unionKeys", message));
-                return "UPDATE " + table.tablename(tablename)
-                        + " SET " + table.getAlertColumn().columnEqualsKey()
-                        + " WHERE " + table.getIdentityColumn().columnName() + " IN " + foreach("idList", "id", ", ", "(", ")", () -> table.getIdentityColumn().variable());
-
-            }
+        return MybatisSqlScript.caching(providerContext, table -> {
+            OptionalUtils.falseable(GeneralUtils.isNotEmpty(table.getAlertColumn()), "the alert column of table with 'alertAll' method cannot be empty!", message -> new MybatisTableErrorException("alertAll", "alertColumn", message));
+            return MybatisSqlProvider.providing(providerContext, tablename, idList, MybatisSqlProvider.ALERT_ALL);
         });
     }
 

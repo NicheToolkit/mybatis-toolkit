@@ -1,17 +1,12 @@
 package io.github.nichetoolkit.mybatis.provider;
 
-import io.github.nichetoolkit.mybatis.MybatisSqlScript;
-import io.github.nichetoolkit.mybatis.MybatisTable;
 import io.github.nichetoolkit.mybatis.error.MybatisParamErrorException;
-import io.github.nichetoolkit.mybatis.error.MybatisUnsupportedErrorException;
 import io.github.nichetoolkit.rest.RestException;
 import io.github.nichetoolkit.rest.util.GeneralUtils;
 import io.github.nichetoolkit.rest.util.OptionalUtils;
-import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.builder.annotation.ProviderContext;
 
 import java.util.Collection;
-import java.util.Optional;
 
 /**
  * <code>MybatisAlertFieldProvider</code>
@@ -20,7 +15,6 @@ import java.util.Optional;
  * @since Jdk1.8
  */
 public class MybatisAlertFieldProvider {
-
 
     /**
      * <code>alertFieldById</code>
@@ -38,7 +32,7 @@ public class MybatisAlertFieldProvider {
      * @see java.lang.Integer
      * @see io.github.nichetoolkit.rest.RestException
      */
-    public static <I> String alertFieldById(ProviderContext providerContext, @Param("id") I id, @Param("field") String field, @Param("key") Integer key) throws RestException {
+    public static <I> String alertFieldById(ProviderContext providerContext, I id, String field, Integer key) throws RestException {
         return alertDynamicFieldById(providerContext, null, id, field, key);
     }
 
@@ -55,20 +49,14 @@ public class MybatisAlertFieldProvider {
      * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>the rest exception is <code>RestException</code> type.</p>
      * @see org.apache.ibatis.builder.annotation.ProviderContext
      * @see java.lang.String
-     * @see org.apache.ibatis.annotations.Param
      * @see java.lang.Integer
      * @see io.github.nichetoolkit.rest.RestException
      */
-    public static <I> String alertDynamicFieldById(ProviderContext providerContext, @Param("tablename") String tablename, @Param("id") I id, @Param("field") String field, @Param("key") Integer key) throws RestException {
+    public static <I> String alertDynamicFieldById(ProviderContext providerContext, String tablename, I id, String field, Integer key) throws RestException {
         OptionalUtils.falseable(GeneralUtils.isNotEmpty(id), "the id param of 'alertFieldById' method cannot be empty!", message -> new MybatisParamErrorException("alertFieldById", "id", message));
         OptionalUtils.falseable(GeneralUtils.isNotEmpty(key), "the field param of 'alertFieldById' method cannot be empty!", message -> new MybatisParamErrorException("alertFieldById", "field", message));
         OptionalUtils.falseable(GeneralUtils.isNotEmpty(key), "the key param of 'alertFieldById' method cannot be empty!", message -> new MybatisParamErrorException("alertFieldById", "key", message));
-        return MybatisSqlScript.caching(providerContext, table -> {
-            OptionalUtils.trueable(table.isUseUnionKey(), "the union keys of table with 'alertFieldById' method is unsupported!", message -> new MybatisUnsupportedErrorException("alertFieldById", "unionKeys", message));
-            return "UPDATE " + table.tablename(tablename)
-                    + " SET ${field} = ${key} "
-                    + " WHERE " + table.identityColumnEqualsProperty();
-        });
+        return MybatisSqlProvider.providing(providerContext, tablename, id, MybatisSqlProvider.ALERT_FIELD_BY_ID);
     }
 
     /**
@@ -88,7 +76,7 @@ public class MybatisAlertFieldProvider {
      * @see java.lang.Integer
      * @see io.github.nichetoolkit.rest.RestException
      */
-    public static <I> String alertFieldAll(ProviderContext providerContext, @Param("idList") Collection<I> idList, @Param("field") String field, @Param("key") Integer key) throws RestException {
+    public static <I> String alertFieldAll(ProviderContext providerContext, Collection<I> idList, String field, Integer key) throws RestException {
         return alertDynamicFieldAll(providerContext, null, idList, field, key);
     }
 
@@ -110,20 +98,11 @@ public class MybatisAlertFieldProvider {
      * @see java.lang.Integer
      * @see io.github.nichetoolkit.rest.RestException
      */
-    public static <I> String alertDynamicFieldAll(ProviderContext providerContext, @Param("tablename") String tablename, @Param("idList") Collection<I> idList, @Param("field") String field, @Param("key") Integer key) throws RestException {
+    public static <I> String alertDynamicFieldAll(ProviderContext providerContext, String tablename, Collection<I> idList, String field, Integer key) throws RestException {
         OptionalUtils.falseable(GeneralUtils.isNotEmpty(idList), "the id list param of 'alertFieldAll' method cannot be empty!", message -> new MybatisParamErrorException("alertFieldAll", "idList", message));
         OptionalUtils.falseable(GeneralUtils.isNotEmpty(field), "the field param of 'alertFieldAll' method cannot be empty!", message -> new MybatisParamErrorException("alertFieldAll", "field", message));
         OptionalUtils.falseable(GeneralUtils.isNotEmpty(key), "the key param of 'alertFieldAll' method cannot be empty!", message -> new MybatisParamErrorException("alertFieldAll", "key", message));
-        return MybatisSqlScript.caching(providerContext, new MybatisSqlScript() {
-            @Override
-            public String sql(MybatisTable table) throws RestException {
-                OptionalUtils.trueable(table.isUseUnionKey(), "the union keys of table with 'alertFieldAll' method is unsupported!", message -> new MybatisUnsupportedErrorException("alertFieldAll", "unionKeys", message));
-                return "UPDATE " + table.tablename(tablename)
-                        + " SET ${field} = ${key} "
-                        + " WHERE " + table.getIdentityColumn().columnName() + " IN " + foreach("idList", "id", ", ", "(", ")", () -> table.getIdentityColumn().variable());
-
-            }
-        });
+        return MybatisSqlProvider.providing(providerContext, tablename, idList, MybatisSqlProvider.ALERT_FIELD_ALL);
     }
 
 }

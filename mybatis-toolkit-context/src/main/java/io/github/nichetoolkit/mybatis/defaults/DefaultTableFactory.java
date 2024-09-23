@@ -60,6 +60,7 @@ public class DefaultTableFactory implements MybatisTableFactory {
             mybatisTable = MybatisTable.of(entityType, identityType, tableProperties.getProperties());
         }
         mybatisTable.setComment(tableComment);
+        mybatisTable.setAutoResultMap(true);
         restUniqueKeys(entityType, mybatisTable);
         restUnionKeys(entityType, mybatisTable);
         restLinkKeys(entityType, mybatisTable);
@@ -109,7 +110,6 @@ public class DefaultTableFactory implements MybatisTableFactory {
         /* restUnionKeys 注解处理 */
         RestUnionKeys restUnionKeys = AnnotationUtils.getAnnotation(clazz, RestUnionKeys.class);
         if (GeneralUtils.isNotEmpty(restUnionKeys)) {
-            mybatisTable.setUnionIdentity(restUnionKeys.unionIdentity());
             if (GeneralUtils.isNotEmpty(restUnionKeys.unionKeys())) {
                 mybatisTable.setUnionKeys(Arrays.asList(restUnionKeys.unionKeys()));
             }

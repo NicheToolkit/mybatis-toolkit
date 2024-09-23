@@ -17,7 +17,7 @@
 package io.github.nichetoolkit.mybatis.record;
 
 import io.github.nichetoolkit.mybatis.MybatisEntityMapper;
-import io.github.nichetoolkit.mybatis.MybatisInfoMapper;
+import io.github.nichetoolkit.mybatis.mapper.MybatisInfoMapper;
 import io.github.nichetoolkit.rice.InfoEntity;
 
 /**

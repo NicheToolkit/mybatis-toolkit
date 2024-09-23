@@ -1,7 +1,5 @@
 package io.github.nichetoolkit.mybatis.mapper;
 
-import io.github.nichetoolkit.mybatis.MybatisInfoMapper;
-import io.github.nichetoolkit.mybatis.MybatisRemoveMapper;
 import io.github.nichetoolkit.mybatis.simple.SimpleEntity;
 import io.github.nichetoolkit.mybatis.stereotype.RestMapper;
 

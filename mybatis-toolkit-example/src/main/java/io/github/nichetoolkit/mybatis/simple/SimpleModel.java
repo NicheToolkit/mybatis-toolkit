@@ -1,6 +1,7 @@
 package io.github.nichetoolkit.mybatis.simple;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import io.github.nichetoolkit.rest.util.BeanUtils;
 import io.github.nichetoolkit.rice.RestInfoModel;
 import io.github.nichetoolkit.rice.RestTablekey;
 import io.github.nichetoolkit.rice.enums.OperateType;
@@ -81,10 +82,7 @@ public class SimpleModel extends RestInfoModel<SimpleModel,SimpleEntity> impleme
     @Override
     public SimpleEntity toEntity() {
         SimpleEntity entity = new SimpleEntity();
-        entity.setId(this.id);
-        entity.setName(this.name);
-        entity.setDescription(this.description);
-        entity.setTime(this.time);
+        BeanUtils.copyNonnullProperties(this,entity);
         return entity;
     }
 

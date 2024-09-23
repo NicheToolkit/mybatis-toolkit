@@ -11,7 +11,7 @@ import org.springframework.lang.NonNull;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
-import java.util.Optional;
+import java.util.*;
 import java.util.function.Predicate;
 
 /**
@@ -109,8 +109,9 @@ public abstract class MybatisEntityClassFinder implements MybatisClassFinder {
      * @see java.util.Optional
      */
     protected Optional<Class<?>> getIdentityClassByEntityType(Class<?> entityType) {
-        return getClassByTypes(GenericTypeResolver.resolveGenericTypes(entityType), this::isIdentity);
+        return getClassByTypes(GenericTypeResolver.resolveSuperclassTypes(entityType), this::isIdentity);
     }
+
 
     /**
      * <code>getEntityClassByMapperType</code>
@@ -121,7 +122,7 @@ public abstract class MybatisEntityClassFinder implements MybatisClassFinder {
      * @see java.util.Optional
      */
     protected Optional<Class<?>> getEntityClassByMapperType(Class<?> mapperType) {
-        return getClassByTypes(GenericTypeResolver.resolveGenericTypes(mapperType), this::isEntity);
+        return getClassByTypes(GenericTypeResolver.resolveInterfaceTypes(mapperType), this::isEntity);
     }
 
     /**
@@ -133,7 +134,7 @@ public abstract class MybatisEntityClassFinder implements MybatisClassFinder {
      * @see java.util.Optional
      */
     protected Optional<Class<?>> getIdentityClassByMapperType(Class<?> mapperType) {
-        return getClassByTypes(GenericTypeResolver.resolveGenericTypes(mapperType), this::isIdentity);
+        return getClassByTypes(GenericTypeResolver.resolveInterfaceTypes(mapperType), this::isIdentity);
     }
 
 

@@ -1,5 +1,6 @@
 package io.github.nichetoolkit.mybatis.simple;
 
+import io.github.nichetoolkit.rest.util.BeanUtils;
 import io.github.nichetoolkit.rice.DefaultInfoEntity;
 import io.github.nichetoolkit.mybatis.stereotype.column.RestForceInsert;
 import io.github.nichetoolkit.mybatis.stereotype.table.RestEntity;
@@ -66,12 +67,9 @@ public class TemplateEntity extends DefaultInfoEntity<TemplateEntity, TemplateMo
 
     @Override
     public TemplateModel toModel() {
-        TemplateModel.Builder builder = new TemplateModel.Builder();
-        builder.id(this.id)
-                .name(this.name)
-                .description(this.description)
-                .time(this.time);
-        return new TemplateModel(builder);
+        TemplateModel templateModel = new TemplateModel();
+        BeanUtils.copyNonnullProperties(this,templateModel);
+        return templateModel;
     }
 
 }

@@ -47,7 +47,7 @@ public class DefaultEntityClassFinder extends MybatisEntityClassFinder {
     public Optional<Class<?>> findIdentity(@NonNull Class<?> mapperType, @NonNull Class<?> entityType) {
         /* RestEntity 获取 */
         if (entityType.isAnnotationPresent(RestEntity.class)) {
-            RestEntity restEntity = mapperType.getAnnotation(RestEntity.class);
+            RestEntity restEntity = entityType.getAnnotation(RestEntity.class);
             Class<?> identityType = restEntity.identityType();
             if (GeneralUtils.isNotEmpty(identityType) && !identityType.equals(Object.class)) {
                 return Optional.of(identityType);

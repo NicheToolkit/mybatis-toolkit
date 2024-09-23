@@ -38,8 +38,8 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
      */
     protected MybatisTable table;
     /**
-     * <code>columnName</code>
-     * {@link java.lang.String} <p>the <code>columnName</code> field.</p>
+     * <code>column</code>
+     * {@link java.lang.String} <p>the <code>column</code> field.</p>
      * @see java.lang.String
      */
     protected String column;
@@ -130,13 +130,13 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
      */
     protected boolean unique;
     /**
-     * <code>logic</code>
-     * <p>the <code>logic</code> field.</p>
+     * <code>logicKey</code>
+     * <p>the <code>logicKey</code> field.</p>
      */
     protected boolean logicKey;
     /**
-     * <code>operate</code>
-     * <p>the <code>operate</code> field.</p>
+     * <code>operateKey</code>
+     * <p>the <code>operateKey</code> field.</p>
      */
     protected boolean operateKey;
     /**
@@ -224,6 +224,21 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
         }
     }
 
+    /**
+     * <code>identityColumn</code>
+     * <p>the column method.</p>
+     * @return boolean <p>the column return object is <code>boolean</code> type.</p>
+     */
+    public boolean isIdentityColumn() {
+        return this.field.isIdentityField();
+    }
+
+    /**
+     * <code>columnName</code>
+     * <p>the name method.</p>
+     * @return {@link java.lang.String} <p>the name return object is <code>String</code> type.</p>
+     * @see java.lang.String
+     */
     public String columnName() {
         return this.column;
     }
