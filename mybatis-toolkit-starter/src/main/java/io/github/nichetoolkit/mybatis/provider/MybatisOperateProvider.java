@@ -1,10 +1,11 @@
 package io.github.nichetoolkit.mybatis.provider;
 
+import io.github.nichetoolkit.mybatis.MybatisProviderResolver;
+import io.github.nichetoolkit.mybatis.MybatisSqlProvider;
 import io.github.nichetoolkit.mybatis.MybatisSqlScript;
 import io.github.nichetoolkit.mybatis.MybatisTable;
 import io.github.nichetoolkit.mybatis.error.MybatisParamErrorException;
 import io.github.nichetoolkit.mybatis.error.MybatisTableErrorException;
-import io.github.nichetoolkit.mybatis.error.MybatisUnsupportedErrorException;
 import io.github.nichetoolkit.rest.RestException;
 import io.github.nichetoolkit.rest.util.GeneralUtils;
 import io.github.nichetoolkit.rest.util.OptionalUtils;
@@ -14,7 +15,6 @@ import org.apache.ibatis.builder.annotation.ProviderContext;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 /**
  * <code>MybatisOperateProvider</code>
@@ -22,7 +22,7 @@ import java.util.Optional;
  * @author Cyan (snow22314@outlook.com)
  * @since Jdk1.8
  */
-public class MybatisOperateProvider {
+public class MybatisOperateProvider implements MybatisProviderResolver {
 
 
     /**
@@ -61,10 +61,10 @@ public class MybatisOperateProvider {
      * @see io.github.nichetoolkit.rest.RestException
      */
     public static <I> String operateDynamicById(ProviderContext providerContext, @Param("tablename") String tablename, @Param("id") I id, @Param("operate") Integer operate) throws RestException {
-        OptionalUtils.falseable(GeneralUtils.isNotEmpty(id), "the id param of 'operateById' method cannot be empty!", message -> new MybatisTableErrorException("operateById", "id", message));
-        OptionalUtils.falseable(GeneralUtils.isNotEmpty(operate), "the operate param of 'operateById' method cannot be empty!", message -> new MybatisParamErrorException("operateById", "operate", message));
+        OptionalUtils.ofFalse(GeneralUtils.isNotEmpty(id), "the id param of 'operateById' method cannot be empty!", message -> new MybatisTableErrorException("operateById", "id", message));
+        OptionalUtils.ofFalse(GeneralUtils.isNotEmpty(operate), "the operate param of 'operateById' method cannot be empty!", message -> new MybatisParamErrorException("operateById", "operate", message));
         return MybatisSqlScript.caching(providerContext, table -> {
-            OptionalUtils.falseable(GeneralUtils.isNotEmpty(table.getOperateColumn()), "the operate column of table with 'operateById' method cannot be empty!", message -> new MybatisTableErrorException("operateById", "operateColumn", message));
+            OptionalUtils.ofFalse(GeneralUtils.isNotEmpty(table.getOperateColumn()), "the operate column of table with 'operateById' method cannot be empty!", message -> new MybatisTableErrorException("operateById", "operateColumn", message));
             return "UPDATE " + table.tablename(tablename)
                     + " SET " + table.getOperateColumn().columnEqualsOperate()
                     + " WHERE " + table.identityColumnEqualsProperty();
@@ -109,13 +109,13 @@ public class MybatisOperateProvider {
      * @see io.github.nichetoolkit.rest.RestException
      */
     public static <I> String operateDynamicAll(ProviderContext providerContext, @Param("tablename") String tablename, @Param("idList") Collection<I> idList, @Param("operate") Integer operate) throws RestException {
-        OptionalUtils.falseable(GeneralUtils.isNotEmpty(idList), "the id list param of 'operateAll' method cannot be empty!", message -> new MybatisParamErrorException("operateAll", "idList", message));
-        OptionalUtils.falseable(GeneralUtils.isNotEmpty(operate), "the operate param of 'operateAll' method cannot be empty!", message -> new MybatisParamErrorException("operateAll", "operate", message));
+        OptionalUtils.ofFalse(GeneralUtils.isNotEmpty(idList), "the id list param of 'operateAll' method cannot be empty!", message -> new MybatisParamErrorException("operateAll", "idList", message));
+        OptionalUtils.ofFalse(GeneralUtils.isNotEmpty(operate), "the operate param of 'operateAll' method cannot be empty!", message -> new MybatisParamErrorException("operateAll", "operate", message));
 
         return MybatisSqlProvider.providing(providerContext,tablename,idList, new MybatisSqlProvider() {
             @Override
             public <IDENTITY> String provide(String tablename, MybatisTable table, Map<Integer, List<IDENTITY>> identitySliceMap, MybatisSqlScript sqlScript) throws RestException {
-                OptionalUtils.falseable(GeneralUtils.isNotEmpty(table.getOperateColumn()), "the operate column of table with 'operateAll' method cannot be empty!", message -> new MybatisTableErrorException("operateAll", "operateColumn", message));
+                OptionalUtils.ofFalse(GeneralUtils.isNotEmpty(table.getOperateColumn()), "the operate column of table with 'operateAll' method cannot be empty!", message -> new MybatisTableErrorException("operateAll", "operateColumn", message));
                 return "UPDATE " + table.tablename(tablename)
                         + " SET " + table.getOperateColumn().columnEqualsOperate()
                         + " WHERE " + identitiesWhereSql(identitySliceMap,table,sqlScript);
@@ -158,12 +158,12 @@ public class MybatisOperateProvider {
      * @see io.github.nichetoolkit.rest.RestException
      */
     public static String operateDynamicAllByWhere(ProviderContext providerContext, @Param("tablename") String tablename, @Param("whereSql") String whereSql, @Param("operate") Integer operate) throws RestException {
-        OptionalUtils.falseable(GeneralUtils.isNotEmpty(whereSql), "the where sql param of 'operateAllByWhere' method cannot be empty!", message -> new MybatisParamErrorException("operateAllByWhere", "whereSql", message));
-        OptionalUtils.falseable(GeneralUtils.isNotEmpty(operate), "the operate param of 'operateAllByWhere' method cannot be empty!", message -> new MybatisParamErrorException("operateAllByWhere", "operate", message));
+        OptionalUtils.ofFalse(GeneralUtils.isNotEmpty(whereSql), "the where sql param of 'operateAllByWhere' method cannot be empty!", message -> new MybatisParamErrorException("operateAllByWhere", "whereSql", message));
+        OptionalUtils.ofFalse(GeneralUtils.isNotEmpty(operate), "the operate param of 'operateAllByWhere' method cannot be empty!", message -> new MybatisParamErrorException("operateAllByWhere", "operate", message));
         return MybatisSqlScript.caching(providerContext, new MybatisSqlScript() {
             @Override
             public String sql(MybatisTable table) throws RestException {
-                OptionalUtils.falseable(GeneralUtils.isNotEmpty(table.getOperateColumn()), "the operate column of table with 'operateAllByWhere' method cannot be empty!", message -> new MybatisTableErrorException("operateAllByWhere", "operateColumn", message));
+                OptionalUtils.ofFalse(GeneralUtils.isNotEmpty(table.getOperateColumn()), "the operate column of table with 'operateAllByWhere' method cannot be empty!", message -> new MybatisTableErrorException("operateAllByWhere", "operateColumn", message));
                 return "UPDATE " + table.tablename(tablename)
                         + " SET " + table.getOperateColumn().columnEqualsOperate()
                         + " WHERE 1=1 "

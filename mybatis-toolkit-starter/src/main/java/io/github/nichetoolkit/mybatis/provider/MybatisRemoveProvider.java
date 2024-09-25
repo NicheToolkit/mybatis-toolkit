@@ -1,5 +1,7 @@
 package io.github.nichetoolkit.mybatis.provider;
 
+import io.github.nichetoolkit.mybatis.MybatisProviderResolver;
+import io.github.nichetoolkit.mybatis.MybatisSqlProvider;
 import io.github.nichetoolkit.mybatis.MybatisSqlScript;
 import io.github.nichetoolkit.mybatis.MybatisTable;
 import io.github.nichetoolkit.mybatis.error.MybatisParamErrorException;
@@ -20,7 +22,7 @@ import java.util.Map;
  * @author Cyan (snow22314@outlook.com)
  * @since Jdk1.8
  */
-public class MybatisRemoveProvider {
+public class MybatisRemoveProvider implements MybatisProviderResolver {
 
 
     /**
@@ -57,12 +59,12 @@ public class MybatisRemoveProvider {
      * @see io.github.nichetoolkit.rest.RestException
      */
     public static <I> String removeDynamicById(ProviderContext providerContext, @Param("tablename") String tablename, @Param("id") I id, @Param("logicSign") String logicSign) throws RestException {
-        OptionalUtils.falseable(GeneralUtils.isNotEmpty(id), "the id param of 'removeById' method cannot be empty!", message -> new MybatisTableErrorException("removeById", "id", message));
-        OptionalUtils.falseable(GeneralUtils.isNotEmpty(logicSign), "the logicSign param of 'removeById' method cannot be empty!", message -> new MybatisParamErrorException("removeById", "logicSign", message));
+        OptionalUtils.ofFalse(GeneralUtils.isNotEmpty(id), "the id param of 'removeById' method cannot be empty!", message -> new MybatisTableErrorException("removeById", "id", message));
+        OptionalUtils.ofFalse(GeneralUtils.isNotEmpty(logicSign), "the logicSign param of 'removeById' method cannot be empty!", message -> new MybatisParamErrorException("removeById", "logicSign", message));
         return MybatisSqlScript.caching(providerContext, table -> {
-            OptionalUtils.falseable(GeneralUtils.isNotEmpty(table.getLogicColumn()), "the logic column of table with 'removeById' method cannot be empty!", message -> new MybatisTableErrorException("removeById", "logicColumn", message));
+            OptionalUtils.ofFalse(GeneralUtils.isNotEmpty(table.getLogicColumn()), "the logic column of table with 'removeById' method cannot be empty!", message -> new MybatisTableErrorException("removeById", "logicColumn", message));
             return "UPDATE " + table.tablename(tablename)
-                    + " SET " + table.getLogicColumn().columnEqualsSign()
+                    + " SET " + table.getLogicColumn().columnEqualsLogic()
                     + " WHERE " + table.identityColumnEqualsProperty();
         });
     }
@@ -103,14 +105,14 @@ public class MybatisRemoveProvider {
      * @see io.github.nichetoolkit.rest.RestException
      */
     public static <I> String removeDynamicAll(ProviderContext providerContext, @Param("tablename") String tablename, @Param("idList") Collection<I> idList, @Param("logicSign") String logicSign) throws RestException {
-        OptionalUtils.falseable(GeneralUtils.isNotEmpty(idList), "the id list param of 'removeAll' method cannot be empty!", message -> new MybatisParamErrorException("removeAll", "idList", message));
-        OptionalUtils.falseable(GeneralUtils.isNotEmpty(logicSign), "the logicSign param of 'removeAll' method cannot be empty!", message -> new MybatisParamErrorException("removeAll", "logicSign", message));
+        OptionalUtils.ofFalse(GeneralUtils.isNotEmpty(idList), "the id list param of 'removeAll' method cannot be empty!", message -> new MybatisParamErrorException("removeAll", "idList", message));
+        OptionalUtils.ofFalse(GeneralUtils.isNotEmpty(logicSign), "the logicSign param of 'removeAll' method cannot be empty!", message -> new MybatisParamErrorException("removeAll", "logicSign", message));
         return MybatisSqlProvider.providing(providerContext,tablename,idList, new MybatisSqlProvider() {
             @Override
             public <IDENTITY> String provide(String tablename, MybatisTable table, Map<Integer, List<IDENTITY>> identitySliceMap, MybatisSqlScript sqlScript) throws RestException {
-                OptionalUtils.falseable(GeneralUtils.isNotEmpty(table.getLogicColumn()), "the logic column of table with 'removeAll' method cannot be empty!", message -> new MybatisTableErrorException("removeAll", "logicColumn", message));
+                OptionalUtils.ofFalse(GeneralUtils.isNotEmpty(table.getLogicColumn()), "the logic column of table with 'removeAll' method cannot be empty!", message -> new MybatisTableErrorException("removeAll", "logicColumn", message));
                 return "UPDATE " + table.tablename(tablename)
-                        + " SET " + table.getLogicColumn().columnEqualsSign()
+                        + " SET " + table.getLogicColumn().columnEqualsLogic()
                         + " WHERE " + identitiesWhereSql(identitySliceMap,table,sqlScript);
 
             }
@@ -150,14 +152,14 @@ public class MybatisRemoveProvider {
      * @see io.github.nichetoolkit.rest.RestException
      */
     public static String removeDynamicAllByWhere(ProviderContext providerContext, @Param("tablename") String tablename, @Param("whereSql") String whereSql, @Param("logicSign") String logicSign) throws RestException {
-        OptionalUtils.falseable(GeneralUtils.isNotEmpty(whereSql), "the where sql param of 'removeAllByWhere' method cannot be empty!", message -> new MybatisParamErrorException("removeAllByWhere", "whereSql", message));
-        OptionalUtils.falseable(GeneralUtils.isNotEmpty(logicSign), "the logicSign param of 'removeAllByWhere' method cannot be empty!", message -> new MybatisParamErrorException("removeAllByWhere", "logicSign", message));
+        OptionalUtils.ofFalse(GeneralUtils.isNotEmpty(whereSql), "the where sql param of 'removeAllByWhere' method cannot be empty!", message -> new MybatisParamErrorException("removeAllByWhere", "whereSql", message));
+        OptionalUtils.ofFalse(GeneralUtils.isNotEmpty(logicSign), "the logicSign param of 'removeAllByWhere' method cannot be empty!", message -> new MybatisParamErrorException("removeAllByWhere", "logicSign", message));
         return MybatisSqlScript.caching(providerContext, new MybatisSqlScript() {
             @Override
             public String sql(MybatisTable table) throws RestException {
-                OptionalUtils.falseable(GeneralUtils.isNotEmpty(table.getLogicColumn()), "the logic column of table with 'removeAllByWhere' method cannot be empty!", message -> new MybatisTableErrorException("removeAllByWhere", "logicColumn", message));
+                OptionalUtils.ofFalse(GeneralUtils.isNotEmpty(table.getLogicColumn()), "the logic column of table with 'removeAllByWhere' method cannot be empty!", message -> new MybatisTableErrorException("removeAllByWhere", "logicColumn", message));
                 return "UPDATE " + table.tablename(tablename)
-                        + " SET " + table.getLogicColumn().columnEqualsSign()
+                        + " SET " + table.getLogicColumn().columnEqualsLogic()
                         + " WHERE 1=1 "
                         + ifTest("whereSql!=null", () -> "${whereSql}");
             }

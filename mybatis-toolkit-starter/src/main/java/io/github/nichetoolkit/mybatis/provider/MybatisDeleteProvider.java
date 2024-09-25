@@ -1,5 +1,7 @@
 package io.github.nichetoolkit.mybatis.provider;
 
+import io.github.nichetoolkit.mybatis.MybatisProviderResolver;
+import io.github.nichetoolkit.mybatis.MybatisSqlProvider;
 import io.github.nichetoolkit.mybatis.MybatisSqlScript;
 import io.github.nichetoolkit.mybatis.MybatisTable;
 import io.github.nichetoolkit.mybatis.error.MybatisParamErrorException;
@@ -20,7 +22,7 @@ import java.util.Map;
  * @author Cyan (snow22314@outlook.com)
  * @since Jdk1.8
  */
-public class MybatisDeleteProvider {
+public class MybatisDeleteProvider implements MybatisProviderResolver {
 
     /**
      * <code>deleteById</code>
@@ -54,7 +56,7 @@ public class MybatisDeleteProvider {
      * @see io.github.nichetoolkit.rest.RestException
      */
     public static <I> String deleteDynamicById(ProviderContext providerContext, @Param("tablename") String tablename, @Param("id") I id) throws RestException {
-        OptionalUtils.falseable(GeneralUtils.isNotEmpty(id), "the id param of 'deleteById' method cannot be empty!", message -> new MybatisParamErrorException("deleteById", "id", message));
+        OptionalUtils.ofFalse(GeneralUtils.isNotEmpty(id), "the id param of 'deleteById' method cannot be empty!", message -> new MybatisParamErrorException("deleteById", "id", message));
         return MybatisSqlScript.caching(providerContext, table -> "DELETE FROM " + table.tablename(tablename)
                 + " WHERE " + table.identityColumnEqualsProperty());
     }
@@ -73,8 +75,8 @@ public class MybatisDeleteProvider {
      * @see java.lang.String
      * @see io.github.nichetoolkit.rest.RestException
      */
-    public static <I> String deleteByAll(ProviderContext providerContext, @Param("idList") Collection<I> idList) throws RestException {
-        return deleteDynamicByAll(providerContext, null, idList);
+    public static <I> String deleteAll(ProviderContext providerContext, @Param("idList") Collection<I> idList) throws RestException {
+        return deleteDynamicAll(providerContext, null, idList);
     }
 
     /**
@@ -92,13 +94,13 @@ public class MybatisDeleteProvider {
      * @see java.util.Collection
      * @see io.github.nichetoolkit.rest.RestException
      */
-    public static <I> String deleteDynamicByAll(ProviderContext providerContext, @Param("tablename") String tablename, @Param("idList") Collection<I> idList) throws RestException {
-        OptionalUtils.falseable(GeneralUtils.isNotEmpty(idList), "the id list param of 'deleteByAll' method cannot be empty!", message -> new MybatisParamErrorException("deleteByAll", "idList", message));
+    public static <I> String deleteDynamicAll(ProviderContext providerContext, @Param("tablename") String tablename, @Param("idList") Collection<I> idList) throws RestException {
+        OptionalUtils.ofFalse(GeneralUtils.isNotEmpty(idList), "the id list param of 'deleteByAll' method cannot be empty!", message -> new MybatisParamErrorException("deleteByAll", "idList", message));
 
         return MybatisSqlProvider.providing(providerContext,tablename,idList, new MybatisSqlProvider() {
             @Override
             public <IDENTITY> String provide(String tablename, MybatisTable table, Map<Integer, List<IDENTITY>> identitySliceMap, MybatisSqlScript sqlScript) throws RestException {
-                OptionalUtils.falseable(GeneralUtils.isNotEmpty(table.getLogicColumn()), "the logic column of table with 'removeAll' method cannot be empty!", message -> new MybatisTableErrorException("removeAll", "logicColumn", message));
+                OptionalUtils.ofFalse(GeneralUtils.isNotEmpty(table.getLogicColumn()), "the logic column of table with 'removeAll' method cannot be empty!", message -> new MybatisTableErrorException("removeAll", "logicColumn", message));
                 return "DELETE FROM " + table.tablename(tablename)
                         + " WHERE " + identitiesWhereSql(identitySliceMap,table,sqlScript);
 
@@ -136,7 +138,7 @@ public class MybatisDeleteProvider {
      * @see io.github.nichetoolkit.rest.RestException
      */
     public static String deleteDynamicAllByWhere(ProviderContext providerContext, @Param("tablename") String tablename, @Param("whereSql") String whereSql) throws RestException {
-        OptionalUtils.falseable(GeneralUtils.isNotEmpty(whereSql), "the where sql param of 'deleteAllByWhere' method cannot be empty!", message -> new MybatisParamErrorException("deleteAllByWhere", "whereSql", message));
+        OptionalUtils.ofFalse(GeneralUtils.isNotEmpty(whereSql), "the where sql param of 'deleteAllByWhere' method cannot be empty!", message -> new MybatisParamErrorException("deleteAllByWhere", "whereSql", message));
         return MybatisSqlScript.caching(providerContext, new MybatisSqlScript() {
             @Override
             public String sql(MybatisTable table) throws RestException {

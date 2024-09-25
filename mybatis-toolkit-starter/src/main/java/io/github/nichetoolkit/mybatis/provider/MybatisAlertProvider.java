@@ -1,5 +1,7 @@
 package io.github.nichetoolkit.mybatis.provider;
 
+import io.github.nichetoolkit.mybatis.MybatisProviderResolver;
+import io.github.nichetoolkit.mybatis.MybatisSqlProvider;
 import io.github.nichetoolkit.mybatis.MybatisSqlScript;
 import io.github.nichetoolkit.mybatis.error.MybatisParamErrorException;
 import io.github.nichetoolkit.mybatis.error.MybatisTableErrorException;
@@ -17,7 +19,7 @@ import java.util.Collection;
  * @author Cyan (snow22314@outlook.com)
  * @since Jdk1.8
  */
-public class MybatisAlertProvider {
+public class MybatisAlertProvider implements MybatisProviderResolver {
 
 
     /**
@@ -56,10 +58,10 @@ public class MybatisAlertProvider {
      * @see io.github.nichetoolkit.rest.RestException
      */
     public static <I> String alertDynamicById(ProviderContext providerContext, @Param("tablename") String tablename, @Param("id") I id, @Param("key") Integer key) throws RestException {
-        OptionalUtils.falseable(GeneralUtils.isNotEmpty(id), "the id param of 'alertById' method cannot be empty!", message -> new MybatisParamErrorException("alertById", "id", message));
-        OptionalUtils.falseable(GeneralUtils.isNotEmpty(key), "the key param of 'alertById' method cannot be empty!", message -> new MybatisParamErrorException("alertById", "key", message));
+        OptionalUtils.ofFalse(GeneralUtils.isNotEmpty(id), "the id param of 'alertById' method cannot be empty!", message -> new MybatisParamErrorException("alertById", "id", message));
+        OptionalUtils.ofFalse(GeneralUtils.isNotEmpty(key), "the key param of 'alertById' method cannot be empty!", message -> new MybatisParamErrorException("alertById", "key", message));
         return MybatisSqlScript.caching(providerContext, table -> {
-            OptionalUtils.falseable(GeneralUtils.isNotEmpty(table.getAlertColumn()), "the alert column of table with 'alertById' method cannot be empty!", message -> new MybatisTableErrorException("alertById", "alertColumn", message));
+            OptionalUtils.ofFalse(GeneralUtils.isNotEmpty(table.getAlertColumn()), "the alert column of table with 'alertById' method cannot be empty!", message -> new MybatisTableErrorException("alertById", "alertColumn", message));
             return MybatisSqlProvider.providing(providerContext, tablename, id, MybatisSqlProvider.ALERT_BY_ID);
         });
     }
@@ -102,10 +104,10 @@ public class MybatisAlertProvider {
      * @see io.github.nichetoolkit.rest.RestException
      */
     public static <I> String alertDynamicAll(ProviderContext providerContext, @Param("tablename") String tablename, @Param("idList") Collection<I> idList, @Param("key") Integer key) throws RestException {
-        OptionalUtils.falseable(GeneralUtils.isNotEmpty(idList), "the id list param of 'alertAll' method cannot be empty!", message -> new MybatisParamErrorException("alertAll", "idList", message));
-        OptionalUtils.falseable(GeneralUtils.isNotEmpty(key), "the key param of 'alertAll' method cannot be empty!", message -> new MybatisParamErrorException("alertAll", "key", message));
+        OptionalUtils.ofFalse(GeneralUtils.isNotEmpty(idList), "the id list param of 'alertAll' method cannot be empty!", message -> new MybatisParamErrorException("alertAll", "idList", message));
+        OptionalUtils.ofFalse(GeneralUtils.isNotEmpty(key), "the key param of 'alertAll' method cannot be empty!", message -> new MybatisParamErrorException("alertAll", "key", message));
         return MybatisSqlScript.caching(providerContext, table -> {
-            OptionalUtils.falseable(GeneralUtils.isNotEmpty(table.getAlertColumn()), "the alert column of table with 'alertAll' method cannot be empty!", message -> new MybatisTableErrorException("alertAll", "alertColumn", message));
+            OptionalUtils.ofFalse(GeneralUtils.isNotEmpty(table.getAlertColumn()), "the alert column of table with 'alertAll' method cannot be empty!", message -> new MybatisTableErrorException("alertAll", "alertColumn", message));
             return MybatisSqlProvider.providing(providerContext, tablename, idList, MybatisSqlProvider.ALERT_ALL);
         });
     }

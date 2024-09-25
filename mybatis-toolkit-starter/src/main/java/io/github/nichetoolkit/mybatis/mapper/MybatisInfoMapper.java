@@ -26,40 +26,40 @@ public interface MybatisInfoMapper<E extends InfoEntity<I>, I> extends MybatisSu
     @Override
     @Lang(MybatisCaching.class)
     @SelectProvider(type = MybatisInfoProvider.class, method = "findByName")
-    List<E> findByName(@Param("name") String name, @Param("logicValue") String logicValue);
+    List<E> findByName(@Param("name") String name, @Param("logic") String logic);
 
     @Override
     @Lang(MybatisCaching.class)
     @SelectProvider(type = MybatisInfoProvider.class, method = "findDynamicByName")
-    List<E> findDynamicByName(@Param("tablename") String tablename, @Param("name") String name, @Param("logicValue") String logicValue);
+    List<E> findDynamicByName(@Param("tablename") String tablename, @Param("name") String name, @Param("logic") String logic);
 
     @Override
     @Lang(MybatisCaching.class)
     @SelectProvider(type = MybatisInfoProvider.class, method = "findByNameAndNotId")
-    List<E> findByNameAndNotId(@Param("name") String name, @Param("id") I id, @Param("logicValue") String logicValue);
+    List<E> findByNameAndNotId(@Param("name") String name, @Param("id") I id, @Param("logic") String logic);
 
     @Override
     @Lang(MybatisCaching.class)
     @SelectProvider(type = MybatisInfoProvider.class, method = "findDynamicByNameAndNotId")
-    List<E> findDynamicByNameAndNotId(@Param("tablename") String tablename, @Param("name") String name, @Param("id") I id, @Param("logicValue") String logicValue);
+    List<E> findDynamicByNameAndNotId(@Param("tablename") String tablename, @Param("name") String name, @Param("id") I id, @Param("logic") String logic);
 
     @Override
     @Lang(MybatisCaching.class)
     @SelectProvider(type = MybatisInfoProvider.class, method = "findByEntity")
-    List<E> findByEntity(@Param("entity") E entity, @Param("logicValue") String logicValue);
+    List<E> findByEntity(@Param("entity") E entity, @Param("logic") String logic);
 
     @Override
     @Lang(MybatisCaching.class)
     @SelectProvider(type = MybatisInfoProvider.class, method = "findDynamicByEntity")
-    List<E> findDynamicByEntity(@Param("tablename") String tablename, @Param("entity") E entity, @Param("logicValue") String logicValue);
+    List<E> findDynamicByEntity(@Param("tablename") String tablename, @Param("entity") E entity, @Param("logic") String logic);
 
     @Override
     @Lang(MybatisCaching.class)
     @SelectProvider(type = MybatisInfoProvider.class, method = "findByEntityAndNotId")
-    List<E> findByEntityAndNotId(@Param("entity") E entity, @Param("id") I id, @Param("logicValue") String logicValue);
+    List<E> findByEntityAndNotId(@Param("entity") E entity, @Param("id") I id, @Param("logic") String logic);
 
     @Override
     @Lang(MybatisCaching.class)
     @SelectProvider(type = MybatisInfoProvider.class, method = "findDynamicByEntityAndNotId")
-    List<E> findDynamicByEntityAndNotId(@Param("tablename") String tablename, @Param("entity") E entity, @Param("id") I id, @Param("logicValue") String logicValue);
+    List<E> findDynamicByEntityAndNotId(@Param("tablename") String tablename, @Param("entity") E entity, @Param("id") I id, @Param("logic") String logic);
 }

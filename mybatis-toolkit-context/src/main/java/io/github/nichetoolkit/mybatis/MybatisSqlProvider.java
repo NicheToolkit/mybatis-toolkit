@@ -1,64 +1,107 @@
-package io.github.nichetoolkit.mybatis.provider;
+package io.github.nichetoolkit.mybatis;
 
-
-import io.github.nichetoolkit.mybatis.*;
 import io.github.nichetoolkit.mybatis.builder.SqlBuilder;
+import io.github.nichetoolkit.mybatis.enums.DatabaseType;
 import io.github.nichetoolkit.mybatis.error.MybatisIdentityLackError;
+import io.github.nichetoolkit.mybatis.error.MybatisUnrealizedLackError;
 import io.github.nichetoolkit.rest.RestException;
 import io.github.nichetoolkit.rest.RestOptional;
 import io.github.nichetoolkit.rest.RestReckon;
 import io.github.nichetoolkit.rest.stream.RestCollectors;
 import io.github.nichetoolkit.rest.stream.RestStream;
 import io.github.nichetoolkit.rest.util.GeneralUtils;
+import io.github.nichetoolkit.rest.util.OptionalUtils;
 import org.apache.ibatis.builder.annotation.ProviderContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.lang.Nullable;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
+public interface MybatisSqlProvider extends MybatisProviderResolver {
 
-public interface MybatisSqlProvider {
     Logger logger = LoggerFactory.getLogger(MybatisSqlProvider.class);
 
     MybatisSqlProvider ALERT_FIELD_BY_ID = new MybatisSqlProvider() {
         @Override
-        public <I> String provide(String tablename, MybatisTable table, Map<Integer, List<I>> identitySliceMap, MybatisSqlScript sqlScript) throws RestException {
+        public <I> String provide(@Nullable String tablename, MybatisTable table, Map<Integer, List<I>> identitySliceMap, MybatisSqlScript sqlScript) throws RestException {
             return alertFieldUpdateSql(tablename, table, sqlScript) + identityWhereSql(table, sqlScript);
         }
     };
 
     MybatisSqlProvider ALERT_FIELD_ALL = new MybatisSqlProvider() {
         @Override
-        public <I> String provide(String tablename, MybatisTable table, Map<Integer, List<I>> identitySliceMap, MybatisSqlScript sqlScript) throws RestException {
+        public <I> String provide(@Nullable String tablename, MybatisTable table, Map<Integer, List<I>> identitySliceMap, MybatisSqlScript sqlScript) throws RestException {
             return alertFieldUpdateSql(tablename, table, sqlScript) + identitiesWhereSql(identitySliceMap, table, sqlScript);
         }
     };
 
     MybatisSqlProvider ALERT_BY_ID = new MybatisSqlProvider() {
         @Override
-        public <I> String provide(String tablename, MybatisTable table, Map<Integer, List<I>> identitySliceMap, MybatisSqlScript sqlScript) throws RestException {
+        public <I> String provide(@Nullable String tablename, MybatisTable table, Map<Integer, List<I>> identitySliceMap, MybatisSqlScript sqlScript) throws RestException {
             return alertUpdateSql(tablename, table, sqlScript) + identityWhereSql(table, sqlScript);
         }
     };
 
     MybatisSqlProvider ALERT_ALL = new MybatisSqlProvider() {
         @Override
-        public <I> String provide(String tablename, MybatisTable table, Map<Integer, List<I>> identitySliceMap, MybatisSqlScript sqlScript) throws RestException {
+        public <I> String provide(@Nullable String tablename, MybatisTable table, Map<Integer, List<I>> identitySliceMap, MybatisSqlScript sqlScript) throws RestException {
             return alertUpdateSql(tablename, table, sqlScript) + identitiesWhereSql(identitySliceMap, table, sqlScript);
         }
     };
 
-    <I> String provide(String tablename, MybatisTable table, Map<Integer, List<I>> identitySliceMap, MybatisSqlScript sqlScript) throws RestException;
+    <I> String provide(@Nullable String tablename, MybatisTable table, Map<Integer, List<I>> identitySliceMap, MybatisSqlScript sqlScript) throws RestException;
+
+
+    static String saveUpsetSql(@Nullable String tablename, MybatisTable table) {
+        DatabaseType databaseType = MybatisProviderSupport.DATABASE_TYPE;
+        List<MybatisColumn> updateColumns = table.updateColumns();
+        boolean doNothing = false;
+        String doUpdateSql = "";
+        if (GeneralUtils.isEmpty(updateColumns)) {
+            doNothing = true;
+        } else {
+            String dynamicTablename = table.tablename(tablename);
+            doUpdateSql = table.updateColumns().stream().map(column -> column.excluded(dynamicTablename)).collect(Collectors.joining(", "));
+        }
+        String upsetSql;
+        switch (databaseType) {
+            case MARIADB:
+            case SQLSEVER:
+            case ORACLE:
+            case SQLITE:
+            case H2:
+            case HSQLDB:
+            case REDSHIFT:
+            case CASSANDRA:
+                throw new MybatisUnrealizedLackError("the function is unrealized of this database type: " + databaseType.getKey());
+            case GAUSSDB:
+            case MYSQL:
+                if (doNothing) {
+                    upsetSql = " ON DUPLICATE KEY DO NOTHING ";
+                } else {
+                    upsetSql = " ON DUPLICATE KEY UPDATE ";
+                }
+                break;
+            case POSTGRESQL:
+            default:
+                if (doNothing) {
+                    upsetSql = " ON CONFLICT (" + table.identityColumnList() + ") DO NOTHING ";
+                } else {
+                    upsetSql = " ON CONFLICT (" + table.identityColumnList() + ") DO UPDATE SET ";
+                }
+                break;
+        }
+        return upsetSql + doUpdateSql;
+    }
 
     static void identityValue(MybatisTable table, Object id) throws RestException {
         Boolean logicalAnd = RestStream.stream(table.identityColumns()).map(MybatisColumn::getField)
                 .map(mybatisField -> GeneralUtils.isNotEmpty(mybatisField.get(id)))
                 .collect(RestCollectors.logicalOr());
         String message = "the field values of identity can not all be empty, " + table.getIdentity().getName();
-        if (!logicalAnd) {
-            logger.error(message);
-            throw new MybatisIdentityLackError(message);
-        }
+        OptionalUtils.ofFalseError(logicalAnd, message, MybatisIdentityLackError::new);
     }
 
     static <I> Map<Integer, List<I>> identitySlice(MybatisTable table, Collection<I> idList) throws RestException {
@@ -66,8 +109,7 @@ public interface MybatisSqlProvider {
         List<MybatisField> mybatisFields = RestStream.stream(table.identityColumns()).map(MybatisColumn::getField).collect(RestCollectors.toList());
         /*
          * mybatisFields: {a,b,c}, index: 0,1,2 indexValue: 1,2,4
-         * 0: {}, 1: {a}, 2: {b}, 3: {a,b}, 4: {c}
-         * 5: {a,c}, 6: {b,c}, 7: {a,b,c}
+         * 0: {}, 1: {a}, 2: {b}, 3: {a,b}, 4: {c} 5: {a,c}, 6: {b,c}, 7: {a,b,c}
          */
         return RestStream.stream(idList).collect(RestCollectors.groupingBy(id -> {
             int indexValue = 0;
@@ -81,18 +123,17 @@ public interface MybatisSqlProvider {
         }));
     }
 
-    static <I> String providing(ProviderContext providerContext, String tablename, I id, MybatisSqlProvider sqlProvider) throws RestException {
+    static <I> String providing(ProviderContext providerContext, @Nullable String tablename, I id, MybatisSqlProvider sqlProvider) throws RestException {
+        Object identity = MybatisProviderResolver.resolveParameter(id);
         return MybatisSqlScript.caching(providerContext, (table, sqlScript) -> {
-//            Map<Integer, List<Object>> identitySliceMap = Collections.emptyMap();
             if (table.isCustomIdentity()) {
-                identityValue(table, id);
-//                identitySliceMap = identitySlice(table, Collections.singletonList(id));
+                identityValue(table, identity);
             }
             return sqlProvider.provide(tablename, table, Collections.emptyMap(), sqlScript);
         });
     }
 
-    static <I> String providing(ProviderContext providerContext, String tablename, Collection<I> idList, MybatisSqlProvider sqlProvider) throws RestException {
+    static <I> String providing(ProviderContext providerContext, @Nullable String tablename, Collection<I> idList, MybatisSqlProvider sqlProvider) throws RestException {
         return MybatisSqlScript.caching(providerContext, (table, sqlScript) -> {
             Map<Integer, List<I>> identitySliceMap = Collections.emptyMap();
             if (table.isCustomIdentity()) {
@@ -121,7 +162,7 @@ public interface MybatisSqlProvider {
         if (table.isCustomIdentity()) {
             return customIdentityWhereSql(table, sqlScript);
         } else {
-            return commonIdentityWhereSql(table, sqlScript);
+            return defaultIdentityWhereSql(table, sqlScript);
         }
     }
 
@@ -129,18 +170,18 @@ public interface MybatisSqlProvider {
         if (table.isCustomIdentity()) {
             return customIdentitiesWhereSql(identitySliceMap, table, sqlScript);
         } else {
-            return commonIdentitiesWhereSql(table, sqlScript);
+            return defaultIdentitiesWhereSql(table, sqlScript);
         }
     }
 
-    default String commonIdentityWhereSql(MybatisTable table, MybatisSqlScript sqlScript) throws RestException {
+    default String defaultIdentityWhereSql(MybatisTable table, MybatisSqlScript sqlScript) throws RestException {
         StringBuilder sqlBuilder = new StringBuilder(" WHERE ");
         RestOptional<MybatisColumn> columnOptional = RestStream.stream(table.identityColumns()).findFirst();
         columnOptional.ifNullPresent(column -> sqlBuilder.append(table.identityColumnEqualsProperty()));
         return sqlBuilder.toString();
     }
 
-    default String commonIdentitiesWhereSql(MybatisTable table, MybatisSqlScript sqlScript) throws RestException {
+    default String defaultIdentitiesWhereSql(MybatisTable table, MybatisSqlScript sqlScript) throws RestException {
         StringBuilder sqlBuilder = new StringBuilder(" WHERE ");
         RestOptional<MybatisColumn> columnOptional = RestStream.stream(table.identityColumns()).findFirst();
         columnOptional.ifNullPresent(column -> {
@@ -153,6 +194,7 @@ public interface MybatisSqlProvider {
 
     default String customIdentityWhereSql(MybatisTable table, MybatisSqlScript sqlScript) throws RestException {
         StringBuilder sqlBuilder = new StringBuilder(" WHERE 1=1 ");
+        sqlBuilder.append(MybatisSqlScript.LINEFEED);
         String identityTestSql = RestStream.stream(table.identityColumns())
                 .map(column -> sqlScript.ifTest(column.notEmptyTest("id."),
                         () -> " AND " + column.columnEqualsProperty("id.")))
@@ -215,11 +257,11 @@ public interface MybatisSqlProvider {
     interface SimpleSqlProvider extends MybatisSqlProvider {
 
         @Override
-        default <I> String provide(String tablename, MybatisTable table, Map<Integer, List<I>> identitySliceMap, MybatisSqlScript sqlScript) throws RestException {
+        default <I> String provide(@Nullable String tablename, MybatisTable table, Map<Integer, List<I>> identitySliceMap, MybatisSqlScript sqlScript) throws RestException {
             return provide(tablename, table, identitySliceMap, sqlScript, this);
         }
 
-        <I> String provide(String tablename, MybatisTable table, Map<Integer, List<I>> identitySliceMap, MybatisSqlScript sqlScript, MybatisSqlProvider sqlProvider) throws RestException;
+        <I> String provide(@Nullable String tablename, MybatisTable table, Map<Integer, List<I>> identitySliceMap, MybatisSqlScript sqlScript, MybatisSqlProvider sqlProvider) throws RestException;
 
     }
 

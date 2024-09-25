@@ -2,11 +2,11 @@ package io.github.nichetoolkit.mybatis.defaults;
 
 
 import io.github.nichetoolkit.mybatis.MybatisClassFinder;
-import io.github.nichetoolkit.mybatis.resolver.MybatisGenericTypeResolver;
-import io.github.nichetoolkit.rest.reflect.GenericTypeResolver;
+import io.github.nichetoolkit.mybatis.resolver.MybatisGenericTypes;
 import io.github.nichetoolkit.rest.reflect.DefaultGenericArrayType;
 import io.github.nichetoolkit.rest.reflect.DefaultParameterizedType;
 import io.github.nichetoolkit.rest.reflect.DefaultWildcardType;
+import io.github.nichetoolkit.rest.reflect.RestGenericTypes;
 import org.springframework.lang.NonNull;
 
 import java.lang.reflect.Method;
@@ -68,7 +68,7 @@ public abstract class MybatisEntityClassFinder implements MybatisClassFinder {
      * @see java.util.Optional
      */
     protected Optional<Class<?>> getEntityClassByMapperMethodReturnType(Class<?> mapperType, Method mapperMethod) {
-        Class<?> returnType = MybatisGenericTypeResolver.resolveMapperReturnType(mapperMethod, mapperType);
+        Class<?> returnType = MybatisGenericTypes.resolveMapperReturnType(mapperMethod, mapperType);
         return isEntity(returnType) ? Optional.of(returnType) : Optional.empty();
     }
 
@@ -83,7 +83,7 @@ public abstract class MybatisEntityClassFinder implements MybatisClassFinder {
      * @see java.util.Optional
      */
     protected Optional<Class<?>> getEntityClassByMapperMethodParamTypes(Class<?> mapperType, Method mapperMethod) {
-        return getClassByTypes(GenericTypeResolver.resolveParamTypes(mapperMethod, mapperType), this::isEntity);
+        return getClassByTypes(RestGenericTypes.resolveParamTypes(mapperMethod, mapperType), this::isEntity);
     }
 
     /**
@@ -97,7 +97,7 @@ public abstract class MybatisEntityClassFinder implements MybatisClassFinder {
      * @see java.util.Optional
      */
     protected Optional<Class<?>> getEntityClassByMapperMethodAndMapperType(Class<?> mapperType, Method mapperMethod) {
-        return getClassByTypes(GenericTypeResolver.resolveMethodTypes(mapperMethod, mapperType), this::isEntity);
+        return getClassByTypes(RestGenericTypes.resolveMethodTypes(mapperMethod, mapperType), this::isEntity);
     }
 
     /**
@@ -109,7 +109,7 @@ public abstract class MybatisEntityClassFinder implements MybatisClassFinder {
      * @see java.util.Optional
      */
     protected Optional<Class<?>> getIdentityClassByEntityType(Class<?> entityType) {
-        return getClassByTypes(GenericTypeResolver.resolveSuperclassTypes(entityType), this::isIdentity);
+        return getClassByTypes(RestGenericTypes.resolveSuperclassTypes(entityType), this::isIdentity);
     }
 
 
@@ -122,7 +122,7 @@ public abstract class MybatisEntityClassFinder implements MybatisClassFinder {
      * @see java.util.Optional
      */
     protected Optional<Class<?>> getEntityClassByMapperType(Class<?> mapperType) {
-        return getClassByTypes(GenericTypeResolver.resolveInterfaceTypes(mapperType), this::isEntity);
+        return getClassByTypes(RestGenericTypes.resolveInterfaceTypes(mapperType), this::isEntity);
     }
 
     /**
@@ -134,7 +134,7 @@ public abstract class MybatisEntityClassFinder implements MybatisClassFinder {
      * @see java.util.Optional
      */
     protected Optional<Class<?>> getIdentityClassByMapperType(Class<?> mapperType) {
-        return getClassByTypes(GenericTypeResolver.resolveInterfaceTypes(mapperType), this::isIdentity);
+        return getClassByTypes(RestGenericTypes.resolveInterfaceTypes(mapperType), this::isIdentity);
     }
 
 

@@ -3,7 +3,6 @@ package io.github.nichetoolkit.mybatis;
 import io.github.nichetoolkit.mybatis.error.MybatisAssertErrorException;
 import io.github.nichetoolkit.rest.RestException;
 import io.github.nichetoolkit.rest.actuator.SupplierActuator;
-import io.github.nichetoolkit.rest.util.GeneralUtils;
 import io.github.nichetoolkit.rest.util.OptionalUtils;
 import org.apache.ibatis.builder.annotation.ProviderContext;
 
@@ -179,7 +178,7 @@ public interface MybatisSqlScript {
      * @see io.github.nichetoolkit.rest.RestException
      */
     default String variableIsTrue(String variable, String message) throws RestException {
-        OptionalUtils.falseable(Boolean.parseBoolean(variable), message, error -> new MybatisAssertErrorException("isTrue", "variable", error));
+        OptionalUtils.ofFalse(Boolean.parseBoolean(variable), message, error -> new MybatisAssertErrorException("isTrue", "variable", error));
         return variable;
     }
 
@@ -194,7 +193,7 @@ public interface MybatisSqlScript {
      * @see io.github.nichetoolkit.rest.RestException
      */
     default String variableIsFalse(String variable, String message) throws RestException {
-        OptionalUtils.trueable(Boolean.parseBoolean(variable), message, error -> new MybatisAssertErrorException("isFalse", "variable", error));
+        OptionalUtils.ofTrue(Boolean.parseBoolean(variable), message, error -> new MybatisAssertErrorException("isFalse", "variable", error));
         return variable;
     }
 
@@ -209,7 +208,7 @@ public interface MybatisSqlScript {
      * @see io.github.nichetoolkit.rest.RestException
      */
     default String variableNotNull(String variable, String message) throws RestException {
-        OptionalUtils.falseable(variable != null, message, error -> new MybatisAssertErrorException("notNull", "variable", error));
+        OptionalUtils.ofNull(variable, message, error -> new MybatisAssertErrorException("notNull", "variable", error));
         return variable;
     }
 
@@ -224,7 +223,7 @@ public interface MybatisSqlScript {
      * @see io.github.nichetoolkit.rest.RestException
      */
     default String variableNotEmpty(String variable, String message) throws RestException {
-        OptionalUtils.falseable(GeneralUtils.isNotEmpty(variable), message, error -> new MybatisAssertErrorException("notEmpty", "variable", error));
+        OptionalUtils.ofEmpty(variable, message, error -> new MybatisAssertErrorException("notEmpty", "variable", error));
         return variable;
     }
 

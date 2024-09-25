@@ -5,7 +5,7 @@ CREATE TABLE "public"."ntr_simple"
   "name"        VARCHAR(128) COLLATE "pg_catalog"."default",
   "description" VARCHAR(256) COLLATE "pg_catalog"."default",
   "time" TIMESTAMPTZ,
-  "logic_sign" INT4,
+  "logic" INT4,
   "create_time" TIMESTAMPTZ,
   "update_time" TIMESTAMPTZ,
   CONSTRAINT "PK_NTR_CF_SIMPLE" PRIMARY KEY ("id")
@@ -16,8 +16,8 @@ CREATE INDEX "IDX_NTR_SIMPLE_TIME" ON "public"."ntr_simple" USING btree (
   "time" "pg_catalog"."timestamptz_ops" ASC NULLS LAST
 );
 
-CREATE INDEX "IDX_NTR_SIMPLE_LOGIC_SIGN" ON "public"."ntr_simple" USING btree (
-  "logic_sign" "pg_catalog"."int4_ops" ASC NULLS LAST
+CREATE INDEX "IDX_NTR_SIMPLE_LOGIC" ON "public"."ntr_simple" USING btree (
+  "logic" "pg_catalog"."int4_ops" ASC NULLS LAST
 );
 
 DROP TABLE IF EXISTS "public"."ntr_simple_dynamic";
@@ -27,7 +27,7 @@ CREATE TABLE "public"."ntr_simple_dynamic"
   "name"        VARCHAR(128) COLLATE "pg_catalog"."default",
   "description" VARCHAR(256) COLLATE "pg_catalog"."default",
   "time" TIMESTAMPTZ,
-  "logic_sign" INT4,
+  "logic" INT4,
   "create_time" TIMESTAMPTZ,
   "update_time" TIMESTAMPTZ,
   CONSTRAINT "PK_NTR_CF_SIMPLE_DYNAMIC" PRIMARY KEY ("id")
@@ -37,6 +37,6 @@ CREATE INDEX "IDX_NTR_SIMPLE_DYNAMIC_TIME" ON "public"."ntr_simple_dynamic" USIN
   "time" "pg_catalog"."timestamptz_ops" ASC NULLS LAST
 );
 
-CREATE INDEX "IDX_NTR_SIMPLE_DYNAMIC_LOGIC_SIGN" ON "public"."ntr_simple_dynamic" USING btree (
-  "logic_sign" "pg_catalog"."int4_ops" ASC NULLS LAST
+CREATE INDEX "IDX_NTR_SIMPLE_DYNAMIC_LOGIC" ON "public"."ntr_simple_dynamic" USING btree (
+  "logic" "pg_catalog"."int4_ops" ASC NULLS LAST
 );

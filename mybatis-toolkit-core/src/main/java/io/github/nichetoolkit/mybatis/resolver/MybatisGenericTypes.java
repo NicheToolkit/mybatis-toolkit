@@ -1,6 +1,6 @@
 package io.github.nichetoolkit.mybatis.resolver;
 
-import io.github.nichetoolkit.rest.reflect.GenericTypeResolver;
+import io.github.nichetoolkit.rest.reflect.RestGenericTypes;
 import org.apache.ibatis.annotations.ResultType;
 import org.apache.ibatis.annotations.MapKey;
 import org.apache.ibatis.cursor.Cursor;
@@ -16,7 +16,7 @@ import java.util.*;
  * @author Cyan (snow22314@outlook.com)
  * @since Jdk1.8
  */
-public class MybatisGenericTypeResolver {
+public class MybatisGenericTypes {
 
     /**
      * <code>resolveMapperReturnType</code>
@@ -29,7 +29,7 @@ public class MybatisGenericTypeResolver {
      */
     public static Class<?> resolveMapperReturnType(Method mapperMethod, Class<?> mapperType) {
         Class<?> returnType = mapperMethod.getReturnType();
-        Type resolvedReturnType = GenericTypeResolver.resolveReturnType(mapperMethod, mapperType);
+        Type resolvedReturnType = RestGenericTypes.resolveReturnType(mapperMethod, mapperType);
         if (resolvedReturnType instanceof Class) {
             /* resolvedReturnType 为具体类型 */
             returnType = (Class<?>) resolvedReturnType;

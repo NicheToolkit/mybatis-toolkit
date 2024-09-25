@@ -34,12 +34,12 @@ public interface MybatisDeleteMapper<E extends IdEntity<I>, I> extends MybatisEn
 
     @Override
     @Lang(MybatisCaching.class)
-    @DeleteProvider(type = MybatisDeleteProvider.class, method = "deleteByAll")
+    @DeleteProvider(type = MybatisDeleteProvider.class, method = "deleteAll")
     Integer deleteAll(@Param("idList") Collection<I> idList);
 
     @Override
     @Lang(MybatisCaching.class)
-    @DeleteProvider(type = MybatisDeleteProvider.class, method = "deleteDynamicByAll")
+    @DeleteProvider(type = MybatisDeleteProvider.class, method = "deleteDynamicAll")
     Integer deleteDynamicAll(@Param("tablename") String tablename, @Param("idList") Collection<I> idList);
 
     @Override

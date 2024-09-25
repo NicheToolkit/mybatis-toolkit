@@ -22,17 +22,17 @@ public interface MybatisRemoveLinkMapper<I> extends RemoveLinkMapper<I>, Mybatis
 
     @Lang(MybatisCaching.class)
     @UpdateProvider(type = MybatisRemoveLinkProvider.class, method = "removeByLinkId")
-    Integer removeByLinkId(@Param("linkId") I linkId, @Param("logicSign") String logicSign);
+    Integer removeByLinkId(@Param("linkId") I linkId, @Param("logic") String logic);
 
     @Lang(MybatisCaching.class)
     @UpdateProvider(type = MybatisRemoveLinkProvider.class, method = "removeDynamicByLinkId")
-    Integer removeDynamicByLinkId(@Param("tablename") String tablename, @Param("linkId") I linkId, @Param("logicSign") String logicSign);
+    Integer removeDynamicByLinkId(@Param("tablename") String tablename, @Param("linkId") I linkId, @Param("logic") String logic);
 
     @Lang(MybatisCaching.class)
     @UpdateProvider(type = MybatisRemoveLinkProvider.class, method = "removeAllByLinkIds")
-    Integer removeAllByLinkIds(@Param("linkIdList") Collection<I> linkIdList, @Param("logicSign") String logicSign);
+    Integer removeAllByLinkIds(@Param("linkIdList") Collection<I> linkIdList, @Param("logic") String logic);
 
     @Lang(MybatisCaching.class)
     @UpdateProvider(type = MybatisRemoveLinkProvider.class, method = "removeDynamicAllByLinkIds")
-    Integer removeDynamicAllByLinkIds(@Param("tablename") String tablename, @Param("linkIdList") Collection<I> linkIdList, @Param("logicSign") String logicSign);
+    Integer removeDynamicAllByLinkIds(@Param("tablename") String tablename, @Param("linkIdList") Collection<I> linkIdList, @Param("logic") String logic);
 }

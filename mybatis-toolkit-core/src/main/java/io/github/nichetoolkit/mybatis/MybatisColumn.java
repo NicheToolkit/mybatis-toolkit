@@ -471,24 +471,24 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
     }
 
     /**
-     * <code>columnEqualsSign</code>
+     * <code>columnEqualsLogic</code>
      * <p>the equals sign method.</p>
      * @return {@link java.lang.String} <p>the equals sign return object is <code>String</code> type.</p>
      * @see java.lang.String
      */
-    public String columnEqualsSign() {
-        return aliasColumnEqualsSign("");
+    public String columnEqualsLogic() {
+        return aliasColumnEqualsLogic("");
     }
 
     /**
-     * <code>aliasColumnEqualsSign</code>
+     * <code>aliasColumnEqualsLogic</code>
      * <p>the column equals sign method.</p>
      * @param alias {@link java.lang.String} <p>the alias parameter is <code>String</code> type.</p>
      * @return {@link java.lang.String} <p>the column equals sign return object is <code>String</code> type.</p>
      * @see java.lang.String
      */
-    public String aliasColumnEqualsSign(String alias) {
-        return aliasColumn(alias) + " = " + "${logicSign}";
+    public String aliasColumnEqualsLogic(String alias) {
+        return aliasColumn(alias) + " = " + "${logic}";
     }
 
     /**

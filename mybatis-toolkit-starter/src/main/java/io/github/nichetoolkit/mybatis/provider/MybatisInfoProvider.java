@@ -1,10 +1,10 @@
 package io.github.nichetoolkit.mybatis.provider;
 
 import io.github.nichetoolkit.mybatis.MybatisColumn;
+import io.github.nichetoolkit.mybatis.MybatisProviderResolver;
 import io.github.nichetoolkit.mybatis.MybatisSqlScript;
 import io.github.nichetoolkit.mybatis.error.MybatisParamErrorException;
 import io.github.nichetoolkit.mybatis.error.MybatisTableErrorException;
-import io.github.nichetoolkit.mybatis.error.MybatisUnsupportedErrorException;
 import io.github.nichetoolkit.rest.RestException;
 import io.github.nichetoolkit.rest.util.GeneralUtils;
 import io.github.nichetoolkit.rest.util.OptionalUtils;
@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
  * @author Cyan (snow22314@outlook.com)
  * @since Jdk1.8
  */
-public class MybatisInfoProvider {
+public class MybatisInfoProvider implements MybatisProviderResolver {
 
     /**
      * <code>findByName</code>
@@ -54,14 +54,14 @@ public class MybatisInfoProvider {
      * @see io.github.nichetoolkit.rest.RestException
      */
     public static String findDynamicByName(ProviderContext providerContext, @Param("tablename") String tablename, @Param("name") String name, @Param("logicValue") String logicValue) throws RestException {
-        OptionalUtils.falseable(GeneralUtils.isNotEmpty(name), "the name param of 'findByName' method cannot be empty!", message -> new MybatisParamErrorException("findByName", "name", message));
+        OptionalUtils.ofFalse(GeneralUtils.isNotEmpty(name), "the name param of 'findByName' method cannot be empty!", message -> new MybatisParamErrorException("findByName", "name", message));
         return MybatisSqlScript.caching(providerContext, table -> {
-            OptionalUtils.falseable(GeneralUtils.isNotEmpty(table.selectColumns()), "the select columns of table with 'findAllByWhere' method cannot be empty!", message -> new MybatisTableErrorException("findByName", "selectColumns", message));
+            OptionalUtils.ofFalse(GeneralUtils.isNotEmpty(table.selectColumns()), "the select columns of table with 'findAllByWhere' method cannot be empty!", message -> new MybatisTableErrorException("findByName", "selectColumns", message));
             return "SELECT " + table.selectColumnList()
                     + " FROM " + table.tablename(tablename)
                     + " WHERE " + Optional.ofNullable(table.fieldColumn("name"))
                     .map(MybatisColumn::columnEqualsProperty).orElse("name = #{name}")
-                    + Optional.ofNullable(table.getLogicColumn()).map(logic -> "AND " + logic.columnEqualsSign()).orElse("");
+                    + Optional.ofNullable(table.getLogicColumn()).map(logic -> "AND " + logic.columnEqualsLogic()).orElse("");
         });
 
     }
@@ -102,15 +102,15 @@ public class MybatisInfoProvider {
      * @see io.github.nichetoolkit.rest.RestException
      */
     public static <I> String findDynamicByNameAndNotId(ProviderContext providerContext, @Param("tablename") String tablename, @Param("name") String name, @Param("id") I id, @Param("logicValue") String logicValue) throws RestException {
-        OptionalUtils.falseable(GeneralUtils.isNotEmpty(id) && GeneralUtils.isNotEmpty(name), "the id and name params of 'findByNameAndNotId' method cannot be empty!", message -> new MybatisParamErrorException("findByNameAndNotId", "id and name", message));
+        OptionalUtils.ofFalse(GeneralUtils.isNotEmpty(id) && GeneralUtils.isNotEmpty(name), "the id and name params of 'findByNameAndNotId' method cannot be empty!", message -> new MybatisParamErrorException("findByNameAndNotId", "id and name", message));
         return MybatisSqlScript.caching(providerContext, table -> {
-            OptionalUtils.falseable(GeneralUtils.isNotEmpty(table.selectColumns()), "the select columns of table with 'findByNameAndNotId' method cannot be empty!", message -> new MybatisTableErrorException("findByNameAndNotId", "selectColumns", message));
+            OptionalUtils.ofFalse(GeneralUtils.isNotEmpty(table.selectColumns()), "the select columns of table with 'findByNameAndNotId' method cannot be empty!", message -> new MybatisTableErrorException("findByNameAndNotId", "selectColumns", message));
             return "SELECT " + table.selectColumnList()
                     + " FROM " + table.tablename(tablename)
                     + " WHERE " + Optional.ofNullable(table.fieldColumn("name"))
                     .map(MybatisColumn::columnEqualsProperty).orElse("name = #{name}")
 //                    + " AND " + table.getIdentityColumn().columnNotEqualsProperty()
-                    + Optional.ofNullable(table.getLogicColumn()).map(logic -> "AND " + logic.columnEqualsSign()).orElse("");
+                    + Optional.ofNullable(table.getLogicColumn()).map(logic -> "AND " + logic.columnEqualsLogic()).orElse("");
         });
     }
 
@@ -149,16 +149,16 @@ public class MybatisInfoProvider {
      * @see io.github.nichetoolkit.rest.RestException
      */
     public static <E> String findDynamicByEntity(ProviderContext providerContext, @Param("tablename") String tablename, @Param("entity") E entity, @Param("logicValue") String logicValue) throws RestException {
-        OptionalUtils.falseable(GeneralUtils.isNotEmpty(entity), "the entity param of 'findByEntity' method cannot be empty!", message -> new MybatisParamErrorException("findByEntity", "entity", message));
+        OptionalUtils.ofFalse(GeneralUtils.isNotEmpty(entity), "the entity param of 'findByEntity' method cannot be empty!", message -> new MybatisParamErrorException("findByEntity", "entity", message));
         return MybatisSqlScript.caching(providerContext, table -> {
-            OptionalUtils.falseable(GeneralUtils.isNotEmpty(table.uniqueColumns()), "the unique columns of table with 'findByEntity' method cannot be empty!", message -> new MybatisTableErrorException("findByEntity", "uniqueColumns", message));
-            OptionalUtils.falseable(GeneralUtils.isNotEmpty(table.selectColumns()), "the select columns of table with 'findByEntity' method cannot be empty!", message -> new MybatisTableErrorException("findByEntity", "selectColumns", message));
+            OptionalUtils.ofFalse(GeneralUtils.isNotEmpty(table.uniqueColumns()), "the unique columns of table with 'findByEntity' method cannot be empty!", message -> new MybatisTableErrorException("findByEntity", "uniqueColumns", message));
+            OptionalUtils.ofFalse(GeneralUtils.isNotEmpty(table.selectColumns()), "the select columns of table with 'findByEntity' method cannot be empty!", message -> new MybatisTableErrorException("findByEntity", "selectColumns", message));
             return "SELECT " + table.selectColumnList()
                   + " FROM " + table.tablename(tablename)
                   + " WHERE (" + table.uniqueColumns().stream()
                   .map(column -> column.columnEqualsProperty("entity."))
                   .collect(Collectors.joining(" OR ")) + ") "
-                  + Optional.ofNullable(table.getLogicColumn()).map(logic -> "AND " + logic.columnEqualsSign()).orElse("");
+                  + Optional.ofNullable(table.getLogicColumn()).map(logic -> "AND " + logic.columnEqualsLogic()).orElse("");
         });
 
     }
@@ -201,17 +201,17 @@ public class MybatisInfoProvider {
      * @see io.github.nichetoolkit.rest.RestException
      */
     public static <I, E> String findDynamicByEntityAndNotId(ProviderContext providerContext, @Param("tablename") String tablename, @Param("entity") E entity, @Param("id") I id, @Param("logicValue") String logicValue) throws RestException {
-        OptionalUtils.falseable(GeneralUtils.isNotEmpty(id) && GeneralUtils.isNotEmpty(entity), "the id and entity params of 'findByEntityAndNotId' method cannot be empty!", message -> new MybatisParamErrorException("findByEntityAndNotId", "id and entity", message));
+        OptionalUtils.ofFalse(GeneralUtils.isNotEmpty(id) && GeneralUtils.isNotEmpty(entity), "the id and entity params of 'findByEntityAndNotId' method cannot be empty!", message -> new MybatisParamErrorException("findByEntityAndNotId", "id and entity", message));
         return MybatisSqlScript.caching(providerContext, table -> {
-            OptionalUtils.falseable(GeneralUtils.isNotEmpty(table.uniqueColumns()), "the unique columns of table with 'findByEntityAndNotId' method cannot be empty!", message -> new MybatisTableErrorException("findByEntityAndNotId", "uniqueColumns", message));
-            OptionalUtils.falseable(GeneralUtils.isNotEmpty(table.selectColumns()), "the select columns of table with 'findByEntityAndNotId' method cannot be empty!", message -> new MybatisTableErrorException("findByEntityAndNotId", "selectColumns", message));
+            OptionalUtils.ofFalse(GeneralUtils.isNotEmpty(table.uniqueColumns()), "the unique columns of table with 'findByEntityAndNotId' method cannot be empty!", message -> new MybatisTableErrorException("findByEntityAndNotId", "uniqueColumns", message));
+            OptionalUtils.ofFalse(GeneralUtils.isNotEmpty(table.selectColumns()), "the select columns of table with 'findByEntityAndNotId' method cannot be empty!", message -> new MybatisTableErrorException("findByEntityAndNotId", "selectColumns", message));
             return "SELECT " + table.selectColumnList()
                    + " FROM " + table.tablename(tablename)
                    + " WHERE (" + table.uniqueColumns().stream()
                    .map(column -> column.columnEqualsProperty("entity."))
                    .collect(Collectors.joining(" OR ")) + ") "
 //                   + " AND " + table.getIdentityColumn().columnNotEqualsProperty()
-                   + Optional.ofNullable(table.getLogicColumn()).map(logic -> "AND " + logic.columnEqualsSign()).orElse("");
+                   + Optional.ofNullable(table.getLogicColumn()).map(logic -> "AND " + logic.columnEqualsLogic()).orElse("");
         });
     }
 

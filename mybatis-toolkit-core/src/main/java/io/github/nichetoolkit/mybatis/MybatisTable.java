@@ -1,7 +1,7 @@
 package io.github.nichetoolkit.mybatis;
 
 import io.github.nichetoolkit.mybatis.error.MybatisIdentityLackError;
-import io.github.nichetoolkit.mybatis.resolver.MybatisGenericTypeResolver;
+import io.github.nichetoolkit.mybatis.resolver.MybatisGenericTypes;
 import io.github.nichetoolkit.rest.error.lack.ConfigureLackError;
 import io.github.nichetoolkit.rest.util.GeneralUtils;
 import io.github.nichetoolkit.mybatis.enums.SortType;
@@ -641,7 +641,7 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
                 return true;
             }
             /* 可能存在泛型的情况，如 List<T>, Optional<T>, 还有 MyBatis 包含的一些注解 */
-            Class<?> returnType = MybatisGenericTypeResolver.resolveMapperReturnType(
+            Class<?> returnType = MybatisGenericTypes.resolveMapperReturnType(
                     providerContext.getMapperMethod(), providerContext.getMapperType());
             return resultType == returnType;
         }

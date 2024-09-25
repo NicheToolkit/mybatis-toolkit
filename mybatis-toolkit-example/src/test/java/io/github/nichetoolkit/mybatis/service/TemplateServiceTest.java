@@ -14,26 +14,24 @@ import java.util.Arrays;
 import java.util.List;
 
 class TemplateServiceTest extends MybatisToolkitTestWebApplicationTests {
-    /**
-     * <code>simpleService</code>
-     * {@link io.github.nichetoolkit.mybatis.service.SimpleService} <p>the <code>simpleService</code> field.</p>
-     * @see org.springframework.beans.factory.annotation.Autowired
-     */
     @Autowired
     private TemplateService templateService;
 
-    /**
-     * <code>queryById</code>
-     * <p>the by id method.</p>
-     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>the rest exception is <code>RestException</code> type.</p>
-     * @see org.junit.jupiter.api.Test
-     * @see io.github.nichetoolkit.rest.RestException
-     */
+
     @Test
     public void queryById() throws RestException {
-        TemplateIdentity identity1 = new TemplateIdentity("1",null);
-        TemplateIdentity identity2 = new TemplateIdentity(null,"3");
+        TemplateIdentity identity = new TemplateIdentity("1", null);
+        TemplateModel templateModel = templateService.queryById(identity);
+        System.out.println(JsonUtils.parseJson(templateModel));
+    }
+
+    @Test
+    public void queryAll() throws RestException {
+        TemplateIdentity identity1 = new TemplateIdentity("1", null);
+        TemplateIdentity identity2 = new TemplateIdentity(null, "3");
         List<TemplateModel> templateModels = templateService.queryAll(Arrays.asList(identity1, identity2));
         System.out.println(JsonUtils.parseJson(templateModels));
     }
+
+
 }

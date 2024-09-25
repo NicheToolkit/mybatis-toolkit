@@ -3,6 +3,7 @@ package io.github.nichetoolkit.mybatis.mapper;
 import io.github.nichetoolkit.mybatis.simple.TemplateEntity;
 import io.github.nichetoolkit.mybatis.simple.TemplateIdentity;
 import io.github.nichetoolkit.mybatis.stereotype.RestMapper;
+import org.apache.ibatis.annotations.Mapper;
 
 /**
  * <code>TemplateMapper</code>
@@ -13,6 +14,6 @@ import io.github.nichetoolkit.mybatis.stereotype.RestMapper;
  * @see io.github.nichetoolkit.mybatis.stereotype.RestMapper
  * @since Jdk1.8
  */
-@RestMapper
+@Mapper
 public interface TemplateMapper extends MybatisInfoMapper<TemplateEntity, TemplateIdentity>, MybatisRemoveMapper<TemplateIdentity> {
 }

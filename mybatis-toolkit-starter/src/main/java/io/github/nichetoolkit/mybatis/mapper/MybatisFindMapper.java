@@ -35,12 +35,12 @@ public interface MybatisFindMapper<E extends IdEntity<I>, I> extends MybatisEnti
 
     @Override
     @Lang(MybatisCaching.class)
-    @SelectProvider(type = MybatisFindProvider.class, method = "findByAll")
+    @SelectProvider(type = MybatisFindProvider.class, method = "findAll")
     List<E> findAll(@Param("idList") Collection<I> idList);
 
     @Override
     @Lang(MybatisCaching.class)
-    @SelectProvider(type = MybatisFindProvider.class, method = "findDynamicByAll")
+    @SelectProvider(type = MybatisFindProvider.class, method = "findDynamicAll")
     List<E> findDynamicAll(@Param("tablename") String tablename, @Param("idList") Collection<I> idList);
 
     @Override

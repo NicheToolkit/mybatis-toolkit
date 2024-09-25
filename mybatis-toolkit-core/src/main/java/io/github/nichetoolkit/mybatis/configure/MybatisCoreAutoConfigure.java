@@ -17,7 +17,6 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @ComponentScan(basePackages = {"io.github.nichetoolkit.mybatis"})
 public class MybatisCoreAutoConfigure {
-
     /**
      * <code>MybatisCoreAutoConfigure</code>
      * Instantiates a new mybatis core auto configure.
