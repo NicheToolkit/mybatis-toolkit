@@ -16,6 +16,7 @@ public class MybatisField {
     protected Class<?> entity;
     protected Class<?> identity;
     protected Field field;
+    protected boolean ignored = false;
 
     public MybatisField() {
     }

@@ -5,9 +5,8 @@ import org.springframework.stereotype.Indexed;
 import java.lang.annotation.*;
 
 @Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.TYPE)
+@Target({ElementType.TYPE})
 @Documented
 @Indexed
-public @interface RestAlertKeys {
-    String[] value() default {};
+public @interface RestAlertness {
 }

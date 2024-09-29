@@ -1,5 +1,6 @@
 package io.github.nichetoolkit.mybatis.builder;
 
+import io.github.nichetoolkit.mybatis.consts.SQLConstants;
 import io.github.nichetoolkit.rest.RestKey;
 import io.github.nichetoolkit.rest.util.DateUtils;
 import io.github.nichetoolkit.rest.util.GeneralUtils;
@@ -13,8 +14,6 @@ import java.util.Date;
 public final class SqlBuilder implements Serializable, CharSequence {
 
     private static final long serialVersionUID = 4383685877147921098L;
-
-    public static final String EMPTY = "";
 
     private final StringBuilder sqlBuilder;
 
@@ -264,18 +263,18 @@ public final class SqlBuilder implements Serializable, CharSequence {
     }
 
 
-    public SqlBuilder nu(String target, Boolean andOfOr) {
+    public SqlBuilder isn(String target, Boolean andOfOr) {
         if (GeneralUtils.isNotEmpty(target)) {
             this.andOfOr(andOfOr);
-            this.append(target).append(" IS NULL ");
+            this.append(target).isn();
         }
         return this;
     }
 
-    public SqlBuilder nnu(String target, Boolean andOfOr) {
+    public SqlBuilder inn(String target, Boolean andOfOr) {
         if (GeneralUtils.isNotEmpty(target)) {
             this.andOfOr(andOfOr);
-            this.append(target).append(" IS NOT NULL ");
+            this.append(target).inn();
         }
         return this;
     }
@@ -283,11 +282,11 @@ public final class SqlBuilder implements Serializable, CharSequence {
     public SqlBuilder eq(String target, Object value, Boolean andOfOr) {
         if (value instanceof Number) {
             this.andOfOr(andOfOr);
-            this.append(target).append(" = ");
+            this.append(target).eq();
             this.value(value);
-        } else if (GeneralUtils.isValid(value)) {
+        } else if (GeneralUtils.isUsable(value)) {
             this.andOfOr(andOfOr);
-            this.append(target).append(" = ");
+            this.append(target).eq();
             this.value(value);
         }
         return this;
@@ -296,30 +295,110 @@ public final class SqlBuilder implements Serializable, CharSequence {
     public SqlBuilder neq(String target, Object value, Boolean andOfOr) {
         if (value instanceof Number) {
             this.andOfOr(andOfOr);
-            this.append(target).append(" != ");
+            this.append(target).neq();
             this.value(value);
-        } else if (GeneralUtils.isValid(value)) {
+        } else if (GeneralUtils.isUsable(value)) {
             this.andOfOr(andOfOr);
-            this.append(target).append(" != ");
+            this.append(target).neq();
             this.value(value);
-        }
-        return this;
-    }
-
-    public SqlBuilder lk(Collection<String> targets, String value, Boolean andOfOr) {
-        if (GeneralUtils.isNotEmpty(value)) {
-            this.andOfOr(andOfOr);
-            targets.forEach(target -> this.append(target).append(" LIKE CONCAT('%','").append(value).append("','%')").append(" OR "));
-            this.delete(this.length() - 4, this.length());
-            this.append(" )");
         }
         return this;
     }
 
     public SqlBuilder lk(String target, String value, Boolean andOfOr) {
+        return lk(target, value, null, andOfOr);
+    }
+
+    public SqlBuilder lkl(String target, String value, Boolean andOfOr) {
+        return lk(target, value, true, andOfOr);
+    }
+
+    public SqlBuilder lkg(String target, String value, Boolean andOfOr) {
+        return lk(target, value, false, andOfOr);
+    }
+
+    public SqlBuilder lk(String target, String value) {
+        return lk(target, value, null, null);
+    }
+
+    public SqlBuilder lkl(String target, String value) {
+        return lk(target, value, true, null);
+    }
+
+    public SqlBuilder lkg(String target, String value) {
+        return lk(target, value, false, null);
+    }
+
+    public SqlBuilder lk(Collection<String> targets, String value, Boolean andOfOr) {
+        return lk(targets, value, null, andOfOr);
+    }
+
+    public SqlBuilder lkl(Collection<String> targets, String value, Boolean andOfOr) {
+        return lk(targets, value, true, andOfOr);
+    }
+
+    public SqlBuilder lkg(Collection<String> targets, String value, Boolean andOfOr) {
+        return lk(targets, value, false, andOfOr);
+    }
+
+    public SqlBuilder lk(Collection<String> targets, String value) {
+        return lk(targets, value, null, null);
+    }
+
+    public SqlBuilder lkl(Collection<String> targets, String value) {
+        return lk(targets, value, true, null);
+    }
+
+    public SqlBuilder lkg(Collection<String> targets, String value) {
+        return lk(targets, value, false, null);
+    }
+
+    @SuppressWarnings("Duplicates")
+    public SqlBuilder lk(Collection<String> targets, String value, Boolean ltOfGt, Boolean andOfOr) {
         if (GeneralUtils.isNotEmpty(value)) {
             this.andOfOr(andOfOr);
-            this.append(target).append(" LIKE CONCAT('%','").append(value).append("','%')");
+            targets.forEach(target -> {
+                this.append(target).like();
+                if (GeneralUtils.isNotEmpty(ltOfGt)) {
+                    this.sQuote();
+                    if (ltOfGt) {
+                        this.percent();
+                    }
+                    this.append(value);
+                    if (!ltOfGt) {
+                        this.percent();
+                    }
+                    this.sQuote();
+                } else {
+                    this.sQuote().percent().append(value).percent().sQuote();
+                }
+                this.or();
+            });
+            this.delete(this.length() - 4, this.length());
+            this.braceGt();
+        }
+        return this;
+    }
+
+    @SuppressWarnings("Duplicates")
+    public SqlBuilder lk(String target, String value, Boolean ltOfGt, Boolean andOfOr) {
+        if (GeneralUtils.isNotEmpty(value)) {
+            this.andOfOr(andOfOr);
+            this.append(target).like();
+            if (GeneralUtils.isNotEmpty(ltOfGt)) {
+                this.sQuote();
+                if (ltOfGt) {
+                    this.percent();
+                }
+                this.append(value);
+                if (!ltOfGt) {
+                    this.percent();
+                }
+                this.sQuote();
+            } else {
+                this.sQuote().percent().append(value).percent().sQuote();
+            }
+            this.blank();
         }
         return this;
     }
@@ -339,10 +418,10 @@ public final class SqlBuilder implements Serializable, CharSequence {
                 this.neq(target, value, andOfOr);
             } else {
                 this.andOfOr(andOfOr);
-                this.append(target).append(" NOT IN (");
+                this.append(target).nin().braceLt();
                 values.forEach(value -> this.value(value, true));
                 this.deleteCharAt(this.length() - 2);
-                this.append(")");
+                this.braceGt();
             }
         }
         return this;
@@ -355,17 +434,17 @@ public final class SqlBuilder implements Serializable, CharSequence {
                 this.eq(target, value, andOfOr);
             } else {
                 this.andOfOr(andOfOr);
-                this.append(target).append(" IN (");
+                this.append(target).in().braceLt();
                 values.forEach(value -> this.value(value, true));
                 this.deleteCharAt(this.length() - 2);
-                this.append(")");
+                this.braceGt();
             }
         }
         return this;
     }
 
     public SqlBuilder rb(String target, Object beginValue, Object endValue) {
-        if (GeneralUtils.isValid(beginValue) && GeneralUtils.isValid(endValue)) {
+        if (GeneralUtils.isUsable(beginValue) && GeneralUtils.isUsable(endValue)) {
             this.gt(target, endValue, true);
             this.lt(target, beginValue, true);
         }
@@ -373,7 +452,7 @@ public final class SqlBuilder implements Serializable, CharSequence {
     }
 
     public SqlBuilder sb(String minTarget, String maxTarget, Object value) {
-        if (GeneralUtils.isValid(value)) {
+        if (GeneralUtils.isUsable(value)) {
             this.lt(minTarget, value, true);
             this.gt(maxTarget, value, true);
         }
@@ -381,7 +460,7 @@ public final class SqlBuilder implements Serializable, CharSequence {
     }
 
     public SqlBuilder reb(String target, Object beginValue, Object endValue) {
-        if (GeneralUtils.isValid(beginValue) && GeneralUtils.isValid(endValue)) {
+        if (GeneralUtils.isUsable(beginValue) && GeneralUtils.isUsable(endValue)) {
             this.gte(target, endValue, true);
             this.lte(target, beginValue, true);
         }
@@ -389,7 +468,7 @@ public final class SqlBuilder implements Serializable, CharSequence {
     }
 
     public SqlBuilder seb(String minTarget, String maxTarget, Object value) {
-        if (GeneralUtils.isValid(value)) {
+        if (GeneralUtils.isUsable(value)) {
             this.lte(minTarget, value, true);
             this.gte(maxTarget, value, true);
         }
@@ -399,80 +478,80 @@ public final class SqlBuilder implements Serializable, CharSequence {
     @SuppressWarnings("Duplicates")
     public SqlBuilder reo(String target, Object beginValue, Object endValue, Boolean andOfOr) {
         this.andOfOr(andOfOr);
-        this.append("( ");
+        this.braceLt();
         this.gte(target, endValue, null);
         this.lte(target, beginValue, false);
-        this.append(" )");
+        this.braceGt();
         return this;
     }
 
     @SuppressWarnings("Duplicates")
     public SqlBuilder seo(String minTarget, String maxTarget, Object value, Boolean andOfOr) {
         this.andOfOr(andOfOr);
-        this.append("( ");
+        this.braceLt();
         this.gte(maxTarget, value, null);
         this.lte(minTarget, value, false);
-        this.append(" )");
+        this.braceGt();
         return this;
     }
 
     @SuppressWarnings("Duplicates")
     public SqlBuilder ro(String target, Object beginValue, Object endValue, Boolean andOfOr) {
         this.andOfOr(andOfOr);
-        this.append("( ");
+        this.braceLt();
         this.gt(target, endValue, null);
         this.lt(target, beginValue, false);
-        this.append(" )");
+        this.braceGt();
         return this;
     }
 
     @SuppressWarnings("Duplicates")
     public SqlBuilder so(String minTarget, String maxTarget, Object value, Boolean andOfOr) {
         this.andOfOr(andOfOr);
-        this.append("( ");
+        this.braceLt();
         this.gt(maxTarget, value, null);
         this.lt(minTarget, value, false);
-        this.append(" )");
+        this.braceGt();
         return this;
     }
 
     @SuppressWarnings("Duplicates")
     public SqlBuilder ra(String target, Object beginValue, Object endValue, Boolean andOfOr) {
         this.andOfOr(andOfOr);
-        this.append("( ");
+        this.braceLt();
         this.gt(target, beginValue, null);
         this.lt(target, endValue, true);
-        this.append(" )");
+        this.braceGt();
         return this;
     }
 
     @SuppressWarnings("Duplicates")
     public SqlBuilder sa(String minTarget, String maxTarget, Object value, Boolean andOfOr) {
         this.andOfOr(andOfOr);
-        this.append("( ");
+        this.braceLt();
         this.gt(maxTarget, value, null);
         this.lt(minTarget, value, true);
-        this.append(" )");
+        this.braceGt();
         return this;
     }
 
     @SuppressWarnings("Duplicates")
     public SqlBuilder rea(String target, Object beginValue, Object endValue, Boolean andOfOr) {
         this.andOfOr(andOfOr);
-        this.append("( ");
+        this.braceLt();
         this.gte(target, beginValue, null);
         this.lte(target, endValue, true);
-        this.append(" )");
+        this.braceGt();
         return this;
     }
 
     @SuppressWarnings("Duplicates")
     public SqlBuilder sea(String minTarget, String maxTarget, Object value, Boolean andOfOr) {
         this.andOfOr(andOfOr);
-        this.append("( ");
+        this.braceLt();
         this.gte(maxTarget, value, null);
         this.lte(minTarget, value, true);
-        this.append(" )");
+        this.braceGt();
         return this;
     }
 
@@ -525,18 +604,18 @@ public final class SqlBuilder implements Serializable, CharSequence {
     }
 
     public SqlBuilder gt(String target, Object value, Boolean andOfOr) {
-        if (GeneralUtils.isValid(value)) {
+        if (GeneralUtils.isUsable(value)) {
             this.andOfOr(andOfOr);
-            this.append(target).append(" > ");
+            this.append(target).gt();
             this.value(value);
         }
         return this;
     }
 
     public SqlBuilder lt(String target, Object value, Boolean andOfOr) {
-        if (GeneralUtils.isValid(value)) {
+        if (GeneralUtils.isUsable(value)) {
             this.andOfOr(andOfOr);
-            this.append(target).append(" < ");
+            this.append(target).lt();
             this.value(value);
         }
         return this;
@@ -544,18 +623,18 @@ public final class SqlBuilder implements Serializable, CharSequence {
 
 
     public SqlBuilder gte(String target, Object value, Boolean andOfOr) {
-        if (GeneralUtils.isValid(value)) {
+        if (GeneralUtils.isUsable(value)) {
             this.andOfOr(andOfOr);
-            this.append(target).append(" >= ");
+            this.append(target).gte();
             this.value(value);
         }
         return this;
     }
 
     public SqlBuilder lte(String target, Object value, Boolean andOfOr) {
-        if (GeneralUtils.isValid(value)) {
+        if (GeneralUtils.isUsable(value)) {
             this.andOfOr(andOfOr);
-            this.append(target).append(" <= ");
+            this.append(target).lte();
             this.value(value);
         }
         return this;
@@ -568,33 +647,33 @@ public final class SqlBuilder implements Serializable, CharSequence {
 
     public SqlBuilder value(Object value, Boolean commaOfNone) {
         if (value instanceof String) {
-            this.append("'").append(value).append("'");
+            this.sQuote().append(value).sQuote();
         } else if (value instanceof Date) {
             // the value is like '2020-09-11 00:00:00'
-            this.append("'").append(DateUtils.formatTime((Date) value)).append("'");
+            this.sQuote().append(DateUtils.formatTime((Date) value)).sQuote();
         } else if (value instanceof RestKey) {
             this.append(((RestKey<?>) value).getKey());
         } else {
             this.append(value);
         }
         if (commaOfNone) {
-            this.append(", ");
+            this.comma();
         } else {
-            this.append(" ");
+            this.blank();
         }
         return this;
     }
 
     public SqlBuilder value(Object value, String symbol) {
         if (value instanceof String) {
-            this.append("'").append(value).append("'").append(symbol).append(" ");
+            this.sQuote().append(value).sQuote().append(symbol).blank();
         } else if (value instanceof Date) {
             // the value is like '2020-09-11 00:00:00'
-            this.append("'").append(DateUtils.formatTime((Date) value)).append("'").append(symbol).append(" ");
+            this.sQuote().append(DateUtils.formatTime((Date) value)).sQuote().append(symbol).blank();
         } else if (value instanceof RestKey) {
-            this.append("'").append(((RestKey<?>) value).getKey()).append("'").append(symbol).append(" ");
+            this.sQuote().append(((RestKey<?>) value).getKey()).sQuote().append(symbol).blank();
         } else {
-            this.append(value).append(symbol).append(" ");
+            this.append(value).append(symbol).blank();
         }
         return this;
     }
@@ -611,47 +690,135 @@ public final class SqlBuilder implements Serializable, CharSequence {
     }
 
     public SqlBuilder and() {
-        this.append(" AND ");
+        this.keyword(SQLConstants.AND, false);
         return this;
     }
 
     public SqlBuilder or() {
-        this.append(" OR ");
+        this.keyword(SQLConstants.OR, false);
         return this;
     }
 
-    public SqlBuilder bracketStart() {
-        this.append(" (");
+    public SqlBuilder braceLt() {
+        this.keyword(SQLConstants.BRACE_LT, false);
         return this;
     }
 
-    public SqlBuilder bracketEnd() {
-        this.append(") ");
+    public SqlBuilder braceGt() {
+        this.append(SQLConstants.BRACE_GT).blank();
         return this;
     }
 
     public SqlBuilder comma() {
-        this.append(", ");
+        this.append(SQLConstants.COMMA).blank();
         return this;
     }
 
     public SqlBuilder period() {
-        this.append(".");
+        this.append(SQLConstants.PERIOD);
         return this;
     }
 
     public SqlBuilder blank() {
-        this.append(" ");
+        this.append(SQLConstants.BLANK);
         return this;
     }
 
-    public SqlBuilder singleQuote() {
-        this.append("'");
+    public SqlBuilder sQuote() {
+        this.append(SQLConstants.SINGLE_QUOTE);
         return this;
     }
 
-    public SqlBuilder doubleQuote() {
-        this.append("\"");
+    public SqlBuilder dQuote() {
+        this.append(SQLConstants.DOUBLE_QUOTE);
+        return this;
+    }
+
+    public SqlBuilder percent() {
+        this.append(SQLConstants.PERCENT);
+        return this;
+    }
+
+    public SqlBuilder linefeed() {
+        this.append(SQLConstants.LINEFEED);
+        return this;
+    }
+
+    public SqlBuilder eq() {
+        return this.blank().append(SQLConstants.CONTRAST_EQ).blank();
+    }
+
+    public SqlBuilder gt() {
+        return this.blank().append(SQLConstants.CONTRAST_GT).blank();
+    }
+
+    public SqlBuilder lt() {
+        return this.blank().append(SQLConstants.CONTRAST_LT).blank();
+    }
+
+    public SqlBuilder gte() {
+        return this.blank().append(SQLConstants.CONTRAST_GTE).blank();
+    }
+
+    public SqlBuilder lte() {
+        return this.blank().append(SQLConstants.CONTRAST_LTE).blank();
+    }
+
+    public SqlBuilder neq() {
+        return this.blank().append(SQLConstants.CONTRAST_NEQ).blank();
+    }
+
+    public SqlBuilder isn() {
+        return this.blank().append(SQLConstants.IS_NULL).blank();
+    }
+
+    public SqlBuilder inn() {
+        return this.blank().append(SQLConstants.IS_NOT_NULL).blank();
+    }
+
+    public SqlBuilder insert() {
+        return this.keyword(SQLConstants.INSERT, true);
+    }
+
+    public SqlBuilder update() {
+        return this.keyword(SQLConstants.UPDATE, true);
+    }
+
+    public SqlBuilder select() {
+        return this.keyword(SQLConstants.SELECT, true);
+    }
+
+    public SqlBuilder delete() {
+        return this.keyword(SQLConstants.DELETE, true);
+    }
+
+    public SqlBuilder where() {
+        return this.keyword(SQLConstants.WHERE, true);
+    }
+
+    public SqlBuilder set() {
+        return this.keyword(SQLConstants.SET, true);
+    }
+
+    public SqlBuilder like() {
+        return this.keyword(SQLConstants.LIKE, false);
+    }
+
+    public SqlBuilder in() {
+        return this.keyword(SQLConstants.IN, false);
+    }
+
+    public SqlBuilder nin() {
+        return this.keyword(SQLConstants.NOT_IN, false);
+    }
+
+    public SqlBuilder keyword(String keyword, boolean linefeed) {
+        if (linefeed) {
+            this.linefeed();
+        } else {
+            this.blank();
+        }
+        this.append(keyword).blank();
         return this;
     }
 

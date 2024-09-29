@@ -12,17 +12,6 @@ import org.apache.ibatis.annotations.Param;
 
 import java.util.Collection;
 
-/**
- * <code>MybatisSuperMapper</code>
- * <p>The type mybatis super mapper interface.</p>
- * @param <E> {@link IdEntity} <p>the generic parameter is <code>IdEntity</code> type.</p>
- * @param <I> {@link Object} <p>the parameter can be of any type.</p>
- * @author Cyan (snow22314@outlook.com)
- * @see IdEntity
- * @see MybatisEntityMapper
- * @see SuperMapper
- * @since Jdk1.8
- */
 public interface MybatisSaveMapper<E extends IdEntity<I>, I> extends MybatisEntityMapper<E>, SaveMapper<E,I> {
 
     @Override

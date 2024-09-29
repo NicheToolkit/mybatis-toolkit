@@ -5,7 +5,6 @@ import io.github.nichetoolkit.mybatis.configure.MybatisTableProperties;
 import io.github.nichetoolkit.mybatis.stereotype.column.RestIdentityKey;
 import io.github.nichetoolkit.rest.util.ContextUtils;
 import io.github.nichetoolkit.rest.util.GeneralUtils;
-import io.github.nichetoolkit.mybatis.stereotype.table.RestProperty;
 import io.github.nichetoolkit.mybatis.stereotype.column.*;
 import org.apache.ibatis.type.JdbcType;
 
@@ -13,69 +12,38 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-/**
- * <code>DefaultColumnFactory</code>
- * <p>The type default column factory class.</p>
- * @author Cyan (snow22314@outlook.com)
- * @see io.github.nichetoolkit.mybatis.MybatisColumnFactory
- * @since Jdk1.8
- */
 public class DefaultColumnFactory implements MybatisColumnFactory {
 
-    /**
-     * <code>tableProperties</code>
-     * {@link io.github.nichetoolkit.mybatis.configure.MybatisTableProperties} <p>the <code>tableProperties</code> field.</p>
-     * @see io.github.nichetoolkit.mybatis.configure.MybatisTableProperties
-     */
     private final MybatisTableProperties tableProperties;
 
-    /**
-     * <code>DefaultColumnFactory</code>
-     * Instantiates a new default column factory.
-     */
     public DefaultColumnFactory() {
         this.tableProperties = ContextUtils.getBean(MybatisTableProperties.class);
     }
 
-    @Override
-    public boolean supports(MybatisTable table, MybatisField field) {
+
+    private boolean excludeSupport(MybatisTable table, MybatisField field) {
+        String fieldName = field.fieldName();
+        List<String> globalExcludes = tableProperties.getExcludes();
+        if (GeneralUtils.isNotEmpty(globalExcludes) && globalExcludes.contains(fieldName)) {
+            /* 当前字段属于 需要排除的字段名称 返回 false */
+            return false;
+        }
         /* 排除RestExclude 注解的字段 以及 RestExcludes 注解的字段 */
         RestExclude restExclude = field.getAnnotation(RestExclude.class);
-        String fieldName = field.fieldName();
-        List<String> excludeIgnoreKeys = table.getExcludeIgnoreKeys();
-        if (GeneralUtils.isNotEmpty(excludeIgnoreKeys)) {
-            /* 当前字段属于 需要排除的字段类型 返回 false */
-            if (excludeIgnoreKeys.contains(fieldName)) {
-                return true;
-            }
-        }
         if (GeneralUtils.isNotEmpty(restExclude)) {
             /* 当前字段被 RestExclude 修饰 且 exclude值为 true 时 返回 false */
-            if (restExclude.exclude()) {
-                return false;
-            }
+            return false;
         }
         List<String> excludeFields = table.getExcludeFields();
-        if (GeneralUtils.isNotEmpty(excludeFields)) {
+        if (GeneralUtils.isNotEmpty(excludeFields) && excludeFields.contains(fieldName)) {
             /* 当前字段属于 需要排除的字段名称 返回 false */
-            if (excludeFields.contains(fieldName)) {
-                return false;
-            }
-        }
-        List<String> excludeGlobals = tableProperties.getExcludes();
-        if (GeneralUtils.isNotEmpty(excludeGlobals)) {
-            /* 当前字段属于 需要排除的字段名称 返回 false */
-            if (excludeGlobals.contains(fieldName)) {
-                return false;
-            }
+            return false;
         }
         Class<?> fieldType = field.fieldType();
         List<Class<?>> excludeFieldTypes = table.getExcludeFieldTypes();
-        if (GeneralUtils.isNotEmpty(excludeFieldTypes)) {
+        if (GeneralUtils.isNotEmpty(excludeFieldTypes) && excludeFieldTypes.contains(fieldType)) {
             /* 当前字段属于 需要排除的字段类型 返回 false */
-            if (excludeFieldTypes.contains(fieldType)) {
-                return false;
-            }
+            return false;
         }
         Class<?> declaringClass = field.declaringClass();
         List<Class<?>> excludeSuperClasses = table.getExcludeSuperClasses();
@@ -86,14 +54,47 @@ public class DefaultColumnFactory implements MybatisColumnFactory {
         return true;
     }
 
+    private void ignoreHandle(MybatisTable table, MybatisField field) {
+        String fieldName = field.fieldName();
+        List<String> globalIgnores = tableProperties.getIgnores();
+        if (GeneralUtils.isNotEmpty(globalIgnores) && globalIgnores.contains(fieldName)) {
+            /* 当前字段属于 需要排除的字段名称 设置ignored*/
+            field.ignored(true);
+        }
+        List<String> ignoreFields = table.getIgnoreFields();
+        if (GeneralUtils.isNotEmpty(ignoreFields) && ignoreFields.contains(fieldName)) {
+            /* 当前字段属于 需要排除的字段名称 设置ignored */
+            field.ignored(true);
+        }
+        Class<?> fieldType = field.fieldType();
+        List<Class<?>> ignoreFieldTypes = table.getIgnoreFieldTypes();
+        if (GeneralUtils.isNotEmpty(ignoreFieldTypes) && ignoreFieldTypes.contains(fieldType)) {
+            /* 当前字段属于 需要排除的字段类型 设置ignored */
+            field.ignored(true);
+        }
+        Class<?> declaringClass = field.declaringClass();
+        List<Class<?>> excludeSuperClasses = table.getExcludeSuperClasses();
+        if (GeneralUtils.isNotEmpty(excludeSuperClasses) && excludeSuperClasses.contains(declaringClass)) {
+            /* 当前字段属于 需要排除的父类字段 设置ignored  */
+            field.ignored(true);
+        }
+    }
+
+    @Override
+    public boolean supports(MybatisTable table, MybatisField field) {
+        ignoreHandle(table, field);
+        return excludeSupport(table, field);
+    }
+
     @Override
     public Optional<List<MybatisColumn>> createColumn(MybatisTable mybatisTable, MybatisField field, Chain chain) {
         /* 默认针对 entity 实体中的所有字段构建 column 数据 */
         MybatisColumn mybatisColumn = MybatisColumn.of(field, tableProperties.getProperties());
+        boolean fieldIgnored = field.ignored();
         RestColname restName = field.getAnnotation(RestColname.class);
         String columnName = Optional.ofNullable(restName).map(RestColname::name).orElse(null);
         String columnComment = Optional.ofNullable(restName).map(RestColname::comment).orElse(null);
-        MybatisStyle mybatisStyle = MybatisStyle.style(mybatisTable.getStyleName());
+        MybatisTableStyle mybatisStyle = MybatisTableStyle.style(mybatisTable.getStyleName());
         if (GeneralUtils.isNotEmpty(restName)) {
             mybatisColumn.setColumn(GeneralUtils.isEmpty(columnName) ? mybatisStyle.columnName(mybatisTable, field) : restName.name());
             mybatisColumn.setComment(columnComment);
@@ -101,85 +102,79 @@ public class DefaultColumnFactory implements MybatisColumnFactory {
             mybatisColumn.setColumn(mybatisStyle.columnName(mybatisTable, field));
         }
         RestOrder restOrder = field.getAnnotation(RestOrder.class);
-        if (GeneralUtils.isNotEmpty(restOrder)) {
-            if (GeneralUtils.isNotEmpty(restOrder.order())) {
-                mybatisColumn.setOrder(restOrder.order());
+        if (GeneralUtils.isNotEmpty(restOrder) && !fieldIgnored) {
+            if (GeneralUtils.isNotEmpty(restOrder.value())) {
+                mybatisColumn.setOrder(restOrder.value());
             }
         }
         RestIdentityKey restIdentityKey = field.getAnnotation(RestIdentityKey.class);
-        if (GeneralUtils.isNotEmpty(restIdentityKey)) {
+        if (GeneralUtils.isNotEmpty(restIdentityKey) && !fieldIgnored) {
             mybatisColumn.setIdentityKey(true);
         }
         RestPrimaryKey restPrimaryKey = field.getAnnotation(RestPrimaryKey.class);
-        if (GeneralUtils.isNotEmpty(restPrimaryKey)) {
-            mybatisColumn.setPrimaryKey(restPrimaryKey.value());
+        if (GeneralUtils.isNotEmpty(restPrimaryKey) && !fieldIgnored) {
+            mybatisColumn.setPrimaryKey(true);
         }
         RestUnionKey restUnionKey = field.getAnnotation(RestUnionKey.class);
-        if (GeneralUtils.isNotEmpty(restUnionKey)) {
-            mybatisColumn.setUnionKey(restUnionKey.value());
-            if (GeneralUtils.isNotEmpty(restUnionKey.index())) {
-                mybatisColumn.setUnionIndex(restUnionKey.index());
-            }
+        if (GeneralUtils.isNotEmpty(restUnionKey) && !fieldIgnored) {
+            mybatisColumn.setUnionKey(true);
         }
         RestUniqueKey restUniqueKey = field.getAnnotation(RestUniqueKey.class);
-        if (GeneralUtils.isNotEmpty(restUniqueKey)) {
-            mybatisColumn.setUnique(true);
+        if (GeneralUtils.isNotEmpty(restUniqueKey) && !fieldIgnored) {
+            mybatisColumn.setUniqueKey(true);
         }
         RestLinkKey restLinkKey = field.getAnnotation(RestLinkKey.class);
-        if (GeneralUtils.isNotEmpty(restLinkKey)) {
-            mybatisColumn.setLinkKey(restLinkKey.value());
+        if (GeneralUtils.isNotEmpty(restLinkKey) && !fieldIgnored) {
+            mybatisColumn.setLinkKey(true);
         }
         RestAlertKey restAlertKey = field.getAnnotation(RestAlertKey.class);
-        if (GeneralUtils.isNotEmpty(restAlertKey)) {
-            mybatisColumn.setAlertKey(restAlertKey.value());
+        if (GeneralUtils.isNotEmpty(restAlertKey) && !fieldIgnored) {
+            mybatisColumn.setAlertKey(true);
         }
+        RestLogicKey restLogicKey = field.getAnnotation(RestLogicKey.class);
+        if (GeneralUtils.isNotEmpty(restLogicKey) && !fieldIgnored) {
+            mybatisColumn.setLogicKey(true);
+        }
+        RestOperateKey restOperate = field.getAnnotation(RestOperateKey.class);
+        if (GeneralUtils.isNotEmpty(restOperate) && !fieldIgnored) {
+            mybatisColumn.setOperateKey(true);
+        }
+
         RestSortType restSortType = field.getAnnotation(RestSortType.class);
-        if (GeneralUtils.isNotEmpty(restSortType)) {
+        if (GeneralUtils.isNotEmpty(restSortType) && !fieldIgnored) {
             mybatisColumn.setSortType(restSortType.type());
             mybatisColumn.setPriority(restSortType.priority());
         }
+        RestSelect restSelect = field.getAnnotation(RestSelect.class);
+        if (GeneralUtils.isNotEmpty(restSelect) && !fieldIgnored) {
+            mybatisColumn.setSelect(restSelect.value());
+        }
         RestInsert restInsert = field.getAnnotation(RestInsert.class);
-        if (GeneralUtils.isNotEmpty(restInsert)) {
-            mybatisColumn.setInsert(restInsert.insert());
+        if (GeneralUtils.isNotEmpty(restInsert) && !fieldIgnored) {
+            mybatisColumn.setInsert(restInsert.value());
         }
         RestUpdate restUpdate = field.getAnnotation(RestUpdate.class);
-        if (GeneralUtils.isNotEmpty(restUpdate)) {
-            mybatisColumn.setUpdate(restUpdate.update());
+        if (GeneralUtils.isNotEmpty(restUpdate) && !fieldIgnored) {
+            mybatisColumn.setUpdate(restUpdate.value());
         }
         RestForceInsert restForceInsert = field.getAnnotation(RestForceInsert.class);
-        if (GeneralUtils.isNotEmpty(restForceInsert)) {
+        if (GeneralUtils.isNotEmpty(restForceInsert) && !fieldIgnored) {
             mybatisColumn.setForceInsert(true);
             mybatisColumn.setForceInsertValue(restForceInsert.value());
         }
         RestForceUpdate restForceUpdate = field.getAnnotation(RestForceUpdate.class);
-        if (GeneralUtils.isNotEmpty(restForceUpdate)) {
+        if (GeneralUtils.isNotEmpty(restForceUpdate) && !fieldIgnored) {
             mybatisColumn.setForceUpdate(true);
             mybatisColumn.setForceUpdateValue(restForceUpdate.value());
         }
-        RestLogicKey restLogicKey = field.getAnnotation(RestLogicKey.class);
-        if (GeneralUtils.isNotEmpty(restLogicKey)) {
-            mybatisColumn.setLogicKey(true);
-        }
-        RestOperateKey restOperate = field.getAnnotation(RestOperateKey.class);
-        if (GeneralUtils.isNotEmpty(restOperate)) {
-            mybatisColumn.setOperateKey(true);
-        }
-        RestSelect restSelect = field.getAnnotation(RestSelect.class);
-        if (GeneralUtils.isNotEmpty(restSelect)) {
-            mybatisColumn.setSelect(restSelect.select());
-        }
+
         RestJdbcType restJdbcType = field.getAnnotation(RestJdbcType.class);
-        if (GeneralUtils.isNotEmpty(restJdbcType)) {
+        if (GeneralUtils.isNotEmpty(restJdbcType) && !fieldIgnored) {
             mybatisColumn.setJdbcType(restJdbcType.jdbcType());
             mybatisColumn.setTypeHandler(restJdbcType.typeHandler());
             mybatisColumn.setNumericScale(restJdbcType.numericScale());
         } else {
             mybatisColumn.setJdbcType(JdbcType.UNDEFINED);
-        }
-        /* restProperty 注解处理 */
-        RestProperty restProperty = field.getAnnotation(RestProperty.class);
-        if (GeneralUtils.isNotEmpty(restProperty) && GeneralUtils.isNotEmpty(restProperty.name())) {
-            mybatisColumn.setProperty(restProperty);
         }
         return Optional.of(Collections.singletonList(mybatisColumn));
     }

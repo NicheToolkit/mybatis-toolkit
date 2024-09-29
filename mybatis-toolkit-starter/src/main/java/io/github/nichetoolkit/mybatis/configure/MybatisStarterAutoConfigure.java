@@ -8,17 +8,6 @@ import org.springframework.context.annotation.*;
 import org.springframework.core.type.AnnotationMetadata;
 import org.springframework.lang.NonNull;
 
-/**
- * <code>MybatisStarterAutoConfigure</code>
- * <p>The type mybatis starter auto configure class.</p>
- * @author Cyan (snow22314@outlook.com)
- * @see lombok.extern.slf4j.Slf4j
- * @see org.springframework.boot.autoconfigure.AutoConfiguration
- * @see org.springframework.context.annotation.ComponentScan
- * @see org.springframework.context.annotation.Import
- * @see org.springframework.boot.autoconfigure.ImportAutoConfiguration
- * @since Jdk1.8
- */
 @Slf4j
 @AutoConfiguration
 @ComponentScan(basePackages = {"io.github.nichetoolkit.mybatis"})
@@ -26,21 +15,10 @@ import org.springframework.lang.NonNull;
 @ImportAutoConfiguration({MybatisRecordAutoConfigure.class})
 public class MybatisStarterAutoConfigure {
 
-    /**
-     * <code>MybatisStarterAutoConfigure</code>
-     * Instantiates a new mybatis starter auto configure.
-     */
     public MybatisStarterAutoConfigure() {
         log.debug("the auto configuration for [mybatis-starter] initiated");
     }
 
-    /**
-     * <code>MybatisMapperAutoRegister</code>
-     * <p>The type mybatis mapper auto register class.</p>
-     * @author Cyan (snow22314@outlook.com)
-     * @see org.springframework.context.annotation.ImportBeanDefinitionRegistrar
-     * @since Jdk1.8
-     */
     public static class MybatisMapperAutoRegister implements ImportBeanDefinitionRegistrar {
 
         @Override

@@ -51,6 +51,12 @@
       "description": "the global excludes of table on mybatis configuration."
     },
     {
+      "name": "nichetoolkit.mybatis.table.ignores",
+      "type": "java.lang.String[]",
+      "sourceType": "java.lang.String[]",
+      "description": "the global ignores of table on mybatis configuration."
+    },
+    {
       "name": "nichetoolkit.mybatis.cache.init-size",
       "type": "java.lang.Integer",
       "sourceType": "java.lang.Integer",

@@ -15,17 +15,6 @@ import org.springframework.context.annotation.*;
 import org.springframework.core.type.AnnotationMetadata;
 import org.springframework.lang.NonNull;
 
-/**
- * <code>MybatisRecordAutoConfigure</code>
- * <p>The type mybatis record auto configure class.</p>
- * @author Cyan (snow22314@outlook.com)
- * @see lombok.extern.slf4j.Slf4j
- * @see org.springframework.boot.autoconfigure.AutoConfiguration
- * @see org.springframework.context.annotation.ComponentScan
- * @see org.springframework.boot.context.properties.EnableConfigurationProperties
- * @see org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
- * @since Jdk1.8
- */
 @Slf4j
 @AutoConfiguration
 @ComponentScan(basePackages = {"io.github.nichetoolkit.mybatis"})
@@ -33,54 +22,20 @@ import org.springframework.lang.NonNull;
 @ConditionalOnProperty(prefix = "nichetoolkit.mybatis.record", name="enabled", havingValue = "true", matchIfMissing = true)
 public class MybatisRecordAutoConfigure {
 
-    /**
-     * <code>MybatisRecordAutoConfigure</code>
-     * Instantiates a new mybatis record auto configure.
-     */
     public MybatisRecordAutoConfigure() {
         log.debug("the auto configuration for [mybatis-record] initiated");
     }
 
-    /**
-     * <code>recordProvider</code>
-     * <p>the provider method.</p>
-     * @param sqlSessionTemplate {@link org.mybatis.spring.SqlSessionTemplate} <p>the sql session template parameter is <code>SqlSessionTemplate</code> type.</p>
-     * @return {@link io.github.nichetoolkit.mybatis.record.MybatisRecordProvider} <p>the provider return object is <code>MybatisRecordProvider</code> type.</p>
-     * @see org.mybatis.spring.SqlSessionTemplate
-     * @see io.github.nichetoolkit.mybatis.record.MybatisRecordProvider
-     * @see org.springframework.context.annotation.Bean
-     * @see org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
-     */
     @Bean
     @ConditionalOnMissingBean(MybatisRecordProvider.class)
     public MybatisRecordProvider<?,?,?> recordProvider(SqlSessionTemplate sqlSessionTemplate) {
         return new MybatisRecordProvider<>(sqlSessionTemplate);
     }
 
-    /**
-     * <code>MybatisRecordAutoRegister</code>
-     * <p>The type mybatis record auto register class.</p>
-     * @author Cyan (snow22314@outlook.com)
-     * @see org.springframework.beans.factory.InitializingBean
-     * @see org.springframework.boot.autoconfigure.AutoConfiguration
-     * @since Jdk1.8
-     */
     @AutoConfiguration
     public static class MybatisRecordAutoRegister implements InitializingBean {
-        /**
-         * <code>recordProvider</code>
-         * {@link io.github.nichetoolkit.mybatis.record.MybatisRecordProvider} <p>the <code>recordProvider</code> field.</p>
-         * @see io.github.nichetoolkit.mybatis.record.MybatisRecordProvider
-         */
         private final MybatisRecordProvider<?,?,?> recordProvider;
 
-        /**
-         * <code>MybatisRecordAutoRegister</code>
-         * Instantiates a new mybatis record auto register.
-         * @param recordProvider {@link io.github.nichetoolkit.mybatis.record.MybatisRecordProvider} <p>the record provider parameter is <code>MybatisRecordProvider</code> type.</p>
-         * @see io.github.nichetoolkit.mybatis.record.MybatisRecordProvider
-         * @see org.springframework.beans.factory.annotation.Autowired
-         */
         @Autowired
         public MybatisRecordAutoRegister(MybatisRecordProvider<?,?,?> recordProvider) {
             this.recordProvider = recordProvider;

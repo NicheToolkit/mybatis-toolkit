@@ -8,19 +8,7 @@ import org.springframework.lang.Nullable;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-/**
- * <code>DefaultCachingTableFactory</code>
- * <p>The type default caching table factory class.</p>
- * @author Cyan (snow22314@outlook.com)
- * @see io.github.nichetoolkit.mybatis.MybatisTableFactory
- * @since Jdk1.8
- */
 public class DefaultCachingTableFactory implements MybatisTableFactory {
-    /**
-     * <code>CLASS_TABLE_MAP</code>
-     * {@link java.util.Map} <p>the <code>CLASS_TABLE_MAP</code> field.</p>
-     * @see java.util.Map
-     */
     private final Map<Class<?>, MybatisTable> CLASS_TABLE_MAP = new ConcurrentHashMap<>();
 
     @Override
@@ -29,11 +17,11 @@ public class DefaultCachingTableFactory implements MybatisTableFactory {
     }
 
     @Override
-    public MybatisTable createTable(@NonNull Class<?> entityType, @Nullable Class<?> identityType, Chain chain) {
+    public MybatisTable createTable(@NonNull Class<?> entityType, @Nullable Class<?> identityType, @Nullable Class<?> linkageType, @Nullable Class<?> alertnessType, Chain chain) {
         if (CLASS_TABLE_MAP.get(entityType) == null) {
             synchronized (entityType) {
                 if (CLASS_TABLE_MAP.get(entityType) == null) {
-                    MybatisTable mybatisTable = chain.createTable(entityType, identityType);
+                    MybatisTable mybatisTable = chain.createTable(entityType, identityType, linkageType, alertnessType);
                     if (mybatisTable != null) {
                         CLASS_TABLE_MAP.put(entityType, mybatisTable);
                     } else {

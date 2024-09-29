@@ -4,8 +4,10 @@ import io.github.nichetoolkit.mybatis.defaults.DefaultColumnFactoryChain;
 import io.github.nichetoolkit.mybatis.defaults.DefaultTableFactoryChain;
 import io.github.nichetoolkit.mybatis.helper.ServiceLoaderHelper;
 import io.github.nichetoolkit.mybatis.stereotype.column.RestIdentityKey;
+import io.github.nichetoolkit.rest.RestException;
 import io.github.nichetoolkit.rest.error.lack.InterfaceLackError;
 import io.github.nichetoolkit.rest.util.GeneralUtils;
+import io.github.nichetoolkit.rest.util.OptionalUtils;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 
@@ -13,54 +15,27 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
-/**
- * <code>MybatisFactory</code>
- * <p>The type mybatis factory class.</p>
- * @author Cyan (snow22314@outlook.com)
- * @since Jdk1.8
- */
 public abstract class MybatisFactory {
-    /**
-     * <code>createTable</code>
-     * <p>the table method.</p>
-     * @param mapperType   {@link java.lang.Class} <p>the mapper type parameter is <code>Class</code> type.</p>
-     * @param mapperMethod {@link java.lang.reflect.Method} <p>the mapper method parameter is <code>Method</code> type.</p>
-     * @return {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>the table return object is <code>MybatisTable</code> type.</p>
-     * @see java.lang.Class
-     * @see org.springframework.lang.NonNull
-     * @see java.lang.reflect.Method
-     * @see org.springframework.lang.Nullable
-     * @see io.github.nichetoolkit.mybatis.MybatisTable
-     */
-    public static MybatisTable createTable(@NonNull Class<?> mapperType, @Nullable Method mapperMethod) {
-        Optional<Class<?>> optionalClass = MybatisClassFinder.findEntityClass(mapperType, mapperMethod);
-        if (optionalClass.isPresent()) {
-            Class<?> entityType = optionalClass.get();
-            Optional<Class<?>> identityKeyClass = MybatisClassFinder.findIdentityClass(mapperType, entityType);
-            return identityKeyClass.map(clazz -> createTable(entityType, clazz)).orElseGet(() -> createTable(entityType, (Class<?>) null));
-        }
-        throw new InterfaceLackError("Can't obtain " + (mapperMethod != null ?
-                mapperMethod.getName() + " method" : mapperType.getSimpleName() + " interface") + " corresponding mybatis class");
+
+    @SuppressWarnings("all")
+    public static MybatisTable createTable(@NonNull Class<?> mapperType, @Nullable Method mapperMethod) throws RestException {
+        Class<?> entityClass = MybatisClassFinder.findEntityClass(mapperType, mapperMethod);
+        String message = "can not find " + (mapperMethod != null ? mapperMethod.getName() + " method" : mapperType.getSimpleName() + " interface") + " corresponding mybatis class";
+        OptionalUtils.ofNullError(entityClass, message, InterfaceLackError::new);
+        Class<?> identityClass = MybatisClassFinder.findIdentityClass(mapperType, entityClass);
+        Class<?> linkageClass = MybatisClassFinder.findLinkageClass(mapperType, entityClass);
+        Class<?> alertnessClass = MybatisClassFinder.findAlertnessClass(mapperType, entityClass);
+        return createTable(entityClass, identityClass, linkageClass, alertnessClass);
     }
 
-    /**
-     * <code>createTable</code>
-     * <p>the table method.</p>
-     * @param entityType      {@link java.lang.Class} <p>the entity type parameter is <code>Class</code> type.</p>
-     * @param identityType {@link java.lang.Class} <p>the identity key type parameter is <code>Class</code> type.</p>
-     * @return {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>the table return object is <code>MybatisTable</code> type.</p>
-     * @see java.lang.Class
-     * @see org.springframework.lang.NonNull
-     * @see org.springframework.lang.Nullable
-     * @see io.github.nichetoolkit.mybatis.MybatisTable
-     */
-    public static MybatisTable createTable(@NonNull Class<?> entityType, @Nullable Class<?> identityType) {
+    public static MybatisTable createTable(@NonNull Class<?> entityType, @Nullable Class<?> identityType, @Nullable Class<?> linkageType, @Nullable Class<?> alertnessType) {
         /* 处理MybatisTable */
         MybatisTableFactory.Chain tableFactoryChain = Instance.tableFactoryChain();
         /* 创建 MybatisTable，不处理列（字段），此时返回的 MybatisTable 已经经过了所有处理链的加工 */
-        MybatisTable table = tableFactoryChain.createTable(entityType, identityType);
+        MybatisTable table = tableFactoryChain.createTable(entityType, identityType,linkageType,alertnessType);
         if (table == null) {
             throw new NullPointerException("Unable to get " + entityType.getName() + " mybatis class information");
         }
@@ -92,7 +67,7 @@ public abstract class MybatisFactory {
                                     /* 是否主键id字段 */
                                     RestIdentityKey restIdentityKey = field.getAnnotation(RestIdentityKey.class);
                                     if (GeneralUtils.isNotEmpty(restIdentityKey)) {
-                                        resolveIdentityFields(table,entityType,identityType,columnFactoryChain);
+                                        resolveIdentityFields(table, entityType, identityType, columnFactoryChain);
                                     }
                                 } else {
                                     Optional<List<MybatisColumn>> optionalColumns = columnFactoryChain.createColumn(table, field);
@@ -144,12 +119,6 @@ public abstract class MybatisFactory {
         }
     }
 
-    /**
-     * <code>reverse</code>
-     * <p>the method.</p>
-     * @param array {@link java.lang.Object} <p>the array parameter is <code>Object</code> type.</p>
-     * @see java.lang.Object
-     */
     protected static void reverse(Object[] array) {
         for (int i = 0; i < array.length / 2; i++) {
             Object temp = array[i];
@@ -158,32 +127,10 @@ public abstract class MybatisFactory {
         }
     }
 
-    /**
-     * <code>Instance</code>
-     * <p>The type instance class.</p>
-     * @author Cyan (snow22314@outlook.com)
-     * @since Jdk1.8
-     */
     static class Instance {
-        /**
-         * <code>TABLE_FACTORY_CHAIN</code>
-         * {@link io.github.nichetoolkit.mybatis.MybatisTableFactory.Chain} <p>the constant <code>TABLE_FACTORY_CHAIN</code> field.</p>
-         * @see io.github.nichetoolkit.mybatis.MybatisTableFactory.Chain
-         */
         private static volatile MybatisTableFactory.Chain TABLE_FACTORY_CHAIN;
-        /**
-         * <code>COLUMN_FACTORY_CHAIN</code>
-         * {@link io.github.nichetoolkit.mybatis.MybatisColumnFactory.Chain} <p>the constant <code>COLUMN_FACTORY_CHAIN</code> field.</p>
-         * @see io.github.nichetoolkit.mybatis.MybatisColumnFactory.Chain
-         */
         private static volatile MybatisColumnFactory.Chain COLUMN_FACTORY_CHAIN;
 
-        /**
-         * <code>tableFactoryChain</code>
-         * <p>the factory chain method.</p>
-         * @return {@link io.github.nichetoolkit.mybatis.MybatisTableFactory.Chain} <p>the factory chain return object is <code>Chain</code> type.</p>
-         * @see io.github.nichetoolkit.mybatis.MybatisTableFactory.Chain
-         */
         public static MybatisTableFactory.Chain tableFactoryChain() {
             if (TABLE_FACTORY_CHAIN == null) {
                 synchronized (MybatisFactory.class) {
@@ -196,12 +143,6 @@ public abstract class MybatisFactory {
             return TABLE_FACTORY_CHAIN;
         }
 
-        /**
-         * <code>columnFactoryChain</code>
-         * <p>the factory chain method.</p>
-         * @return {@link io.github.nichetoolkit.mybatis.MybatisColumnFactory.Chain} <p>the factory chain return object is <code>Chain</code> type.</p>
-         * @see io.github.nichetoolkit.mybatis.MybatisColumnFactory.Chain
-         */
         public static MybatisColumnFactory.Chain columnFactoryChain() {
             if (COLUMN_FACTORY_CHAIN == null) {
                 synchronized (MybatisFactory.class) {

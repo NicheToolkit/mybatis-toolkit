@@ -10,17 +10,6 @@ import org.apache.ibatis.annotations.*;
 import java.util.Collection;
 import java.util.List;
 
-/**
- * <code>MybatisFindMapper</code>
- * <p>The type mybatis find mapper interface.</p>
- * @param <E> {@link io.github.nichetoolkit.rice.IdEntity} <p>the generic parameter is <code>IdEntity</code> type.</p>
- * @param <I> {@link java.lang.Object} <p>the parameter can be of any type.</p>
- * @author Cyan (snow22314@outlook.com)
- * @see io.github.nichetoolkit.rice.IdEntity
- * @see io.github.nichetoolkit.mybatis.MybatisEntityMapper
- * @see io.github.nichetoolkit.rice.mapper.FindMapper
- * @since Jdk1.8
- */
 public interface MybatisFindMapper<E extends IdEntity<I>, I> extends MybatisEntityMapper<E>, FindMapper<E, I> {
 
     @Override

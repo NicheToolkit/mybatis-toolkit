@@ -1,22 +1,17 @@
 package io.github.nichetoolkit.mybatis.defaults;
 
 
+import io.github.nichetoolkit.mybatis.stereotype.table.RestAlertness;
 import io.github.nichetoolkit.mybatis.stereotype.table.RestIdentity;
 import io.github.nichetoolkit.mybatis.stereotype.RestMapper;
 import io.github.nichetoolkit.mybatis.stereotype.table.RestEntity;
+import io.github.nichetoolkit.mybatis.stereotype.table.RestLinkage;
 import io.github.nichetoolkit.rest.util.GeneralUtils;
 import org.springframework.lang.NonNull;
 
 import java.lang.reflect.Method;
 import java.util.Optional;
 
-/**
- * <code>DefaultEntityClassFinder</code>
- * <p>The type default entity class finder class.</p>
- * @author Cyan (snow22314@outlook.com)
- * @see io.github.nichetoolkit.mybatis.defaults.MybatisEntityClassFinder
- * @since Jdk1.8
- */
 public class DefaultEntityClassFinder extends MybatisEntityClassFinder {
 
     @Override
@@ -65,6 +60,48 @@ public class DefaultEntityClassFinder extends MybatisEntityClassFinder {
     }
 
     @Override
+    public Optional<Class<?>> findLinkage(@NonNull Class<?> mapperType, @NonNull Class<?> entityType) {
+        /* RestEntity 获取 */
+        if (entityType.isAnnotationPresent(RestEntity.class)) {
+            RestEntity restEntity = entityType.getAnnotation(RestEntity.class);
+            Class<?> linkageType = restEntity.linkageType();
+            if (GeneralUtils.isNotEmpty(linkageType) && !linkageType.equals(Object.class)) {
+                return Optional.of(linkageType);
+            }
+        }
+        /* RestMapper 获取 */
+        if (mapperType.isAnnotationPresent(RestMapper.class)) {
+            RestMapper restMapper = mapperType.getAnnotation(RestMapper.class);
+            Class<?> linkageType = restMapper.linkageType();
+            if (GeneralUtils.isNotEmpty(linkageType) && !linkageType.equals(Object.class)) {
+                return Optional.of(linkageType);
+            }
+        }
+        return super.findIdentity(mapperType, entityType);
+    }
+
+    @Override
+    public Optional<Class<?>> findAlertness(@NonNull Class<?> mapperType, @NonNull Class<?> entityType) {
+        /* RestEntity 获取 */
+        if (entityType.isAnnotationPresent(RestEntity.class)) {
+            RestEntity restEntity = entityType.getAnnotation(RestEntity.class);
+            Class<?> alertnessType = restEntity.alertnessType();
+            if (GeneralUtils.isNotEmpty(alertnessType) && !alertnessType.equals(Object.class)) {
+                return Optional.of(alertnessType);
+            }
+        }
+        /* RestMapper 获取 */
+        if (mapperType.isAnnotationPresent(RestMapper.class)) {
+            RestMapper restMapper = mapperType.getAnnotation(RestMapper.class);
+            Class<?> alertnessType = restMapper.alertnessType();
+            if (GeneralUtils.isNotEmpty(alertnessType) && !alertnessType.equals(Object.class)) {
+                return Optional.of(alertnessType);
+            }
+        }
+        return super.findIdentity(mapperType, entityType);
+    }
+
+    @Override
     public boolean isEntity(Class<?> clazz) {
         return clazz.isAnnotationPresent(RestEntity.class);
     }
@@ -72,5 +109,15 @@ public class DefaultEntityClassFinder extends MybatisEntityClassFinder {
     @Override
     public boolean isIdentity(Class<?> clazz) {
         return clazz.isAnnotationPresent(RestIdentity.class);
+    }
+
+    @Override
+    public boolean isLinkage(Class<?> clazz) {
+        return clazz.isAnnotationPresent(RestLinkage.class);
+    }
+
+    @Override
+    public boolean isAlertness(Class<?> clazz) {
+        return clazz.isAnnotationPresent(RestAlertness.class);
     }
 }

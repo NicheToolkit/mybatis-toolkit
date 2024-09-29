@@ -7,54 +7,16 @@ import io.github.nichetoolkit.rest.RestKey;
 
 import java.util.Optional;
 
-/**
- * <code>StyleType</code>
- * <p>The type style type enumeration.</p>
- * @author Cyan (snow22314@outlook.com)
- * @see io.github.nichetoolkit.rest.RestKey
- * @since Jdk1.8
- */
 public enum StyleType implements RestKey<String> {
-    /**
-     * <code>NORMAL</code>
-     * <p>the Normal style type field.</p>
-     */
     NORMAL(StyleConstants.NORMAL),
-    /**
-     * <code>LOWER_UNDERLINE</code>
-     * <p>the Lower underline style type field.</p>
-     */
     LOWER_UNDERLINE(StyleConstants.LOWER_UNDERLINE),
-    /**
-     * <code>LOWER</code>
-     * <p>the Lower style type field.</p>
-     */
     LOWER(StyleConstants.LOWER),
-    /**
-     * <code>UPPER</code>
-     * <p>the Upper style type field.</p>
-     */
     UPPER(StyleConstants.UPPER),
-    /**
-     * <code>UPPER_UNDERLINE</code>
-     * <p>the Upper underline style type field.</p>
-     */
     UPPER_UNDERLINE(StyleConstants.UPPER_UNDERLINE),
     ;
 
-    /**
-     * <code>key</code>
-     * {@link java.lang.String} <p>the <code>key</code> field.</p>
-     * @see java.lang.String
-     */
     private final String key;
 
-    /**
-     * <code>StyleType</code>
-     * Instantiates a new style type.
-     * @param key {@link java.lang.String} <p>the key parameter is <code>String</code> type.</p>
-     * @see java.lang.String
-     */
     StyleType(String key) {
         this.key = key;
     }
@@ -65,14 +27,6 @@ public enum StyleType implements RestKey<String> {
         return this.key;
     }
 
-    /**
-     * <code>parseKey</code>
-     * <p>the key method.</p>
-     * @param key {@link java.lang.String} <p>the key parameter is <code>String</code> type.</p>
-     * @return {@link io.github.nichetoolkit.mybatis.enums.StyleType} <p>the key return object is <code>StyleType</code> type.</p>
-     * @see java.lang.String
-     * @see com.fasterxml.jackson.annotation.JsonCreator
-     */
     @JsonCreator
     public static StyleType parseKey(String key) {
         StyleType typeEnum = RestKey.parseKey(StyleType.class, key);

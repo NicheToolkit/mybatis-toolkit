@@ -10,14 +10,6 @@ import org.apache.ibatis.annotations.UpdateProvider;
 
 import java.util.Collection;
 
-/**
- * <code>MybatisAlertFieldMapper</code>
- * <p>The type mybatis alert field mapper interface.</p>
- * @param <I> {@link java.lang.Object} <p>the parameter can be of any type.</p>
- * @author Cyan (snow22314@outlook.com)
- * @see io.github.nichetoolkit.rice.mapper.AlertFieldMapper
- * @since Jdk1.8
- */
 public interface MybatisAlertFieldMapper<I> extends AlertFieldMapper<I> {
 
     @Override

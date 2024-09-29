@@ -10,23 +10,8 @@ import java.util.Collection;
 
 import java.util.*;
 
-/**
- * <code>MybatisGenericTypeResolver</code>
- * <p>The type mybatis generic type resolver class.</p>
- * @author Cyan (snow22314@outlook.com)
- * @since Jdk1.8
- */
 public class MybatisGenericTypes {
 
-    /**
-     * <code>resolveMapperReturnType</code>
-     * <p>the mapper return type method.</p>
-     * @param mapperMethod {@link java.lang.reflect.Method} <p>the mapper method parameter is <code>Method</code> type.</p>
-     * @param mapperType   {@link java.lang.Class} <p>the mapper type parameter is <code>Class</code> type.</p>
-     * @return {@link java.lang.Class} <p>the mapper return type return object is <code>Class</code> type.</p>
-     * @see java.lang.reflect.Method
-     * @see java.lang.Class
-     */
     public static Class<?> resolveMapperReturnType(Method mapperMethod, Class<?> mapperType) {
         Class<?> returnType = mapperMethod.getReturnType();
         Type resolvedReturnType = RestGenericTypes.resolveReturnType(mapperMethod, mapperType);

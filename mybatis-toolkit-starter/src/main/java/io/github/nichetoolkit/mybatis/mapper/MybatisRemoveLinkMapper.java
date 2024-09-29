@@ -9,15 +9,6 @@ import org.apache.ibatis.annotations.UpdateProvider;
 
 import java.util.Collection;
 
-/**
- * <code>MybatisRemoveLinkMapper</code>
- * <p>The type mybatis remove link mapper interface.</p>
- * @param <I> {@link java.lang.Object} <p>the parameter can be of any type.</p>
- * @author Cyan (snow22314@outlook.com)
- * @see io.github.nichetoolkit.rice.mapper.RemoveLinkMapper
- * @see MybatisRemoveMapper
- * @since Jdk1.8
- */
 public interface MybatisRemoveLinkMapper<I> extends RemoveLinkMapper<I>, MybatisRemoveMapper<I> {
 
     @Lang(MybatisCaching.class)

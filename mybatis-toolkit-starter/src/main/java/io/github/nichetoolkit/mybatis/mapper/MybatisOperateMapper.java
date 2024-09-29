@@ -9,14 +9,6 @@ import org.apache.ibatis.annotations.UpdateProvider;
 
 import java.util.Collection;
 
-/**
- * <code>MybatisOperateMapper</code>
- * <p>The type mybatis operate mapper interface.</p>
- * @param <I> {@link java.lang.Object} <p>the parameter can be of any type.</p>
- * @author Cyan (snow22314@outlook.com)
- * @see io.github.nichetoolkit.rice.mapper.OperateMapper
- * @since Jdk1.8
- */
 public interface MybatisOperateMapper<I> extends OperateMapper<I> {
 
     @Override

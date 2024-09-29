@@ -18,35 +18,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-/**
- * <code>MybatisCaching</code>
- * <p>The type mybatis caching class.</p>
- * @author Cyan (snow22314@outlook.com)
- * @see org.apache.ibatis.scripting.xmltags.XMLLanguageDriver
- * @see lombok.extern.slf4j.Slf4j
- * @since Jdk1.8
- */
 @Slf4j
 public class MybatisCaching extends XMLLanguageDriver {
 
-    /**
-     * <code>cacheKey</code>
-     * <p>the key method.</p>
-     * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>the provider context parameter is <code>ProviderContext</code> type.</p>
-     * @return {@link java.lang.String} <p>the key return object is <code>String</code> type.</p>
-     * @see org.apache.ibatis.builder.annotation.ProviderContext
-     * @see java.lang.String
-     */
     private static String cacheKey(ProviderContext providerContext) {
         return (providerContext.getMapperType().getName() + "." + providerContext.getMapperMethod().getName()).intern();
     }
 
-    /**
-     * <code>isPresentLang</code>
-     * <p>the present lang method.</p>
-     * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>the provider context parameter is <code>ProviderContext</code> type.</p>
-     * @see org.apache.ibatis.builder.annotation.ProviderContext
-     */
     private static void isPresentLang(ProviderContext providerContext) {
         Method mapperMethod = providerContext.getMapperMethod();
         Lang lang = mapperMethod.getAnnotation(Lang.class);
@@ -56,20 +34,6 @@ public class MybatisCaching extends XMLLanguageDriver {
     }
 
 
-    /**
-     * <code>cache</code>
-     * <p>the method.</p>
-     * @param providerContext   {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>the provider context parameter is <code>ProviderContext</code> type.</p>
-     * @param entity            {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>the entity parameter is <code>MybatisTable</code> type.</p>
-     * @param sqlScriptSupplier {@link io.github.nichetoolkit.rest.actuator.SupplierActuator} <p>the sql script supplier parameter is <code>SupplierActuator</code> type.</p>
-     * @return {@link java.lang.String} <p>the return object is <code>String</code> type.</p>
-     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>the rest exception is <code>RestException</code> type.</p>
-     * @see org.apache.ibatis.builder.annotation.ProviderContext
-     * @see io.github.nichetoolkit.mybatis.MybatisTable
-     * @see io.github.nichetoolkit.rest.actuator.SupplierActuator
-     * @see java.lang.String
-     * @see io.github.nichetoolkit.rest.RestException
-     */
     public static String cache(ProviderContext providerContext, MybatisTable entity, SupplierActuator<String> sqlScriptSupplier) throws RestException {
         String cacheKey = cacheKey(providerContext);
         if (!MybatisCacheSupport.CACHE_SQL.containsKey(cacheKey)) {

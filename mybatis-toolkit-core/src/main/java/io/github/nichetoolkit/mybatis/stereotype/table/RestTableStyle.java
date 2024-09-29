@@ -1,5 +1,6 @@
 package io.github.nichetoolkit.mybatis.stereotype.table;
 
+import io.github.nichetoolkit.mybatis.enums.StyleType;
 import org.springframework.core.annotation.AliasFor;
 import org.springframework.stereotype.Indexed;
 
@@ -9,13 +10,17 @@ import java.lang.annotation.*;
 @Target({ElementType.TYPE})
 @Documented
 @Indexed
-public @interface RestResultMap {
+public @interface RestTableStyle {
     @AliasFor("name")
     String value() default "";
 
     @AliasFor("value")
     String name() default "";
 
-    boolean autoResultMap() default true;
+    String catalog() default "";
+
+    String schema() default "";
+
+    StyleType type() default StyleType.LOWER_UNDERLINE;
 
 }

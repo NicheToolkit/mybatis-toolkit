@@ -9,17 +9,6 @@ import org.apache.ibatis.annotations.*;
 
 import java.util.Collection;
 
-/**
- * <code>MybatisDeleteMapper</code>
- * <p>The type mybatis delete mapper interface.</p>
- * @param <E> {@link io.github.nichetoolkit.rice.IdEntity} <p>the generic parameter is <code>IdEntity</code> type.</p>
- * @param <I> {@link java.lang.Object} <p>the parameter can be of any type.</p>
- * @author Cyan (snow22314@outlook.com)
- * @see io.github.nichetoolkit.rice.IdEntity
- * @see io.github.nichetoolkit.mybatis.MybatisEntityMapper
- * @see io.github.nichetoolkit.rice.mapper.DeleteMapper
- * @since Jdk1.8
- */
 public interface MybatisDeleteMapper<E extends IdEntity<I>, I> extends MybatisEntityMapper<E>, DeleteMapper<I> {
 
     @Override

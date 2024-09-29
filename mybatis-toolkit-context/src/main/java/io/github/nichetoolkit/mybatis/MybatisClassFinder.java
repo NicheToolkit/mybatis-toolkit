@@ -8,121 +8,75 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-/**
- * <code>MybatisClassFinder</code>
- * <p>The type mybatis class finder interface.</p>
- * @author Cyan (snow22314@outlook.com)
- * @see io.github.nichetoolkit.mybatis.MybatisOrder
- * @since Jdk1.8
- */
 public interface MybatisClassFinder extends MybatisOrder {
 
-    /**
-     * <code>findEntityClass</code>
-     * <p>the entity class method.</p>
-     * @param mapperType   {@link java.lang.Class} <p>the mapper type parameter is <code>Class</code> type.</p>
-     * @param mapperMethod {@link java.lang.reflect.Method} <p>the mapper method parameter is <code>Method</code> type.</p>
-     * @return {@link java.util.Optional} <p>the entity class return object is <code>Optional</code> type.</p>
-     * @see java.lang.Class
-     * @see java.lang.reflect.Method
-     * @see java.util.Optional
-     */
-    static Optional<Class<?>> findEntityClass(Class<?> mapperType, Method mapperMethod) {
+    static Class<?> findEntityClass(Class<?> mapperType, Method mapperMethod) {
         Objects.requireNonNull(mapperType);
         List<MybatisClassFinder> instances = ClassFinderInstance.instances();
         for (MybatisClassFinder instance : ClassFinderInstance.instances()) {
             Optional<Class<?>> optionalClass = instance.findEntity(mapperType, mapperMethod);
             if (optionalClass.isPresent()) {
-                return optionalClass;
+                return optionalClass.get();
             }
         }
-        return Optional.empty();
+        return null;
     }
 
-    /**
-     * <code>findIdentityKeyClass</code>
-     * <p>the identity key class method.</p>
-     * @param mapperType {@link java.lang.Class} <p>the mapper type parameter is <code>Class</code> type.</p>
-     * @param entityType {@link java.lang.Class} <p>the entity type parameter is <code>Class</code> type.</p>
-     * @return {@link java.util.Optional} <p>the identity key class return object is <code>Optional</code> type.</p>
-     * @see java.lang.Class
-     * @see java.util.Optional
-     */
-    static Optional<Class<?>> findIdentityClass(Class<?> mapperType, Class<?> entityType) {
+    static Class<?> findIdentityClass(Class<?> mapperType, Class<?> entityType) {
         Objects.requireNonNull(entityType);
         List<MybatisClassFinder> instances = ClassFinderInstance.instances();
         for (MybatisClassFinder instance : ClassFinderInstance.instances()) {
             Optional<Class<?>> optionalClass = instance.findIdentity(mapperType, entityType);
             if (optionalClass.isPresent()) {
-                return optionalClass;
+                return optionalClass.get();
             }
         }
-        return Optional.empty();
+        return null;
     }
 
-    /**
-     * <code>findEntity</code>
-     * <p>the entity method.</p>
-     * @param mapperType   {@link java.lang.Class} <p>the mapper type parameter is <code>Class</code> type.</p>
-     * @param mapperMethod {@link java.lang.reflect.Method} <p>the mapper method parameter is <code>Method</code> type.</p>
-     * @return {@link java.util.Optional} <p>the entity return object is <code>Optional</code> type.</p>
-     * @see java.lang.Class
-     * @see org.springframework.lang.NonNull
-     * @see java.lang.reflect.Method
-     * @see java.util.Optional
-     */
+    static Class<?> findLinkageClass(Class<?> mapperType, Class<?> entityType) {
+        Objects.requireNonNull(entityType);
+        List<MybatisClassFinder> instances = ClassFinderInstance.instances();
+        for (MybatisClassFinder instance : ClassFinderInstance.instances()) {
+            Optional<Class<?>> optionalClass = instance.findLinkage(mapperType, entityType);
+            if (optionalClass.isPresent()) {
+                return optionalClass.get();
+            }
+        }
+        return null;
+    }
+
+    static Class<?> findAlertnessClass(Class<?> mapperType, Class<?> entityType) {
+        Objects.requireNonNull(entityType);
+        List<MybatisClassFinder> instances = ClassFinderInstance.instances();
+        for (MybatisClassFinder instance : ClassFinderInstance.instances()) {
+            Optional<Class<?>> optionalClass = instance.findAlertness(mapperType, entityType);
+            if (optionalClass.isPresent()) {
+                return optionalClass.get();
+            }
+        }
+        return null;
+    }
+
     Optional<Class<?>> findEntity(@NonNull Class<?> mapperType, Method mapperMethod);
 
-    /**
-     * <code>findIdentityKey</code>
-     * <p>the identity key method.</p>
-     * @param mapperType {@link java.lang.Class} <p>the mapper type parameter is <code>Class</code> type.</p>
-     * @param entityType {@link java.lang.Class} <p>the entity type parameter is <code>Class</code> type.</p>
-     * @return {@link java.util.Optional} <p>the identity key return object is <code>Optional</code> type.</p>
-     * @see java.lang.Class
-     * @see org.springframework.lang.NonNull
-     * @see java.util.Optional
-     */
     Optional<Class<?>> findIdentity(@NonNull Class<?> mapperType, @NonNull Class<?> entityType);
 
-    /**
-     * <code>isEntity</code>
-     * <p>the entity method.</p>
-     * @param clazz {@link java.lang.Class} <p>the clazz parameter is <code>Class</code> type.</p>
-     * @return boolean <p>the entity return object is <code>boolean</code> type.</p>
-     * @see java.lang.Class
-     */
+    Optional<Class<?>> findLinkage(@NonNull Class<?> mapperType, @NonNull Class<?> entityType);
+
+    Optional<Class<?>> findAlertness(@NonNull Class<?> mapperType, @NonNull Class<?> entityType);
+
     boolean isEntity(Class<?> clazz);
 
-    /**
-     * <code>isIdentityKey</code>
-     * <p>the identity key method.</p>
-     * @param clazz {@link java.lang.Class} <p>the clazz parameter is <code>Class</code> type.</p>
-     * @return boolean <p>the identity key return object is <code>boolean</code> type.</p>
-     * @see java.lang.Class
-     */
     boolean isIdentity(Class<?> clazz);
 
-    /**
-     * <code>ClassFinderInstance</code>
-     * <p>The type class finder instance class.</p>
-     * @author Cyan (snow22314@outlook.com)
-     * @since Jdk1.8
-     */
+    boolean isLinkage(Class<?> clazz);
+
+    boolean isAlertness(Class<?> clazz);
+
     class ClassFinderInstance {
-        /**
-         * <code>INSTANCES</code>
-         * {@link java.util.List} <p>the constant <code>INSTANCES</code> field.</p>
-         * @see java.util.List
-         */
         private static volatile List<MybatisClassFinder> INSTANCES;
 
-        /**
-         * <code>instances</code>
-         * <p>the method.</p>
-         * @return {@link java.util.List} <p>the return object is <code>List</code> type.</p>
-         * @see java.util.List
-         */
         public static List<MybatisClassFinder> instances() {
             if (INSTANCES == null) {
                 synchronized (MybatisClassFinder.class) {
