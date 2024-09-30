@@ -24,10 +24,10 @@ public class MybatisSaveProvider implements MybatisProviderResolver {
             OptionalUtils.ofFalse(GeneralUtils.isNotEmpty(table.insertColumns()), "the insert columns of table with 'save' method cannot be empty!", message -> new MybatisTableErrorException("save", "insertColumns", message));
             OptionalUtils.ofFalse(GeneralUtils.isNotEmpty(table.identityColumns()), "the identity columns of table with 'save' method cannot be empty!", message -> new MybatisTableErrorException("save", "identityColumns", message));
             return "INSERT INTO " + table.tablename(tablename)
-                    + " (" + table.insertColumnList() + ")"
+                    + " (" + table.insertColumnSql() + ")"
                     + " VALUES (" + table.insertColumns().stream()
                     .map(column -> column.variable("entity.")).collect(Collectors.joining(", "))
-                    + ")" + MybatisSqlProvider.saveUpsetSql(tablename,table);
+                    + ")" + MybatisSqlProviders.upsetOfSaveSql(tablename,table);
         });
     }
 
@@ -46,7 +46,7 @@ public class MybatisSaveProvider implements MybatisProviderResolver {
                         + " (" + table.insertColumnList() + ") VALUES "
                         + foreach("entityList", "entity", ", ", () ->
                         " (" + table.insertColumns().stream().map(column -> column.variable("entity.")).collect(Collectors.joining(", ")) + " )")
-                        + MybatisSqlProvider.saveUpsetSql(tablename,table);
+                        + MybatisSqlProviders.saveUpsetSql(tablename,table);
             }
         });
     }

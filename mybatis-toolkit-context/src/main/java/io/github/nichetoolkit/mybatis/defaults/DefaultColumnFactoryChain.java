@@ -5,6 +5,7 @@ import io.github.nichetoolkit.mybatis.MybatisColumn;
 import io.github.nichetoolkit.mybatis.MybatisColumnFactory;
 import io.github.nichetoolkit.mybatis.MybatisField;
 import io.github.nichetoolkit.mybatis.MybatisTable;
+import org.springframework.lang.NonNull;
 
 import java.util.List;
 import java.util.Optional;
@@ -29,7 +30,7 @@ public class DefaultColumnFactoryChain implements MybatisColumnFactory.Chain {
     }
 
     @Override
-    public Optional<List<MybatisColumn>> createColumn(MybatisTable mybatisTable, MybatisField mybatisField) {
+    public Optional<List<MybatisColumn>> createColumn(@NonNull MybatisTable mybatisTable,@NonNull MybatisField mybatisField) {
         if (index < factories.size()) {
             MybatisColumnFactory mybatisColumnFactory = factories.get(index);
             if (mybatisColumnFactory.supports(mybatisTable,mybatisField)) {

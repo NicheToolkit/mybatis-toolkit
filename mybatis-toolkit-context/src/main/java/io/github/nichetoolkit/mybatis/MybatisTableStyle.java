@@ -33,7 +33,6 @@ public interface MybatisTableStyle {
 
     StyleType getStyleType();
 
-
     static MybatisTableStyle defaultStyle() {
         return style(NORMAL);
     }
@@ -50,9 +49,9 @@ public interface MybatisTableStyle {
         }
     }
 
-    String tableName(Class<?> clazz);
+    String tableName(Class<?> entityType);
 
-    String tableAlias(Class<?> clazz);
+    String tableAlias(Class<?> entityType);
 
     String columnName(MybatisTable table, MybatisField field);
 }

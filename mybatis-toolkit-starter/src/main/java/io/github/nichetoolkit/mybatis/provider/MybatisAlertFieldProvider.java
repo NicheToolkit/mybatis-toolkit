@@ -1,7 +1,6 @@
 package io.github.nichetoolkit.mybatis.provider;
 
-import io.github.nichetoolkit.mybatis.MybatisProviderResolver;
-import io.github.nichetoolkit.mybatis.MybatisSqlProvider;
+import io.github.nichetoolkit.mybatis.MybatisSqlProviders;
 import io.github.nichetoolkit.mybatis.error.MybatisParamErrorException;
 import io.github.nichetoolkit.rest.RestException;
 import io.github.nichetoolkit.rest.util.GeneralUtils;
@@ -20,7 +19,7 @@ public class MybatisAlertFieldProvider implements MybatisProviderResolver {
         OptionalUtils.ofFalse(GeneralUtils.isNotEmpty(id), "the id param of 'alertFieldById' method cannot be empty!", message -> new MybatisParamErrorException("alertFieldById", "id", message));
         OptionalUtils.ofFalse(GeneralUtils.isNotEmpty(key), "the field param of 'alertFieldById' method cannot be empty!", message -> new MybatisParamErrorException("alertFieldById", "field", message));
         OptionalUtils.ofFalse(GeneralUtils.isNotEmpty(key), "the key param of 'alertFieldById' method cannot be empty!", message -> new MybatisParamErrorException("alertFieldById", "key", message));
-        return MybatisSqlProvider.providing(providerContext, tablename, id, MybatisSqlProvider.ALERT_FIELD_BY_ID);
+        return MybatisSqlProviders.providing(providerContext, tablename, id, MybatisSqlProviders.ALERT_FIELD_BY_ID);
     }
 
     public static <I> String alertFieldAll(ProviderContext providerContext, Collection<I> idList, String field, Integer key) throws RestException {
@@ -31,7 +30,7 @@ public class MybatisAlertFieldProvider implements MybatisProviderResolver {
         OptionalUtils.ofFalse(GeneralUtils.isNotEmpty(idList), "the id list param of 'alertFieldAll' method cannot be empty!", message -> new MybatisParamErrorException("alertFieldAll", "idList", message));
         OptionalUtils.ofFalse(GeneralUtils.isNotEmpty(field), "the field param of 'alertFieldAll' method cannot be empty!", message -> new MybatisParamErrorException("alertFieldAll", "field", message));
         OptionalUtils.ofFalse(GeneralUtils.isNotEmpty(key), "the key param of 'alertFieldAll' method cannot be empty!", message -> new MybatisParamErrorException("alertFieldAll", "key", message));
-        return MybatisSqlProvider.providing(providerContext, tablename, idList, MybatisSqlProvider.ALERT_FIELD_ALL);
+        return MybatisSqlProviders.providing(providerContext, tablename, idList, MybatisSqlProviders.ALERT_FIELD_ALL);
     }
 
 }

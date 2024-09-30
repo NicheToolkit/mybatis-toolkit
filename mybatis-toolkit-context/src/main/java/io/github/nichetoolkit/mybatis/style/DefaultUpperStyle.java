@@ -13,13 +13,13 @@ public class DefaultUpperStyle implements MybatisTableStyle {
     }
 
     @Override
-    public String tableName(Class<?> clazz) {
-        return clazz.getSimpleName().toUpperCase();
+    public String tableName(Class<?> entityType) {
+        return entityType.getSimpleName().toUpperCase();
     }
 
     @Override
-    public String tableAlias(Class<?> clazz) {
-        String tableName = clazz.getSimpleName();
+    public String tableAlias(Class<?> entityType) {
+        String tableName = entityType.getSimpleName();
         return GeneralUtils.abbreviate(tableName).toUpperCase();
     }
 

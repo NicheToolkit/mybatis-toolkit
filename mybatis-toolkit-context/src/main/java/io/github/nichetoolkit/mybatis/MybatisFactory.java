@@ -15,7 +15,6 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 public abstract class MybatisFactory {
@@ -31,6 +30,7 @@ public abstract class MybatisFactory {
         return createTable(entityClass, identityClass, linkageClass, alertnessClass);
     }
 
+    @SuppressWarnings("all")
     public static MybatisTable createTable(@NonNull Class<?> entityType, @Nullable Class<?> identityType, @Nullable Class<?> linkageType, @Nullable Class<?> alertnessType) {
         /* 处理MybatisTable */
         MybatisTableFactory.Chain tableFactoryChain = Instance.tableFactoryChain();
@@ -67,7 +67,7 @@ public abstract class MybatisFactory {
                                     /* 是否主键id字段 */
                                     RestIdentityKey restIdentityKey = field.getAnnotation(RestIdentityKey.class);
                                     if (GeneralUtils.isNotEmpty(restIdentityKey)) {
-                                        resolveIdentityFields(table, entityType, identityType, columnFactoryChain);
+                                        handleOfIdentityFields(table, entityType, identityType, columnFactoryChain);
                                     }
                                 } else {
                                     Optional<List<MybatisColumn>> optionalColumns = columnFactoryChain.createColumn(table, field);
@@ -91,7 +91,7 @@ public abstract class MybatisFactory {
         return table;
     }
 
-    protected static void resolveIdentityFields(MybatisTable table, Class<?> entityType, Class<?> identityType, MybatisColumnFactory.Chain columnFactoryChain) {
+    protected static void handleOfIdentityFields(MybatisTable table, Class<?> entityType, Class<?> identityType, MybatisColumnFactory.Chain columnFactoryChain) {
         /* 未处理的需要获取字段 */
         Class<?> declaredClass = identityType;
         boolean isSuperclass = true;
@@ -132,6 +132,7 @@ public abstract class MybatisFactory {
         private static volatile MybatisColumnFactory.Chain COLUMN_FACTORY_CHAIN;
 
         public static MybatisTableFactory.Chain tableFactoryChain() {
+
             if (TABLE_FACTORY_CHAIN == null) {
                 synchronized (MybatisFactory.class) {
                     if (TABLE_FACTORY_CHAIN == null) {

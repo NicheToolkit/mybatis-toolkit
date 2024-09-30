@@ -16,11 +16,11 @@
 
 package io.github.nichetoolkit.mybatis.record;
 
-import io.github.nichetoolkit.mybatis.MybatisEntityMapper;
+import io.github.nichetoolkit.mybatis.MybatisMapper;
 import io.github.nichetoolkit.mybatis.mapper.MybatisInfoMapper;
 import io.github.nichetoolkit.rice.InfoEntity;
 
-public interface MybatisInfoRecord<M extends MybatisInfoMapper<E, I>, E extends InfoEntity<I>, I> extends MybatisEntityMapper<E> {
+public interface MybatisInfoRecord<M extends MybatisInfoMapper<E, I>, E extends InfoEntity<I>, I> extends MybatisMapper<E> {
 
     default M infoMapper() {
     return MybatisRecordProvider.<M,E, I>defaultInstance().superMapper(clazz());

@@ -8,16 +8,16 @@ public class MybatisSqlCache {
     public static final MybatisSqlCache NULL_SQL_CACHE = new MybatisSqlCache(null, null, null);
     private final ProviderContext context;
     private final MybatisTable table;
-    private final SupplierActuator<String> supplier;
+    private final SupplierActuator<String> sqlScript;
 
-    public MybatisSqlCache(ProviderContext context, MybatisTable table, SupplierActuator<String> supplier) {
+    public MybatisSqlCache(ProviderContext context, MybatisTable table, SupplierActuator<String> sqlScript) {
         this.context = context;
         this.table = table;
-        this.supplier = supplier;
+        this.sqlScript = sqlScript;
     }
 
     public String sqlScript() throws RestException {
-        return supplier.get();
+        return sqlScript.get();
     }
 
     public ProviderContext context() {

@@ -13,13 +13,13 @@ public class DefaultLowerUnderlineStyle implements MybatisTableStyle {
     }
 
     @Override
-    public String tableName(Class<?> clazz) {
-        return GeneralUtils.underline(clazz.getSimpleName());
+    public String tableName(Class<?> entityType) {
+        return GeneralUtils.underline(entityType.getSimpleName());
     }
 
     @Override
-    public String tableAlias(Class<?> clazz) {
-        String tableName = clazz.getSimpleName();
+    public String tableAlias(Class<?> entityType) {
+        String tableName = entityType.getSimpleName();
         return GeneralUtils.abbreviate(tableName,0,true);
     }
 

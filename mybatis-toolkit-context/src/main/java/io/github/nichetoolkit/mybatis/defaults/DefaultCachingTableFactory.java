@@ -9,7 +9,13 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class DefaultCachingTableFactory implements MybatisTableFactory {
-    private final Map<Class<?>, MybatisTable> CLASS_TABLE_MAP = new ConcurrentHashMap<>();
+
+    private final Map<Class<?>, MybatisTable> classTables;
+
+    public DefaultCachingTableFactory() {
+        this.classTables = new ConcurrentHashMap<>();
+    }
+
 
     @Override
     public boolean supports(@NonNull Class<?> entityType) {
@@ -17,20 +23,21 @@ public class DefaultCachingTableFactory implements MybatisTableFactory {
     }
 
     @Override
+    @SuppressWarnings("all")
     public MybatisTable createTable(@NonNull Class<?> entityType, @Nullable Class<?> identityType, @Nullable Class<?> linkageType, @Nullable Class<?> alertnessType, Chain chain) {
-        if (CLASS_TABLE_MAP.get(entityType) == null) {
+        if (this.classTables.get(entityType) == null) {
             synchronized (entityType) {
-                if (CLASS_TABLE_MAP.get(entityType) == null) {
+                if (this.classTables.get(entityType) == null) {
                     MybatisTable mybatisTable = chain.createTable(entityType, identityType, linkageType, alertnessType);
                     if (mybatisTable != null) {
-                        CLASS_TABLE_MAP.put(entityType, mybatisTable);
+                        this.classTables.put(entityType, mybatisTable);
                     } else {
                         return null;
                     }
                 }
             }
         }
-        return CLASS_TABLE_MAP.get(entityType);
+        return this.classTables.get(entityType);
     }
 
     @Override

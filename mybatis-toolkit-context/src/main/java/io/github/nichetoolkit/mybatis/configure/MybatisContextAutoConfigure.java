@@ -1,9 +1,6 @@
 package io.github.nichetoolkit.mybatis.configure;
 
-import io.github.nichetoolkit.mybatis.MybatisCacheSupport;
-import io.github.nichetoolkit.mybatis.MybatisProviderSupport;
-import io.github.nichetoolkit.mybatis.defaults.DefaultCacheManager;
-import io.github.nichetoolkit.mybatis.defaults.DefaultProviderManager;
+import io.github.nichetoolkit.mybatis.MybatisSqlSourceHolder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
@@ -22,9 +19,9 @@ public class MybatisContextAutoConfigure {
 
     @Bean
     @Primary
-    @ConditionalOnMissingBean(MybatisCacheSupport.class)
-    public MybatisCacheSupport mybatisCache(MybatisCacheProperties cacheProperties) {
-        return new DefaultCacheManager(cacheProperties);
+    @ConditionalOnMissingBean(MybatisSqlSourceHolder.class)
+    public MybatisSqlSourceHolder mybatisCache(MybatisCacheProperties cacheProperties) {
+        return new MybatisSqlSourceHolder(cacheProperties);
     }
 
     @Bean

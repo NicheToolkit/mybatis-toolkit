@@ -1,7 +1,6 @@
 package io.github.nichetoolkit.mybatis.provider;
 
-import io.github.nichetoolkit.mybatis.MybatisProviderResolver;
-import io.github.nichetoolkit.mybatis.MybatisSqlProvider;
+import io.github.nichetoolkit.mybatis.MybatisSqlProviders;
 import io.github.nichetoolkit.mybatis.MybatisSqlScript;
 import io.github.nichetoolkit.mybatis.MybatisTable;
 import io.github.nichetoolkit.mybatis.error.MybatisParamErrorException;
@@ -35,7 +34,7 @@ public class MybatisDeleteProvider implements MybatisProviderResolver {
     public static <I> String deleteDynamicAll(ProviderContext providerContext, @Param("tablename") String tablename, @Param("idList") Collection<I> idList) throws RestException {
         OptionalUtils.ofFalse(GeneralUtils.isNotEmpty(idList), "the id list param of 'deleteByAll' method cannot be empty!", message -> new MybatisParamErrorException("deleteByAll", "idList", message));
 
-        return MybatisSqlProvider.providing(providerContext,tablename,idList, new MybatisSqlProvider() {
+        return MybatisSqlProviders.providing(providerContext,tablename,idList, new MybatisSqlProviders() {
             @Override
             public <IDENTITY> String provide(String tablename, MybatisTable table, Map<Integer, List<IDENTITY>> identitySliceMap, MybatisSqlScript sqlScript) throws RestException {
                 OptionalUtils.ofFalse(GeneralUtils.isNotEmpty(table.getLogicColumn()), "the logic column of table with 'removeAll' method cannot be empty!", message -> new MybatisTableErrorException("removeAll", "logicColumn", message));

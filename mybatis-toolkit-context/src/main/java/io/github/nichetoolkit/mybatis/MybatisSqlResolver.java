@@ -1,6 +1,5 @@
-package io.github.nichetoolkit.mybatis.wrapper;
+package io.github.nichetoolkit.mybatis;
 
-import io.github.nichetoolkit.mybatis.MybatisSqlScriptWrapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.reflection.ParamNameResolver;
 import org.apache.ibatis.scripting.xmltags.DynamicContext;
@@ -13,13 +12,12 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-public abstract class AnnotationSqlWrapper implements MybatisSqlScriptWrapper {
-
+public abstract class MybatisSqlResolver implements MybatisSqlScriptResolver {
     protected final ElementType type;
     protected final Object target;
     protected final Annotation[] annotations;
 
-    public AnnotationSqlWrapper(Object target, ElementType type, Annotation[] annotations) {
+    public MybatisSqlResolver(Object target, ElementType type, Annotation[] annotations) {
         this.type = type;
         this.target = target;
         this.annotations = annotations;
@@ -38,22 +36,22 @@ public abstract class AnnotationSqlWrapper implements MybatisSqlScriptWrapper {
     }
 
     public String getParameterName(Parameter parameter) {
-        /** 优先使用 @Param 注解指定的值 */
+        /* 优先使用 @Param 注解指定的值 */
         Optional<Annotation> paramOptional = Stream.of(annotations).filter(a -> a.annotationType() == Param.class).findFirst();
         if (paramOptional.isPresent()) {
             return ((Param) paramOptional.get()).value();
         }
         Executable executable = parameter.getDeclaringExecutable();
-        /** 只有一个参数时，只能使用默认名称 */
+        /* 只有一个参数时，只能使用默认名称 */
         if (executable.getParameterCount() == 1) {
             return DynamicContext.PARAMETER_OBJECT_KEY;
         }
-        /** 参数名 */
+        /* 参数名 */
         String name = parameter.getName();
         if (!name.startsWith("arg")) {
             return name;
         }
-        /** 获取参数顺序号 */
+        /* 获取参数顺序号 */
         int index = 0;
         Parameter[] parameters = executable.getParameters();
         for (; index < parameters.length; index++) {
@@ -61,7 +59,7 @@ public abstract class AnnotationSqlWrapper implements MybatisSqlScriptWrapper {
                 break;
             }
         }
-        /** 如果方法不是默认名，就直接使用该名称 */
+        /* 如果方法不是默认名，就直接使用该名称 */
         if (!name.equals("arg" + index)) {
             return name;
         } else {
@@ -73,7 +71,7 @@ public abstract class AnnotationSqlWrapper implements MybatisSqlScriptWrapper {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        AnnotationSqlWrapper that = (AnnotationSqlWrapper) o;
+        MybatisSqlResolver that = (MybatisSqlResolver) o;
         return type == that.type && target.equals(that.target);
     }
 

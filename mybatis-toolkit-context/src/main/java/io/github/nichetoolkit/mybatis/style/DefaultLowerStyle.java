@@ -13,13 +13,13 @@ public class DefaultLowerStyle implements MybatisTableStyle {
     }
 
     @Override
-    public String tableName(Class<?> clazz) {
-        return clazz.getSimpleName().toLowerCase();
+    public String tableName(Class<?> entityType) {
+        return entityType.getSimpleName().toLowerCase();
     }
 
     @Override
-    public String tableAlias(Class<?> clazz) {
-        String tableName = clazz.getSimpleName();;
+    public String tableAlias(Class<?> entityType) {
+        String tableName = entityType.getSimpleName();;
         return GeneralUtils.abbreviate(tableName);
     }
 

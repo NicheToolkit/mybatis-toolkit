@@ -1,6 +1,7 @@
 package io.github.nichetoolkit.mybatis.defaults;
 
 
+import io.github.nichetoolkit.mybatis.MybatisEntityClassFinder;
 import io.github.nichetoolkit.mybatis.stereotype.table.RestAlertness;
 import io.github.nichetoolkit.mybatis.stereotype.table.RestIdentity;
 import io.github.nichetoolkit.mybatis.stereotype.RestMapper;

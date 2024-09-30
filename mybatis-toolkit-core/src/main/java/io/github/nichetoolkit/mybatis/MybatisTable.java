@@ -1,5 +1,7 @@
 package io.github.nichetoolkit.mybatis;
 
+import io.github.nichetoolkit.mybatis.consts.EntityConstants;
+import io.github.nichetoolkit.mybatis.consts.SQLConstants;
 import io.github.nichetoolkit.mybatis.error.MybatisIdentityLackError;
 import io.github.nichetoolkit.mybatis.resolver.MybatisGenericTypes;
 import io.github.nichetoolkit.rest.error.lack.ConfigureLackError;
@@ -51,7 +53,7 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
     protected String styleName;
     protected StyleType styleType;
     protected String resultMap;
-    protected boolean autoResultMap;
+    protected boolean autoResultMap = true;
     protected List<ResultMap> autoResultMaps;
 
     protected List<String> excludeFields;
@@ -122,7 +124,7 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
     public String tablename() {
         return Stream.of(this.catalog, this.schema, this.table)
                 .filter(GeneralUtils::isNotEmpty)
-                .collect(Collectors.joining("."));
+                .collect(Collectors.joining(SQLConstants.PERIOD));
     }
 
     public String tablename(String tablename) {
@@ -130,7 +132,7 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
     }
 
     public String tablenameAsAlias(String tablename) {
-        return Optional.ofNullable(tablename).orElse(tablename()) + " AS " + this.alias;
+        return Optional.ofNullable(tablename).orElse(tablename()) + SQLConstants.BLANK + SQLConstants.AS + SQLConstants.BLANK + this.alias;
     }
 
     protected void readyColumns() {
@@ -211,7 +213,7 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
          * identityColumns
          * 优先级别: RestIdentity > RestPrimaryKey > RestIdentityKey > RestUnionKey
          */
-        if (!isCustomIdentity()) {
+        if (!isIdentity()) {
             /* RestIdentityKey  */
             Optional<MybatisColumn> firstIdentity = identityKeyColumns.stream().findFirst();
             firstIdentity.ifPresent(mybatisColumn -> this.identityColumns = Collections.singletonList(mybatisColumn));
@@ -228,6 +230,7 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
         }
     }
 
+    @SuppressWarnings("StatementWithEmptyBody")
     protected void addColumn(MybatisColumn column) {
         /* 不重复添加同名的列 */
         if (!this.tableColumns.contains(column)) {
@@ -250,7 +253,7 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
                 refreshColumn(this.tableColumns, column);
             }
             column.setTable(this);
-        } else if (isCustomIdentity()) {
+        } else if (isIdentity()) {
             /* 同名列在存在, 为自定义主键类型覆盖实体类或父类，进行字段覆盖 */
             int columnIndex = this.tableColumns.indexOf(column);
             MybatisColumn existsColumn = this.tableColumns.remove(columnIndex);
@@ -260,10 +263,9 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
         }
     }
 
-    public boolean isCustomIdentity() {
+    public boolean isIdentity() {
         return Optional.ofNullable(this.identity).isPresent();
     }
-
 
     public List<MybatisField> fields() {
         return this.tableColumns.stream().map(MybatisColumn::getField).collect(Collectors.toList());
@@ -273,7 +275,7 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
         return this.tableColumns.stream().map(MybatisColumn::columnName).collect(Collectors.toList());
     }
 
-    public List<String> aliasColumnNames() {
+    public List<String> columnAliasNames() {
         return this.tableColumns.stream().map(column -> column.aliasColumn(this.alias)).collect(Collectors.toList());
     }
 
@@ -311,7 +313,7 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
         return false;
     }
 
-    public boolean useResultMaps() {
+    public boolean useResultMap() {
         return this.autoResultMaps != null || this.autoResultMap || GeneralUtils.isNotEmpty(this.resultMap);
     }
 
@@ -323,6 +325,7 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
         return false;
     }
 
+    @SuppressWarnings("all")
     public void initContext(Configuration configuration, ProviderContext providerContext, String cacheKey) {
         /* 初始化一次，后续不会重复初始化 */
         if (!this.initiates.contains(configuration)) {
@@ -345,13 +348,13 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
             synchronized (this) {
                 if (this.autoResultMaps == null) {
                     this.autoResultMaps = new ArrayList<>();
-                    String resultMapId = generateResultMapId(providerContext, this.resultMap);
+                    String resultMapId = resultMapId(providerContext, this.resultMap);
                     if (configuration.hasResultMap(resultMapId)) {
                         this.autoResultMaps.add(configuration.getResultMap(resultMapId));
                     } else if (configuration.hasResultMap(this.resultMap)) {
                         this.autoResultMaps.add(configuration.getResultMap(this.resultMap));
                     } else {
-                        throw new ConfigureLackError(this.entity.getName() + " configured resultMap: " + this.resultMap + " not found");
+                        throw new ConfigureLackError(this.entity.getName() + " configured result map: " + this.resultMap + " not found");
                     }
                 }
             }
@@ -368,11 +371,11 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
         }
     }
 
-    protected String generateResultMapId(ProviderContext providerContext, String resultMapId) {
-        if (resultMapId.indexOf(".") > 0) {
+    protected String resultMapId(ProviderContext providerContext, String resultMapId) {
+        if (resultMapId.indexOf(SQLConstants.PERIOD) > 0) {
             return resultMapId;
         }
-        return providerContext.getMapperType().getName() + "." + resultMapId;
+        return providerContext.getMapperType().getName() + SQLConstants.PERIOD + resultMapId;
     }
 
     protected ResultMap autoResultMap(Configuration configuration, ProviderContext providerContext, String cacheKey) {
@@ -386,7 +389,7 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
             }
             String property = column.property();
             if (column.isIdentityColumn()) {
-                property = column.property("id.");
+                property = column.property(EntityConstants.IDENTITY + SQLConstants.PERIOD);
             }
             ResultMapping.Builder builder = new ResultMapping.Builder(configuration, property, columnName, column.javaType());
             if (column.getJdbcType() != null && column.getJdbcType() != JdbcType.UNDEFINED) {
@@ -406,7 +409,7 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
             builder.flags(flags);
             resultMappings.add(builder.build());
         }
-        String resultMapId = generateResultMapId(providerContext, DEFAULT_RESULT_MAP_NAME);
+        String resultMapId = resultMapId(providerContext, DEFAULT_RESULT_MAP_NAME);
         ResultMap.Builder builder = new ResultMap.Builder(configuration, resultMapId, this.entity, resultMappings, true);
         return builder.build();
     }
@@ -418,16 +421,15 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
                 Constructor<?> c = typeHandlerClass.getConstructor(Class.class);
                 return (TypeHandler<?>) c.newInstance(javaTypeClass);
             } catch (NoSuchMethodException ignored) {
-                // ignored
             } catch (Exception e) {
-                throw new TypeException("Failed invoking constructor for handler " + typeHandlerClass, e);
+                throw new TypeException("failed invoking constructor for handler " + typeHandlerClass, e);
             }
         }
         try {
             Constructor<?> c = typeHandlerClass.getConstructor();
             return (TypeHandler<?>) c.newInstance();
         } catch (Exception e) {
-            throw new TypeException("Unable to find a usable constructor for " + typeHandlerClass, e);
+            throw new TypeException("unable to find a usable constructor for " + typeHandlerClass, e);
         }
     }
 
@@ -497,136 +499,134 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
         return Optional.empty();
     }
 
-    public String identityColumnEqualsProperty() {
+    public String sqlOfIdentityColumn() {
         Optional<MybatisColumn> columnOptional = this.identityColumns.stream().findFirst();
         if (columnOptional.isPresent()) {
             return columnOptional.get().columnEqualsProperty();
         }
-        return "";
+        return SQLConstants.Empty;
     }
 
-    public String identityAliasColumnEqualsProperty() {
+    public String sqlOfIdentityAliasColumn() {
         Optional<MybatisColumn> columnOptional = this.identityColumns.stream().findFirst();
         if (columnOptional.isPresent()) {
             return columnOptional.get().aliasColumnEqualsProperty(this.alias);
         }
-        return "";
+        return SQLConstants.Empty;
     }
 
-    public String baseColumnList() {
-        return selectColumns().stream().map(MybatisColumn::columnName).collect(Collectors.joining(", "));
+    public String sqlOfBaseColumns() {
+        return selectColumns().stream().map(MybatisColumn::columnName).collect(Collectors.joining(SQLConstants.COMMA + SQLConstants.BLANK));
     }
 
-    public String baseAliasColumnList() {
-        return selectColumns().stream().map(column -> column.aliasColumn(this.alias)).collect(Collectors.joining(", "));
+    public String sqlOfBaseAliasColumns() {
+        return selectColumns().stream().map(column -> column.aliasColumn(this.alias)).collect(Collectors.joining(SQLConstants.COMMA + SQLConstants.BLANK));
     }
 
-    public String baseColumnAsPropertyList() {
-        //当存在 resultMaps 时，查询列不能用别名
-        if (useResultMaps()) {
-            return baseColumnList();
+    public String asSqlOfBaseColumns() {
+        if (useResultMap()) {
+            return sqlOfBaseColumns();
         }
-        return selectColumns().stream().map(MybatisColumn::columnAsProperty).collect(Collectors.joining(", "));
+        return selectColumns().stream().map(MybatisColumn::columnAsProperty).collect(Collectors.joining(SQLConstants.COMMA + SQLConstants.BLANK));
     }
 
-    public String baseAliasColumnAsPropertyList() {
-        //当存在 resultMaps 时，查询列不能用别名
-        if (useResultMaps()) {
-            return baseColumnList();
+    public String asSqlOfBaseAliasColumns() {
+        if (useResultMap()) {
+            return sqlOfBaseColumns();
         }
-        return selectColumns().stream().map(column -> column.aliasColumnAsProperty(this.alias)).collect(Collectors.joining(", "));
+        return selectColumns().stream().map(column -> column.aliasColumnAsProperty(this.alias)).collect(Collectors.joining(SQLConstants.COMMA + SQLConstants.BLANK));
     }
 
-    public String selectColumnList() {
-        return selectColumns().stream().map(MybatisColumn::columnName).distinct().collect(Collectors.joining(", "));
+    public String sqlOfSelectColumns() {
+        return selectColumns().stream().map(MybatisColumn::columnName).distinct().collect(Collectors.joining(SQLConstants.COMMA + SQLConstants.BLANK));
     }
 
-    public String selectAliasColumnList() {
-        return selectColumns().stream().map(column -> column.aliasColumn(this.alias)).collect(Collectors.joining(", "));
+    public String sqlOfSelectAliasColumns() {
+        return selectColumns().stream().map(column -> column.aliasColumn(this.alias)).collect(Collectors.joining(SQLConstants.COMMA + SQLConstants.BLANK));
     }
 
-    public String insertColumnList() {
-        return insertColumns().stream().map(MybatisColumn::columnName).distinct().collect(Collectors.joining(", "));
+    public String sqlOfInsertColumns() {
+        return insertColumns().stream().map(MybatisColumn::columnName).distinct().collect(Collectors.joining(SQLConstants.COMMA + SQLConstants.BLANK));
     }
 
-    public String insertAliasColumnList() {
-        return insertColumns().stream().map(column -> column.aliasColumn(this.alias)).distinct().collect(Collectors.joining(", "));
+    public String sqlOfInsertAliasColumns() {
+        return insertColumns().stream().map(column -> column.aliasColumn(this.alias)).distinct().collect(Collectors.joining(SQLConstants.COMMA + SQLConstants.BLANK));
     }
 
-    public String identityColumnList() {
-        return identityColumns().stream().map(MybatisColumn::columnName).distinct().collect(Collectors.joining(", "));
+    public String sqlOfIdentityColumns() {
+        return identityColumns().stream().map(MybatisColumn::columnName).distinct().collect(Collectors.joining(SQLConstants.COMMA + SQLConstants.BLANK));
     }
 
-    public String identityAliasColumnList() {
-        return identityColumns().stream().map(column -> column.aliasColumn(this.alias)).distinct().collect(Collectors.joining(", "));
+    public String sqlOfIdentityAliasColumns() {
+        return identityColumns().stream().map(column -> column.aliasColumn(this.alias)).distinct().collect(Collectors.joining(SQLConstants.COMMA + SQLConstants.BLANK));
     }
 
-    public Optional<String> groupByColumnList() {
+    public Optional<String> sqlOfGroupByColumns() {
         Optional<List<MybatisColumn>> groupByColumns = groupByColumns();
         return groupByColumns.map(mybatisColumns -> mybatisColumns.stream().map(MybatisColumn::columnName)
-                .collect(Collectors.joining(", ")));
+                .collect(Collectors.joining(SQLConstants.COMMA + SQLConstants.BLANK)));
     }
 
-    public Optional<String> groupByAliasColumnList() {
+    public Optional<String> sqlOfGroupByAliasColumns() {
         Optional<List<MybatisColumn>> groupByColumns = groupByColumns();
         return groupByColumns.map(mybatisColumns -> mybatisColumns.stream().map(column -> column.aliasColumn(this.alias))
-                .collect(Collectors.joining(", ")));
+                .collect(Collectors.joining(SQLConstants.COMMA + SQLConstants.BLANK)));
     }
 
-    public Optional<String> groupByColumn() {
-        Optional<String> groupByColumnList = groupByColumnList();
-        return groupByColumnList.map(s -> " GROUP BY " + s);
+    public Optional<String> sqlOfGroupBy() {
+        Optional<String> groupByColumnList = sqlOfGroupByColumns();
+        return groupByColumnList.map(s -> SQLConstants.BLANK + SQLConstants.GROUP_BY + SQLConstants.BLANK + s);
     }
 
-    public Optional<String> groupByAliasColumn() {
-        Optional<String> groupByColumnList = groupByAliasColumnList();
-        return groupByColumnList.map(s -> " GROUP BY " + s);
+    public Optional<String> sqlOfGroupByAlias() {
+        Optional<String> groupByColumnList = sqlOfGroupByAliasColumns();
+        return groupByColumnList.map(s -> SQLConstants.BLANK + SQLConstants.GROUP_BY + SQLConstants.BLANK + s);
     }
 
-    public Optional<String> havingColumnList() {
+    public Optional<String> sqlOfHavingColumns() {
         Optional<List<MybatisColumn>> havingColumns = havingColumns();
         return havingColumns.map(mybatisColumns -> mybatisColumns.stream().map(MybatisColumn::columnName)
-                .collect(Collectors.joining(", ")));
+                .collect(Collectors.joining(SQLConstants.COMMA + SQLConstants.BLANK)));
     }
 
-    public Optional<String> havingAliasColumnList() {
+    public Optional<String> sqlOfHavingAliasColumns() {
         Optional<List<MybatisColumn>> havingColumns = havingColumns();
         return havingColumns.map(mybatisColumns -> mybatisColumns.stream().map(column -> column.aliasColumn(this.alias))
-                .collect(Collectors.joining(", ")));
+                .collect(Collectors.joining(SQLConstants.COMMA + SQLConstants.BLANK)));
     }
 
-    public Optional<String> havingColumn() {
-        Optional<String> havingColumnList = havingColumnList();
-        return havingColumnList.map(s -> " HAVING " + s);
+    public Optional<String> sqlOfHaving() {
+        Optional<String> havingColumnList = sqlOfHavingColumns();
+        return havingColumnList.map(s -> SQLConstants.BLANK + SQLConstants.HAVING + SQLConstants.BLANK + s);
     }
 
-    public Optional<String> havingAliasColumn() {
-        Optional<String> havingColumnList = havingAliasColumnList();
-        return havingColumnList.map(s -> " HAVING " + s);
+    public Optional<String> sqlOfHavingAlias() {
+        Optional<String> havingColumnList = sqlOfHavingAliasColumns();
+        return havingColumnList.map(s -> SQLConstants.BLANK + SQLConstants.HAVING + SQLConstants.BLANK + s);
     }
 
-    public Optional<String> orderByColumnList() {
+    public Optional<String> sqlOfOrderByColumns() {
         Optional<List<MybatisColumn>> orderByColumns = orderByColumns();
         return orderByColumns.map(mybatisColumns -> mybatisColumns.stream()
-                .map(column -> column.columnName() + " " + column.getSortType().getKey())
-                .collect(Collectors.joining(", ")));
+                .map(column -> column.columnName() + SQLConstants.BLANK + column.getSortType().getKey())
+                .collect(Collectors.joining(SQLConstants.COMMA + SQLConstants.BLANK)));
     }
 
-    public Optional<String> orderByAliasColumnList() {
+    public Optional<String> sqlOfOrderByAliasColumns() {
         Optional<List<MybatisColumn>> orderByColumns = orderByColumns();
         return orderByColumns.map(mybatisColumns -> mybatisColumns.stream()
-                .map(column -> column.aliasColumn(this.alias) + " " + column.getSortType().getKey())
-                .collect(Collectors.joining(", ")));
+                .map(column -> column.aliasColumn(this.alias) + SQLConstants.BLANK + column.getSortType().getKey())
+                .collect(Collectors.joining(SQLConstants.COMMA + SQLConstants.BLANK)));
     }
 
-    public Optional<String> orderByColumn() {
-        Optional<String> orderColumnList = orderByColumnList();
-        return orderColumnList.map(s -> " ORDER BY " + s);
+    public Optional<String> sqlOfOrderBy() {
+        Optional<String> orderColumnList = sqlOfOrderByColumns();
+        return orderColumnList.map(s -> SQLConstants.BLANK + SQLConstants.ORDER_BY + SQLConstants.BLANK + s);
     }
 
-    public Optional<String> orderByAliasColumn() {
-        Optional<String> orderColumnList = orderByAliasColumnList();
-        return orderColumnList.map(s -> " ORDER BY " + s);
+    public Optional<String> sqlOfOrderByAlias() {
+        Optional<String> orderColumnList = sqlOfOrderByAliasColumns();
+        return orderColumnList.map(s -> SQLConstants.BLANK + SQLConstants.ORDER_BY + SQLConstants.BLANK + s);
     }
 
     public boolean isExcludeSuperClass(Class<?> superClass) {

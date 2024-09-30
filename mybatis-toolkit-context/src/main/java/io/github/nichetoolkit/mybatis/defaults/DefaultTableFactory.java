@@ -17,21 +17,10 @@ import java.util.Arrays;
 import java.util.Map;
 import java.util.Optional;
 
-/**
- * <code>DefaultTableFactory</code>
- * <p>The type default table factory class.</p>
- * @author Cyan (snow22314@outlook.com)
- * @see io.github.nichetoolkit.mybatis.MybatisTableFactory
- * @since Jdk1.8
- */
 public class DefaultTableFactory implements MybatisTableFactory {
 
     private final MybatisTableProperties tableProperties;
 
-    /**
-     * <code>DefaultTableFactory</code>
-     * Instantiates a new default table factory.
-     */
     public DefaultTableFactory() {
         this.tableProperties = ContextUtils.getBean(MybatisTableProperties.class);
     }
@@ -73,14 +62,6 @@ public class DefaultTableFactory implements MybatisTableFactory {
         return mybatisTable;
     }
 
-    /**
-     * <code>restUniqueKeys</code>
-     * <p>the unique keys method.</p>
-     * @param clazz        {@link java.lang.Class} <p>the clazz parameter is <code>Class</code> type.</p>
-     * @param mybatisTable {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>the mybatis table parameter is <code>MybatisTable</code> type.</p>
-     * @see java.lang.Class
-     * @see io.github.nichetoolkit.mybatis.MybatisTable
-     */
     public void restUniqueKeys(Class<?> clazz, MybatisTable mybatisTable) {
         /* restUniqueKeys 注解处理 */
         RestUniqueKeys restUniqueKeys = AnnotationUtils.getAnnotation(clazz, RestUniqueKeys.class);
@@ -89,14 +70,6 @@ public class DefaultTableFactory implements MybatisTableFactory {
         }
     }
 
-    /**
-     * <code>restUnionKeys</code>
-     * <p>the union keys method.</p>
-     * @param clazz        {@link java.lang.Class} <p>the clazz parameter is <code>Class</code> type.</p>
-     * @param mybatisTable {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>the mybatis table parameter is <code>MybatisTable</code> type.</p>
-     * @see java.lang.Class
-     * @see io.github.nichetoolkit.mybatis.MybatisTable
-     */
     public void restUnionKeys(Class<?> clazz, MybatisTable mybatisTable) {
         /* restUnionKeys 注解处理 */
         RestUnionKeys restUnionKeys = AnnotationUtils.getAnnotation(clazz, RestUnionKeys.class);
@@ -105,14 +78,6 @@ public class DefaultTableFactory implements MybatisTableFactory {
         }
     }
 
-    /**
-     * <code>restLinkKeys</code>
-     * <p>the link keys method.</p>
-     * @param clazz        {@link java.lang.Class} <p>the clazz parameter is <code>Class</code> type.</p>
-     * @param mybatisTable {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>the mybatis table parameter is <code>MybatisTable</code> type.</p>
-     * @see java.lang.Class
-     * @see io.github.nichetoolkit.mybatis.MybatisTable
-     */
     public void restLinkKeys(Class<?> clazz, MybatisTable mybatisTable) {
         /* restLinkKeys 注解处理 */
         RestLinkKeys restLinkKeys = AnnotationUtils.getAnnotation(clazz, RestLinkKeys.class);
@@ -121,14 +86,6 @@ public class DefaultTableFactory implements MybatisTableFactory {
         }
     }
 
-    /**
-     * <code>restAlertKeys</code>
-     * <p>the alert keys method.</p>
-     * @param clazz        {@link java.lang.Class} <p>the clazz parameter is <code>Class</code> type.</p>
-     * @param mybatisTable {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>the mybatis table parameter is <code>MybatisTable</code> type.</p>
-     * @see java.lang.Class
-     * @see io.github.nichetoolkit.mybatis.MybatisTable
-     */
     public void restAlertKeys(Class<?> clazz, MybatisTable mybatisTable) {
         /* restAlertKeys 注解处理 */
         RestAlertKeys restAlertKeys = AnnotationUtils.getAnnotation(clazz, RestAlertKeys.class);
@@ -137,16 +94,6 @@ public class DefaultTableFactory implements MybatisTableFactory {
         }
     }
 
-    /**
-     * <code>restStyle</code>
-     * <p>the style method.</p>
-     * @param clazz        {@link java.lang.Class} <p>the clazz parameter is <code>Class</code> type.</p>
-     * @param mybatisTable {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>the mybatis table parameter is <code>MybatisTable</code> type.</p>
-     * @return {@link io.github.nichetoolkit.mybatis.MybatisTableStyle} <p>the style return object is <code>MybatisTableStyle</code> type.</p>
-     * @see java.lang.Class
-     * @see io.github.nichetoolkit.mybatis.MybatisTable
-     * @see io.github.nichetoolkit.mybatis.MybatisTableStyle
-     */
     public MybatisTableStyle restStyle(Class<?> clazz, MybatisTable mybatisTable) {
         /* restStyle 注解处理 */
         MybatisTableStyle mybatisStyle;
@@ -174,14 +121,6 @@ public class DefaultTableFactory implements MybatisTableFactory {
         return mybatisStyle;
     }
 
-    /**
-     * <code>restResultMap</code>
-     * <p>the result map method.</p>
-     * @param clazz        {@link java.lang.Class} <p>the clazz parameter is <code>Class</code> type.</p>
-     * @param mybatisTable {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>the mybatis table parameter is <code>MybatisTable</code> type.</p>
-     * @see java.lang.Class
-     * @see io.github.nichetoolkit.mybatis.MybatisTable
-     */
     public void restResultMap(Class<?> clazz, MybatisTable mybatisTable) {
         /* restResultMap 注解处理 */
         RestResultMap restResultMap = AnnotationUtils.getAnnotation(clazz, RestResultMap.class);
@@ -191,14 +130,6 @@ public class DefaultTableFactory implements MybatisTableFactory {
         }
     }
 
-    /**
-     * <code>restProperties</code>
-     * <p>the properties method.</p>
-     * @param clazz        {@link java.lang.Class} <p>the clazz parameter is <code>Class</code> type.</p>
-     * @param mybatisTable {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>the mybatis table parameter is <code>MybatisTable</code> type.</p>
-     * @see java.lang.Class
-     * @see io.github.nichetoolkit.mybatis.MybatisTable
-     */
     public void restProperties(Class<?> clazz, MybatisTable mybatisTable) {
         /* restResultMap 注解处理 */
         RestProperties restProperties = AnnotationUtils.getAnnotation(clazz, RestProperties.class);
@@ -211,14 +142,6 @@ public class DefaultTableFactory implements MybatisTableFactory {
         }
     }
 
-    /**
-     * <code>restExcludes</code>
-     * <p>the excludes method.</p>
-     * @param clazz        {@link java.lang.Class} <p>the clazz parameter is <code>Class</code> type.</p>
-     * @param mybatisTable {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>the mybatis table parameter is <code>MybatisTable</code> type.</p>
-     * @see java.lang.Class
-     * @see io.github.nichetoolkit.mybatis.MybatisTable
-     */
     public void restExcludes(Class<?> clazz, MybatisTable mybatisTable) {
         /* restIgnores 注解处理 */
         RestExcludes restExcludes = AnnotationUtils.getAnnotation(clazz, RestExcludes.class);
@@ -235,14 +158,6 @@ public class DefaultTableFactory implements MybatisTableFactory {
         }
     }
 
-    /**
-     * <code>restIgnores</code>
-     * <p>the ignores method.</p>
-     * @param clazz        {@link java.lang.Class} <p>the clazz parameter is <code>Class</code> type.</p>
-     * @param mybatisTable {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>the mybatis table parameter is <code>MybatisTable</code> type.</p>
-     * @see java.lang.Class
-     * @see io.github.nichetoolkit.mybatis.MybatisTable
-     */
     public void restIgnores(Class<?> clazz, MybatisTable mybatisTable) {
         /* restIgnores 注解处理 */
         RestIgnores restIgnores = AnnotationUtils.getAnnotation(clazz, RestIgnores.class);

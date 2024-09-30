@@ -12,8 +12,8 @@ public interface MybatisSqlScript {
 
     static String caching(ProviderContext providerContext, MybatisSqlScript sqlScript) throws RestException {
         MybatisTable table = MybatisFactory.createTable(providerContext.getMapperType(), providerContext.getMapperMethod());
-        return MybatisCaching.cache(providerContext, table, () -> {
-            MybatisSqlScript mybatisSqlScript = MybatisSqlScriptWrapper.wrapSqlScript(providerContext, table, sqlScript);
+        return MybatisSqlSourceCaching.cache(providerContext, table, () -> {
+            MybatisSqlScript mybatisSqlScript = MybatisSqlScriptResolver.ofResolve(providerContext, table, sqlScript);
             String sql = mybatisSqlScript.sql(table);
             return String.format(ScriptConstants.SCRIPT_LABEL, sql);
         });

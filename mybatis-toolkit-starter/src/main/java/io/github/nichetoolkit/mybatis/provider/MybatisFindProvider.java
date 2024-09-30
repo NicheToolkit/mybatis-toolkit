@@ -20,11 +20,11 @@ public class MybatisFindProvider implements MybatisProviderResolver {
 
     public static <I> String findDynamicById(ProviderContext providerContext, String tablename, I id) throws RestException {
         OptionalUtils.ofFalse(GeneralUtils.isNotEmpty(id), "the id param of 'findById' method cannot be empty!", message -> new MybatisParamErrorException("findById", "id", message));
-        return MybatisSqlProvider.providing(providerContext, tablename, id, new MybatisSqlProvider() {
+        return MybatisSqlProviders.providing(providerContext, tablename, id, new MybatisSqlProviders() {
             @Override
             public <IDENTITY> String provide(String tablename, MybatisTable table, Map<Integer, List<IDENTITY>> identitySliceMap, MybatisSqlScript sqlScript) throws RestException {
                 OptionalUtils.ofFalse(GeneralUtils.isNotEmpty(table.selectColumns()), "the select columns of table with 'findById' method cannot be empty!", message -> new MybatisTableErrorException("findById", "selectColumns", message));
-                return "SELECT " + table.selectColumnList()
+                return "SELECT " + table.selectColumnSql()
                         + " FROM " + table.tablename(tablename)
                         + identityWhereSql(table, sqlScript);
 
@@ -39,11 +39,11 @@ public class MybatisFindProvider implements MybatisProviderResolver {
     @SuppressWarnings("Duplicates")
     public static <I> String findDynamicAll(ProviderContext providerContext, String tablename, Collection<I> idList) throws RestException {
         OptionalUtils.ofFalse(GeneralUtils.isNotEmpty(idList), "the id list param of 'findByAll' method cannot be empty!", message -> new MybatisParamErrorException("findByAll", "idList", message));
-        return MybatisSqlProvider.providing(providerContext, tablename, idList, new MybatisSqlProvider() {
+        return MybatisSqlProviders.providing(providerContext, tablename, idList, new MybatisSqlProviders() {
             @Override
             public <IDENTITY> String provide(String tablename, MybatisTable table, Map<Integer, List<IDENTITY>> identitySliceMap, MybatisSqlScript sqlScript) throws RestException {
                 OptionalUtils.ofFalse(GeneralUtils.isNotEmpty(table.selectColumns()), "the select columns of table with 'findByAll' method cannot be empty!", message -> new MybatisTableErrorException("findByAll", "selectColumns", message));
-                return "SELECT " + table.selectColumnList()
+                return "SELECT " + table.selectColumnSql()
                         + " FROM " + table.tablename(tablename)
                         + identitiesWhereSql(identitySliceMap, table, sqlScript);
 
@@ -59,7 +59,7 @@ public class MybatisFindProvider implements MybatisProviderResolver {
         OptionalUtils.ofFalse(GeneralUtils.isNotEmpty(whereSql), "the where sql param of 'findAllByWhere' method cannot be empty!", message -> new MybatisParamErrorException("findAllByWhere", "whereSql", message));
         return MybatisSqlScript.caching(providerContext, (table, sqlScript) -> {
             OptionalUtils.ofFalse(GeneralUtils.isNotEmpty(table.selectColumns()), "the select columns of table with 'findAllByWhere' method cannot be empty!", message -> new MybatisTableErrorException("findAllByWhere", "selectColumns", message));
-            return "SELECT " + table.selectColumnList()
+            return "SELECT " + table.selectColumnSql()
                     + " FROM " + table.tablename(tablename)
                     + " WHERE 1=1 "
                     + sqlScript.ifTest("whereSql!=null", () -> "${whereSql}");

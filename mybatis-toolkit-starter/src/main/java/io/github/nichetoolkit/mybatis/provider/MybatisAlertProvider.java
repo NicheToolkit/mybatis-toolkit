@@ -1,8 +1,6 @@
 package io.github.nichetoolkit.mybatis.provider;
 
-import io.github.nichetoolkit.mybatis.MybatisProviderResolver;
-import io.github.nichetoolkit.mybatis.MybatisSqlProvider;
-import io.github.nichetoolkit.mybatis.MybatisSqlScript;
+import io.github.nichetoolkit.mybatis.MybatisSqlProviders;
 import io.github.nichetoolkit.mybatis.MybatisTable;
 import io.github.nichetoolkit.mybatis.error.MybatisParamErrorException;
 import io.github.nichetoolkit.mybatis.error.MybatisTableErrorException;
@@ -27,7 +25,7 @@ public class MybatisAlertProvider implements MybatisProviderResolver {
         ConsumerActuator<MybatisTable> tableOptional = table -> {
             OptionalUtils.ofEmpty(table.getAlertColumn(), "the alert column of table with 'alertById' method cannot be empty!", message -> new MybatisTableErrorException("alertById", "alertColumn", message));
         };
-        return MybatisSqlProvider.providing(providerContext, tablename, id, tableOptional, MybatisSqlProvider.ALERT_BY_ID);
+        return MybatisSqlProviders.providing(providerContext, tablename, id, tableOptional, MybatisSqlProviders.ALERT_BY_ID);
     }
 
     public static <I> String alertAll(ProviderContext providerContext, @Param("idList") Collection<I> idList, @Param("key") Integer key) throws RestException {
@@ -40,7 +38,7 @@ public class MybatisAlertProvider implements MybatisProviderResolver {
         ConsumerActuator<MybatisTable> tableOptional = table -> {
             OptionalUtils.ofEmpty(table.getAlertColumn(), "the alert column of table with 'alertAll' method cannot be empty!", message -> new MybatisTableErrorException("alertAll", "alertColumn", message));
         };
-        return MybatisSqlProvider.providing(providerContext, tablename, idList, tableOptional, MybatisSqlProvider.ALERT_ALL);
+        return MybatisSqlProviders.providing(providerContext, tablename, idList, tableOptional, MybatisSqlProviders.ALERT_ALL);
     }
 
 }

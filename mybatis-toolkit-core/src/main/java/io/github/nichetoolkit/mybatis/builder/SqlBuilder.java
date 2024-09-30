@@ -812,6 +812,19 @@ public final class SqlBuilder implements Serializable, CharSequence {
         return this.keyword(SQLConstants.NOT_IN, false);
     }
 
+    public SqlBuilder orderBy() {
+        return this.keyword(SQLConstants.ORDER_BY, false);
+    }
+
+    public SqlBuilder doNothing() {
+        return this.keyword(SQLConstants.ORDER_BY, false);
+    }
+
+    public SqlBuilder doUpdate() {
+        return this.keyword(SQLConstants.ORDER_BY, false);
+    }
+
+
     public SqlBuilder keyword(String keyword, boolean linefeed) {
         if (linefeed) {
             this.linefeed();

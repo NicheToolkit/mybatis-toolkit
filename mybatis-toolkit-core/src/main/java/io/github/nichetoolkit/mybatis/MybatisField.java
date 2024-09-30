@@ -34,7 +34,7 @@ public class MybatisField {
         this.field.setAccessible(true);
     }
 
-    public boolean isIdentityField() {
+    public boolean isIdentity() {
         return Optional.ofNullable(this.identity).isPresent();
     }
 

@@ -1,7 +1,6 @@
 package io.github.nichetoolkit.mybatis.provider;
 
-import io.github.nichetoolkit.mybatis.MybatisProviderResolver;
-import io.github.nichetoolkit.mybatis.MybatisSqlProvider;
+import io.github.nichetoolkit.mybatis.MybatisSqlProviders;
 import io.github.nichetoolkit.mybatis.MybatisSqlScript;
 import io.github.nichetoolkit.mybatis.MybatisTable;
 import io.github.nichetoolkit.mybatis.error.MybatisParamErrorException;
@@ -42,7 +41,7 @@ public class MybatisOperateProvider implements MybatisProviderResolver {
         OptionalUtils.ofFalse(GeneralUtils.isNotEmpty(idList), "the id list param of 'operateAll' method cannot be empty!", message -> new MybatisParamErrorException("operateAll", "idList", message));
         OptionalUtils.ofFalse(GeneralUtils.isNotEmpty(operate), "the operate param of 'operateAll' method cannot be empty!", message -> new MybatisParamErrorException("operateAll", "operate", message));
 
-        return MybatisSqlProvider.providing(providerContext,tablename,idList, new MybatisSqlProvider() {
+        return MybatisSqlProviders.providing(providerContext,tablename,idList, new MybatisSqlProviders() {
             @Override
             public <IDENTITY> String provide(String tablename, MybatisTable table, Map<Integer, List<IDENTITY>> identitySliceMap, MybatisSqlScript sqlScript) throws RestException {
                 OptionalUtils.ofFalse(GeneralUtils.isNotEmpty(table.getOperateColumn()), "the operate column of table with 'operateAll' method cannot be empty!", message -> new MybatisTableErrorException("operateAll", "operateColumn", message));

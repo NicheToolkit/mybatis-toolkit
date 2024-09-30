@@ -7,6 +7,7 @@ import io.github.nichetoolkit.rest.util.ContextUtils;
 import io.github.nichetoolkit.rest.util.GeneralUtils;
 import io.github.nichetoolkit.mybatis.stereotype.column.*;
 import org.apache.ibatis.type.JdbcType;
+import org.springframework.lang.NonNull;
 
 import java.util.Collections;
 import java.util.List;
@@ -20,10 +21,9 @@ public class DefaultColumnFactory implements MybatisColumnFactory {
         this.tableProperties = ContextUtils.getBean(MybatisTableProperties.class);
     }
 
-
     private boolean excludeSupport(MybatisTable table, MybatisField field) {
         String fieldName = field.fieldName();
-        List<String> globalExcludes = tableProperties.getExcludes();
+        List<String> globalExcludes = this.tableProperties.getExcludes();
         if (GeneralUtils.isNotEmpty(globalExcludes) && globalExcludes.contains(fieldName)) {
             /* 当前字段属于 需要排除的字段名称 返回 false */
             return false;
@@ -56,7 +56,7 @@ public class DefaultColumnFactory implements MybatisColumnFactory {
 
     private void ignoreHandle(MybatisTable table, MybatisField field) {
         String fieldName = field.fieldName();
-        List<String> globalIgnores = tableProperties.getIgnores();
+        List<String> globalIgnores = this.tableProperties.getIgnores();
         if (GeneralUtils.isNotEmpty(globalIgnores) && globalIgnores.contains(fieldName)) {
             /* 当前字段属于 需要排除的字段名称 设置ignored*/
             field.ignored(true);
@@ -81,15 +81,15 @@ public class DefaultColumnFactory implements MybatisColumnFactory {
     }
 
     @Override
-    public boolean supports(MybatisTable table, MybatisField field) {
+    public boolean supports(@NonNull MybatisTable table, @NonNull MybatisField field) {
         ignoreHandle(table, field);
         return excludeSupport(table, field);
     }
 
     @Override
-    public Optional<List<MybatisColumn>> createColumn(MybatisTable mybatisTable, MybatisField field, Chain chain) {
+    public Optional<List<MybatisColumn>> createColumn(@NonNull MybatisTable mybatisTable, @NonNull MybatisField field, Chain chain) {
         /* 默认针对 entity 实体中的所有字段构建 column 数据 */
-        MybatisColumn mybatisColumn = MybatisColumn.of(field, tableProperties.getProperties());
+        MybatisColumn mybatisColumn = MybatisColumn.of(field, this.tableProperties.getProperties());
         boolean fieldIgnored = field.ignored();
         RestColname restName = field.getAnnotation(RestColname.class);
         String columnName = Optional.ofNullable(restName).map(RestColname::name).orElse(null);

@@ -1,7 +1,6 @@
 package io.github.nichetoolkit.mybatis.provider;
 
 import io.github.nichetoolkit.mybatis.MybatisColumn;
-import io.github.nichetoolkit.mybatis.MybatisProviderResolver;
 import io.github.nichetoolkit.mybatis.MybatisSqlScript;
 import io.github.nichetoolkit.mybatis.error.MybatisParamErrorException;
 import io.github.nichetoolkit.mybatis.error.MybatisTableErrorException;
@@ -24,7 +23,7 @@ public class MybatisInfoProvider implements MybatisProviderResolver {
         OptionalUtils.ofFalse(GeneralUtils.isNotEmpty(name), "the name param of 'findByName' method cannot be empty!", message -> new MybatisParamErrorException("findByName", "name", message));
         return MybatisSqlScript.caching(providerContext, table -> {
             OptionalUtils.ofFalse(GeneralUtils.isNotEmpty(table.selectColumns()), "the select columns of table with 'findAllByWhere' method cannot be empty!", message -> new MybatisTableErrorException("findByName", "selectColumns", message));
-            return "SELECT " + table.selectColumnList()
+            return "SELECT " + table.selectColumnSql()
                     + " FROM " + table.tablename(tablename)
                     + " WHERE " + Optional.ofNullable(table.fieldColumn("name"))
                     .map(MybatisColumn::columnEqualsProperty).orElse("name = #{name}")
@@ -41,7 +40,7 @@ public class MybatisInfoProvider implements MybatisProviderResolver {
         OptionalUtils.ofFalse(GeneralUtils.isNotEmpty(id) && GeneralUtils.isNotEmpty(name), "the id and name params of 'findByNameAndNotId' method cannot be empty!", message -> new MybatisParamErrorException("findByNameAndNotId", "id and name", message));
         return MybatisSqlScript.caching(providerContext, table -> {
             OptionalUtils.ofFalse(GeneralUtils.isNotEmpty(table.selectColumns()), "the select columns of table with 'findByNameAndNotId' method cannot be empty!", message -> new MybatisTableErrorException("findByNameAndNotId", "selectColumns", message));
-            return "SELECT " + table.selectColumnList()
+            return "SELECT " + table.selectColumnSql()
                     + " FROM " + table.tablename(tablename)
                     + " WHERE " + Optional.ofNullable(table.fieldColumn("name"))
                     .map(MybatisColumn::columnEqualsProperty).orElse("name = #{name}")
@@ -60,7 +59,7 @@ public class MybatisInfoProvider implements MybatisProviderResolver {
         return MybatisSqlScript.caching(providerContext, table -> {
             OptionalUtils.ofFalse(GeneralUtils.isNotEmpty(table.uniqueColumns()), "the unique columns of table with 'findByEntity' method cannot be empty!", message -> new MybatisTableErrorException("findByEntity", "uniqueColumns", message));
             OptionalUtils.ofFalse(GeneralUtils.isNotEmpty(table.selectColumns()), "the select columns of table with 'findByEntity' method cannot be empty!", message -> new MybatisTableErrorException("findByEntity", "selectColumns", message));
-            return "SELECT " + table.selectColumnList()
+            return "SELECT " + table.selectColumnSql()
                   + " FROM " + table.tablename(tablename)
                   + " WHERE (" + table.uniqueColumns().stream()
                   .map(column -> column.columnEqualsProperty("entity."))
@@ -79,7 +78,7 @@ public class MybatisInfoProvider implements MybatisProviderResolver {
         return MybatisSqlScript.caching(providerContext, table -> {
             OptionalUtils.ofFalse(GeneralUtils.isNotEmpty(table.uniqueColumns()), "the unique columns of table with 'findByEntityAndNotId' method cannot be empty!", message -> new MybatisTableErrorException("findByEntityAndNotId", "uniqueColumns", message));
             OptionalUtils.ofFalse(GeneralUtils.isNotEmpty(table.selectColumns()), "the select columns of table with 'findByEntityAndNotId' method cannot be empty!", message -> new MybatisTableErrorException("findByEntityAndNotId", "selectColumns", message));
-            return "SELECT " + table.selectColumnList()
+            return "SELECT " + table.selectColumnSql()
                    + " FROM " + table.tablename(tablename)
                    + " WHERE (" + table.uniqueColumns().stream()
                    .map(column -> column.columnEqualsProperty("entity."))

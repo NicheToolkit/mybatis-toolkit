@@ -49,6 +49,7 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
     protected boolean uniqueKey;
     protected boolean unionKey;
     protected boolean logicKey;
+
     protected boolean ignored;
 
     protected MybatisColumn(MybatisField field) {
@@ -80,8 +81,8 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
                 | this.alertKey | this.logicKey | this.operateKey;
     }
 
-    public boolean isIdentityColumn() {
-        return this.field.isIdentityField();
+    public boolean isIdentity() {
+        return this.field.isIdentity();
     }
 
     public String columnName() {
