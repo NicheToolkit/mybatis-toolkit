@@ -23,7 +23,7 @@ import io.github.nichetoolkit.rice.InfoEntity;
 public interface MybatisInfoRecord<M extends MybatisInfoMapper<E, I>, E extends InfoEntity<I>, I> extends MybatisMapper<E> {
 
     default M infoMapper() {
-    return MybatisRecordProvider.<M,E, I>defaultInstance().superMapper(clazz());
+    return MybatisRecordProvider.<M,E, I>defaultInstance().superMapper(mapperType());
   }
 
 }

@@ -24,11 +24,4 @@ public class MybatisContextAutoConfigure {
         return new MybatisSqlSourceHolder(cacheProperties);
     }
 
-    @Bean
-    @Primary
-    @ConditionalOnMissingBean(MybatisProviderSupport.class)
-    public MybatisProviderSupport mybatisProvider(MybatisTableProperties tableProperties) {
-        return new DefaultProviderManager(tableProperties);
-    }
-
 }

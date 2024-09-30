@@ -11,7 +11,7 @@ import org.apache.ibatis.builder.annotation.ProviderContext;
 
 import java.util.Collection;
 
-public class MybatisDeleteLinkProvider implements MybatisProviderResolver {
+public class MybatisDeleteLinkProvider {
 
 
     public static <I> String deleteByLinkId(ProviderContext providerContext, I linkId) throws RestException {

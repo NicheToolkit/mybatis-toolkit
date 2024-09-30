@@ -12,7 +12,7 @@ import org.apache.ibatis.builder.annotation.ProviderContext;
 
 import java.util.Collection;
 
-public class MybatisOperateLinkProvider implements MybatisProviderResolver {
+public class MybatisOperateLinkProvider  {
 
 
     public static <I> String operateByLinkId(ProviderContext providerContext, @Param("linkId") I linkId, @Param("operate") Integer operate) throws RestException {

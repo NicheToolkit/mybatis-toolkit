@@ -12,7 +12,7 @@ import org.apache.ibatis.builder.annotation.ProviderContext;
 
 import java.util.Collection;
 
-public class MybatisRemoveLinkProvider implements MybatisProviderResolver {
+public class MybatisRemoveLinkProvider {
 
 
     public static <I> String removeByLinkId(ProviderContext providerContext, @Param("linkId") I linkId, @Param("logicSign") String logicSign) throws RestException {

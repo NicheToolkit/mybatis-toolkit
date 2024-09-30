@@ -8,7 +8,7 @@ import io.github.nichetoolkit.rice.IdEntity;
 public interface MybatisSuperRecord<M extends MybatisSuperMapper<E, I>, E extends IdEntity<I>, I> extends MybatisMapper<E> {
 
     default M superMapper() {
-    return MybatisRecordProvider.<M,E, I>defaultInstance().superMapper(clazz());
+    return MybatisRecordProvider.<M,E, I>defaultInstance().superMapper(mapperType());
   }
 
 }

@@ -150,7 +150,7 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
             if (column.isForceUpdate()) {
                 refreshColumn(this.forceUpdateColumns, column);
             }
-            if (column.isIdentityColumn()) {
+            if (column.isIdentity()) {
                 identityColumns.remove(column);
                 identityColumns.add(0, column);
             }
@@ -195,7 +195,7 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
                 this.uniqueColumns.remove(column);
                 this.uniqueColumns.add(0, column);
             }
-            if (column.isIdentityColumn() && (column.isPrimaryKey() || column.isIdentityKey() || column.isUnionKey())) {
+            if (column.isIdentity() && (column.isPrimaryKey() || column.isIdentityKey() || column.isUnionKey())) {
                 this.identityColumns.remove(column);
                 refreshColumn(this.identityColumns, column);
             }
@@ -241,7 +241,7 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
                 } else if (column.isUnionKey() || column.isLinkKey()) {
                     /*  RestUnionKey 或者 RestLinkKey 放在 identity后面 */
                     refreshColumn(this.tableColumns, column, this.identityIndex);
-                } else if (column.isIdentityKey() || column.isIdentityColumn()) {
+                } else if (column.isIdentityKey() || column.isIdentity()) {
                     refreshColumn(this.tableColumns, column, 0);
                     /* 更新 identityIndex */
                     this.identityIndex++;
@@ -388,7 +388,7 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
                 columnName = matcher.group(1);
             }
             String property = column.property();
-            if (column.isIdentityColumn()) {
+            if (column.isIdentity()) {
                 property = column.property(EntityConstants.IDENTITY + SQLConstants.PERIOD);
             }
             ResultMapping.Builder builder = new ResultMapping.Builder(configuration, property, columnName, column.javaType());
