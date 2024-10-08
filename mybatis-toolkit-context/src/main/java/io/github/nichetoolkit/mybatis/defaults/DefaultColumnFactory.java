@@ -3,7 +3,7 @@ package io.github.nichetoolkit.mybatis.defaults;
 import io.github.nichetoolkit.mybatis.*;
 import io.github.nichetoolkit.mybatis.configure.MybatisTableProperties;
 import io.github.nichetoolkit.mybatis.stereotype.column.RestIdentityKey;
-import io.github.nichetoolkit.rest.util.ContextUtils;
+import io.github.nichetoolkit.rest.util.BeanUtils;
 import io.github.nichetoolkit.rest.util.GeneralUtils;
 import io.github.nichetoolkit.mybatis.stereotype.column.*;
 import org.apache.ibatis.type.JdbcType;
@@ -18,7 +18,7 @@ public class DefaultColumnFactory implements MybatisColumnFactory {
     private final MybatisTableProperties tableProperties;
 
     public DefaultColumnFactory() {
-        this.tableProperties = ContextUtils.getBean(MybatisTableProperties.class);
+        this.tableProperties = BeanUtils.beanOfType(MybatisTableProperties.class);
     }
 
     private boolean excludeSupport(MybatisTable table, MybatisField field) {

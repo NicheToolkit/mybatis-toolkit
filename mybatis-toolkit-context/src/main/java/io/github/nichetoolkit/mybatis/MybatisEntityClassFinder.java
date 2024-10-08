@@ -1,7 +1,6 @@
 package io.github.nichetoolkit.mybatis;
 
 
-import io.github.nichetoolkit.mybatis.resolver.MybatisGenericTypes;
 import io.github.nichetoolkit.rest.reflect.DefaultGenericArrayType;
 import io.github.nichetoolkit.rest.reflect.DefaultParameterizedType;
 import io.github.nichetoolkit.rest.reflect.DefaultWildcardType;

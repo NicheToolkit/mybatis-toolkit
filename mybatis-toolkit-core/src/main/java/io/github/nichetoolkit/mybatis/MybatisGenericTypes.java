@@ -1,4 +1,4 @@
-package io.github.nichetoolkit.mybatis.resolver;
+package io.github.nichetoolkit.mybatis;
 
 import io.github.nichetoolkit.rest.reflect.RestGenericTypes;
 import org.apache.ibatis.annotations.ResultType;

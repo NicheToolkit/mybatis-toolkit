@@ -3,7 +3,6 @@ package io.github.nichetoolkit.mybatis;
 import io.github.nichetoolkit.mybatis.consts.EntityConstants;
 import io.github.nichetoolkit.mybatis.consts.SQLConstants;
 import io.github.nichetoolkit.mybatis.error.MybatisIdentityLackError;
-import io.github.nichetoolkit.mybatis.resolver.MybatisGenericTypes;
 import io.github.nichetoolkit.rest.error.lack.ConfigureLackError;
 import io.github.nichetoolkit.rest.util.GeneralUtils;
 import io.github.nichetoolkit.mybatis.enums.SortType;

@@ -1,6 +1,6 @@
 package io.github.nichetoolkit.mybatis;
 
-import io.github.nichetoolkit.mybatis.helper.ServiceLoaderHelper;
+import org.springframework.core.io.support.SpringFactoriesLoader;
 import org.springframework.lang.NonNull;
 
 import java.lang.reflect.Method;
@@ -81,7 +81,7 @@ public interface MybatisClassFinder extends MybatisOrder {
             if (INSTANCES == null) {
                 synchronized (MybatisClassFinder.class) {
                     if (INSTANCES == null) {
-                        INSTANCES = ServiceLoaderHelper.instances(MybatisClassFinder.class);
+                        INSTANCES = SpringFactoriesLoader.loadFactories(MybatisClassFinder.class, null);
                     }
                 }
             }

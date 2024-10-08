@@ -9,7 +9,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public interface MybatisMapper<E> {
     @SuppressWarnings(value = "unchecked")
     default Class<E> mapperType() {
-        return (Class<E>) Instance.mapperTypeChain(getClass());
+        return (Class<E>) Instance.mapperType(getClass());
     }
 
     default MybatisTable table() {
@@ -20,7 +20,7 @@ public interface MybatisMapper<E> {
 
         private static Map<Class<?>, Class<?>> MAPPER_TYPES;
 
-        private static Class<?> mapperTypeChain(Class<?> clazz) {
+        private static Class<?> mapperType(Class<?> clazz) {
             if (MAPPER_TYPES == null) {
                 MAPPER_TYPES = new ConcurrentHashMap<>();
             }

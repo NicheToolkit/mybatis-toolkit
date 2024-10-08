@@ -1,33 +1,25 @@
 package io.github.nichetoolkit.mybatis;
 
 import io.github.nichetoolkit.mybatis.builder.SqlBuilder;
-import io.github.nichetoolkit.mybatis.configure.MybatisTableProperties;
 import io.github.nichetoolkit.mybatis.consts.SQLConstants;
 import io.github.nichetoolkit.mybatis.enums.DatabaseType;
 import io.github.nichetoolkit.mybatis.error.MybatisIdentityLackError;
 import io.github.nichetoolkit.mybatis.error.MybatisParamErrorException;
-import io.github.nichetoolkit.mybatis.error.MybatisProviderLackError;
 import io.github.nichetoolkit.mybatis.error.MybatisUnrealizedLackError;
-import io.github.nichetoolkit.mybatis.helper.ServiceLoaderHelper;
 import io.github.nichetoolkit.rest.RestException;
 import io.github.nichetoolkit.rest.RestOptional;
 import io.github.nichetoolkit.rest.RestReckon;
 import io.github.nichetoolkit.rest.actuator.ConsumerActuator;
-import io.github.nichetoolkit.rest.actuator.PredicateActuator;
 import io.github.nichetoolkit.rest.stream.RestCollectors;
 import io.github.nichetoolkit.rest.stream.RestStream;
-import io.github.nichetoolkit.rest.util.ContextUtils;
 import io.github.nichetoolkit.rest.util.GeneralUtils;
 import io.github.nichetoolkit.rest.util.OptionalUtils;
 import org.apache.ibatis.builder.annotation.ProviderContext;
-import org.apache.ibatis.builder.annotation.ProviderMethodResolver;
 import org.springframework.lang.Nullable;
 
-import java.lang.reflect.Method;
 import java.util.*;
-import java.util.stream.Collectors;
 
-public interface MybatisSqlProvider extends ProviderMethodResolver, MybatisOrder {
+public interface RestSqlProvider extends MybatisOrder {
 
     @SuppressWarnings("unchecked")
     static <I> Object resolveParameter(I parameter) throws RestException {
@@ -41,36 +33,55 @@ public interface MybatisSqlProvider extends ProviderMethodResolver, MybatisOrder
         }
     }
 
-    static <I> String providing(ProviderContext providerContext, @Nullable String tablename, I id, MybatisSqlProvider sqlProvider) throws RestException {
+    static <I> String providing(ProviderContext providerContext, @Nullable String tablename, I id, RestSqlProvider sqlProvider) throws RestException {
         return providing(providerContext, tablename, id, table -> {
         }, sqlProvider);
     }
 
-    static <I> String providing(ProviderContext providerContext, @Nullable String tablename, I id, ConsumerActuator<MybatisTable> actuator, MybatisSqlProvider sqlProvider) throws RestException {
+    static <I> String providing(ProviderContext providerContext, @Nullable String tablename, I id, ConsumerActuator<MybatisTable> actuator, RestSqlProvider sqlProvider) throws RestException {
         Object identity = resolveParameter(id);
         return MybatisSqlScript.caching(providerContext, (table, sqlScript) -> {
             actuator.actuate(table);
+            String whereSql;
             if (table.isIdentity()) {
                 valueOfIdentity(table, identity);
+                whereSql = customIdentityWhereSql(table, sqlScript);
+            } else {
+                whereSql = defaultIdentityWhereSql(table, sqlScript);
             }
-            return sqlProvider.provide(tablename, table, Collections.emptyMap(), sqlScript);
+            return sqlProvider.provide(tablename, table, whereSql, sqlScript);
         });
     }
 
-    static <I> String providing(ProviderContext providerContext, @Nullable String tablename, Collection<I> idList, MybatisSqlProvider sqlProvider) throws RestException {
+    static <I> String providing(ProviderContext providerContext, @Nullable String tablename, Collection<I> idList, RestSqlProvider sqlProvider) throws RestException {
         return providing(providerContext, tablename, idList, table -> {
         }, sqlProvider);
     }
 
-    static <I> String providing(ProviderContext providerContext, @Nullable String tablename, Collection<I> idList, ConsumerActuator<MybatisTable> actuator, MybatisSqlProvider sqlProvider) throws RestException {
+    static <I> String providing(ProviderContext providerContext, @Nullable String tablename, Collection<I> idList, ConsumerActuator<MybatisTable> actuator, RestSqlProvider sqlProvider) throws RestException {
         return MybatisSqlScript.caching(providerContext, (table, sqlScript) -> {
             actuator.actuate(table);
-            Map<Integer, List<I>> identities = Collections.emptyMap();
+            String whereSql;
             if (table.isIdentity()) {
                 RestStream.stream(idList).forEach(id -> valueOfIdentity(table, id));
-                identities = sliceOfIdentity(table, idList);
+                Map<Integer, List<I>> identities = sliceOfIdentity(table, idList);
+                whereSql = customIdentitiesWhereSql(identities, table, sqlScript);
+            } else {
+                whereSql = defaultIdentitiesWhereSql(table, sqlScript);
             }
-            return sqlProvider.provide(tablename, table, identities, sqlScript);
+            return sqlProvider.provide(tablename, table, whereSql, sqlScript);
+        });
+    }
+
+    static <I> String providing(ProviderContext providerContext, @Nullable String tablename, String whereSql, RestSqlProvider sqlProvider) throws RestException {
+        return providing(providerContext, tablename, whereSql, table -> {
+        }, sqlProvider);
+    }
+
+    static <I> String providing(ProviderContext providerContext, @Nullable String tablename, String whereSql, ConsumerActuator<MybatisTable> actuator, RestSqlProvider sqlProvider) throws RestException {
+        return MybatisSqlScript.caching(providerContext, (table, sqlScript) -> {
+            actuator.actuate(table);
+            return sqlProvider.provide(tablename, table, whereSql, sqlScript);
         });
     }
 
@@ -100,48 +111,17 @@ public interface MybatisSqlProvider extends ProviderMethodResolver, MybatisOrder
         }));
     }
 
-    @Override
-    default Method resolveMethod(ProviderContext context) {
-        DatabaseType databaseType = defaultDatabaseType();
-        List<MybatisSqlProvider> mybatisSqlProviders = Instance.sqlProviderChain(databaseType);
-        String providerName = context.getMapperMethod().getName();
-        String message = "cannot find the provider method with name as " + providerName;
-        Method findMethod = null;
-        for (MybatisSqlProvider provider : mybatisSqlProviders) {
-            Class<? extends MybatisSqlProvider> providerClass = provider.getClass();
-            Method[] providerMethods = providerClass.getMethods();
-            try {
-                PredicateActuator<Method> actuator = method -> method.getName().equals(providerName)
-                        && CharSequence.class.isAssignableFrom(method.getReturnType());
-                RestOptional<Method> methodOptional = RestStream.stream(providerMethods).findAny(actuator);
-                if (methodOptional.isPresent()) {
-                    findMethod = methodOptional.get();
-                    break;
-                }
-            } catch (RestException ignored) {
-            }
-        }
-        return RestOptional.ofNullable(findMethod).orElseThrow(() -> new MybatisProviderLackError(message));
-    }
+    DatabaseType databaseType();
 
-    default DatabaseType defaultDatabaseType() {
-        MybatisTableProperties tableProperties = ContextUtils.getBean(MybatisTableProperties.class);
-        return Optional.ofNullable(tableProperties).map(MybatisTableProperties::getDatabaseType).orElse(DatabaseType.POSTGRESQL);
-    }
-
-    DatabaseType databaseType() throws RestException;
-
-    <I> String provide(@Nullable String tablename, MybatisTable table, Map<Integer, List<I>> identities, MybatisSqlScript sqlScript) throws RestException;
-
+    <I> String provide(@Nullable String tablename, MybatisTable table, String whereSql, MybatisSqlScript sqlScript) throws RestException;
 
     default String updateOfAlertSql(String tablename, MybatisTable table, MybatisSqlScript sqlScript) throws RestException {
         SqlBuilder sqlBuilder = SqlBuilder.sqlBuilder().update().append(table.tablename(tablename))
-                .set().eq("update_time","now()",null);
+                .set().eq("update_time", "now()", null);
         return "UPDATE " + table.tablename(tablename)
                 + " SET update_time = now(),"
                 + table.getAlertColumn().columnEqualsKey();
     }
-
 
     default String updateOfAlertByFieldSql(String tablename, MybatisTable table, MybatisSqlScript sqlScript) throws RestException {
         SqlBuilder sqlBuilder = SqlBuilder.sqlBuilder()
@@ -197,30 +177,14 @@ public interface MybatisSqlProvider extends ProviderMethodResolver, MybatisOrder
         return sqlBuilder.toString();
     }
 
-    default String identityWhereSql(MybatisTable table, MybatisSqlScript sqlScript) throws RestException {
-        if (table.isIdentity()) {
-            return customIdentityWhereSql(table, sqlScript);
-        } else {
-            return defaultIdentityWhereSql(table, sqlScript);
-        }
-    }
-
-    default <I> String identitiesWhereSql(Map<Integer, List<I>> identitySliceMap, MybatisTable table, MybatisSqlScript sqlScript) throws RestException {
-        if (table.isIdentity()) {
-            return customIdentitiesWhereSql(identitySliceMap, table, sqlScript);
-        } else {
-            return defaultIdentitiesWhereSql(table, sqlScript);
-        }
-    }
-
-    default String defaultIdentityWhereSql(MybatisTable table, MybatisSqlScript sqlScript) throws RestException {
+    static String defaultIdentityWhereSql(MybatisTable table, MybatisSqlScript sqlScript) throws RestException {
         StringBuilder sqlBuilder = new StringBuilder(" WHERE ");
         RestOptional<MybatisColumn> columnOptional = RestStream.stream(table.identityColumns()).findFirst();
         columnOptional.ifNullPresent(column -> sqlBuilder.append(table.sqlOfIdentityColumn()));
         return sqlBuilder.toString();
     }
 
-    default String defaultIdentitiesWhereSql(MybatisTable table, MybatisSqlScript sqlScript) throws RestException {
+    static String defaultIdentitiesWhereSql(MybatisTable table, MybatisSqlScript sqlScript) throws RestException {
         StringBuilder sqlBuilder = new StringBuilder(" WHERE ");
         RestOptional<MybatisColumn> columnOptional = RestStream.stream(table.identityColumns()).findFirst();
         columnOptional.ifNullPresent(column -> {
@@ -231,7 +195,7 @@ public interface MybatisSqlProvider extends ProviderMethodResolver, MybatisOrder
         return sqlBuilder.toString();
     }
 
-    default String customIdentityWhereSql(MybatisTable table, MybatisSqlScript sqlScript) throws RestException {
+    static String customIdentityWhereSql(MybatisTable table, MybatisSqlScript sqlScript) throws RestException {
         StringBuilder sqlBuilder = new StringBuilder(" WHERE 1=1 ");
         sqlBuilder.append(SQLConstants.LINEFEED);
         String identityTestSql = RestStream.stream(table.identityColumns())
@@ -248,7 +212,7 @@ public interface MybatisSqlProvider extends ProviderMethodResolver, MybatisOrder
      * SELECT template_pk1, template_pk2, name, description, time, update_time, create_time, logic_sign
      * FROM ntr_template WHERE 1=1 AND ((template_pk1) IN (('1' )) OR (template_pk2) IN (('3' )))
      */
-    default <I> String customIdentitiesWhereSql(Map<Integer, List<I>> identitySliceMap, MybatisTable table, MybatisSqlScript sqlScript) throws RestException {
+    static <I> String customIdentitiesWhereSql(Map<Integer, List<I>> identitySliceMap, MybatisTable table, MybatisSqlScript sqlScript) throws RestException {
         SqlBuilder sqlBuilder = new SqlBuilder(" WHERE 1=1 ");
         sqlBuilder.append(SQLConstants.LINEFEED);
         sqlBuilder.append("AND (");
@@ -294,37 +258,15 @@ public interface MybatisSqlProvider extends ProviderMethodResolver, MybatisOrder
     }
 
 
-    interface SimpleSqlProvider extends MybatisSqlProvider {
+    interface SimpleSqlProvider extends RestSqlProvider {
 
         @Override
-        default <I> String provide(@Nullable String tablename, MybatisTable mybatisTable, Map<Integer, List<I>> identitySliceMap, MybatisSqlScript sqlScript) throws RestException {
-            return provide(tablename, mybatisTable, identitySliceMap, sqlScript, this);
+        default <I> String provide(@Nullable String tablename, MybatisTable mybatisTable, String whereSql, MybatisSqlScript sqlScript) throws RestException {
+            return provide(tablename, mybatisTable, whereSql, sqlScript, this);
         }
 
-        <I> String provide(@Nullable String tablename, MybatisTable mybatisTable, Map<Integer, List<I>> identitySliceMap, MybatisSqlScript sqlScript, MybatisSqlProvider sqlProvider) throws RestException;
+        <I> String provide(@Nullable String tablename, MybatisTable mybatisTable, String whereSql, MybatisSqlScript sqlScript, RestSqlProvider sqlProvider) throws RestException;
 
-    }
-
-    class Instance {
-
-        private static volatile Map<DatabaseType, List<MybatisSqlProvider>> SQL_PROVIDERS;
-
-        public static List<MybatisSqlProvider> sqlProviderChain(DatabaseType databaseType) {
-            String messageOfSqlProviders = "the sql providers can not load from service loader";
-            String messageOfDatabaseType = "the sql providers can not found, maybe it is unsupported with '" + databaseType.name() + "' type";
-            if (SQL_PROVIDERS == null) {
-                synchronized (MybatisSqlProvider.class) {
-                    if (SQL_PROVIDERS == null) {
-                        List<MybatisSqlProvider> sqlProviders = ServiceLoaderHelper.instances(MybatisSqlProvider.class);
-                        RestOptional<List<MybatisSqlProvider>> sqlProvidersOptional = RestOptional.ofEmptyable(sqlProviders);
-                        OptionalUtils.ofEmptyError(sqlProvidersOptional, messageOfSqlProviders, MybatisProviderLackError::new);
-                        SQL_PROVIDERS = sqlProviders.stream().collect(Collectors.groupingBy(MybatisSqlProvider::defaultDatabaseType));
-                    }
-                }
-            }
-            OptionalUtils.ofFalseError(SQL_PROVIDERS.containsKey(databaseType), messageOfDatabaseType, MybatisProviderLackError::new);
-            return SQL_PROVIDERS.get(databaseType);
-        }
     }
 
 

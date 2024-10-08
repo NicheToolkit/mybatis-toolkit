@@ -1,8 +1,8 @@
 package io.github.nichetoolkit.mybatis;
 
-import io.github.nichetoolkit.mybatis.helper.ServiceLoaderHelper;
 import org.apache.ibatis.builder.annotation.ProviderContext;
 import org.apache.ibatis.mapping.MappedStatement;
+import org.springframework.core.io.support.SpringFactoriesLoader;
 
 import java.util.List;
 
@@ -22,7 +22,7 @@ public interface MybatisHandler extends MybatisOrder {
 
         public static List<MybatisHandler> handlerChain() {
             if (HANDLERS == null) {
-                HANDLERS = ServiceLoaderHelper.instances(MybatisHandler.class);
+                HANDLERS = SpringFactoriesLoader.loadFactories(MybatisHandler.class, null);
             }
             return HANDLERS;
         }

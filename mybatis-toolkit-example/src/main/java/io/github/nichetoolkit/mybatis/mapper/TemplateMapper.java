@@ -6,5 +6,5 @@ import io.github.nichetoolkit.mybatis.stereotype.RestMapper;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
-public interface TemplateMapper extends MybatisInfoMapper<TemplateEntity, TemplateIdentity>, MybatisRemoveMapper<TemplateIdentity> {
+public interface TemplateMapper extends MybatisInfoMapper<TemplateEntity, TemplateIdentity> {
 }

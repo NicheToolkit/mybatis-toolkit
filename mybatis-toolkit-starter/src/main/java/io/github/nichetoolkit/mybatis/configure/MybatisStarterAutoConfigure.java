@@ -1,17 +1,22 @@
 package io.github.nichetoolkit.mybatis.configure;
 
+import io.github.nichetoolkit.mybatis.MybatisSqlProviderHolder;
+import io.github.nichetoolkit.mybatis.RestSqlProvider;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.*;
 import org.springframework.core.type.AnnotationMetadata;
 import org.springframework.lang.NonNull;
 
+import java.util.List;
+
 @Slf4j
 @AutoConfiguration
 @ComponentScan(basePackages = {"io.github.nichetoolkit.mybatis"})
-@Import({ MybatisStarterAutoConfigure.MybatisMapperAutoRegister.class})
+@Import({MybatisStarterAutoConfigure.MybatisMapperAutoRegister.class})
 @ImportAutoConfiguration({MybatisRecordAutoConfigure.class})
 public class MybatisStarterAutoConfigure {
 
@@ -23,9 +28,16 @@ public class MybatisStarterAutoConfigure {
 
         @Override
         public void registerBeanDefinitions(@NonNull AnnotationMetadata importingClassMetadata, @NonNull BeanDefinitionRegistry registry) {
-            MybatisRestMapperScanner scanner = new MybatisRestMapperScanner(registry,false);
+            MybatisRestMapperScanner scanner = new MybatisRestMapperScanner(registry, false);
             scanner.registerFilters();
             scanner.doScan("io.github.nichetoolkit.mybatis");
         }
+    }
+
+    @Bean
+    @Primary
+    @ConditionalOnMissingBean(MybatisSqlProviderHolder.class)
+    public MybatisSqlProviderHolder sqlProviderHolder(MybatisTableProperties tableProperties, List<RestSqlProvider> sqlProviders) {
+        return new MybatisSqlProviderHolder(tableProperties, sqlProviders);
     }
 }

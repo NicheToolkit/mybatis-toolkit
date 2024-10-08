@@ -35,11 +35,11 @@ public class MybatisSqlSourceCaching extends XMLLanguageDriver {
 
     public static String cache(ProviderContext providerContext, MybatisTable entity, SupplierActuator<String> sqlScriptSupplier) throws RestException {
         String cacheKey = cacheKey(providerContext);
-        if (!MybatisSqlSourceHolder.containsKey(cacheKey)) {
+        if (!MybatisContextHolder.containsKey(cacheKey)) {
             isPresentLang(providerContext);
             synchronized (cacheKey) {
-                if (!MybatisSqlSourceHolder.containsKey(cacheKey)) {
-                    MybatisSqlSourceHolder.putSqlCache(cacheKey, new MybatisSqlCache(
+                if (!MybatisContextHolder.containsKey(cacheKey)) {
+                    MybatisContextHolder.putSqlCache(cacheKey, new MybatisSqlCache(
                             Objects.requireNonNull(providerContext),
                             Objects.requireNonNull(entity),
                             Objects.requireNonNull(sqlScriptSupplier)));
@@ -57,21 +57,21 @@ public class MybatisSqlSourceCaching extends XMLLanguageDriver {
          * 没有调用过 MybatisCaching.cache 方法的，属于默认方式，可能是误加 @Lang(MybatisCaching.class) 注解，这里执行 else 中默认的方式
          * 先判断 CACHE_SQL 中是否有此 script，有就是调用过 MybatisCaching.cache 方法后的 cacheKey
          */
-        if (MybatisSqlSourceHolder.containsKey(script)) {
+        if (MybatisContextHolder.containsKey(script)) {
             /* 为了容易理解，使用 cacheKey 变量代替 script */
             String cacheKey = script;
             /* 判断是否已经解析过 */
-            if (!(MybatisSqlSourceHolder.containsKey(configuration) && MybatisSqlSourceHolder.containsKey(configuration, cacheKey))) {
+            if (!(MybatisContextHolder.containsKey(configuration) && MybatisContextHolder.containsKey(configuration, cacheKey))) {
                 synchronized (cacheKey) {
-                    if (!(MybatisSqlSourceHolder.containsKey(configuration) && MybatisSqlSourceHolder.containsKey(configuration, cacheKey))) {
+                    if (!(MybatisContextHolder.containsKey(configuration) && MybatisContextHolder.containsKey(configuration, cacheKey))) {
                         /* 取出缓存的信息 */
-                        MybatisSqlCache sqlCache = MybatisSqlSourceHolder.getSqlCache(cacheKey);
+                        MybatisSqlCache sqlCache = MybatisContextHolder.getSqlCache(cacheKey);
                         if (sqlCache == MybatisSqlCache.NULL_SQL_CACHE) {
                             throw new ConfigureLackError(script + " => CACHE_SQL is NULL, you need to configure nichetoolkit.mybatis.table.cache-sql.use-once=false");
                         }
                         /* 初始化 MybatisTable，每个方法执行一次，可以利用 configuration 进行一些特殊操作 */
                         sqlCache.table().initContext(configuration, sqlCache.context(), cacheKey);
-                        Map<String, SqlSource> sqlSources = MybatisSqlSourceHolder.computeIfAbsent(configuration);
+                        Map<String, SqlSource> sqlSources = MybatisContextHolder.computeIfAbsent(configuration);
                         /* 定制化处理 mappedStatement */
                         MappedStatement mappedStatement = configuration.getMappedStatement(cacheKey);
                         MybatisHandler.ofHandle(sqlCache.table(), mappedStatement, sqlCache.context());
@@ -90,13 +90,13 @@ public class MybatisSqlSourceCaching extends XMLLanguageDriver {
                         sqlSource = MybatisSqlSourceProvider.ofProvide(sqlSource, sqlCache.table(), mappedStatement, sqlCache.context());
                         sqlSources.put(cacheKey, sqlSource);
                         /* 取消cache对象的引用，减少内存占用 */
-                        if (MybatisSqlSourceHolder.isUseOnce()) {
-                            MybatisSqlSourceHolder.putSqlCache(cacheKey, MybatisSqlCache.NULL_SQL_CACHE);
+                        if (MybatisContextHolder.isUseOnce()) {
+                            MybatisContextHolder.putSqlCache(cacheKey, MybatisSqlCache.NULL_SQL_CACHE);
                         }
                     }
                 }
             }
-            return MybatisSqlSourceHolder.getSqlSource(configuration, cacheKey);
+            return MybatisContextHolder.getSqlSource(configuration, cacheKey);
         } else {
             return super.createSqlSource(configuration, script, parameterType);
         }

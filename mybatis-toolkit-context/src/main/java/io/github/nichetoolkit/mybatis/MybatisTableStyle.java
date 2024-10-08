@@ -2,8 +2,8 @@ package io.github.nichetoolkit.mybatis;
 
 import io.github.nichetoolkit.mybatis.consts.StyleConstants;
 import io.github.nichetoolkit.mybatis.enums.StyleType;
-import io.github.nichetoolkit.mybatis.helper.ServiceLoaderHelper;
 import io.github.nichetoolkit.rest.error.lack.InterfaceLackError;
+import org.springframework.core.io.support.SpringFactoriesLoader;
 import org.springframework.lang.NonNull;
 
 import java.util.HashMap;
@@ -20,7 +20,7 @@ public interface MybatisTableStyle {
 
     Map<String, MybatisTableStyle> STYLE_MAP = new HashMap<String, MybatisTableStyle>() {
         {
-            List<MybatisTableStyle> instances = ServiceLoaderHelper.instances(MybatisTableStyle.class);
+            List<MybatisTableStyle> instances = SpringFactoriesLoader.loadFactories(MybatisTableStyle.class, null);
             for (MybatisTableStyle instance : instances) {
                 put(instance.getStyleName(), instance);
             }

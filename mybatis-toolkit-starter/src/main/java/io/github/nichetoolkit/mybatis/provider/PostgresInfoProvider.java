@@ -13,7 +13,7 @@ import org.apache.ibatis.builder.annotation.ProviderContext;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-public class MybatisInfoProvider {
+public class PostgresInfoProvider {
 
     public static String findByName(ProviderContext providerContext, @Param("name") String name, @Param("logicValue") String logicValue) throws RestException {
         return findDynamicByName(providerContext, null, name, logicValue);

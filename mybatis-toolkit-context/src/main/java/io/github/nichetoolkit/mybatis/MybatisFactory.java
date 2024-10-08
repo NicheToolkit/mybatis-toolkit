@@ -2,12 +2,12 @@ package io.github.nichetoolkit.mybatis;
 
 import io.github.nichetoolkit.mybatis.defaults.DefaultColumnFactoryChain;
 import io.github.nichetoolkit.mybatis.defaults.DefaultTableFactoryChain;
-import io.github.nichetoolkit.mybatis.helper.ServiceLoaderHelper;
 import io.github.nichetoolkit.mybatis.stereotype.column.RestIdentityKey;
 import io.github.nichetoolkit.rest.RestException;
 import io.github.nichetoolkit.rest.error.lack.InterfaceLackError;
 import io.github.nichetoolkit.rest.util.GeneralUtils;
 import io.github.nichetoolkit.rest.util.OptionalUtils;
+import org.springframework.core.io.support.SpringFactoriesLoader;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 
@@ -111,8 +111,7 @@ public abstract class MybatisFactory {
                     optionalColumns.ifPresent(columns -> columns.forEach(table::addColumn));
                 }
             }
-            /* 迭代获取父类 */
-            /* 排除父类 */
+            /* 排除父类,迭代获取父类 */
             do {
                 declaredClass = declaredClass.getSuperclass();
             } while (table.isExcludeSuperClass(declaredClass) && declaredClass != Object.class);
@@ -136,7 +135,7 @@ public abstract class MybatisFactory {
             if (TABLE_FACTORY_CHAIN == null) {
                 synchronized (MybatisFactory.class) {
                     if (TABLE_FACTORY_CHAIN == null) {
-                        List<MybatisTableFactory> mybatisTableFactories = ServiceLoaderHelper.instances(MybatisTableFactory.class);
+                        List<MybatisTableFactory> mybatisTableFactories = SpringFactoriesLoader.loadFactories(MybatisTableFactory.class, null);
                         TABLE_FACTORY_CHAIN = new DefaultTableFactoryChain(mybatisTableFactories);
                     }
                 }
@@ -148,7 +147,7 @@ public abstract class MybatisFactory {
             if (COLUMN_FACTORY_CHAIN == null) {
                 synchronized (MybatisFactory.class) {
                     if (COLUMN_FACTORY_CHAIN == null) {
-                        List<MybatisColumnFactory> mybatisColumnFactories = ServiceLoaderHelper.instances(MybatisColumnFactory.class);
+                        List<MybatisColumnFactory> mybatisColumnFactories = SpringFactoriesLoader.loadFactories(MybatisColumnFactory.class, null);
                         COLUMN_FACTORY_CHAIN = new DefaultColumnFactoryChain(mybatisColumnFactories);
                     }
                 }
