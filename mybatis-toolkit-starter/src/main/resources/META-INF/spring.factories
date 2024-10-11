@@ -1,1 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=io.github.nichetoolkit.mybatis.configure.MybatisStarterAutoConfigure
+io.github.nichetoolkit.rice.DefaultServiceIntend=io.github.nichetoolkit.mybatis.MybatisSqlProviderHolder

@@ -8,18 +8,18 @@ import io.github.nichetoolkit.rest.actuator.SupplierActuator;
 import io.github.nichetoolkit.rest.util.OptionalUtils;
 import org.apache.ibatis.builder.annotation.ProviderContext;
 
-public interface MybatisSqlScript {
+public interface MybatisSqlScript extends MybatisOrder {
 
     static String caching(ProviderContext providerContext, MybatisSqlScript sqlScript) throws RestException {
         MybatisTable table = MybatisFactory.createTable(providerContext.getMapperType(), providerContext.getMapperMethod());
         return MybatisSqlSourceCaching.cache(providerContext, table, () -> {
-            MybatisSqlScript mybatisSqlScript = MybatisSqlScriptResolver.ofResolve(providerContext, table, sqlScript);
-            String sql = mybatisSqlScript.sql(table);
+            MybatisSqlScript restSqlScript = MybatisSqlScriptResolver.ofResolve(providerContext, table, sqlScript);
+            String sql = restSqlScript.sql(table);
             return String.format(ScriptConstants.SCRIPT_LABEL, sql);
         });
     }
 
-    static String caching(ProviderContext providerContext, SimpleSqlScript sqlScript) throws RestException {
+    static String caching(ProviderContext providerContext, MybatisSqlScript.SimpleSqlScript sqlScript) throws RestException {
         return caching(providerContext, (MybatisSqlScript) sqlScript);
     }
 
@@ -108,6 +108,7 @@ public interface MybatisSqlScript {
     default String bind(String name, String value) {
         return String.format(ScriptConstants.BIND_LABEL, name, value);
     }
+
 
     interface LinefeedSupplier extends SupplierActuator<String> {
 

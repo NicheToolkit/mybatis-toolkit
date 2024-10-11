@@ -1,10 +1,10 @@
 package io.github.nichetoolkit.mybatis.defaults;
 
+import io.github.nichetoolkit.mybatis.MybatisContextHolder;
 import io.github.nichetoolkit.mybatis.MybatisTableStyle;
 import io.github.nichetoolkit.mybatis.MybatisTable;
 import io.github.nichetoolkit.mybatis.MybatisTableFactory;
 import io.github.nichetoolkit.mybatis.configure.MybatisTableProperties;
-import io.github.nichetoolkit.rest.util.ContextUtils;
 import io.github.nichetoolkit.rest.util.GeneralUtils;
 import io.github.nichetoolkit.mybatis.enums.StyleType;
 import io.github.nichetoolkit.mybatis.stereotype.table.RestProperties;
@@ -22,7 +22,7 @@ public class DefaultTableFactory implements MybatisTableFactory {
     private final MybatisTableProperties tableProperties;
 
     public DefaultTableFactory() {
-        this.tableProperties = ContextUtils.getBean(MybatisTableProperties.class);
+        this.tableProperties = MybatisContextHolder.tableProperties();
     }
 
     @Override

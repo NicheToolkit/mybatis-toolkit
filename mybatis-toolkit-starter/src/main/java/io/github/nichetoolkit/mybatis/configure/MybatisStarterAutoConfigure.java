@@ -1,17 +1,14 @@
 package io.github.nichetoolkit.mybatis.configure;
 
-import io.github.nichetoolkit.mybatis.MybatisSqlProviderHolder;
-import io.github.nichetoolkit.mybatis.RestSqlProvider;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.context.annotation.*;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.ImportBeanDefinitionRegistrar;
 import org.springframework.core.type.AnnotationMetadata;
 import org.springframework.lang.NonNull;
-
-import java.util.List;
 
 @Slf4j
 @AutoConfiguration
@@ -32,12 +29,5 @@ public class MybatisStarterAutoConfigure {
             scanner.registerFilters();
             scanner.doScan("io.github.nichetoolkit.mybatis");
         }
-    }
-
-    @Bean
-    @Primary
-    @ConditionalOnMissingBean(MybatisSqlProviderHolder.class)
-    public MybatisSqlProviderHolder sqlProviderHolder(MybatisTableProperties tableProperties, List<RestSqlProvider> sqlProviders) {
-        return new MybatisSqlProviderHolder(tableProperties, sqlProviders);
     }
 }

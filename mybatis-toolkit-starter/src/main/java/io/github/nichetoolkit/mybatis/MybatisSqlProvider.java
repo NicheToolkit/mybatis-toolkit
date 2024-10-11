@@ -17,12 +17,17 @@ import io.github.nichetoolkit.rest.util.OptionalUtils;
 import org.apache.ibatis.builder.annotation.ProviderContext;
 import org.springframework.lang.Nullable;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
-public interface RestSqlProvider extends MybatisOrder {
+public interface MybatisSqlProvider {
+
+    DatabaseType databaseType();
 
     @SuppressWarnings("unchecked")
-    static <I> Object resolveParameter(I parameter) throws RestException {
+    static <I> Object provideParameter(I parameter) throws RestException {
         Class<?> parameterClass = parameter.getClass();
         if (Map.class.isAssignableFrom(parameterClass)) {
             Map<String, ?> param = (Map<String, ?>) parameter;
@@ -33,13 +38,13 @@ public interface RestSqlProvider extends MybatisOrder {
         }
     }
 
-    static <I> String providing(ProviderContext providerContext, @Nullable String tablename, I id, RestSqlProvider sqlProvider) throws RestException {
+    static <I> String providing(ProviderContext providerContext, @Nullable String tablename, I id, MybatisSqlSupply sqlSupply) throws RestException {
         return providing(providerContext, tablename, id, table -> {
-        }, sqlProvider);
+        }, sqlSupply);
     }
 
-    static <I> String providing(ProviderContext providerContext, @Nullable String tablename, I id, ConsumerActuator<MybatisTable> actuator, RestSqlProvider sqlProvider) throws RestException {
-        Object identity = resolveParameter(id);
+    static <I> String providing(ProviderContext providerContext, @Nullable String tablename, I id, ConsumerActuator<MybatisTable> actuator, MybatisSqlSupply sqlSupply) throws RestException {
+        Object identity = provideParameter(id);
         return MybatisSqlScript.caching(providerContext, (table, sqlScript) -> {
             actuator.actuate(table);
             String whereSql;
@@ -49,16 +54,16 @@ public interface RestSqlProvider extends MybatisOrder {
             } else {
                 whereSql = defaultIdentityWhereSql(table, sqlScript);
             }
-            return sqlProvider.provide(tablename, table, whereSql, sqlScript);
+            return sqlSupply.supply(tablename, table, whereSql, sqlScript);
         });
     }
 
-    static <I> String providing(ProviderContext providerContext, @Nullable String tablename, Collection<I> idList, RestSqlProvider sqlProvider) throws RestException {
+    static <I> String providing(ProviderContext providerContext, @Nullable String tablename, Collection<I> idList, MybatisSqlSupply sqlSupply) throws RestException {
         return providing(providerContext, tablename, idList, table -> {
-        }, sqlProvider);
+        }, sqlSupply);
     }
 
-    static <I> String providing(ProviderContext providerContext, @Nullable String tablename, Collection<I> idList, ConsumerActuator<MybatisTable> actuator, RestSqlProvider sqlProvider) throws RestException {
+    static <I> String providing(ProviderContext providerContext, @Nullable String tablename, Collection<I> idList, ConsumerActuator<MybatisTable> actuator, MybatisSqlSupply sqlSupply) throws RestException {
         return MybatisSqlScript.caching(providerContext, (table, sqlScript) -> {
             actuator.actuate(table);
             String whereSql;
@@ -69,19 +74,19 @@ public interface RestSqlProvider extends MybatisOrder {
             } else {
                 whereSql = defaultIdentitiesWhereSql(table, sqlScript);
             }
-            return sqlProvider.provide(tablename, table, whereSql, sqlScript);
+            return sqlSupply.supply(tablename, table, whereSql, sqlScript);
         });
     }
 
-    static <I> String providing(ProviderContext providerContext, @Nullable String tablename, String whereSql, RestSqlProvider sqlProvider) throws RestException {
+    static <I> String providing(ProviderContext providerContext, @Nullable String tablename, String whereSql, MybatisSqlSupply sqlProvider) throws RestException {
         return providing(providerContext, tablename, whereSql, table -> {
         }, sqlProvider);
     }
 
-    static <I> String providing(ProviderContext providerContext, @Nullable String tablename, String whereSql, ConsumerActuator<MybatisTable> actuator, RestSqlProvider sqlProvider) throws RestException {
+    static <I> String providing(ProviderContext providerContext, @Nullable String tablename, String whereSql, ConsumerActuator<MybatisTable> actuator, MybatisSqlSupply sqlSupply) throws RestException {
         return MybatisSqlScript.caching(providerContext, (table, sqlScript) -> {
             actuator.actuate(table);
-            return sqlProvider.provide(tablename, table, whereSql, sqlScript);
+            return sqlSupply.supply(tablename, table, whereSql, sqlScript);
         });
     }
 
@@ -110,10 +115,6 @@ public interface RestSqlProvider extends MybatisOrder {
             return indexValue;
         }));
     }
-
-    DatabaseType databaseType();
-
-    <I> String provide(@Nullable String tablename, MybatisTable table, String whereSql, MybatisSqlScript sqlScript) throws RestException;
 
     default String updateOfAlertSql(String tablename, MybatisTable table, MybatisSqlScript sqlScript) throws RestException {
         SqlBuilder sqlBuilder = SqlBuilder.sqlBuilder().update().append(table.tablename(tablename))
@@ -256,18 +257,5 @@ public interface RestSqlProvider extends MybatisOrder {
         sqlBuilder.delete(sqlBuilder.length() - 4, sqlBuilder.length()).append(")");
         return sqlBuilder.toString();
     }
-
-
-    interface SimpleSqlProvider extends RestSqlProvider {
-
-        @Override
-        default <I> String provide(@Nullable String tablename, MybatisTable mybatisTable, String whereSql, MybatisSqlScript sqlScript) throws RestException {
-            return provide(tablename, mybatisTable, whereSql, sqlScript, this);
-        }
-
-        <I> String provide(@Nullable String tablename, MybatisTable mybatisTable, String whereSql, MybatisSqlScript sqlScript, RestSqlProvider sqlProvider) throws RestException;
-
-    }
-
 
 }

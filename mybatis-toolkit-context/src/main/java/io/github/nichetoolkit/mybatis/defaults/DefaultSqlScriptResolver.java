@@ -1,12 +1,7 @@
 package io.github.nichetoolkit.mybatis.defaults;
 
-import io.github.nichetoolkit.mybatis.MybatisOrder;
-import io.github.nichetoolkit.mybatis.MybatisSqlScript;
-import io.github.nichetoolkit.mybatis.MybatisSqlScriptResolver;
-import io.github.nichetoolkit.mybatis.MybatisTable;
+import io.github.nichetoolkit.mybatis.*;
 import io.github.nichetoolkit.mybatis.error.MybatisSqlScriptLackError;
-import io.github.nichetoolkit.mybatis.MybatisSqlResolver;
-import io.github.nichetoolkit.mybatis.stereotype.RestSqlResolver;
 import io.github.nichetoolkit.rest.util.GeneralUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.builder.annotation.ProviderContext;
@@ -31,7 +26,7 @@ public class DefaultSqlScriptResolver implements MybatisSqlScriptResolver {
         Class<?> mapperType = context.getMapperType();
         Method mapperMethod = context.getMapperMethod();
         /* 接口注解 */
-        List<MybatisSqlResolver> resolvers = parseAnnotations(mapperType, ElementType.TYPE, mapperType.getAnnotations());
+        List<DefaultSqlResolver> resolvers = parseAnnotations(mapperType, ElementType.TYPE, mapperType.getAnnotations());
         /* 方法注解 */
         resolvers.addAll(parseAnnotations(mapperMethod, ElementType.METHOD, mapperMethod.getAnnotations()));
         /* 参数注解 */
@@ -50,20 +45,20 @@ public class DefaultSqlScriptResolver implements MybatisSqlScriptResolver {
         return sqlScript;
     }
 
-    private List<MybatisSqlResolver> parseAnnotations(Object target, ElementType type, Annotation[] annotations) {
-        List<Class<? extends MybatisSqlResolver>> classes = new ArrayList<>();
+    private List<DefaultSqlResolver> parseAnnotations(Object target, ElementType type, Annotation[] annotations) {
+        List<Class<? extends DefaultSqlResolver>> classes = new ArrayList<>();
         for (Annotation annotation : annotations) {
             Class<? extends Annotation> annotationType = annotation.annotationType();
-            if (annotationType == RestSqlResolver.class) {
-                classes.addAll(Arrays.asList(((RestSqlResolver) annotation).value()));
-            } else if (annotationType.isAnnotationPresent(RestSqlResolver.class)) {
-                RestSqlResolver annotationTypeAnnotation = AnnotationUtils.getAnnotation(annotationType, RestSqlResolver.class);
+            if (annotationType == MybatisSqlResolver.class) {
+                classes.addAll(Arrays.asList(((MybatisSqlResolver) annotation).value()));
+            } else if (annotationType.isAnnotationPresent(MybatisSqlResolver.class)) {
+                MybatisSqlResolver annotationTypeAnnotation = AnnotationUtils.getAnnotation(annotationType, MybatisSqlResolver.class);
                 if (GeneralUtils.isNotEmpty(annotationTypeAnnotation) && GeneralUtils.isNotEmpty(annotationTypeAnnotation.value())) {
                     classes.addAll(Arrays.asList(annotationTypeAnnotation.value()));
                 }
             }
         }
-        return classes.stream().map(c -> (MybatisSqlResolver) newInstance(c, target, type, annotations))
+        return classes.stream().map(c -> (DefaultSqlResolver) newInstance(c, target, type, annotations))
                 .collect(Collectors.toList());
     }
 

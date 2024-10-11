@@ -3,11 +3,13 @@ package io.github.nichetoolkit.mybatis.configure;
 import io.github.nichetoolkit.mybatis.enums.DatabaseType;
 import io.github.nichetoolkit.mybatis.enums.StyleType;
 import io.github.nichetoolkit.rest.util.GeneralUtils;
+import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
 
+@Data
 @Component
 @ConfigurationProperties(prefix = "nichetoolkit.mybatis.table")
 public class MybatisTableProperties {
@@ -18,49 +20,6 @@ public class MybatisTableProperties {
     private Map<String, String> properties = new HashMap<>();
     private String[] excludes;
     private String[] ignores;
-
-    public MybatisTableProperties() {
-    }
-
-    public String getCatalog() {
-        return catalog;
-    }
-
-    public void setCatalog(String catalog) {
-        this.catalog = catalog;
-    }
-
-    public String getSchema() {
-        return schema;
-    }
-
-    public void setSchema(String schema) {
-        this.schema = schema;
-    }
-
-    public DatabaseType getDatabaseType() {
-        return databaseType;
-    }
-
-    public void setDatabaseType(DatabaseType databaseType) {
-        this.databaseType = databaseType;
-    }
-
-    public StyleType getStyleType() {
-        return styleType;
-    }
-
-    public void setStyleType(StyleType styleType) {
-        this.styleType = styleType;
-    }
-
-    public Map<String, String> getProperties() {
-        return properties;
-    }
-
-    public void setProperties(Map<String, String> properties) {
-        this.properties = properties;
-    }
 
     public List<String> getExcludes() {
         if (GeneralUtils.isNotEmpty(this.excludes)) {
