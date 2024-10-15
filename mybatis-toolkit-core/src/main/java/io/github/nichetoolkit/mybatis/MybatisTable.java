@@ -2,12 +2,14 @@ package io.github.nichetoolkit.mybatis;
 
 import io.github.nichetoolkit.mybatis.consts.EntityConstants;
 import io.github.nichetoolkit.mybatis.consts.SQLConstants;
+import io.github.nichetoolkit.mybatis.consts.ScriptConstants;
+import io.github.nichetoolkit.mybatis.enums.SortType;
+import io.github.nichetoolkit.mybatis.enums.StyleType;
 import io.github.nichetoolkit.mybatis.error.MybatisIdentityLackError;
 import io.github.nichetoolkit.rest.error.lack.ConfigureLackError;
 import io.github.nichetoolkit.rest.util.GeneralUtils;
-import io.github.nichetoolkit.mybatis.enums.SortType;
-import io.github.nichetoolkit.mybatis.enums.StyleType;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.ibatis.annotations.SelectProvider;
 import org.apache.ibatis.builder.annotation.ProviderContext;
 import org.apache.ibatis.mapping.MappedStatement;
@@ -30,82 +32,89 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 
-@Data
+@Getter
 public class MybatisTable extends MybatisProperty<MybatisTable> {
     public static final Pattern DELIMITER = Pattern.compile("^[`\\[\"]?(.*?)[`\\]\"]?$");
-    public static final String DEFAULT_RESULT_MAP_NAME = "defaultResultMap";
-    protected String table;
-    protected String alias;
-    protected String comment;
-    protected Class<?> entity;
-    protected Class<?> identity;
-    protected Class<?> linkage;
-    protected Class<?> alertness;
+    public static final String DEFAULT_RESULT_MAP_NAME = ScriptConstants.DEFAULT_RESULT_MAP;
+    private final Class<?> entityType;
+    private final Class<?> linkageType;
+    private final Class<?> alertnessType;
+    private final boolean isSpecialIdentity;
+    private final Set<Configuration> initiates = new HashSet<>();
+    private final List<MybatisColumn> tableColumns = new ArrayList<>();
+    private final List<MybatisColumn> uniqueColumns = new ArrayList<>();
+    private final List<MybatisColumn> unionColumns = new ArrayList<>();
 
-    protected List<String> unionKeys;
-    protected List<String> linkKeys;
-    protected List<String> uniqueKeys;
-    protected List<String> alertKeys;
+    private Map<String, MybatisColumn> fieldColumns = new HashMap<>();
+    private List<MybatisColumn> identityColumns = new ArrayList<>();
+    private int identityIndex;
+    @Setter
+    private boolean ready;
+    @Setter
+    private Class<?> identityType;
+    @Setter
+    private String table;
+    @Setter
+    private String alias;
+    @Setter
+    private String comment;
+    @Setter
+    private String catalog;
+    @Setter
+    private String schema;
+    @Setter
+    private String styleName;
+    @Setter
+    private StyleType styleType;
+    @Setter
+    private String resultMap;
+    @Setter
+    private boolean autoResultMap = true;
+    @Setter
+    private List<String> unionKeys;
+    @Setter
+    private List<String> linkKeys;
+    @Setter
+    private List<String> uniqueKeys;
+    @Setter
+    private List<String> alertKeys;
+    @Setter
+    private List<ResultMap> autoResultMaps;
+    @Setter
+    private List<String> excludeFields;
+    @Setter
+    private List<Class<?>> excludeFieldTypes;
+    @Setter
+    private List<Class<?>> excludeSuperClasses;
+    @Setter
+    private List<String> ignoreFields;
+    @Setter
+    private List<Class<?>> ignoreFieldTypes;
+    @Setter
+    private List<Class<?>> ignoreSuperClasses;
 
-    protected String catalog;
-    protected String schema;
-    protected String styleName;
-    protected StyleType styleType;
-    protected String resultMap;
-    protected boolean autoResultMap = true;
-    protected List<ResultMap> autoResultMaps;
+    private MybatisColumn identityColumn;
+    private MybatisColumn logicColumn;
+    private MybatisColumn operateColumn;
+    private MybatisColumn alertColumn;
+    private MybatisColumn linkColumn;
 
-    protected List<String> excludeFields;
-    protected List<Class<?>> excludeFieldTypes;
-    protected List<Class<?>> excludeSuperClasses;
-
-    protected List<String> ignoreFields;
-    protected List<Class<?>> ignoreFieldTypes;
-    protected List<Class<?>> ignoreSuperClasses;
-
-    protected List<MybatisColumn> tableColumns;
-    protected List<MybatisColumn> identityColumns;
-
-    protected List<MybatisColumn> forceInsertColumns;
-    protected List<MybatisColumn> forceUpdateColumns;
-
-    protected MybatisColumn logicColumn;
-    protected MybatisColumn operateColumn;
-    protected MybatisColumn alertColumn;
-    protected MybatisColumn linkColumn;
-
-    protected List<MybatisColumn> uniqueColumns;
-    protected List<MybatisColumn> unionColumns;
-    protected boolean ready;
-    protected int identityIndex;
-    protected Set<Configuration> initiates = new HashSet<>();
-    protected Map<String, MybatisColumn> fieldColumns = new HashMap<>();
 
     public MybatisTable(Class<?> entityType, Class<?> identityType, Class<?> linkageType, Class<?> alertnessType) {
-        this.entity = entityType;
-        this.identity = identityType;
-        this.linkage = linkageType;
-        this.alertness = alertnessType;
-        this.identityColumns = new ArrayList<>();
-        this.tableColumns = new ArrayList<>();
-        this.forceInsertColumns = new ArrayList<>();
-        this.forceUpdateColumns = new ArrayList<>();
-        this.uniqueColumns = new ArrayList<>();
-        this.unionColumns = new ArrayList<>();
+        this.entityType = entityType;
+        this.identityType = identityType;
+        this.linkageType = linkageType;
+        this.alertnessType = alertnessType;
+        this.isSpecialIdentity = identityType != null;
     }
 
     public MybatisTable(Class<?> entityType, Class<?> identityType, Class<?> linkageType, Class<?> alertnessType, Map<String, String> properties) {
         super(properties);
-        this.entity = entityType;
-        this.identity = identityType;
-        this.linkage = linkageType;
-        this.alertness = alertnessType;
-        this.identityColumns = new ArrayList<>();
-        this.tableColumns = new ArrayList<>();
-        this.forceInsertColumns = new ArrayList<>();
-        this.forceUpdateColumns = new ArrayList<>();
-        this.uniqueColumns = new ArrayList<>();
-        this.unionColumns = new ArrayList<>();
+        this.entityType = entityType;
+        this.identityType = identityType;
+        this.linkageType = linkageType;
+        this.alertnessType = alertnessType;
+        this.isSpecialIdentity = identityType != null;
     }
 
     public static MybatisTable of(Class<?> entityType, Class<?> identityType, Class<?> linkageType, Class<?> alertnessType) {
@@ -143,19 +152,20 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
         List<MybatisColumn> logicKeyColumns = new ArrayList<>();
         List<MybatisColumn> operateKeyColumns = new ArrayList<>();
         this.tableColumns.forEach(column -> {
-            if (column.isForceInsert()) {
-                refreshColumn(this.forceInsertColumns, column);
-            }
-            if (column.isForceUpdate()) {
-                refreshColumn(this.forceUpdateColumns, column);
-            }
-            if (column.isIdentity()) {
-                identityColumns.remove(column);
-                identityColumns.add(0, column);
-            }
-            if (column.isIdentityKey()) {
-                identityKeyColumns.remove(column);
-                identityKeyColumns.add(0, column);
+            if (column.isSpecialIdentity()) {
+                /* special Identity */
+                if (column.isPrimaryKey() || column.isIdentityKey() || column.isUnionKey()) {
+                    this.identityColumns.remove(column);
+                    refreshColumn(this.identityColumns, column);
+                } else {
+                    identityColumns.remove(column);
+                    identityColumns.add(0, column);
+                }
+            } else {
+                /* common Identity */
+                if (column.isIdentityKey()) {
+                    this.identityColumn = column;
+                }
             }
             if (column.isPrimaryKey()) {
                 primaryKeyColumns.remove(column);
@@ -194,10 +204,6 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
                 this.uniqueColumns.remove(column);
                 this.uniqueColumns.add(0, column);
             }
-            if (column.isIdentity() && (column.isPrimaryKey() || column.isIdentityKey() || column.isUnionKey())) {
-                this.identityColumns.remove(column);
-                refreshColumn(this.identityColumns, column);
-            }
         });
 
         Optional<MybatisColumn> firstLogic = logicKeyColumns.stream().findFirst();
@@ -209,23 +215,20 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
         Optional<MybatisColumn> firstLink = linkKeyColumns.stream().findFirst();
         firstLink.ifPresent(linkKeyColumn -> this.linkColumn = linkKeyColumn);
         /*
-         * identityColumns
-         * 优先级别: RestIdentity > RestPrimaryKey > RestIdentityKey > RestUnionKey
+         * 优先级别: RestIdentity > RestPrimaryKey > RestIdentityKey > RestUnionKey >RestUniqueKey
          */
-        if (!isIdentity()) {
-            /* RestIdentityKey  */
-            Optional<MybatisColumn> firstIdentity = identityKeyColumns.stream().findFirst();
-            firstIdentity.ifPresent(mybatisColumn -> this.identityColumns = Collections.singletonList(mybatisColumn));
-            /* RestPrimaryKey  */
-            Optional<MybatisColumn> firstPrimaryKey = primaryKeyColumns.stream().findFirst();
-            firstPrimaryKey.ifPresent(mybatisColumn -> this.identityColumns = Collections.singletonList(mybatisColumn));
-        } else if (GeneralUtils.isEmpty(this.identityColumns)) {
-            if (GeneralUtils.isNotEmpty(identityColumns)) {
-                /* RestIdentity  */
-                this.identityColumns = new ArrayList<>(identityColumns);
-            } else {
-                throw new MybatisIdentityLackError("the custom identity columns must be not empty, identity type: " + this.identity.getName());
+        if (isSpecialIdentity()) {
+            if (GeneralUtils.isEmpty(this.identityColumns)) {
+                if (GeneralUtils.isNotEmpty(identityColumns)) {
+                    this.identityColumns = new ArrayList<>(identityColumns);
+                } else {
+                    throw new MybatisIdentityLackError("The special identity columns must be not empty, identity type: " + this.identityType.getName());
+                }
             }
+        } else {
+            /* RestPrimaryKey override RestIdentityKey */
+            Optional<MybatisColumn> firstPrimaryKey = primaryKeyColumns.stream().findFirst();
+            firstPrimaryKey.ifPresent(mybatisColumn -> this.identityColumn = mybatisColumn);
         }
     }
 
@@ -234,13 +237,13 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
         /* 不重复添加同名的列 */
         if (!this.tableColumns.contains(column)) {
             /* 父类 字段处理 */
-            if (column.getField().declaringClass() != this.entity) {
+            if (column.getField().declaringClass() != this.entityType) {
                 if (column.isForceInsert() || column.isForceUpdate() || column.isLogicKey() || column.isOperateKey()) {
                     refreshColumn(this.tableColumns, column);
                 } else if (column.isUnionKey() || column.isLinkKey()) {
                     /*  RestUnionKey 或者 RestLinkKey 放在 identity后面 */
                     refreshColumn(this.tableColumns, column, this.identityIndex);
-                } else if (column.isIdentityKey() || column.isIdentity()) {
+                } else if (column.isIdentityKey() || column.isSpecialIdentity()) {
                     refreshColumn(this.tableColumns, column, 0);
                     /* 更新 identityIndex */
                     this.identityIndex++;
@@ -252,7 +255,7 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
                 refreshColumn(this.tableColumns, column);
             }
             column.setTable(this);
-        } else if (isIdentity()) {
+        } else if (isSpecialIdentity()) {
             /* 同名列在存在, 为自定义主键类型覆盖实体类或父类，进行字段覆盖 */
             int columnIndex = this.tableColumns.indexOf(column);
             MybatisColumn existsColumn = this.tableColumns.remove(columnIndex);
@@ -260,10 +263,6 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
         } else {
             /* 同名列在存在，为子类覆盖父类，不做处理 */
         }
-    }
-
-    public boolean isIdentity() {
-        return Optional.ofNullable(this.identity).isPresent();
     }
 
     public List<MybatisField> fields() {
@@ -282,11 +281,11 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
         return this.tableColumns.stream().map(MybatisColumn::property).collect(Collectors.toList());
     }
 
-    protected void refreshColumn(List<MybatisColumn> columns, MybatisColumn column) {
+    private void refreshColumn(List<MybatisColumn> columns, MybatisColumn column) {
         refreshColumn(columns, column, null);
     }
 
-    protected void refreshColumn(List<MybatisColumn> columns, MybatisColumn column, Integer index) {
+    private void refreshColumn(List<MybatisColumn> columns, MybatisColumn column, Integer index) {
         if (GeneralUtils.isNotEmpty(column.getOrder())) {
             columns.add(column.getOrder(), column);
         } else if (GeneralUtils.isValid(index)) {
@@ -296,7 +295,7 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
         }
     }
 
-    protected boolean canUseResultMaps(ProviderContext providerContext, String cacheKey) {
+    private boolean canUseResultMaps(ProviderContext providerContext, String cacheKey) {
         if (this.autoResultMaps != null && !this.autoResultMaps.isEmpty()
                 && providerContext.getMapperMethod().isAnnotationPresent(SelectProvider.class)) {
             Class<?> resultType = this.autoResultMaps.get(0).getType();
@@ -316,7 +315,7 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
         return this.autoResultMaps != null || this.autoResultMap || GeneralUtils.isNotEmpty(this.resultMap);
     }
 
-    protected boolean hasBeenReplaced(Configuration configuration, String cacheKey) {
+    private boolean hasBeenReplaced(Configuration configuration, String cacheKey) {
         MappedStatement mappedStatement = configuration.getMappedStatement(cacheKey);
         if (mappedStatement.getResultMaps() != null && !mappedStatement.getResultMaps().isEmpty()) {
             return mappedStatement.getResultMaps().get(0) == this.autoResultMaps.get(0);
@@ -335,13 +334,13 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
             synchronized (cacheKey) {
                 if (!hasBeenReplaced(configuration, cacheKey)) {
                     MetaObject metaObject = configuration.newMetaObject(configuration.getMappedStatement(cacheKey));
-                    metaObject.setValue("resultMaps", Collections.unmodifiableList(this.autoResultMaps));
+                    metaObject.setValue(ScriptConstants.RESULT_MAPS, Collections.unmodifiableList(this.autoResultMaps));
                 }
             }
         }
     }
 
-    protected void initResultMap(Configuration configuration, ProviderContext providerContext, String cacheKey) {
+    private void initResultMap(Configuration configuration, ProviderContext providerContext, String cacheKey) {
         /* 使用指定的 resultMap */
         if (GeneralUtils.isNotEmpty(this.resultMap)) {
             synchronized (this) {
@@ -353,7 +352,7 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
                     } else if (configuration.hasResultMap(this.resultMap)) {
                         this.autoResultMaps.add(configuration.getResultMap(this.resultMap));
                     } else {
-                        throw new ConfigureLackError(this.entity.getName() + " configured result map: " + this.resultMap + " not found");
+                        throw new ConfigureLackError("The " + this.entityType.getName() + " configured result map: " + this.resultMap + " not found");
                     }
                 }
             }
@@ -370,14 +369,14 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
         }
     }
 
-    protected String resultMapId(ProviderContext providerContext, String resultMapId) {
+    private String resultMapId(ProviderContext providerContext, String resultMapId) {
         if (resultMapId.indexOf(SQLConstants.PERIOD) > 0) {
             return resultMapId;
         }
         return providerContext.getMapperType().getName() + SQLConstants.PERIOD + resultMapId;
     }
 
-    protected ResultMap autoResultMap(Configuration configuration, ProviderContext providerContext, String cacheKey) {
+    private ResultMap autoResultMap(Configuration configuration, ProviderContext providerContext, String cacheKey) {
         List<ResultMapping> resultMappings = new ArrayList<>();
         for (MybatisColumn column : selectColumns()) {
             String columnName = column.columnName();
@@ -387,7 +386,7 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
                 columnName = matcher.group(1);
             }
             String property = column.property();
-            if (column.isIdentity()) {
+            if (column.isSpecialIdentity()) {
                 property = column.property(EntityConstants.IDENTITY + SQLConstants.PERIOD);
             }
             ResultMapping.Builder builder = new ResultMapping.Builder(configuration, property, columnName, column.javaType());
@@ -409,7 +408,7 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
             resultMappings.add(builder.build());
         }
         String resultMapId = resultMapId(providerContext, DEFAULT_RESULT_MAP_NAME);
-        ResultMap.Builder builder = new ResultMap.Builder(configuration, resultMapId, this.entity, resultMappings, true);
+        ResultMap.Builder builder = new ResultMap.Builder(configuration, resultMapId, this.entityType, resultMappings, true);
         return builder.build();
     }
 
@@ -421,14 +420,14 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
                 return (TypeHandler<?>) c.newInstance(javaTypeClass);
             } catch (NoSuchMethodException ignored) {
             } catch (Exception e) {
-                throw new TypeException("failed invoking constructor for handler " + typeHandlerClass, e);
+                throw new TypeException("It is failed invoking constructor for handler " + typeHandlerClass, e);
             }
         }
         try {
             Constructor<?> c = typeHandlerClass.getConstructor();
             return (TypeHandler<?>) c.newInstance();
         } catch (Exception e) {
-            throw new TypeException("unable to find a usable constructor for " + typeHandlerClass, e);
+            throw new TypeException("It is unable to find a usable constructor for " + typeHandlerClass, e);
         }
     }
 
@@ -499,19 +498,11 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
     }
 
     public String sqlOfIdentityColumn() {
-        Optional<MybatisColumn> columnOptional = this.identityColumns.stream().findFirst();
-        if (columnOptional.isPresent()) {
-            return columnOptional.get().columnEqualsProperty();
-        }
-        return SQLConstants.Empty;
+        return this.identityColumn.columnEqualsProperty();
     }
 
     public String sqlOfIdentityAliasColumn() {
-        Optional<MybatisColumn> columnOptional = this.identityColumns.stream().findFirst();
-        if (columnOptional.isPresent()) {
-            return columnOptional.get().aliasColumnEqualsProperty(this.alias);
-        }
-        return SQLConstants.Empty;
+        return this.identityColumn.aliasColumnEqualsProperty(this.alias);
     }
 
     public String sqlOfBaseColumns() {
@@ -596,12 +587,12 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
 
     public Optional<String> sqlOfHaving() {
         Optional<String> havingColumnList = sqlOfHavingColumns();
-        return havingColumnList.map(s -> SQLConstants.BLANK + SQLConstants.HAVING + SQLConstants.BLANK + s);
+        return havingColumnList.map(sql -> SQLConstants.BLANK + SQLConstants.HAVING + SQLConstants.BLANK + sql);
     }
 
     public Optional<String> sqlOfHavingAlias() {
         Optional<String> havingColumnList = sqlOfHavingAliasColumns();
-        return havingColumnList.map(s -> SQLConstants.BLANK + SQLConstants.HAVING + SQLConstants.BLANK + s);
+        return havingColumnList.map(sql -> SQLConstants.BLANK + SQLConstants.HAVING + SQLConstants.BLANK + sql);
     }
 
     public Optional<String> sqlOfOrderByColumns() {
@@ -620,12 +611,12 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
 
     public Optional<String> sqlOfOrderBy() {
         Optional<String> orderColumnList = sqlOfOrderByColumns();
-        return orderColumnList.map(s -> SQLConstants.BLANK + SQLConstants.ORDER_BY + SQLConstants.BLANK + s);
+        return orderColumnList.map(sql -> SQLConstants.BLANK + SQLConstants.ORDER_BY + SQLConstants.BLANK + sql);
     }
 
     public Optional<String> sqlOfOrderByAlias() {
         Optional<String> orderColumnList = sqlOfOrderByAliasColumns();
-        return orderColumnList.map(s -> SQLConstants.BLANK + SQLConstants.ORDER_BY + SQLConstants.BLANK + s);
+        return orderColumnList.map(sql -> SQLConstants.BLANK + SQLConstants.ORDER_BY + SQLConstants.BLANK + sql);
     }
 
     public boolean isExcludeSuperClass(Class<?> superClass) {

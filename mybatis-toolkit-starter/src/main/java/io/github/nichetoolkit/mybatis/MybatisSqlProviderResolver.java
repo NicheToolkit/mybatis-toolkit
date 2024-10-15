@@ -19,9 +19,8 @@ public class MybatisSqlProviderResolver implements ProviderMethodResolver {
     @Override
     public Method resolveMethod(ProviderContext context) {
         DatabaseType databaseType = MybatisSqlProviderHolder.defaultDatabaseType();
-        log.debug("the sql provider of {} will be loaded.", databaseType.getKey());
         String providerName = context.getMapperMethod().getName();
-        String message = "cannot find the provider method with name as " + providerName + ", maybe it is unsupported currently.";
+        String message = "Cannot find the provider method with name as " + providerName + ", maybe it is unsupported currently.";
         Method findMethod = null;
         try {
             List<MybatisSqlProvider> sqlProviders = MybatisSqlProviderHolder.defaultSqlProviders(databaseType);

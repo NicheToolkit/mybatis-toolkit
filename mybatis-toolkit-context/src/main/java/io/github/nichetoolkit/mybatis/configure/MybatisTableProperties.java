@@ -3,13 +3,15 @@ package io.github.nichetoolkit.mybatis.configure;
 import io.github.nichetoolkit.mybatis.enums.DatabaseType;
 import io.github.nichetoolkit.mybatis.enums.StyleType;
 import io.github.nichetoolkit.rest.util.GeneralUtils;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
 
-@Data
+@Setter
+@Getter
 @Component
 @ConfigurationProperties(prefix = "nichetoolkit.mybatis.table")
 public class MybatisTableProperties {

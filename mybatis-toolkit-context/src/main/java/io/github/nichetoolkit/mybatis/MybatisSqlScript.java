@@ -1,5 +1,6 @@
 package io.github.nichetoolkit.mybatis;
 
+import io.github.nichetoolkit.mybatis.consts.EntityConstants;
 import io.github.nichetoolkit.mybatis.consts.SQLConstants;
 import io.github.nichetoolkit.mybatis.consts.ScriptConstants;
 import io.github.nichetoolkit.mybatis.error.MybatisAssertErrorException;
@@ -103,6 +104,10 @@ public interface MybatisSqlScript extends MybatisOrder {
 
     default String foreach(String collection, String item, String separator, String open, String close, String index, LinefeedSupplier content) throws RestException {
         return String.format(ScriptConstants.FOREACH_INDEX_LABEL, collection, item, index, open, close, separator, content.withLinefeed());
+    }
+
+    default String foreachOfIdList(LinefeedSupplier content) throws RestException {
+        return String.format(ScriptConstants.FOREACH_INDEX_LABEL, EntityConstants.IDENTITY_LIST, EntityConstants.IDENTITY, EntityConstants.INDEX,  SQLConstants.BRACE_LT,  SQLConstants.BRACE_GT, SQLConstants.COMMA + SQLConstants.BLANK, content.withLinefeed());
     }
 
     default String bind(String name, String value) {

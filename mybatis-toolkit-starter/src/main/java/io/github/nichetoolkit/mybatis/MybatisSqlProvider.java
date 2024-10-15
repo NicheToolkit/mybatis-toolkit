@@ -1,13 +1,13 @@
 package io.github.nichetoolkit.mybatis;
 
 import io.github.nichetoolkit.mybatis.builder.SqlBuilder;
+import io.github.nichetoolkit.mybatis.consts.EntityConstants;
 import io.github.nichetoolkit.mybatis.consts.SQLConstants;
+import io.github.nichetoolkit.mybatis.consts.ScriptConstants;
 import io.github.nichetoolkit.mybatis.enums.DatabaseType;
 import io.github.nichetoolkit.mybatis.error.MybatisIdentityLackError;
 import io.github.nichetoolkit.mybatis.error.MybatisParamErrorException;
-import io.github.nichetoolkit.mybatis.error.MybatisUnrealizedLackError;
 import io.github.nichetoolkit.rest.RestException;
-import io.github.nichetoolkit.rest.RestOptional;
 import io.github.nichetoolkit.rest.RestReckon;
 import io.github.nichetoolkit.rest.actuator.ConsumerActuator;
 import io.github.nichetoolkit.rest.stream.RestCollectors;
@@ -21,13 +21,20 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public interface MybatisSqlProvider {
 
     DatabaseType databaseType();
 
+    MybatisSqlSupply SELECT_SQL_SUPPLY = (tablename, table, whereSql, sqlScript) ->
+            SqlBuilder.sqlBuilder()
+                    .select().append(table.sqlOfSelectColumns())
+                    .from().append(table.tablename(tablename))
+                    .where().append(whereSql).toString();
+
     @SuppressWarnings("unchecked")
-    static <I> Object provideParameter(I parameter) throws RestException {
+    static <I> Object reviseParameter(I parameter) throws RestException {
         Class<?> parameterClass = parameter.getClass();
         if (Map.class.isAssignableFrom(parameterClass)) {
             Map<String, ?> param = (Map<String, ?>) parameter;
@@ -38,21 +45,21 @@ public interface MybatisSqlProvider {
         }
     }
 
-    static <I> String providing(ProviderContext providerContext, @Nullable String tablename, I id, MybatisSqlSupply sqlSupply) throws RestException {
-        return providing(providerContext, tablename, id, table -> {
+    static <I> String providing(ProviderContext providerContext, @Nullable String tablename, I idParameter, MybatisSqlSupply sqlSupply) throws RestException {
+        return providing(providerContext, tablename, idParameter, table -> {
         }, sqlSupply);
     }
 
-    static <I> String providing(ProviderContext providerContext, @Nullable String tablename, I id, ConsumerActuator<MybatisTable> actuator, MybatisSqlSupply sqlSupply) throws RestException {
-        Object identity = provideParameter(id);
+    static <I> String providing(ProviderContext providerContext, @Nullable String tablename, I idParameter, ConsumerActuator<MybatisTable> actuator, MybatisSqlSupply sqlSupply) throws RestException {
+        Object identity = reviseParameter(idParameter);
         return MybatisSqlScript.caching(providerContext, (table, sqlScript) -> {
             actuator.actuate(table);
             String whereSql;
-            if (table.isIdentity()) {
+            if (table.isSpecialIdentity()) {
                 valueOfIdentity(table, identity);
-                whereSql = customIdentityWhereSql(table, sqlScript);
+                whereSql = specialWhereSqlOfId(identity, table, sqlScript);
             } else {
-                whereSql = defaultIdentityWhereSql(table, sqlScript);
+                whereSql = defaultWhereSqlOfId(table, sqlScript);
             }
             return sqlSupply.supply(tablename, table, whereSql, sqlScript);
         });
@@ -67,12 +74,12 @@ public interface MybatisSqlProvider {
         return MybatisSqlScript.caching(providerContext, (table, sqlScript) -> {
             actuator.actuate(table);
             String whereSql;
-            if (table.isIdentity()) {
+            if (table.isSpecialIdentity()) {
                 RestStream.stream(idList).forEach(id -> valueOfIdentity(table, id));
                 Map<Integer, List<I>> identities = sliceOfIdentity(table, idList);
-                whereSql = customIdentitiesWhereSql(identities, table, sqlScript);
+                whereSql = specialWhereSqlOfIds(identities, table, sqlScript);
             } else {
-                whereSql = defaultIdentitiesWhereSql(table, sqlScript);
+                whereSql = defaultWhereSqlOfIds(table, sqlScript);
             }
             return sqlSupply.supply(tablename, table, whereSql, sqlScript);
         });
@@ -90,11 +97,89 @@ public interface MybatisSqlProvider {
         });
     }
 
+    @SuppressWarnings("Duplicates")
+    static <I> String providing(ProviderContext providerContext, @Nullable String tablename, String name, String logic, ConsumerActuator<MybatisTable> actuator, MybatisSqlSupply sqlSupply) throws RestException {
+        return MybatisSqlScript.caching(providerContext, (table, sqlScript) -> {
+            actuator.actuate(table);
+            String nameSql = Optional.ofNullable(table.fieldColumn(EntityConstants.NAME)).map(MybatisColumn::columnEqualsProperty).orElse(ScriptConstants.NAME_EQUALS_PROPERTY);
+            SqlBuilder sqlBuilder = new SqlBuilder(nameSql);
+            Optional.ofNullable(table.getLogicColumn()).ifPresent(column -> sqlBuilder.and().append(column.columnEqualsLogic()));
+            return sqlSupply.supply(tablename, table, sqlBuilder.toString(), sqlScript);
+        });
+    }
+
+    @SuppressWarnings("Duplicates")
+    static <I> String providing(ProviderContext providerContext, @Nullable String tablename, String name, I idParameter, String logic, ConsumerActuator<MybatisTable> actuator, MybatisSqlSupply sqlSupply) throws RestException {
+        Object identity = reviseParameter(idParameter);
+        return MybatisSqlScript.caching(providerContext, (table, sqlScript) -> {
+            actuator.actuate(table);
+            String nameSql = Optional.ofNullable(table.fieldColumn(EntityConstants.NAME)).map(MybatisColumn::columnEqualsProperty).orElse(ScriptConstants.NAME_EQUALS_PROPERTY);
+            SqlBuilder sqlBuilder = new SqlBuilder(nameSql);
+            Optional.ofNullable(table.getLogicColumn()).ifPresent(column -> sqlBuilder.and().append(column.columnEqualsLogic()));
+            if (table.isSpecialIdentity()) {
+                valueOfIdentity(table, identity);
+                String identitySql = sqlOfIdentity(identity, table.tableColumns(), false);
+                sqlBuilder.append(identitySql);
+            } else {
+                Optional.ofNullable(table.getIdentityColumn()).ifPresent(column -> sqlBuilder.and().append(column.columnNotEqualsProperty()));
+            }
+            return sqlSupply.supply(tablename, table, sqlBuilder.toString(), sqlScript);
+        });
+    }
+
+    @SuppressWarnings("Duplicates")
+    static <E> String providing(ProviderContext providerContext, @Nullable String tablename, E entityParameter, String logic, ConsumerActuator<MybatisTable> actuator, MybatisSqlSupply sqlSupply) throws RestException {
+        Object entity = reviseParameter(entityParameter);
+        return MybatisSqlScript.caching(providerContext, (table, sqlScript) -> {
+            actuator.actuate(table);
+            SqlBuilder sqlBuilder = new SqlBuilder();
+            List<MybatisColumn> uniqueColumns = table.uniqueColumns();
+            String entitySql = table.uniqueColumns().stream()
+                    .map(column -> column.columnEqualsProperty(EntityConstants.ENTITY))
+                    .collect(Collectors.joining(SQLConstants.BLANK + SQLConstants.OR + SQLConstants.BLANK));
+            if (uniqueColumns.size() == 1) {
+                sqlBuilder.append(entitySql);
+            } else {
+                sqlBuilder.braceLt().append(entitySql).braceGt();
+            }
+            Optional.ofNullable(table.getLogicColumn()).ifPresent(column -> sqlBuilder.and().append(column.columnEqualsLogic()));
+            return sqlSupply.supply(tablename, table, sqlBuilder.toString(), sqlScript);
+        });
+    }
+
+    @SuppressWarnings("Duplicates")
+    static <E,I> String providing(ProviderContext providerContext, @Nullable String tablename, E entityParameter, I idParameter, String logic, ConsumerActuator<MybatisTable> actuator, MybatisSqlSupply sqlSupply) throws RestException {
+        Object entity = reviseParameter(entityParameter);
+        Object identity = reviseParameter(idParameter);
+        return MybatisSqlScript.caching(providerContext, (table, sqlScript) -> {
+            actuator.actuate(table);
+            SqlBuilder sqlBuilder = new SqlBuilder();
+            List<MybatisColumn> uniqueColumns = table.uniqueColumns();
+            String entitySql = table.uniqueColumns().stream()
+                    .map(column -> column.columnEqualsProperty(EntityConstants.ENTITY))
+                    .collect(Collectors.joining(SQLConstants.BLANK + SQLConstants.OR + SQLConstants.BLANK));
+            if (uniqueColumns.size() == 1) {
+                sqlBuilder.append(entitySql);
+            } else {
+                sqlBuilder.braceLt().append(entitySql).braceGt();
+            }
+            Optional.ofNullable(table.getLogicColumn()).ifPresent(column -> sqlBuilder.and().append(column.columnEqualsLogic()));
+            if (table.isSpecialIdentity()) {
+                valueOfIdentity(table, identity);
+                String identitySql = sqlOfIdentity(identity, table.tableColumns(), false);
+                sqlBuilder.append(identitySql);
+            } else {
+                Optional.ofNullable(table.getIdentityColumn()).ifPresent(column -> sqlBuilder.and().append(column.columnNotEqualsProperty()));
+            }
+            return sqlSupply.supply(tablename, table, sqlBuilder.toString(), sqlScript);
+        });
+    }
+
     static void valueOfIdentity(MybatisTable table, Object id) throws RestException {
         Boolean logicalAnd = RestStream.stream(table.identityColumns()).map(MybatisColumn::getField)
                 .map(mybatisField -> GeneralUtils.isNotEmpty(mybatisField.get(id)))
                 .collect(RestCollectors.logicalOr());
-        String message = "the field values of identity can not all be empty, " + table.getIdentity().getName();
+        String message = "The field values of identity can not all be empty, " + table.getIdentityType().getName();
         OptionalUtils.ofFalseError(logicalAnd, message, MybatisIdentityLackError::new);
     }
 
@@ -116,94 +201,42 @@ public interface MybatisSqlProvider {
         }));
     }
 
-    default String updateOfAlertSql(String tablename, MybatisTable table, MybatisSqlScript sqlScript) throws RestException {
-        SqlBuilder sqlBuilder = SqlBuilder.sqlBuilder().update().append(table.tablename(tablename))
-                .set().eq("update_time", "now()", null);
-        return "UPDATE " + table.tablename(tablename)
-                + " SET update_time = now(),"
-                + table.getAlertColumn().columnEqualsKey();
+    static String defaultWhereSqlOfId(MybatisTable table, MybatisSqlScript sqlScript) throws RestException {
+        return SqlBuilder.sqlBuilder().append(table.sqlOfIdentityColumn()).toString();
     }
 
-    default String updateOfAlertByFieldSql(String tablename, MybatisTable table, MybatisSqlScript sqlScript) throws RestException {
-        SqlBuilder sqlBuilder = SqlBuilder.sqlBuilder()
-                .update().append(table.tablename(tablename))
-                .set();
-
-        sqlBuilder.append(table.tablename(tablename));
-        sqlBuilder.append(" SET update_time = now()");
-        String fieldIfTest = sqlScript.ifTest("field != null and field != ''", () -> ",${field} = ${key}");
-        sqlBuilder.append(fieldIfTest);
-        return sqlBuilder.toString();
+    static String defaultWhereSqlOfIds(MybatisTable table, MybatisSqlScript sqlScript) throws RestException {
+        return SqlBuilder.sqlBuilder().append(EntityConstants.IDENTITY).in().append(sqlScript.foreachOfIdList(() ->
+                MybatisColumn.property(table.getIdentityType(), EntityConstants.IDENTITY))).toString();
     }
 
-    default String upsetOfSaveSql(@Nullable String tablename, MybatisTable table) throws RestException {
-        DatabaseType databaseType = databaseType();
-        SqlBuilder sqlBuilder = SqlBuilder.sqlBuilder();
-        RestOptional<List<MybatisColumn>> optionalColumns = RestOptional.ofEmptyable(table.updateColumns());
-        String dynamicTablename = table.tablename(tablename);
-        boolean isDoNothing = !optionalColumns.isPresent();
-        String upsetSql;
-        switch (databaseType) {
-            case MARIADB:
-            case SQLSEVER:
-            case ORACLE:
-            case SQLITE:
-            case H2:
-            case HSQLDB:
-            case REDSHIFT:
-            case CASSANDRA:
-                throw new MybatisUnrealizedLackError("the function is unrealized of this database type: " + databaseType.getKey());
-            case GAUSSDB:
-            case MYSQL:
-                if (isDoNothing) {
-                    sqlBuilder.append(" ON DUPLICATE KEY DO NOTHING ");
+    static <I> String specialWhereSqlOfId(I identity, MybatisTable table, MybatisSqlScript sqlScript) throws RestException {
+        return sqlOfIdentity(identity, table.tableColumns(), true);
+    }
+
+    static <I> String sqlOfIdentity(I identity, Collection<MybatisColumn> mybatisColumns, boolean isEquals) throws RestException {
+        SqlBuilder sqlBuilder = new SqlBuilder();
+        boolean isNotFirstValue = false;
+        for (MybatisColumn mybatisColumn : mybatisColumns) {
+            String columnName = mybatisColumn.columnName();
+            MybatisField mybatisField = mybatisColumn.getField();
+            Object fieldValue = mybatisField.get(identity);
+            if (GeneralUtils.isNotEmpty(fieldValue)) {
+                if (isNotFirstValue) {
+                    sqlBuilder.and();
                 } else {
-                    sqlBuilder.append(" ON DUPLICATE KEY UPDATE ");
+                    isNotFirstValue = true;
                 }
-                break;
-            case POSTGRESQL:
-            default:
-                if (isDoNothing) {
-                    upsetSql = " ON CONFLICT (" + table.sqlOfIdentityColumns() + ") DO NOTHING ";
+                sqlBuilder.append(columnName);
+                if (isEquals) {
+                    sqlBuilder.eq();
                 } else {
-                    upsetSql = " ON CONFLICT (" + table.sqlOfIdentityColumns() + ") DO UPDATE SET ";
+                    sqlBuilder.neq();
                 }
-                break;
+                sqlBuilder.value(fieldValue).append(SQLConstants.COMMA);
+            }
         }
-        optionalColumns.ifEmptyPresent(updateColumns -> {
-            String collect = RestStream.stream(updateColumns).map(column -> column.excluded(table.tablename(tablename)))
-                    .collect(RestCollectors.joining(SQLConstants.COMMA + SQLConstants.BLANK));
-            sqlBuilder.append(collect);
-        });
-        return sqlBuilder.toString();
-    }
-
-    static String defaultIdentityWhereSql(MybatisTable table, MybatisSqlScript sqlScript) throws RestException {
-        StringBuilder sqlBuilder = new StringBuilder(" WHERE ");
-        RestOptional<MybatisColumn> columnOptional = RestStream.stream(table.identityColumns()).findFirst();
-        columnOptional.ifNullPresent(column -> sqlBuilder.append(table.sqlOfIdentityColumn()));
-        return sqlBuilder.toString();
-    }
-
-    static String defaultIdentitiesWhereSql(MybatisTable table, MybatisSqlScript sqlScript) throws RestException {
-        StringBuilder sqlBuilder = new StringBuilder(" WHERE ");
-        RestOptional<MybatisColumn> columnOptional = RestStream.stream(table.identityColumns()).findFirst();
-        columnOptional.ifNullPresent(column -> {
-            sqlBuilder.append("id IN ");
-            String foreach = sqlScript.foreach("idList", "id", ", ", "(", ")", column::variable);
-            sqlBuilder.append(table.sqlOfIdentityColumn());
-        });
-        return sqlBuilder.toString();
-    }
-
-    static String customIdentityWhereSql(MybatisTable table, MybatisSqlScript sqlScript) throws RestException {
-        StringBuilder sqlBuilder = new StringBuilder(" WHERE 1=1 ");
-        sqlBuilder.append(SQLConstants.LINEFEED);
-        String identityTestSql = RestStream.stream(table.identityColumns())
-                .map(column -> sqlScript.ifTest(column.notEmptyTest("id."),
-                        () -> " AND " + column.columnEqualsProperty("id.")))
-                .collect(RestCollectors.joining(SQLConstants.LINEFEED));
-        sqlBuilder.append(identityTestSql);
+        sqlBuilder.deleteLastChar();
         return sqlBuilder.toString();
     }
 
@@ -213,10 +246,8 @@ public interface MybatisSqlProvider {
      * SELECT template_pk1, template_pk2, name, description, time, update_time, create_time, logic_sign
      * FROM ntr_template WHERE 1=1 AND ((template_pk1) IN (('1' )) OR (template_pk2) IN (('3' )))
      */
-    static <I> String customIdentitiesWhereSql(Map<Integer, List<I>> identitySliceMap, MybatisTable table, MybatisSqlScript sqlScript) throws RestException {
-        SqlBuilder sqlBuilder = new SqlBuilder(" WHERE 1=1 ");
-        sqlBuilder.append(SQLConstants.LINEFEED);
-        sqlBuilder.append("AND (");
+    static <I> String specialWhereSqlOfIds(Map<Integer, List<I>> identitySliceMap, MybatisTable table, MybatisSqlScript sqlScript) throws RestException {
+        SqlBuilder sqlBuilder = new SqlBuilder();
         for (Map.Entry<Integer, List<I>> entry : identitySliceMap.entrySet()) {
             Integer key = entry.getKey();
             List<I> valueList = entry.getValue();
@@ -226,36 +257,98 @@ public interface MybatisSqlProvider {
                     List<MybatisColumn> mybatisColumns = RestStream.stream(indices)
                             .map(index -> table.identityColumns().get(index.intValue()))
                             .collect(RestCollectors.toList());
-                    String fieldSql = RestStream.stream(mybatisColumns).map(MybatisColumn::columnName).collect(RestCollectors.joining(","));
+                    String fieldSql = RestStream.stream(mybatisColumns).map(MybatisColumn::columnName).collect(RestCollectors.joining(SQLConstants.COMMA));
                     boolean isMultiColumns = mybatisColumns.size() > 1;
                     if (isMultiColumns) {
-                        sqlBuilder.append("(");
-                        sqlBuilder.append(fieldSql).append(") IN (");
+                        sqlBuilder.append(SQLConstants.BRACE_LT).append(fieldSql).append(SQLConstants.BRACE_GT).in().append(SQLConstants.BRACE_LT);
                     } else {
-                        sqlBuilder.append(fieldSql).append(" IN (");
+                        sqlBuilder.append(fieldSql).in().append(SQLConstants.BRACE_LT);
                     }
                     RestStream.stream(valueList).forEach(value -> {
                         if (isMultiColumns) {
-                            sqlBuilder.append("(");
+                            sqlBuilder.append(SQLConstants.BRACE_LT);
                         }
                         RestStream.stream(mybatisColumns).map(MybatisColumn::getField).forEach(field -> {
                             Object indexValue = field.get(value);
-                            sqlBuilder.value(indexValue).append(",");
+                            sqlBuilder.value(indexValue).append(SQLConstants.COMMA);
                         });
                         sqlBuilder.deleteLastChar();
                         if (isMultiColumns) {
-                            sqlBuilder.append("),");
+                            sqlBuilder.append(SQLConstants.BRACE_GT).append(SQLConstants.COMMA);
                         } else {
-                            sqlBuilder.append(",");
+                            sqlBuilder.append(SQLConstants.COMMA);
                         }
                     });
-                    sqlBuilder.deleteLastChar().append(")");
+                    sqlBuilder.deleteLastChar().append(SQLConstants.BRACE_GT);
                 }
                 sqlBuilder.or();
             }
         }
-        sqlBuilder.delete(sqlBuilder.length() - 4, sqlBuilder.length()).append(")");
+        sqlBuilder.delete(sqlBuilder.length() - 4, sqlBuilder.length()).append(SQLConstants.BRACE_GT);
         return sqlBuilder.toString();
     }
+
+    default String updateOfAlertSql(String tablename, MybatisTable table, MybatisSqlScript sqlScript) throws RestException {
+        SqlBuilder sqlBuilder = SqlBuilder.sqlBuilder().update().append(table.tablename(tablename))
+                .set().eq("update_time", "now()", null);
+        return "UPDATE " + table.tablename(tablename)
+                + " SET update_time = now(),"
+                + table.getAlertColumn().columnEqualsKey();
+    }
+
+//    default String updateOfAlertByFieldSql(String tablename, MybatisTable table, MybatisSqlScript sqlScript) throws RestException {
+//        SqlBuilder sqlBuilder = SqlBuilder.sqlBuilder()
+//                .update().append(table.tablename(tablename))
+//                .set();
+//
+//        sqlBuilder.append(table.tablename(tablename));
+//        sqlBuilder.append(" SET update_time = now()");
+//        String fieldIfTest = sqlScript.ifTest("field != null and field != ''", () -> ",${field} = ${key}");
+//        sqlBuilder.append(fieldIfTest);
+//        return sqlBuilder.toString();
+//    }
+//
+//    default String upsetOfSaveSql(@Nullable String tablename, MybatisTable table) throws RestException {
+//        DatabaseType databaseType = databaseType();
+//        SqlBuilder sqlBuilder = SqlBuilder.sqlBuilder();
+//        RestOptional<List<MybatisColumn>> optionalColumns = RestOptional.ofEmptyable(table.updateColumns());
+//        String dynamicTablename = table.tablename(tablename);
+//        boolean isDoNothing = !optionalColumns.isPresent();
+//        String upsetSql;
+//        switch (databaseType) {
+//            case MARIADB:
+//            case SQLSEVER:
+//            case ORACLE:
+//            case SQLITE:
+//            case H2:
+//            case HSQLDB:
+//            case REDSHIFT:
+//            case CASSANDRA:
+//                throw new MybatisUnrealizedLackError("the function is unrealized of this database type: " + databaseType.getKey());
+//            case GAUSSDB:
+//            case MYSQL:
+//                if (isDoNothing) {
+//                    sqlBuilder.append(" ON DUPLICATE KEY DO NOTHING ");
+//                } else {
+//                    sqlBuilder.append(" ON DUPLICATE KEY UPDATE ");
+//                }
+//                break;
+//            case POSTGRESQL:
+//            default:
+//                if (isDoNothing) {
+//                    upsetSql = " ON CONFLICT (" + table.sqlOfIdentityColumns() + ") DO NOTHING ";
+//                } else {
+//                    upsetSql = " ON CONFLICT (" + table.sqlOfIdentityColumns() + ") DO UPDATE SET ";
+//                }
+//                break;
+//        }
+//        optionalColumns.ifEmptyPresent(updateColumns -> {
+//            String collect = RestStream.stream(updateColumns).map(column -> column.excluded(table.tablename(tablename)))
+//                    .collect(RestCollectors.joining(SQLConstants.COMMA + SQLConstants.BLANK));
+//            sqlBuilder.append(collect);
+//        });
+//        return sqlBuilder.toString();
+//    }
+
 
 }

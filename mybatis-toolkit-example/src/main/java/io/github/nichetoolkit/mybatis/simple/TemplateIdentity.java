@@ -2,11 +2,13 @@ package io.github.nichetoolkit.mybatis.simple;
 
 import io.github.nichetoolkit.mybatis.stereotype.column.RestUnionKey;
 import io.github.nichetoolkit.mybatis.stereotype.table.RestIdentity;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Objects;
 
-@Data
+@Setter
+@Getter
 @RestIdentity
 public class TemplateIdentity extends IdentityModel {
 

@@ -6,6 +6,7 @@ public interface SQLConstants {
     String UPDATE = "UPDATE";
     String SELECT = "SELECT";
     String DELETE = "DELETE";
+    String FROM = "FROM";
     String AS = "AS";
     String WHERE = "WHERE";
     String LIKE = "LIKE";
@@ -18,11 +19,17 @@ public interface SQLConstants {
     String GROUP_BY = "GROUP BY";
     String LIMIT = "LIMIT";
     String HAVING = "HAVING";
+    String END = "END";
+    String ELSE = "ELSE";
+    String CASE = "CASE";
+    String WHEN = "WHEN";
+    String THEN = "THEN";
+    String EXCLUDED = "EXCLUDED";
 
     String IS_NULL = "IS NULL";
     String IS_NOT_NULL = "IS NOT NULL";
 
-    String Empty = "";
+    String EMPTY = "";
     String BLANK = " ";
     String COMMA = ",";
     String PERIOD = ".";
@@ -36,11 +43,18 @@ public interface SQLConstants {
     String CONTRAST_GTE = ">=";
     String CONTRAST_LTE = "<=";
     String CONTRAST_NEQ = "!=";
+    String SIGNER = "#";
+    String DOLLAR = "$";
 
     String PERCENT = "%";
     String BRACE_LT = "(";
     String BRACE_GT = ")";
+    String CURLY_LT = "{";
+    String CURLY_GT = "}";
 
+    String JDBC_TYPE = "jdbcType";
+    String TYPE_HANDLER = "typeHandler";
+    String NUMERIC_SCALE = "numericScale";
     String DO_NOTHING = "ON DUPLICATE KEY DO NOTHING";
     String DO_UPDATE = "ON DUPLICATE KEY UPDATE";
     String ON_CONFLICT_LT = "ON CONFLICT";

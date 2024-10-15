@@ -4,12 +4,14 @@ import io.github.nichetoolkit.mybatis.consts.SQLConstants;
 import io.github.nichetoolkit.rest.RestKey;
 import io.github.nichetoolkit.rest.util.DateUtils;
 import io.github.nichetoolkit.rest.util.GeneralUtils;
+import lombok.Getter;
 import org.springframework.lang.NonNull;
 
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
 
+@Getter
 @SuppressWarnings({"WeakerAccess", "UnusedReturnValue"})
 public final class SqlBuilder implements Serializable, CharSequence {
 
@@ -248,10 +250,6 @@ public final class SqlBuilder implements Serializable, CharSequence {
             return "";
         }
         return sqlBuilder.toString();
-    }
-
-    public StringBuilder getSqlBuilder() {
-        return sqlBuilder;
     }
 
     public static SqlBuilder sqlBuilder() {
@@ -800,6 +798,10 @@ public final class SqlBuilder implements Serializable, CharSequence {
         return this.keyword(SQLConstants.SET, true);
     }
 
+    public SqlBuilder from() {
+        return this.keyword(SQLConstants.FROM, false);
+    }
+
     public SqlBuilder like() {
         return this.keyword(SQLConstants.LIKE, false);
     }
@@ -823,7 +825,6 @@ public final class SqlBuilder implements Serializable, CharSequence {
     public SqlBuilder doUpdate() {
         return this.keyword(SQLConstants.ORDER_BY, false);
     }
-
 
     public SqlBuilder keyword(String keyword, boolean linefeed) {
         if (linefeed) {

@@ -1,12 +1,14 @@
 package io.github.nichetoolkit.mybatis.simple;
 
 import io.github.nichetoolkit.mybatis.stereotype.column.RestUnionKey;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.io.Serializable;
 import java.util.Objects;
 
-@Data
+@Setter
+@Getter
 public class IdentityModel implements Serializable {
     @RestUnionKey
     protected String templatePk1;

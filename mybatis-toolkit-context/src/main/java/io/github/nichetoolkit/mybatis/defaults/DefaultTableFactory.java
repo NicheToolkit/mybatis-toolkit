@@ -44,7 +44,6 @@ public class DefaultTableFactory implements MybatisTableFactory {
             mybatisTable = MybatisTable.of(entityType, identityType, linkageType, alertnessType, tableProperties.getProperties());
         }
         mybatisTable.setComment(tableComment);
-        mybatisTable.setAutoResultMap(true);
         restUniqueKeys(entityType, mybatisTable);
         restUnionKeys(entityType, mybatisTable);
         restLinkKeys(entityType, mybatisTable);

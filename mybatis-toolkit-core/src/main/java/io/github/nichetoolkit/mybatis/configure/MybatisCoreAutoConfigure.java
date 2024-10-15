@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
 @ComponentScan(basePackages = {"io.github.nichetoolkit.mybatis"})
 public class MybatisCoreAutoConfigure {
     public MybatisCoreAutoConfigure() {
-        log.debug("the auto configuration for [mybatis-core] initiated");
+        log.debug("The auto configuration for [mybatis-core] initiated");
     }
 
 }

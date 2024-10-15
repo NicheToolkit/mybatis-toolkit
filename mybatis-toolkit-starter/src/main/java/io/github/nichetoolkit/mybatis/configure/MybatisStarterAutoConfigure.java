@@ -18,7 +18,7 @@ import org.springframework.lang.NonNull;
 public class MybatisStarterAutoConfigure {
 
     public MybatisStarterAutoConfigure() {
-        log.debug("the auto configuration for [mybatis-starter] initiated");
+        log.debug("The auto configuration for [mybatis-starter] initiated");
     }
 
     public static class MybatisMapperAutoRegister implements ImportBeanDefinitionRegistrar {

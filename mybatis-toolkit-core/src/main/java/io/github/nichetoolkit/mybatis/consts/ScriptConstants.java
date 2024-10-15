@@ -3,9 +3,15 @@ package io.github.nichetoolkit.mybatis.consts;
 
 public interface ScriptConstants {
     String PARAM = "_parameter";
-
+    String NULL = "null";
+    String AND = "and";
+    String EMPTY = "''";
+    String RESULT_MAPS = "resultMaps";
+    String DEFAULT_RESULT_MAP = "defaultResultMap";
+    String WHERE_PREFIX = "1 = 1";
+    String NAME_EQUALS_PROPERTY = "name = #{name}";
     /* "<script>\n%s\n</script>" */
-    String SCRIPT_LABEL = "<script>\n%s\n</script>";
+    String SCRIPT_LABEL = "<script>%s\n</script>";
     String WHERE_LABEL = "\n<where>%s\n</where> ";
     String CHOOSE_LABEL = "\n<choose>%s\n</choose> ";
     String OTHERWISE_LABEL = "\n<otherwise>%s\n</otherwise> ";

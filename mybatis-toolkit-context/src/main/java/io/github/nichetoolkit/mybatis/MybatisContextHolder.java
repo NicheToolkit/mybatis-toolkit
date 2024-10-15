@@ -2,8 +2,8 @@ package io.github.nichetoolkit.mybatis;
 
 import io.github.nichetoolkit.mybatis.configure.MybatisCacheProperties;
 import io.github.nichetoolkit.mybatis.configure.MybatisTableProperties;
-import io.github.nichetoolkit.rest.RestIntend;
-import lombok.Data;
+import io.github.nichetoolkit.rice.ServiceIntend;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.mapping.SqlSource;
 import org.apache.ibatis.session.Configuration;
@@ -14,8 +14,8 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Slf4j
-@Data
-public class MybatisContextHolder implements RestIntend<MybatisContextHolder> {
+@Setter
+public class MybatisContextHolder implements ServiceIntend<MybatisContextHolder> {
     @Resource
     private MybatisTableProperties tableProperties;
     @Resource
@@ -42,7 +42,7 @@ public class MybatisContextHolder implements RestIntend<MybatisContextHolder> {
     }
 
     public static boolean isUseOnce() {
-        return INSTANCE.cacheProperties.isUseOnce();
+        return IS_USE_ONCE;
     }
 
     public static MybatisTableProperties tableProperties() {

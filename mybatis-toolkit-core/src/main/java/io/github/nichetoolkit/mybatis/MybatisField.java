@@ -2,40 +2,37 @@ package io.github.nichetoolkit.mybatis;
 
 import io.github.nichetoolkit.rest.error.lack.AccessibleLackError;
 import io.github.nichetoolkit.rest.reflect.RestGenericTypes;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.experimental.Accessors;
 import org.springframework.core.annotation.AnnotationUtils;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
-import java.util.Optional;
 
-@Data
+@Setter
+@Getter
 @Accessors(fluent = true)
 public class MybatisField {
-    protected Class<?> entity;
-    protected Class<?> identity;
+    protected Class<?> entityType;
     protected Field field;
+    protected boolean isSpecialIdentity = false;
     protected boolean ignored = false;
 
     public MybatisField() {
     }
 
-    public MybatisField(Class<?> entity, Field field) {
-        this.entity = entity;
+    public MybatisField(Class<?> entityType, Field field) {
+        this.entityType = entityType;
         this.field = field;
         this.field.setAccessible(true);
     }
 
-    public MybatisField(Class<?> entity, Class<?> identity, Field field) {
-        this.entity = entity;
-        this.identity = identity;
+    public MybatisField(Class<?> entityType, Class<?> identityType, Field field) {
+        this.entityType = entityType;
+        this.isSpecialIdentity = identityType != null;
         this.field = field;
         this.field.setAccessible(true);
-    }
-
-    public boolean isIdentity() {
-        return Optional.ofNullable(this.identity).isPresent();
     }
 
     public Class<?> declaringClass() {
@@ -47,7 +44,7 @@ public class MybatisField {
     }
 
     public Class<?> fieldType() {
-        return RestGenericTypes.resolveFieldClass(field, entity);
+        return RestGenericTypes.resolveFieldClass(field, entityType);
     }
 
     public <T extends Annotation> T getAnnotation(Class<T> annotationClass) {

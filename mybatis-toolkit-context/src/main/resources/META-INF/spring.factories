@@ -9,5 +9,4 @@ io.github.nichetoolkit.mybatis.style.DefaultLowerUnderlineStyle,\
 io.github.nichetoolkit.mybatis.style.DefaultNormalStyle,\
 io.github.nichetoolkit.mybatis.style.DefaultUpperStyle,\
 io.github.nichetoolkit.mybatis.style.DefaultUpperUnderlineStyle
-io.github.nichetoolkit.rest.RestIntend=io.github.nichetoolkit.mybatis.MybatisContextHolder
-
+io.github.nichetoolkit.rice.ServiceIntend=io.github.nichetoolkit.mybatis.MybatisContextHolder

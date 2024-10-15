@@ -6,8 +6,8 @@ import io.github.nichetoolkit.mybatis.error.MybatisProviderLackError;
 import io.github.nichetoolkit.rest.RestOptional;
 import io.github.nichetoolkit.rest.util.GeneralUtils;
 import io.github.nichetoolkit.rest.util.OptionalUtils;
-import io.github.nichetoolkit.rice.DefaultServiceIntend;
-import lombok.Data;
+import io.github.nichetoolkit.rice.ServiceIntend;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.support.SpringFactoriesLoader;
 
@@ -18,8 +18,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 @Slf4j
-@Data
-public class MybatisSqlProviderHolder implements DefaultServiceIntend<MybatisSqlProviderHolder> {
+@Setter
+public class MybatisSqlProviderHolder implements ServiceIntend<MybatisSqlProviderHolder> {
     private static final Map<DatabaseType, List<MybatisSqlProvider>> SQL_PROVIDER_CACHES = new ConcurrentHashMap<>(DatabaseType.values().length);
     @Resource
     private MybatisTableProperties tableProperties;
@@ -31,7 +31,6 @@ public class MybatisSqlProviderHolder implements DefaultServiceIntend<MybatisSql
     @Override
     public void afterPropertiesSet() {
         INSTANCE = this;
-        log.debug("the sql provider holder of will be loaded.");
     }
 
     public static MybatisSqlProviderHolder instance() {
@@ -60,14 +59,14 @@ public class MybatisSqlProviderHolder implements DefaultServiceIntend<MybatisSql
                     });
         }
         String messageOfSqlProviders = "the sql providers can not be loaded from spring factories loader or spring beans";
-        OptionalUtils.ofEmptyError(RestOptional.ofEmptyable(SQL_PROVIDER_CACHES), messageOfSqlProviders, MybatisProviderLackError::new);
+        OptionalUtils.ofEmptyError(RestOptional.ofEmptyable(SQL_PROVIDER_CACHES), messageOfSqlProviders, log, MybatisProviderLackError::new);
     }
 
     private void defaultSqlProviders() {
         DatabaseType databaseType = defaultDatabaseType();
         List<MybatisSqlProvider> sqlProviders = defaultSqlProviders(databaseType);
         String messageOfDatabaseType = "the sql providers can not found, maybe it is unsupported with '" + databaseType.name() + "' type";
-        OptionalUtils.ofEmptyError(RestOptional.ofEmptyable(sqlProviders), messageOfDatabaseType, MybatisProviderLackError::new);
+        OptionalUtils.ofEmptyError(RestOptional.ofEmptyable(sqlProviders), messageOfDatabaseType, log,MybatisProviderLackError::new);
     }
 
     public static DatabaseType defaultDatabaseType() {

@@ -2,11 +2,15 @@ package io.github.nichetoolkit.mybatis;
 
 import io.github.nichetoolkit.mybatis.defaults.DefaultColumnFactoryChain;
 import io.github.nichetoolkit.mybatis.defaults.DefaultTableFactoryChain;
+import io.github.nichetoolkit.mybatis.error.MybatisTableLackError;
 import io.github.nichetoolkit.mybatis.stereotype.column.RestIdentityKey;
 import io.github.nichetoolkit.rest.RestException;
 import io.github.nichetoolkit.rest.error.lack.InterfaceLackError;
+import io.github.nichetoolkit.rest.reflect.RestGenericTypes;
 import io.github.nichetoolkit.rest.util.GeneralUtils;
 import io.github.nichetoolkit.rest.util.OptionalUtils;
+import io.github.nichetoolkit.rice.RestId;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.support.SpringFactoriesLoader;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
@@ -17,13 +21,14 @@ import java.lang.reflect.Modifier;
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 public abstract class MybatisFactory {
 
     @SuppressWarnings("all")
     public static MybatisTable createTable(@NonNull Class<?> mapperType, @Nullable Method mapperMethod) throws RestException {
         Class<?> entityClass = MybatisClassFinder.findEntityClass(mapperType, mapperMethod);
-        String message = "can not find " + (mapperMethod != null ? mapperMethod.getName() + " method" : mapperType.getSimpleName() + " interface") + " corresponding mybatis class";
-        OptionalUtils.ofNullError(entityClass, message, InterfaceLackError::new);
+        String message = "Can not find " + (mapperMethod != null ? mapperMethod.getName() + " method" : mapperType.getSimpleName() + " interface") + " corresponding mybatis class";
+        OptionalUtils.ofNullError(entityClass, message, log, InterfaceLackError::new);
         Class<?> identityClass = MybatisClassFinder.findIdentityClass(mapperType, entityClass);
         Class<?> linkageClass = MybatisClassFinder.findLinkageClass(mapperType, entityClass);
         Class<?> alertnessClass = MybatisClassFinder.findAlertnessClass(mapperType, entityClass);
@@ -35,10 +40,14 @@ public abstract class MybatisFactory {
         /* 处理MybatisTable */
         MybatisTableFactory.Chain tableFactoryChain = Instance.tableFactoryChain();
         /* 创建 MybatisTable，不处理列（字段），此时返回的 MybatisTable 已经经过了所有处理链的加工 */
-        MybatisTable table = tableFactoryChain.createTable(entityType, identityType,linkageType,alertnessType);
-        if (table == null) {
-            throw new NullPointerException("Unable to get " + entityType.getName() + " mybatis class information");
+        MybatisTable table = tableFactoryChain.createTable(entityType, identityType, linkageType, alertnessType);
+        /* 设置 MybatisTable 的 identityType类型 */
+        if (GeneralUtils.isEmpty(identityType)) {
+            table.setIdentityType(RestGenericTypes.resolveClass(RestGenericTypes.resolveType(
+                    RestId.class.getTypeParameters()[0], entityType, RestId.class)));
         }
+        String message = "Unable to get " + entityType.getName() + " mybatis class information";
+        OptionalUtils.ofNullError(table, message, log, MybatisTableLackError::new);
         /* 如果实体表已经处理好，直接返回 */
         if (!table.isReady()) {
             synchronized (entityType) {
