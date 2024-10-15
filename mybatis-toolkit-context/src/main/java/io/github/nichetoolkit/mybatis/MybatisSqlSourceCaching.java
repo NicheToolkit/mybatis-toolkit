@@ -1,5 +1,6 @@
 package io.github.nichetoolkit.mybatis;
 
+import io.github.nichetoolkit.mybatis.consts.SQLConstants;
 import io.github.nichetoolkit.rest.RestException;
 import io.github.nichetoolkit.rest.actuator.SupplierActuator;
 import io.github.nichetoolkit.rest.error.lack.ConfigureLackError;
@@ -21,7 +22,7 @@ import java.util.Objects;
 public class MybatisSqlSourceCaching extends XMLLanguageDriver {
 
     private static String cacheKey(ProviderContext providerContext) {
-        return (providerContext.getMapperType().getName() + "." + providerContext.getMapperMethod().getName()).intern();
+        return (providerContext.getMapperType().getName() + SQLConstants.PERIOD + providerContext.getMapperMethod().getName()).intern();
     }
 
     private static void isPresentLang(ProviderContext providerContext) {
@@ -83,7 +84,7 @@ public class MybatisSqlSourceCaching extends XMLLanguageDriver {
                             throw new MethodLackError("the sql script has error, you need to configure entity with annotation, " + exception.getMessage(), exception);
                         }
                         if (log.isDebugEnabled()) {
-                            log.debug("cacheKey - {} :\n{}\n", cacheKey, sqlScript);
+                            log.debug("cacheKey - {} :\n{}", cacheKey, sqlScript);
                         }
                         /* 缓存 sqlSource */
                         SqlSource sqlSource = super.createSqlSource(configuration, sqlScript, parameterType);

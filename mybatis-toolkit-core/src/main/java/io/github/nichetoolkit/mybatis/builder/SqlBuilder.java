@@ -15,6 +15,8 @@ import java.util.Date;
 @SuppressWarnings({"WeakerAccess", "UnusedReturnValue"})
 public final class SqlBuilder implements Serializable, CharSequence {
 
+    public static final String EMPTY = SQLConstants.EMPTY;
+
     private static final long serialVersionUID = 4383685877147921098L;
 
     private final StringBuilder sqlBuilder;

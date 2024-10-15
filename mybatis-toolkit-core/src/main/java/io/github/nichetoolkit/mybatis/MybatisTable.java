@@ -286,9 +286,9 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
     }
 
     private void refreshColumn(List<MybatisColumn> columns, MybatisColumn column, Integer index) {
-        if (GeneralUtils.isNotEmpty(column.getOrder())) {
+        if (GeneralUtils.isNotNull(column.getOrder())) {
             columns.add(column.getOrder(), column);
-        } else if (GeneralUtils.isValid(index)) {
+        } else if (GeneralUtils.isNotNull(index)) {
             columns.add(index, column);
         } else {
             columns.add(column);

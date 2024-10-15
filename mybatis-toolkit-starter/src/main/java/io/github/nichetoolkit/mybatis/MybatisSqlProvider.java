@@ -27,11 +27,16 @@ public interface MybatisSqlProvider {
 
     DatabaseType databaseType();
 
-    MybatisSqlSupply SELECT_SQL_SUPPLY = (tablename, table, whereSql, sqlScript) ->
-            SqlBuilder.sqlBuilder()
-                    .select().append(table.sqlOfSelectColumns())
-                    .from().append(table.tablename(tablename))
-                    .where().append(whereSql).toString();
+    MybatisSqlSupply SELECT_SQL_SUPPLY = (tablename, table, whereSql, sqlScript) -> {
+        if (whereSql.startsWith(SQLConstants.AND)) {
+            whereSql = whereSql.substring(SQLConstants.AND.length() - 1);
+        }
+        return SqlBuilder.sqlBuilder()
+                .select().append(table.sqlOfSelectColumns())
+                .from().append(table.tablename(tablename))
+                .where().append(whereSql).toString();
+    };
+
 
     @SuppressWarnings("unchecked")
     static <I> Object reviseParameter(I parameter) throws RestException {
@@ -148,7 +153,7 @@ public interface MybatisSqlProvider {
     }
 
     @SuppressWarnings("Duplicates")
-    static <E,I> String providing(ProviderContext providerContext, @Nullable String tablename, E entityParameter, I idParameter, String logic, ConsumerActuator<MybatisTable> actuator, MybatisSqlSupply sqlSupply) throws RestException {
+    static <E, I> String providing(ProviderContext providerContext, @Nullable String tablename, E entityParameter, I idParameter, String logic, ConsumerActuator<MybatisTable> actuator, MybatisSqlSupply sqlSupply) throws RestException {
         Object entity = reviseParameter(entityParameter);
         Object identity = reviseParameter(idParameter);
         return MybatisSqlScript.caching(providerContext, (table, sqlScript) -> {
