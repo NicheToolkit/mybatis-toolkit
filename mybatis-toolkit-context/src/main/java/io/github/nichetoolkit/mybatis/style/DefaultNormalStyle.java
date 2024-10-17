@@ -6,6 +6,8 @@ import io.github.nichetoolkit.mybatis.MybatisTable;
 import io.github.nichetoolkit.mybatis.enums.StyleType;
 import io.github.nichetoolkit.rest.util.GeneralUtils;
 
+import java.lang.reflect.Field;
+
 public class DefaultNormalStyle implements MybatisTableStyle {
     @Override
     public StyleType getStyleType() {
@@ -24,7 +26,17 @@ public class DefaultNormalStyle implements MybatisTableStyle {
     }
 
     @Override
+    public String columnName(Field field) {
+        return field.getName();
+    }
+
+    @Override
+    public String columnName(MybatisField field) {
+        return columnName(field.field());
+    }
+
+    @Override
     public String columnName(MybatisTable table, MybatisField field) {
-        return field.fieldName();
+        return columnName(field);
     }
 }

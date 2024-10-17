@@ -262,7 +262,6 @@ public final class SqlBuilder implements Serializable, CharSequence {
         return new SqlBuilder(sql);
     }
 
-
     public SqlBuilder isn(String target, Boolean andOfOr) {
         if (GeneralUtils.isNotEmpty(target)) {
             this.andOfOr(andOfOr);

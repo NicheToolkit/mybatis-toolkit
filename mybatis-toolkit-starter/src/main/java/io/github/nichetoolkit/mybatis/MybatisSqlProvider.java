@@ -27,15 +27,11 @@ public interface MybatisSqlProvider {
 
     DatabaseType databaseType();
 
-    MybatisSqlSupply SELECT_SQL_SUPPLY = (tablename, table, whereSql, sqlScript) -> {
-        if (whereSql.startsWith(SQLConstants.AND)) {
-            whereSql = whereSql.substring(SQLConstants.AND.length() - 1);
-        }
-        return SqlBuilder.sqlBuilder()
-                .select().append(table.sqlOfSelectColumns())
-                .from().append(table.tablename(tablename))
-                .where().append(whereSql).toString();
-    };
+    MybatisSqlSupply SELECT_SQL_SUPPLY = (tablename, table, whereSql, sqlScript) ->
+            SqlBuilder.sqlBuilder()
+                    .select().append(table.sqlOfSelectColumns())
+                    .from().append(table.tablename(tablename))
+                    .where().append(whereSql).toString();
 
 
     @SuppressWarnings("unchecked")
@@ -90,14 +86,19 @@ public interface MybatisSqlProvider {
         });
     }
 
-    static <I> String providing(ProviderContext providerContext, @Nullable String tablename, String whereSql, MybatisSqlSupply sqlProvider) throws RestException {
-        return providing(providerContext, tablename, whereSql, table -> {
+    static <I> String providing(ProviderContext providerContext, @Nullable String tablename, String whereSqlParameter, MybatisSqlSupply sqlProvider) throws RestException {
+        return providing(providerContext, tablename, whereSqlParameter, table -> {
         }, sqlProvider);
     }
 
-    static <I> String providing(ProviderContext providerContext, @Nullable String tablename, String whereSql, ConsumerActuator<MybatisTable> actuator, MybatisSqlSupply sqlSupply) throws RestException {
+    static <I> String providing(ProviderContext providerContext, @Nullable String tablename, String whereSqlParameter, ConsumerActuator<MybatisTable> actuator, MybatisSqlSupply sqlSupply) throws RestException {
         return MybatisSqlScript.caching(providerContext, (table, sqlScript) -> {
             actuator.actuate(table);
+            String whereSql = whereSqlParameter;
+            if (whereSql.startsWith(SQLConstants.AND_MATCH)) {
+                whereSql = whereSql.substring(SQLConstants.AND_MATCH.length());
+            }
+            whereSql = ScriptConstants.CDATA_LT + whereSql + ScriptConstants.CDATA_GT;
             return sqlSupply.supply(tablename, table, whereSql, sqlScript);
         });
     }
@@ -123,7 +124,7 @@ public interface MybatisSqlProvider {
             Optional.ofNullable(table.getLogicColumn()).ifPresent(column -> sqlBuilder.and().append(column.columnEqualsLogic()));
             if (table.isSpecialIdentity()) {
                 valueOfIdentity(table, identity);
-                String identitySql = sqlOfIdentity(identity, table.tableColumns(), false);
+                String identitySql = sqlOfIdentity(identity, table.identityColumns(), false);
                 sqlBuilder.append(identitySql);
             } else {
                 Optional.ofNullable(table.getIdentityColumn()).ifPresent(column -> sqlBuilder.and().append(column.columnNotEqualsProperty()));
@@ -171,7 +172,7 @@ public interface MybatisSqlProvider {
             Optional.ofNullable(table.getLogicColumn()).ifPresent(column -> sqlBuilder.and().append(column.columnEqualsLogic()));
             if (table.isSpecialIdentity()) {
                 valueOfIdentity(table, identity);
-                String identitySql = sqlOfIdentity(identity, table.tableColumns(), false);
+                String identitySql = sqlOfIdentity(identity, table.identityColumns(), false);
                 sqlBuilder.append(identitySql);
             } else {
                 Optional.ofNullable(table.getIdentityColumn()).ifPresent(column -> sqlBuilder.and().append(column.columnNotEqualsProperty()));
@@ -181,11 +182,11 @@ public interface MybatisSqlProvider {
     }
 
     static void valueOfIdentity(MybatisTable table, Object id) throws RestException {
-        Boolean logicalAnd = RestStream.stream(table.identityColumns()).map(MybatisColumn::getField)
+        Boolean logicalOr = RestStream.stream(table.identityColumns()).map(MybatisColumn::getField)
                 .map(mybatisField -> GeneralUtils.isNotEmpty(mybatisField.get(id)))
                 .collect(RestCollectors.logicalOr());
         String message = "The field values of identity can not all be empty, " + table.getIdentityType().getName();
-        OptionalUtils.ofFalseError(logicalAnd, message, MybatisIdentityLackError::new);
+        OptionalUtils.ofFalseError(logicalOr, message, MybatisIdentityLackError::new);
     }
 
     static <I> Map<Integer, List<I>> sliceOfIdentity(MybatisTable table, Collection<I> idList) throws RestException {
@@ -216,7 +217,7 @@ public interface MybatisSqlProvider {
     }
 
     static <I> String specialWhereSqlOfId(I identity, MybatisTable table, MybatisSqlScript sqlScript) throws RestException {
-        return sqlOfIdentity(identity, table.tableColumns(), true);
+        return sqlOfIdentity(identity, table.identityColumns(), true);
     }
 
     static <I> String sqlOfIdentity(I identity, Collection<MybatisColumn> mybatisColumns, boolean isEquals) throws RestException {
@@ -238,7 +239,7 @@ public interface MybatisSqlProvider {
                 } else {
                     sqlBuilder.neq();
                 }
-                sqlBuilder.value(fieldValue).append(SQLConstants.COMMA);
+                sqlBuilder.value(fieldValue);
             }
         }
         sqlBuilder.deleteLastChar();
@@ -251,8 +252,12 @@ public interface MybatisSqlProvider {
      * SELECT template_pk1, template_pk2, name, description, time, update_time, create_time, logic_sign
      * FROM ntr_template WHERE 1=1 AND ((template_pk1) IN (('1' )) OR (template_pk2) IN (('3' )))
      */
+    @SuppressWarnings("Duplicates")
     static <I> String specialWhereSqlOfIds(Map<Integer, List<I>> identitySliceMap, MybatisTable table, MybatisSqlScript sqlScript) throws RestException {
-        SqlBuilder sqlBuilder = new SqlBuilder();
+        if (GeneralUtils.isEmpty(identitySliceMap)) {
+            return SqlBuilder.EMPTY;
+        }
+        SqlBuilder sqlBuilder = new SqlBuilder(SQLConstants.BRACE_LT);
         for (Map.Entry<Integer, List<I>> entry : identitySliceMap.entrySet()) {
             Integer key = entry.getKey();
             List<I> valueList = entry.getValue();

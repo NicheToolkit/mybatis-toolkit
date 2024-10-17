@@ -2,6 +2,7 @@ package io.github.nichetoolkit.mybatis.consts;
 
 
 public interface SQLConstants {
+    String AND_MATCH = " AND ";
     String INSERT = "INSERT";
     String UPDATE = "UPDATE";
     String SELECT = "SELECT";

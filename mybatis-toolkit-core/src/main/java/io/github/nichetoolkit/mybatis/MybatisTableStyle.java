@@ -6,6 +6,7 @@ import io.github.nichetoolkit.rest.error.lack.InterfaceLackError;
 import org.springframework.core.io.support.SpringFactoriesLoader;
 import org.springframework.lang.NonNull;
 
+import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -52,6 +53,10 @@ public interface MybatisTableStyle {
     String tableName(Class<?> entityType);
 
     String tableAlias(Class<?> entityType);
+
+    String columnName(Field field);
+
+    String columnName(MybatisField field);
 
     String columnName(MybatisTable table, MybatisField field);
 }

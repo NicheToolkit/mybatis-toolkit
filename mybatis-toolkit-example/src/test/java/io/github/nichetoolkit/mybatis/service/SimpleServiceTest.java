@@ -23,21 +23,31 @@ class SimpleServiceTest extends MybatisToolkitTestWebApplicationTests {
 
     @Test
     public void queryById() throws RestException {
-        SimpleModel simpleModel = simpleService.queryById("12313123123");
+        SimpleModel simpleModel = simpleService.queryById("1656549566276964352");
         System.out.println(JsonUtils.parseJson(simpleModel));
     }
 
     @Test
     public void queryAll() throws RestException {
-        List<SimpleModel> simpleModels = simpleService.queryAll(Arrays.asList("12313123123","113a21"));
+        List<SimpleModel> simpleModels = simpleService.queryAll(Arrays.asList("1656551617199345664","1656552404394708992"));
         System.out.println(JsonUtils.parseJson(simpleModels));
+    }
+
+    @Test
+    public void queryAllWithFilter() throws RestException {
+        SimpleFilter simpleFilter = new SimpleFilter();
+        simpleFilter.setPageSize(10);
+        simpleFilter.setStartTime(DateUtils.parseTime("2023-05-10 00:00:00"));
+        simpleFilter.setEndTime(DateUtils.parseTime("2023-05-13 00:00:00"));
+        RestPage<SimpleModel> restPage = simpleService.queryAllWithFilter(simpleFilter);
+        System.out.println(JsonUtils.parseJson(restPage));
     }
 
     @Test
     public void save() throws RestException {
         SimpleModel simpleModel = new SimpleModel();
-        simpleModel.setName("名称_" + GeneralUtils.uuid());
-        simpleModel.setDescription("描述_" + GeneralUtils.uuid());
+        simpleModel.setName("name_" + GeneralUtils.uuid());
+        simpleModel.setDescription("description_" + GeneralUtils.uuid());
         simpleModel.setTime(new Date());
         SimpleModel save = simpleService.save(simpleModel);
         System.out.println(JsonUtils.parseJson(save));
@@ -46,12 +56,12 @@ class SimpleServiceTest extends MybatisToolkitTestWebApplicationTests {
     @Test
     public void saveAll() throws RestException {
         SimpleModel simpleModel1 = new SimpleModel();
-        simpleModel1.setName("名称1_" + GeneralUtils.uuid());
-        simpleModel1.setDescription("描述1_" + GeneralUtils.uuid());
+        simpleModel1.setName("name1_" + GeneralUtils.uuid());
+        simpleModel1.setDescription("description1_" + GeneralUtils.uuid());
 
         SimpleModel simpleModel2 = new SimpleModel();
-        simpleModel2.setName("名称2_" + GeneralUtils.uuid());
-        simpleModel2.setDescription("描述2_" + GeneralUtils.uuid());
+        simpleModel2.setName("name2_" + GeneralUtils.uuid());
+        simpleModel2.setDescription("description2_" + GeneralUtils.uuid());
 
         List<SimpleModel> simpleModels = simpleService.saveAll(Arrays.asList(simpleModel1, simpleModel2));
         System.out.println(JsonUtils.parseJson(simpleModels));
@@ -68,15 +78,6 @@ class SimpleServiceTest extends MybatisToolkitTestWebApplicationTests {
         simpleService.deleteAll(Arrays.asList("1656551617199345664","1656552404394708992"));
     }
 
-    @Test
-    public void findAllByWhere() throws RestException {
-        SimpleFilter simpleFilter = new SimpleFilter();
-        simpleFilter.setPageSize(10);
-        simpleFilter.setStartTime(DateUtils.parseTime("2023-05-10 00:00:00"));
-        simpleFilter.setEndTime(DateUtils.parseTime("2023-05-13 00:00:00"));
-        RestPage<SimpleModel> restPage = simpleService.queryAllWithFilter(simpleFilter);
-        System.out.println(JsonUtils.parseJson(restPage));
-    }
 
     @Test
     public void deleteAllByWhere() throws RestException {

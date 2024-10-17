@@ -9,6 +9,8 @@ public interface ScriptConstants {
     String RESULT_MAPS = "resultMaps";
     String DEFAULT_RESULT_MAP = "defaultResultMap";
     String WHERE_PREFIX = "1 = 1";
+    String CDATA_LT = "<![CDATA[";
+    String CDATA_GT = "]]>";
     String NAME_EQUALS_PROPERTY = "name = #{name}";
     /* "<script>\n%s\n</script>" */
     String SCRIPT_LABEL = "<script>%s\n</script>";
