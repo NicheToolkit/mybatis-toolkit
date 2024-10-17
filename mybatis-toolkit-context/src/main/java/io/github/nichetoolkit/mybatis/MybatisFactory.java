@@ -124,7 +124,7 @@ public abstract class MybatisFactory {
             /* 排除父类,迭代获取父类 */
             do {
                 declaredClass = declaredClass.getSuperclass();
-            } while (!table.isExcludeSuperClass(declaredClass) && declaredClass != Object.class);
+            } while (table.isExcludeSuperClass(declaredClass) && declaredClass != Object.class);
         }
     }
 

@@ -265,31 +265,48 @@ public interface MybatisSqlProvider {
                 List<Number> indices = RestReckon.denexNumber(key);
                 if (GeneralUtils.isNotEmpty(indices)) {
                     List<MybatisColumn> mybatisColumns = RestStream.stream(indices)
-                            .map(index -> table.identityColumns().get(index.intValue()))
-                            .collect(RestCollectors.toList());
-                    String fieldSql = RestStream.stream(mybatisColumns).map(MybatisColumn::columnName).collect(RestCollectors.joining(SQLConstants.COMMA));
+                            .map(index -> table.identityColumns().get(index.intValue())).collect(RestCollectors.toList());
                     boolean isMultiColumns = mybatisColumns.size() > 1;
-                    if (isMultiColumns) {
-                        sqlBuilder.append(SQLConstants.BRACE_LT).append(fieldSql).append(SQLConstants.BRACE_GT).in().append(SQLConstants.BRACE_LT);
-                    } else {
-                        sqlBuilder.append(fieldSql).in().append(SQLConstants.BRACE_LT);
-                    }
-                    RestStream.stream(valueList).forEach(value -> {
+                    boolean isSingleValue = valueList.size() == 1;
+                    if (isSingleValue) {
                         if (isMultiColumns) {
                             sqlBuilder.append(SQLConstants.BRACE_LT);
                         }
-                        RestStream.stream(mybatisColumns).map(MybatisColumn::getField).forEach(field -> {
-                            Object indexValue = field.get(value);
-                            sqlBuilder.value(indexValue).append(SQLConstants.COMMA);
-                        });
-                        sqlBuilder.deleteLastChar();
-                        if (isMultiColumns) {
-                            sqlBuilder.append(SQLConstants.BRACE_GT).append(SQLConstants.COMMA);
-                        } else {
-                            sqlBuilder.append(SQLConstants.COMMA);
+                        boolean isNotFirst = false;
+                        I value = valueList.get(0);
+                        for (MybatisColumn mybatisColumn : mybatisColumns) {
+                            MybatisField mybatisField = mybatisColumn.getField();
+                            Object fieldValue = mybatisField.get(value);
+                            sqlBuilder.eq(mybatisColumn.columnName(), fieldValue, isNotFirst ? true : null);
+                            isNotFirst = true;
                         }
-                    });
-                    sqlBuilder.deleteLastChar().append(SQLConstants.BRACE_GT);
+                        if (isMultiColumns) {
+                            sqlBuilder.append(SQLConstants.BRACE_GT);
+                        }
+                    } else {
+                        String fieldSql = RestStream.stream(mybatisColumns).map(MybatisColumn::columnName).collect(RestCollectors.joining(SQLConstants.COMMA));
+                        if (isMultiColumns) {
+                            sqlBuilder.append(SQLConstants.BRACE_LT).append(fieldSql).append(SQLConstants.BRACE_GT).in().append(SQLConstants.BRACE_LT);
+                        } else {
+                            sqlBuilder.append(fieldSql).in().append(SQLConstants.BRACE_LT);
+                        }
+                        RestStream.stream(valueList).forEach(value -> {
+                            if (isMultiColumns) {
+                                sqlBuilder.append(SQLConstants.BRACE_LT);
+                            }
+                            RestStream.stream(mybatisColumns).map(MybatisColumn::getField).forEach(field -> {
+                                Object indexValue = field.get(value);
+                                sqlBuilder.value(indexValue).append(SQLConstants.COMMA);
+                            });
+                            sqlBuilder.deleteLastChar();
+                            if (isMultiColumns) {
+                                sqlBuilder.append(SQLConstants.BRACE_GT).append(SQLConstants.COMMA);
+                            } else {
+                                sqlBuilder.append(SQLConstants.COMMA);
+                            }
+                        });
+                        sqlBuilder.deleteLastChar().append(SQLConstants.BRACE_GT);
+                    }
                 }
                 sqlBuilder.or();
             }

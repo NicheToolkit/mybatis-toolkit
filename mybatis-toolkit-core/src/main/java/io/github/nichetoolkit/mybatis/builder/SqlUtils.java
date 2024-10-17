@@ -1,32 +1,18 @@
 package io.github.nichetoolkit.mybatis.builder;
 
-import io.github.nichetoolkit.mybatis.*;
+import io.github.nichetoolkit.mybatis.MybatisTableStyle;
 import io.github.nichetoolkit.mybatis.consts.SQLConstants;
 import io.github.nichetoolkit.mybatis.enums.StyleType;
-import io.github.nichetoolkit.rest.RestException;
 import io.github.nichetoolkit.rest.RestReckon;
-import io.github.nichetoolkit.rest.stream.RestCollectors;
-import io.github.nichetoolkit.rest.stream.RestStream;
 import io.github.nichetoolkit.rest.util.GeneralUtils;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.*;
+import java.util.stream.Collectors;
 
-/**
- * <code>SqlUtils</code>
- * <p>The type sql utils class.</p>
- * @author Cyan (snow22314@outlook.com)
- * @since Jdk1.8
- */
 public class SqlUtils {
 
-    /**
-     * <code>reverseArray</code>
-     * <p>The array method.</p>
-     * @param array {@link java.lang.Object} <p>The array parameter is <code>Object</code> type.</p>
-     * @see java.lang.Object
-     */
     public static void reverseArray(Object[] array) {
         for (int i = 0; i < array.length / 2; i++) {
             Object temp = array[i];
@@ -35,19 +21,7 @@ public class SqlUtils {
         }
     }
 
-    /**
-     * <code>fieldsOfIdentity</code>
-     * <p>The of identity method.</p>
-     * @param identityType        {@link java.lang.Class} <p>The identity type parameter is <code>Class</code> type.</p>
-     * @param excludeFields       {@link java.util.List} <p>The exclude fields parameter is <code>List</code> type.</p>
-     * @param excludeSuperClasses {@link java.util.List} <p>The exclude super classes parameter is <code>List</code> type.</p>
-     * @return {@link java.util.List} <p>The of identity return object is <code>List</code> type.</p>
-     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
-     * @see java.lang.Class
-     * @see java.util.List
-     * @see io.github.nichetoolkit.rest.RestException
-     */
-    public static List<Field> fieldsOfIdentity(Class<?> identityType, List<String> excludeFields, List<Class<?>> excludeSuperClasses) throws RestException {
+    public static List<Field> fieldsOfIdentity(Class<?> identityType, List<String> excludeFields, List<Class<?>> excludeSuperClasses) {
         List<Field> fieldList = new ArrayList<>();
         /* 未处理的需要获取字段 */
         Class<?> declaredClass = identityType;
@@ -75,21 +49,9 @@ public class SqlUtils {
         return fieldList;
     }
 
-    /**
-     * <code>sliceOfIdentity</code>
-     * <p>The of identity method.</p>
-     * @param <I>       {@link java.lang.Object} <p>The parameter can be of any type.</p>
-     * @param idList    {@link java.util.List} <p>The id list parameter is <code>List</code> type.</p>
-     * @param fieldList {@link java.util.List} <p>The field list parameter is <code>List</code> type.</p>
-     * @return {@link java.util.Map} <p>The of identity return object is <code>Map</code> type.</p>
-     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
-     * @see java.util.List
-     * @see java.util.Map
-     * @see io.github.nichetoolkit.rest.RestException
-     */
-    public static <I> Map<Integer, List<I>> sliceOfIdentity(List<I> idList, List<Field> fieldList) throws RestException {
-        return RestStream.stream(idList)
-                .collect(RestCollectors.groupingBy(id -> {
+    public static <I> Map<Integer, List<I>> sliceOfIdentity(List<I> idList, List<Field> fieldList) {
+        return idList.stream()
+                .collect(Collectors.groupingBy(id -> {
                     int indexValue = 0;
                     for (int index = 0; index < fieldList.size(); index++) {
                         Field field = fieldList.get(index);
@@ -106,72 +68,30 @@ public class SqlUtils {
                 }));
     }
 
-    /**
-     * <code>valueOfIdentity</code>
-     * <p>The of identity method.</p>
-     * @param <I>       {@link java.lang.Object} <p>The parameter can be of any type.</p>
-     * @param id        I <p>The id parameter is <code>I</code> type.</p>
-     * @param fieldList {@link java.util.List} <p>The field list parameter is <code>List</code> type.</p>
-     * @return boolean <p>The of identity return object is <code>boolean</code> type.</p>
-     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
-     * @see java.util.List
-     * @see io.github.nichetoolkit.rest.RestException
-     */
-    public static <I> boolean valueOfIdentity(I id, List<Field> fieldList) throws RestException {
-        return RestStream.stream(fieldList).map(field -> {
+    public static <I> boolean valueOfIdentity(I id, List<Field> fieldList) {
+        Optional<Boolean> logicalOrOptional = fieldList.stream().map(field -> {
             try {
                 Object fieldValue = field.get(id);
                 return GeneralUtils.isNotEmpty(fieldValue);
             } catch (IllegalAccessException ignored) {
                 return false;
             }
-        }).collect(RestCollectors.logicalOr());
+        }).reduce(Boolean::logicalOr);
+        return logicalOrOptional.orElse(false);
     }
 
-    /**
-     * <code>whereSqlOfIdentities</code>
-     * <p>The sql of identities method.</p>
-     * @param <I>       {@link java.lang.Object} <p>The parameter can be of any type.</p>
-     * @param ids       {@link java.util.Collection} <p>The ids parameter is <code>Collection</code> type.</p>
-     * @param idType    {@link java.lang.Class} <p>The id type parameter is <code>Class</code> type.</p>
-     * @param styleType {@link io.github.nichetoolkit.mybatis.enums.StyleType} <p>The style type parameter is <code>StyleType</code> type.</p>
-     * @return {@link java.lang.String} <p>The sql of identities return object is <code>String</code> type.</p>
-     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
-     * @see java.util.Collection
-     * @see java.lang.Class
-     * @see io.github.nichetoolkit.mybatis.enums.StyleType
-     * @see java.lang.String
-     * @see io.github.nichetoolkit.rest.RestException
-     */
-    public static <I> String whereSqlOfIdentities(Collection<I> ids, Class<I> idType, StyleType styleType) throws RestException {
+    public static <I> String whereSqlOfIdentities(Collection<I> ids, Class<I> idType, StyleType styleType) {
         List<Field> fieldList = fieldsOfIdentity(idType, Collections.emptyList(), Collections.emptyList());
         if (GeneralUtils.isEmpty(fieldList)) {
             return SqlBuilder.EMPTY;
         }
-        List<I> idList = RestStream.stream(ids).filter(id -> valueOfIdentity(id, fieldList))
-                .collect(RestCollectors.toList());
+        List<I> idList = ids.stream().filter(id -> valueOfIdentity(id, fieldList)).collect(Collectors.toList());
         Map<Integer, List<I>> identitiesOfMap = sliceOfIdentity(idList, fieldList);
         return whereSqlOfIdentities(identitiesOfMap, fieldList, styleType);
     }
 
-    /**
-     * <code>whereSqlOfIdentities</code>
-     * <p>The sql of identities method.</p>
-     * @param <I>       {@link java.lang.Object} <p>The parameter can be of any type.</p>
-     * @param idsOfMap  {@link java.util.Map} <p>The ids of map parameter is <code>Map</code> type.</p>
-     * @param fieldList {@link java.util.List} <p>The field list parameter is <code>List</code> type.</p>
-     * @param styleType {@link io.github.nichetoolkit.mybatis.enums.StyleType} <p>The style type parameter is <code>StyleType</code> type.</p>
-     * @return {@link java.lang.String} <p>The sql of identities return object is <code>String</code> type.</p>
-     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
-     * @see java.util.Map
-     * @see java.util.List
-     * @see io.github.nichetoolkit.mybatis.enums.StyleType
-     * @see java.lang.String
-     * @see java.lang.SuppressWarnings
-     * @see io.github.nichetoolkit.rest.RestException
-     */
     @SuppressWarnings("Duplicates")
-    public static <I> String whereSqlOfIdentities(Map<Integer, List<I>> idsOfMap, List<Field> fieldList, StyleType styleType) throws RestException {
+    public static <I> String whereSqlOfIdentities(Map<Integer, List<I>> idsOfMap, List<Field> fieldList, StyleType styleType) {
         if (GeneralUtils.isEmpty(idsOfMap)) {
             return SqlBuilder.EMPTY;
         }
@@ -182,38 +102,57 @@ public class SqlUtils {
             if (GeneralUtils.isNotEmpty(key) && GeneralUtils.isNotEmpty(valueList)) {
                 List<Number> indices = RestReckon.denexNumber(key);
                 if (GeneralUtils.isNotEmpty(indices)) {
-                    List<Field> denexFields = RestStream.stream(indices)
+                    List<Field> denexFields = indices.stream()
                             .map(index -> fieldList.get(index.intValue()))
-                            .collect(RestCollectors.toList());
+                            .collect(Collectors.toList());
                     MybatisTableStyle tableStyle = MybatisTableStyle.style(styleType);
-                    String fieldSql = RestStream.stream(denexFields)
-                            .map(tableStyle::columnName)
-                            .collect(RestCollectors.joining(SQLConstants.COMMA));
                     boolean isMultiColumns = denexFields.size() > 1;
-                    if (isMultiColumns) {
-                        sqlBuilder.append(SQLConstants.BRACE_LT).append(fieldSql).append(SQLConstants.BRACE_GT).in().append(SQLConstants.BRACE_LT);
-                    } else {
-                        sqlBuilder.append(fieldSql).in().append(SQLConstants.BRACE_LT);
-                    }
-                    RestStream.stream(valueList).forEach(value -> {
+                    boolean isSingleValue = valueList.size() == 1;
+                    if (isSingleValue) {
                         if (isMultiColumns) {
                             sqlBuilder.append(SQLConstants.BRACE_LT);
                         }
-                        RestStream.stream(denexFields).forEach(field -> {
+                        boolean isNotFirst = false;
+                        I value = valueList.get(0);
+                        for (Field field : denexFields) {
                             try {
-                                Object indexValue = field.get(value);
-                                sqlBuilder.value(indexValue).append(SQLConstants.COMMA);
+                                Object fieldValue = field.get(value);
+                                sqlBuilder.eq(tableStyle.columnName(field), fieldValue, isNotFirst ? true : null);
+                                isNotFirst = true;
                             } catch (IllegalAccessException ignored) {
                             }
-                        });
-                        sqlBuilder.deleteLastChar();
-                        if (isMultiColumns) {
-                            sqlBuilder.append(SQLConstants.BRACE_GT).append(SQLConstants.COMMA);
-                        } else {
-                            sqlBuilder.append(SQLConstants.COMMA);
                         }
-                    });
-                    sqlBuilder.deleteLastChar().append(SQLConstants.BRACE_GT);
+                        if (isMultiColumns) {
+                            sqlBuilder.append(SQLConstants.BRACE_GT);
+                        }
+                    } else {
+                        String fieldSql = denexFields.stream().map(tableStyle::columnName).collect(Collectors.joining(SQLConstants.COMMA));
+                        if (isMultiColumns) {
+                            sqlBuilder.append(SQLConstants.BRACE_LT).append(fieldSql).append(SQLConstants.BRACE_GT).in().append(SQLConstants.BRACE_LT);
+                        } else {
+                            sqlBuilder.append(fieldSql).in().append(SQLConstants.BRACE_LT);
+                        }
+                        valueList.forEach(value -> {
+                            if (isMultiColumns) {
+                                sqlBuilder.append(SQLConstants.BRACE_LT);
+                            }
+                            denexFields.forEach(field -> {
+                                try {
+                                    Object indexValue = field.get(value);
+                                    sqlBuilder.value(indexValue).append(SQLConstants.COMMA);
+                                } catch (IllegalAccessException ignored) {
+                                }
+                            });
+                            sqlBuilder.deleteLastChar();
+                            if (isMultiColumns) {
+                                sqlBuilder.append(SQLConstants.BRACE_GT).append(SQLConstants.COMMA);
+                            } else {
+                                sqlBuilder.append(SQLConstants.COMMA);
+                            }
+                        });
+                        sqlBuilder.deleteLastChar().append(SQLConstants.BRACE_GT);
+                    }
+
                 }
                 sqlBuilder.or();
             }

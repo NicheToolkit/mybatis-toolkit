@@ -7,6 +7,8 @@ import io.github.nichetoolkit.mybatis.simple.TemplateFilter;
 import io.github.nichetoolkit.mybatis.simple.TemplateIdentity;
 import io.github.nichetoolkit.mybatis.simple.TemplateModel;
 import io.github.nichetoolkit.rest.RestException;
+import io.github.nichetoolkit.rest.stream.RestCollectors;
+import io.github.nichetoolkit.rest.stream.RestStream;
 import io.github.nichetoolkit.rest.util.DateUtils;
 import io.github.nichetoolkit.rest.util.JsonUtils;
 import io.github.nichetoolkit.rice.RestPage;
@@ -45,6 +47,13 @@ class TemplateServiceTest extends MybatisToolkitTestWebApplicationTests {
         templateFilter.setEndTime(DateUtils.parseTime("2023-05-13 00:00:00"));
         RestPage<TemplateModel> restPage = templateService.queryAllWithFilter(templateFilter);
         System.out.println(JsonUtils.parseJson(restPage));
+    }
+
+    @Test
+    public void logicalOr() throws RestException {
+        Boolean logicalOr = RestStream.stream(Arrays.asList(true, false)).collect(RestCollectors.logicalOr());
+        System.out.println(logicalOr);
+
     }
 
     @Test
