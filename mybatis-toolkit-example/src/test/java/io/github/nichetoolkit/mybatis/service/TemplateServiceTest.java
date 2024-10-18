@@ -61,7 +61,7 @@ class TemplateServiceTest extends MybatisToolkitTestWebApplicationTests {
         TemplateIdentity identity1 = new TemplateIdentity("1656551617199345664", null);
         TemplateIdentity identity2 = new TemplateIdentity(null, "1656552404394708992");
         TemplateIdentity identity3 = new TemplateIdentity("1656551617199345665", "1656552404394708993");
-        String whereSqlOfIds = SqlUtils.whereSqlOfIdentities(Arrays.asList(identity1, identity2, identity3), TemplateIdentity.class, StyleType.LOWER_UNDERLINE);
+        String whereSqlOfIds = SqlUtils.whereSqlOfIds(Arrays.asList(identity1, identity2, identity3), TemplateIdentity.class, StyleType.LOWER_UNDERLINE);
         System.out.println(whereSqlOfIds);
     }
 

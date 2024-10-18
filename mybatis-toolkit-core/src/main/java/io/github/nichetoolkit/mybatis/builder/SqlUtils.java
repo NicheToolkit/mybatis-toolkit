@@ -80,18 +80,22 @@ public class SqlUtils {
         return logicalOrOptional.orElse(false);
     }
 
-    public static <I> String whereSqlOfIdentities(Collection<I> ids, Class<I> idType, StyleType styleType) {
+    public static <I> String whereSqlOfIds(Collection<I> ids, Class<I> idType, StyleType styleType) {
+        return whereSqlOfIds(null,ids, idType, styleType);
+    }
+
+    public static <I> String whereSqlOfIds(String prefix, Collection<I> ids, Class<I> idType, StyleType styleType) {
         List<Field> fieldList = fieldsOfIdentity(idType, Collections.emptyList(), Collections.emptyList());
         if (GeneralUtils.isEmpty(fieldList)) {
             return SqlBuilder.EMPTY;
         }
         List<I> idList = ids.stream().filter(id -> valueOfIdentity(id, fieldList)).collect(Collectors.toList());
         Map<Integer, List<I>> identitiesOfMap = sliceOfIdentity(idList, fieldList);
-        return whereSqlOfIdentities(identitiesOfMap, fieldList, styleType);
+        return whereSqlOfIds(prefix,identitiesOfMap, fieldList, styleType);
     }
 
     @SuppressWarnings("Duplicates")
-    public static <I> String whereSqlOfIdentities(Map<Integer, List<I>> idsOfMap, List<Field> fieldList, StyleType styleType) {
+    public static <I> String whereSqlOfIds(String prefix, Map<Integer, List<I>> idsOfMap, List<Field> fieldList, StyleType styleType) {
         if (GeneralUtils.isEmpty(idsOfMap)) {
             return SqlBuilder.EMPTY;
         }
@@ -117,7 +121,11 @@ public class SqlUtils {
                         for (Field field : denexFields) {
                             try {
                                 Object fieldValue = field.get(value);
-                                sqlBuilder.eq(tableStyle.columnName(field), fieldValue, isNotFirst ? true : null);
+                                String columnName = tableStyle.columnName(field);
+                                if (GeneralUtils.isNotEmpty(prefix)) {
+                                    columnName = prefix + columnName;
+                                }
+                                sqlBuilder.eq(columnName, fieldValue, isNotFirst ? true : null);
                                 isNotFirst = true;
                             } catch (IllegalAccessException ignored) {
                             }
@@ -126,7 +134,13 @@ public class SqlUtils {
                             sqlBuilder.append(SQLConstants.BRACE_GT);
                         }
                     } else {
-                        String fieldSql = denexFields.stream().map(tableStyle::columnName).collect(Collectors.joining(SQLConstants.COMMA));
+                        String fieldSql = denexFields.stream().map(field -> {
+                            String columnName = tableStyle.columnName(field);
+                            if (GeneralUtils.isNotEmpty(prefix)) {
+                                columnName = prefix + columnName;
+                            }
+                            return columnName;
+                        }).collect(Collectors.joining(SQLConstants.COMMA));
                         if (isMultiColumns) {
                             sqlBuilder.append(SQLConstants.BRACE_LT).append(fieldSql).append(SQLConstants.BRACE_GT).in().append(SQLConstants.BRACE_LT);
                         } else {
