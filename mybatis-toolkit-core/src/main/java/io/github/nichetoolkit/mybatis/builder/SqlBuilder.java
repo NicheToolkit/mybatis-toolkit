@@ -799,6 +799,10 @@ public final class SqlBuilder implements Serializable, CharSequence {
         return this.keyword(SQLConstants.SET, true);
     }
 
+    public SqlBuilder values() {
+        return this.keyword(SQLConstants.VALUES, false);
+    }
+
     public SqlBuilder from() {
         return this.keyword(SQLConstants.FROM, false);
     }
@@ -819,12 +823,16 @@ public final class SqlBuilder implements Serializable, CharSequence {
         return this.keyword(SQLConstants.ORDER_BY, false);
     }
 
+    public SqlBuilder onConflict() {
+        return this.keyword(SQLConstants.ON_CONFLICT_LT, false);
+    }
+
     public SqlBuilder doNothing() {
-        return this.keyword(SQLConstants.ORDER_BY, false);
+        return this.keyword(SQLConstants.ON_CONFLICT_DO_NOTHING_GT, false);
     }
 
     public SqlBuilder doUpdate() {
-        return this.keyword(SQLConstants.ORDER_BY, false);
+        return this.keyword(SQLConstants.ON_CONFLICT_DO_UPDATE_GT, false);
     }
 
     public SqlBuilder keyword(String keyword, boolean linefeed) {

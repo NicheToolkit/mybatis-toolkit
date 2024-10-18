@@ -7,7 +7,9 @@ public interface EntityConstants {
     String IDENTITY_LIST = "idList";
     String INDEX = "index";
     String KEY = "key";
-    String ENTITY = "entity.";
+    String ENTITY_LIST = "entityList";
+    String ENTITY = "entity";
+    String ENTITY_PREFIX = "entity.";
     String NAME = "name";
     String LOGIC = "logic";
     String OPERATE = "operate";

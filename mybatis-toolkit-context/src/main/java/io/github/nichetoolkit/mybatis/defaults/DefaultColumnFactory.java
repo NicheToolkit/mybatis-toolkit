@@ -105,44 +105,6 @@ public class DefaultColumnFactory implements MybatisColumnFactory {
                 mybatisColumn.setOrder(restOrder.value());
             }
         }
-        RestIdentityKey restIdentityKey = field.getAnnotation(RestIdentityKey.class);
-        if (GeneralUtils.isNotEmpty(restIdentityKey) && !fieldIgnored) {
-            mybatisColumn.setIdentityKey(true);
-        }
-        RestPrimaryKey restPrimaryKey = field.getAnnotation(RestPrimaryKey.class);
-        if (GeneralUtils.isNotEmpty(restPrimaryKey) && !fieldIgnored) {
-            mybatisColumn.setPrimaryKey(true);
-        }
-        RestUnionKey restUnionKey = field.getAnnotation(RestUnionKey.class);
-        if (GeneralUtils.isNotEmpty(restUnionKey) && !fieldIgnored) {
-            mybatisColumn.setUnionKey(true);
-        }
-        RestUniqueKey restUniqueKey = field.getAnnotation(RestUniqueKey.class);
-        if (GeneralUtils.isNotEmpty(restUniqueKey) && !fieldIgnored) {
-            mybatisColumn.setUniqueKey(true);
-        }
-        RestLinkKey restLinkKey = field.getAnnotation(RestLinkKey.class);
-        if (GeneralUtils.isNotEmpty(restLinkKey) && !fieldIgnored) {
-            mybatisColumn.setLinkKey(true);
-        }
-        RestAlertKey restAlertKey = field.getAnnotation(RestAlertKey.class);
-        if (GeneralUtils.isNotEmpty(restAlertKey) && !fieldIgnored) {
-            mybatisColumn.setAlertKey(true);
-        }
-        RestLogicKey restLogicKey = field.getAnnotation(RestLogicKey.class);
-        if (GeneralUtils.isNotEmpty(restLogicKey) && !fieldIgnored) {
-            mybatisColumn.setLogicKey(true);
-        }
-        RestOperateKey restOperate = field.getAnnotation(RestOperateKey.class);
-        if (GeneralUtils.isNotEmpty(restOperate) && !fieldIgnored) {
-            mybatisColumn.setOperateKey(true);
-        }
-
-        RestSortType restSortType = field.getAnnotation(RestSortType.class);
-        if (GeneralUtils.isNotEmpty(restSortType) && !fieldIgnored) {
-            mybatisColumn.setSortType(restSortType.type());
-            mybatisColumn.setPriority(restSortType.priority());
-        }
         RestSelect restSelect = field.getAnnotation(RestSelect.class);
         if (GeneralUtils.isNotEmpty(restSelect) && !fieldIgnored) {
             mybatisColumn.setSelect(restSelect.value());
@@ -165,6 +127,47 @@ public class DefaultColumnFactory implements MybatisColumnFactory {
             mybatisColumn.setForceUpdate(true);
             mybatisColumn.setForceUpdateValue(restForceUpdate.value());
         }
+        RestIdentityKey restIdentityKey = field.getAnnotation(RestIdentityKey.class);
+        if (GeneralUtils.isNotEmpty(restIdentityKey) && !fieldIgnored) {
+            mybatisColumn.setIdentityKey(true);
+            mybatisColumn.setUpdate(false);
+        }
+        RestPrimaryKey restPrimaryKey = field.getAnnotation(RestPrimaryKey.class);
+        if (GeneralUtils.isNotEmpty(restPrimaryKey) && !fieldIgnored) {
+            mybatisColumn.setPrimaryKey(true);
+            mybatisColumn.setUpdate(false);
+        }
+        RestUnionKey restUnionKey = field.getAnnotation(RestUnionKey.class);
+        if (GeneralUtils.isNotEmpty(restUnionKey) && !fieldIgnored) {
+            mybatisColumn.setUnionKey(true);
+        }
+        RestUniqueKey restUniqueKey = field.getAnnotation(RestUniqueKey.class);
+        if (GeneralUtils.isNotEmpty(restUniqueKey) && !fieldIgnored) {
+            mybatisColumn.setUniqueKey(true);
+        }
+        RestLinkKey restLinkKey = field.getAnnotation(RestLinkKey.class);
+        if (GeneralUtils.isNotEmpty(restLinkKey) && !fieldIgnored) {
+            mybatisColumn.setLinkKey(true);
+        }
+        RestAlertKey restAlertKey = field.getAnnotation(RestAlertKey.class);
+        if (GeneralUtils.isNotEmpty(restAlertKey) && !fieldIgnored) {
+            mybatisColumn.setAlertKey(true);
+        }
+        RestLogicKey restLogicKey = field.getAnnotation(RestLogicKey.class);
+        if (GeneralUtils.isNotEmpty(restLogicKey) && !fieldIgnored) {
+            mybatisColumn.setLogicKey(true);
+            mybatisColumn.setUpdate(false);
+        }
+        RestOperateKey restOperate = field.getAnnotation(RestOperateKey.class);
+        if (GeneralUtils.isNotEmpty(restOperate) && !fieldIgnored) {
+            mybatisColumn.setOperateKey(true);
+            mybatisColumn.setUpdate(false);
+        }
+        RestSortType restSortType = field.getAnnotation(RestSortType.class);
+        if (GeneralUtils.isNotEmpty(restSortType) && !fieldIgnored) {
+            mybatisColumn.setSortType(restSortType.type());
+            mybatisColumn.setPriority(restSortType.priority());
+        }
 
         RestJdbcType restJdbcType = field.getAnnotation(RestJdbcType.class);
         if (GeneralUtils.isNotEmpty(restJdbcType) && !fieldIgnored) {
@@ -173,6 +176,9 @@ public class DefaultColumnFactory implements MybatisColumnFactory {
             mybatisColumn.setNumericScale(restJdbcType.numericScale());
         } else {
             mybatisColumn.setJdbcType(JdbcType.UNDEFINED);
+        }
+        if (field.isSpecialIdentity()) {
+            mybatisColumn.setUpdate(false);
         }
         return Optional.of(Collections.singletonList(mybatisColumn));
     }

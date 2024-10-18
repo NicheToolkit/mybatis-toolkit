@@ -3,11 +3,12 @@ package io.github.nichetoolkit.mybatis.consts;
 
 public interface SQLConstants {
     String AND_MATCH = " AND ";
-    String INSERT = "INSERT";
+    String INSERT = "INSERT INTO";
     String UPDATE = "UPDATE";
     String SELECT = "SELECT";
     String DELETE = "DELETE";
     String FROM = "FROM";
+    String VALUES = "VALUES";
     String AS = "AS";
     String WHERE = "WHERE";
     String LIKE = "LIKE";
@@ -56,8 +57,10 @@ public interface SQLConstants {
     String JDBC_TYPE = "jdbcType";
     String TYPE_HANDLER = "typeHandler";
     String NUMERIC_SCALE = "numericScale";
-    String DO_NOTHING = "ON DUPLICATE KEY DO NOTHING";
-    String DO_UPDATE = "ON DUPLICATE KEY UPDATE";
+
+    String ON_DUPLICATE_KEY_DO_NOTHING = "ON DUPLICATE KEY DO NOTHING";
+    String ON_DUPLICATE_KEY_DO_UPDATE = "ON DUPLICATE KEY UPDATE";
+
     String ON_CONFLICT_LT = "ON CONFLICT";
     String ON_CONFLICT_DO_NOTHING_GT = "DO NOTHING";
     String ON_CONFLICT_DO_UPDATE_GT = "DO UPDATE SET";

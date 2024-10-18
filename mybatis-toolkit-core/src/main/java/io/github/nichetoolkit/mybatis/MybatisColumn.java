@@ -127,6 +127,9 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
         if (this.forceInsert) {
             return this.forceInsertValue;
         } else {
+            if (isSpecialIdentity()) {
+                prefix = prefix + EntityConstants.IDENTITY_PREFIX;
+            }
             Class<?> fieldType = this.field.fieldType();
             if (String.class == fieldType || Date.class == fieldType) {
                 return signerVariable(prefix);

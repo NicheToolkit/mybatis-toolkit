@@ -9,7 +9,7 @@ CREATE TABLE "public"."ntr_template"
   "logic" INT4,
   "create_time" TIMESTAMPTZ,
   "update_time" TIMESTAMPTZ,
-  CONSTRAINT "PK_NTR_CF_TEMPLATE" PRIMARY KEY ("template_pk1","template_pk2","logic")
+  CONSTRAINT "PK_NTR_CF_TEMPLATE" PRIMARY KEY ("template_pk1","template_pk2")
 );
 
 CREATE INDEX "IDX_NTR_TEMPLATE_TEMPLATE_PK1" ON "public"."ntr_template" USING btree (
@@ -39,7 +39,7 @@ CREATE TABLE "public"."ntr_template_dynamic"
   "logic" INT4,
   "create_time" TIMESTAMPTZ,
   "update_time" TIMESTAMPTZ,
-  CONSTRAINT "PK_NTR_CF_TEMPLATE_DYNAMIC" PRIMARY KEY ("template_pk1","template_pk2","logic")
+  CONSTRAINT "PK_NTR_CF_TEMPLATE_DYNAMIC" PRIMARY KEY ("template_pk1","template_pk2")
 );
 
 CREATE INDEX "IDX_NTR_TEMPLATE_DYNAMIC_TEMPLATE_PK1" ON "public"."ntr_template_dynamic" USING btree (

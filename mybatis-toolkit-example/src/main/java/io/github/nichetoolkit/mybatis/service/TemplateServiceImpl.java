@@ -22,11 +22,11 @@ public class TemplateServiceImpl extends DefaultInfoService<TemplateModel, Templ
 
     @Override
     protected String dynamicTablename(@NonNull String tablekey) throws RestException {
-        return "ntr_simple".concat(tablekey);
+        return "ntr_template".concat(tablekey);
     }
 
     @Override
     public String queryWhereSql(TemplateFilter filter) throws RestException {
-        return filter.toTimeSql("time").toIdSql("id").addSorts("id").toSql();
+        return filter.toTimeSql("time").toIdSql("id").addSorts("template_pk1","template_pk2").toSql();
     }
 }

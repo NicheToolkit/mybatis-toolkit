@@ -99,7 +99,8 @@ public class SqlUtils {
         if (GeneralUtils.isEmpty(idsOfMap)) {
             return SqlBuilder.EMPTY;
         }
-        SqlBuilder sqlBuilder = new SqlBuilder(SQLConstants.BRACE_LT);
+        SqlBuilder sqlBuilder = new SqlBuilder();
+        sqlBuilder.and().append(SQLConstants.BRACE_LT);
         for (Map.Entry<Integer, List<I>> entry : idsOfMap.entrySet()) {
             Integer key = entry.getKey();
             List<I> valueList = entry.getValue();

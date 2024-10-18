@@ -5,16 +5,16 @@ import org.springframework.lang.Nullable;
 
 public interface MybatisSqlSupply extends MybatisOrder {
 
-    String supply(@Nullable String tablename, MybatisTable table, String whereSql, MybatisSqlScript sqlScript) throws RestException;
+    String supply(@Nullable String tablename, MybatisTable table, String sql, MybatisSqlScript sqlScript) throws RestException;
 
     interface SimpleSqlProvider extends MybatisSqlSupply {
 
         @Override
-        default String supply(@Nullable String tablename, MybatisTable mybatisTable, String whereSql, MybatisSqlScript sqlScript) throws RestException {
-            return supply(tablename, mybatisTable, whereSql, sqlScript, this);
+        default String supply(@Nullable String tablename, MybatisTable mybatisTable, String sql, MybatisSqlScript sqlScript) throws RestException {
+            return supply(tablename, mybatisTable, sql, sqlScript, this);
         }
 
-        String supply(@Nullable String tablename, MybatisTable mybatisTable, String whereSql, MybatisSqlScript sqlScript, MybatisSqlSupply sqlProvider) throws RestException;
+        String supply(@Nullable String tablename, MybatisTable mybatisTable, String sql, MybatisSqlScript sqlScript, MybatisSqlSupply sqlProvider) throws RestException;
 
     }
 
