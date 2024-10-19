@@ -17,7 +17,7 @@ import java.util.Collection;
 
 @Slf4j
 @Component
-public class MybatisSaveProvider implements MybatisSqlProvider {
+public class PostgresSaveProvider implements MybatisSqlProvider {
 
     @Override
     public DatabaseType databaseType() {
