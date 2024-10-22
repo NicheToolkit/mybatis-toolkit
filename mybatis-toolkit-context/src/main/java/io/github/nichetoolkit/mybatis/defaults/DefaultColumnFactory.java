@@ -177,7 +177,7 @@ public class DefaultColumnFactory implements MybatisColumnFactory {
         } else {
             mybatisColumn.setJdbcType(JdbcType.UNDEFINED);
         }
-        if (field.isSpecialIdentity()) {
+        if (field.isIdentity()) {
             mybatisColumn.setUpdate(false);
         }
         return Optional.of(Collections.singletonList(mybatisColumn));

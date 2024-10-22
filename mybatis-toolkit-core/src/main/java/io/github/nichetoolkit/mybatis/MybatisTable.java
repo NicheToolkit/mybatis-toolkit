@@ -1,11 +1,11 @@
 package io.github.nichetoolkit.mybatis;
 
-import io.github.nichetoolkit.mybatis.consts.EntityConstants;
 import io.github.nichetoolkit.mybatis.consts.SQLConstants;
 import io.github.nichetoolkit.mybatis.consts.ScriptConstants;
 import io.github.nichetoolkit.mybatis.enums.SortType;
 import io.github.nichetoolkit.mybatis.enums.StyleType;
 import io.github.nichetoolkit.mybatis.error.MybatisIdentityLackError;
+import io.github.nichetoolkit.mybatis.error.MybatisLinkageLackError;
 import io.github.nichetoolkit.rest.error.lack.ConfigureLackError;
 import io.github.nichetoolkit.rest.util.GeneralUtils;
 import lombok.Getter;
@@ -37,21 +37,23 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
     public static final Pattern DELIMITER = Pattern.compile("^[`\\[\"]?(.*?)[`\\]\"]?$");
     public static final String DEFAULT_RESULT_MAP_NAME = ScriptConstants.DEFAULT_RESULT_MAP;
     private final Class<?> entityType;
+    private final Class<?> identityType;
     private final Class<?> linkageType;
     private final Class<?> alertnessType;
     private final boolean isSpecialIdentity;
+    private final boolean isSpecialLinkage;
+    private final boolean isSpecialAlertness;
     private final Set<Configuration> initiates = new HashSet<>();
     private final List<MybatisColumn> tableColumns = new ArrayList<>();
     private final List<MybatisColumn> uniqueColumns = new ArrayList<>();
     private final List<MybatisColumn> unionColumns = new ArrayList<>();
-
+    private final List<MybatisColumn> forceUpdateColumns = new ArrayList<>();
     private Map<String, MybatisColumn> fieldColumns = new HashMap<>();
     private List<MybatisColumn> identityColumns = new ArrayList<>();
+    private List<MybatisColumn> linkageColumns = new ArrayList<>();
     private int identityIndex;
     @Setter
     private boolean ready;
-    @Setter
-    private Class<?> identityType;
     @Setter
     private String table;
     @Setter
@@ -106,6 +108,8 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
         this.linkageType = linkageType;
         this.alertnessType = alertnessType;
         this.isSpecialIdentity = identityType != null;
+        this.isSpecialLinkage = linkageType != null;
+        this.isSpecialAlertness = alertnessType != null;
     }
 
     public MybatisTable(Class<?> entityType, Class<?> identityType, Class<?> linkageType, Class<?> alertnessType, Map<String, String> properties) {
@@ -115,6 +119,8 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
         this.linkageType = linkageType;
         this.alertnessType = alertnessType;
         this.isSpecialIdentity = identityType != null;
+        this.isSpecialLinkage = linkageType != null;
+        this.isSpecialAlertness = alertnessType != null;
     }
 
     public static MybatisTable of(Class<?> entityType, Class<?> identityType, Class<?> linkageType, Class<?> alertnessType) {
@@ -152,6 +158,10 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
         List<MybatisColumn> logicKeyColumns = new ArrayList<>();
         List<MybatisColumn> operateKeyColumns = new ArrayList<>();
         this.tableColumns.forEach(column -> {
+            if (column.isForceUpdate()) {
+                this.forceUpdateColumns.remove(column);
+                refreshColumn(this.forceUpdateColumns, column);
+            }
             if (column.isSpecialIdentity()) {
                 /* special Identity */
                 if (column.isPrimaryKey() || column.isIdentityKey() || column.isUnionKey()) {
@@ -167,6 +177,23 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
                     this.identityColumn = column;
                 }
             }
+            String fieldName = column.getField().fieldName();
+            if (column.isSpecialLinkage()) {
+                if (column.isLinkKey() || (GeneralUtils.isNotEmpty(this.linkKeys) && this.linkKeys.contains(fieldName))) {
+                    this.linkageColumns.remove(column);
+                    refreshColumn(this.linkageColumns, column);
+                } else {
+                    linkKeyColumns.remove(column);
+                    linkKeyColumns.add(0, column);
+                }
+            } else {
+                /* 如果是链接外键 */
+                if (column.isLinkKey() || (GeneralUtils.isNotEmpty(this.linkKeys) && this.linkKeys.contains(fieldName))) {
+                    column.setLinkKey(true);
+                    linkKeyColumns.remove(column);
+                    linkKeyColumns.add(0, column);
+                }
+            }
             if (column.isPrimaryKey()) {
                 primaryKeyColumns.remove(column);
                 primaryKeyColumns.add(0, column);
@@ -180,17 +207,10 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
                 operateKeyColumns.add(0, column);
             }
             /* 如果是联合主键 */
-            String fieldName = column.getField().fieldName();
             if (column.isUnionKey() || (GeneralUtils.isNotEmpty(this.unionKeys) && this.unionKeys.contains(fieldName))) {
                 column.setUnionKey(true);
                 this.unionColumns.remove(column);
                 refreshColumn(this.unionColumns, column);
-            }
-            /* 如果是链接外键 */
-            if (column.isLinkKey() || (GeneralUtils.isNotEmpty(this.linkKeys) && this.linkKeys.contains(fieldName))) {
-                column.setLinkKey(true);
-                linkKeyColumns.remove(column);
-                linkKeyColumns.add(0, column);
             }
             /* 如果是修改外键 */
             if (column.isAlertKey() || (GeneralUtils.isNotEmpty(this.alertKeys) && this.alertKeys.contains(fieldName))) {
@@ -198,24 +218,33 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
                 alertKeyColumns.remove(column);
                 alertKeyColumns.add(0, column);
             }
-            /* 如果是链接外键 */
+            /* 如果是联合外键 */
             if (column.isUniqueKey() || (GeneralUtils.isNotEmpty(this.uniqueKeys) && this.uniqueKeys.contains(fieldName))) {
                 column.setUniqueKey(true);
                 this.uniqueColumns.remove(column);
                 this.uniqueColumns.add(0, column);
             }
         });
-
         Optional<MybatisColumn> firstLogic = logicKeyColumns.stream().findFirst();
         firstLogic.ifPresent(logicKeyColumn -> this.logicColumn = logicKeyColumn);
         Optional<MybatisColumn> firstOperate = operateKeyColumns.stream().findFirst();
         firstOperate.ifPresent(operateKeyColumn -> this.operateColumn = operateKeyColumn);
         Optional<MybatisColumn> firstAlert = alertKeyColumns.stream().findFirst();
         firstAlert.ifPresent(alertKeyColumn -> this.alertColumn = alertKeyColumn);
-        Optional<MybatisColumn> firstLink = linkKeyColumns.stream().findFirst();
-        firstLink.ifPresent(linkKeyColumn -> this.linkColumn = linkKeyColumn);
+        if (isSpecialLinkage()) {
+            if (GeneralUtils.isEmpty(this.linkageColumns)) {
+                if (GeneralUtils.isNotEmpty(linkKeyColumns)) {
+                    this.linkageColumns = new ArrayList<>(linkKeyColumns);
+                } else {
+                    throw new MybatisLinkageLackError("The special linkage columns must be not empty, linkage type: " + this.linkageType.getName());
+                }
+            }
+        } else {
+            Optional<MybatisColumn> firstLink = linkKeyColumns.stream().findFirst();
+            firstLink.ifPresent(linkKeyColumn -> this.linkColumn = linkKeyColumn);
+        }
         /*
-         * 优先级别: RestIdentity > RestPrimaryKey > RestIdentityKey > RestUnionKey >RestUniqueKey
+         * 优先级别: RestIdentity > RestPrimaryKey > RestIdentityKey > RestUnionKey > RestUniqueKey
          */
         if (isSpecialIdentity()) {
             if (GeneralUtils.isEmpty(this.identityColumns)) {
@@ -386,8 +415,10 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
                 columnName = matcher.group(1);
             }
             String property = column.property();
-            if (column.isSpecialIdentity()) {
-                property = column.property(EntityConstants.IDENTITY + SQLConstants.PERIOD);
+            if (column.isSpecialIdentity() && column.isParentNotEmpty()) {
+                property = column.property(column.prefixOfParent() + SQLConstants.PERIOD);
+            } else if (column.isSpecialLinkage() && column.isParentNotEmpty()) {
+                property = column.property(column.prefixOfParent() + SQLConstants.PERIOD);
             }
             ResultMapping.Builder builder = new ResultMapping.Builder(configuration, property, columnName, column.javaType());
             if (column.getJdbcType() != null && column.getJdbcType() != JdbcType.UNDEFINED) {
@@ -444,6 +475,10 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
 
     public List<MybatisColumn> identityColumns() {
         return this.identityColumns;
+    }
+
+    public List<MybatisColumn> linkageColumns() {
+        return this.linkageColumns;
     }
 
     public List<MybatisColumn> normalColumns() {
@@ -533,6 +568,10 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
 
     public String sqlOfSelectAliasColumns() {
         return selectColumns().stream().map(column -> column.aliasColumn(this.alias)).collect(Collectors.joining(SQLConstants.COMMA + SQLConstants.BLANK));
+    }
+
+    public String sqlOfForceUpdateColumns() {
+        return forceUpdateColumns().stream().map(MybatisColumn::columnEqualsProperty).collect(Collectors.joining(SQLConstants.COMMA + SQLConstants.BLANK));
     }
 
     public String sqlOfInsertColumns() {

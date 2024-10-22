@@ -63,6 +63,6 @@ public interface SQLConstants {
 
     String ON_CONFLICT_LT = "ON CONFLICT";
     String ON_CONFLICT_DO_NOTHING_GT = "DO NOTHING";
-    String ON_CONFLICT_DO_UPDATE_GT = "DO UPDATE SET";
+    String ON_CONFLICT_DO_UPDATE_GT = "DO UPDATE";
 
 }

@@ -33,7 +33,7 @@ public class PostgresFindProvider implements MybatisSqlProvider {
         String selectColumns = "The select columns of table with 'findById' method cannot be empty!";
         ConsumerActuator<MybatisTable> tableOptional = table -> OptionalUtils.ofEmpty(table.selectColumns(), selectColumns, log,
                 message -> new MybatisTableErrorException("findById", "selectColumns", message));
-        return MybatisSqlProvider.providing(providerContext, tablename, id, tableOptional, SELECT_SQL_SUPPLY);
+        return MybatisSqlProvider.providingOfIdFind(providerContext, tablename, id, tableOptional, SELECT_SQL_SUPPLY);
     }
 
     public static <I> String findAll(ProviderContext providerContext, Collection<I> idList) throws RestException {
@@ -43,7 +43,7 @@ public class PostgresFindProvider implements MybatisSqlProvider {
     public static <I> String findDynamicAll(ProviderContext providerContext, String tablename, Collection<I> idList) throws RestException {
         OptionalUtils.ofFalse(GeneralUtils.isNotEmpty(idList), "The id list param of 'findByAll' method cannot be empty!", log, message -> new MybatisParamErrorException("findByAll", "idList", message));
         ConsumerActuator<MybatisTable> tableOptional = table -> OptionalUtils.ofEmpty(table.selectColumns(), "The select columns of table with 'findByAll' method cannot be empty!", message -> new MybatisTableErrorException("findByAll", "selectColumns", message));
-        return MybatisSqlProvider.providing(providerContext, tablename, idList, tableOptional, SELECT_SQL_SUPPLY);
+        return MybatisSqlProvider.providingOfAllFind(providerContext, tablename, idList, tableOptional, SELECT_SQL_SUPPLY);
     }
 
     public static String findAllByWhere(ProviderContext providerContext, String whereSql) throws RestException {
@@ -53,7 +53,7 @@ public class PostgresFindProvider implements MybatisSqlProvider {
     public static String findDynamicAllByWhere(ProviderContext providerContext, String tablename, String whereSql) throws RestException {
         OptionalUtils.ofEmpty(whereSql, "The where sql param of 'findAllByWhere' method cannot be empty!", log, message -> new MybatisParamErrorException("findAllByWhere", "whereSql", message));
         ConsumerActuator<MybatisTable> tableOptional = table -> OptionalUtils.ofEmpty(table.selectColumns(), "The select columns of table with 'findAllByWhere' method cannot be empty!", log, message -> new MybatisTableErrorException("findAllByWhere", "selectColumns", message));
-        return MybatisSqlProvider.providing(providerContext, tablename, whereSql, tableOptional, SELECT_SQL_SUPPLY);
+        return MybatisSqlProvider.providingOfWhereFind(providerContext, tablename, whereSql, tableOptional, SELECT_SQL_SUPPLY);
     }
 
 

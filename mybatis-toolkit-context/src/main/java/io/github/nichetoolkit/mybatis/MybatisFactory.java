@@ -5,12 +5,11 @@ import io.github.nichetoolkit.mybatis.defaults.DefaultColumnFactoryChain;
 import io.github.nichetoolkit.mybatis.defaults.DefaultTableFactoryChain;
 import io.github.nichetoolkit.mybatis.error.MybatisTableLackError;
 import io.github.nichetoolkit.mybatis.stereotype.column.RestIdentityKey;
+import io.github.nichetoolkit.mybatis.stereotype.column.RestLinkKey;
 import io.github.nichetoolkit.rest.RestException;
 import io.github.nichetoolkit.rest.error.lack.InterfaceLackError;
-import io.github.nichetoolkit.rest.reflect.RestGenericTypes;
 import io.github.nichetoolkit.rest.util.GeneralUtils;
 import io.github.nichetoolkit.rest.util.OptionalUtils;
-import io.github.nichetoolkit.rice.RestId;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.support.SpringFactoriesLoader;
 import org.springframework.lang.NonNull;
@@ -21,6 +20,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Function;
 
 @Slf4j
 public abstract class MybatisFactory {
@@ -30,9 +30,9 @@ public abstract class MybatisFactory {
         Class<?> entityClass = MybatisClassFinder.findEntityClass(mapperType, mapperMethod);
         String message = "Can not find " + (mapperMethod != null ? mapperMethod.getName() + " method" : mapperType.getSimpleName() + " interface") + " corresponding mybatis class";
         OptionalUtils.ofNullError(entityClass, message, log, InterfaceLackError::new);
-        Class<?> identityClass = MybatisClassFinder.findIdentityClass(mapperType, entityClass);
-        Class<?> linkageClass = MybatisClassFinder.findLinkageClass(mapperType, entityClass);
-        Class<?> alertnessClass = MybatisClassFinder.findAlertnessClass(mapperType, entityClass);
+        Class<?> identityClass = MybatisClassFinder.findIdentityClass(mapperType, mapperMethod, entityClass);
+        Class<?> linkageClass = MybatisClassFinder.findLinkageClass(mapperType, mapperMethod, entityClass);
+        Class<?> alertnessClass = MybatisClassFinder.findAlertnessClass(mapperType, mapperMethod, entityClass);
         return createTable(entityClass, identityClass, linkageClass, alertnessClass);
     }
 
@@ -42,11 +42,6 @@ public abstract class MybatisFactory {
         MybatisTableFactory.Chain tableFactoryChain = Instance.tableFactoryChain();
         /* 创建 MybatisTable，不处理列（字段），此时返回的 MybatisTable 已经经过了所有处理链的加工 */
         MybatisTable table = tableFactoryChain.createTable(entityType, identityType, linkageType, alertnessType);
-        /* 设置 MybatisTable 的 identityType类型 */
-        if (GeneralUtils.isEmpty(identityType)) {
-            table.setIdentityType(RestGenericTypes.resolveClass(RestGenericTypes.resolveType(
-                    RestId.class.getTypeParameters()[0], entityType, RestId.class)));
-        }
         String message = "Unable to get " + entityType.getName() + " mybatis class information";
         OptionalUtils.ofNullError(table, message, log, MybatisTableLackError::new);
         /* 如果实体表已经处理好，直接返回 */
@@ -67,26 +62,23 @@ public abstract class MybatisFactory {
                             int modifiers = declaredField.getModifiers();
                             /* 排除 static 和 transient 修饰的字段 */
                             if (!Modifier.isStatic(modifiers) && !Modifier.isTransient(modifiers)) {
-                                MybatisField field = new MybatisField(entityType, declaredField);
+                                MybatisField mybatisField = new MybatisField(entityType, declaredField);
                                 /* 是否需要排除字段 */
-                                if (table.isExcludeField(field)) {
+                                if (table.isExcludeField(mybatisField)) {
                                     continue;
                                 }
                                 /* 使用了自定义联合主键字 */
-                                if (GeneralUtils.isNotEmpty(identityType) && Object.class.equals(declaredField.getType())) {
-                                    /* 是否主键id字段 */
-                                    RestIdentityKey restIdentityKey = field.getAnnotation(RestIdentityKey.class);
-                                    if (GeneralUtils.isNotEmpty(restIdentityKey)) {
-                                        handleOfIdentityFields(table, entityType, identityType, columnFactoryChain);
-                                    }
+                                if (GeneralUtils.isNotEmpty(identityType) && GeneralUtils.isNotEmpty(mybatisField.getAnnotation(RestIdentityKey.class))) {
+                                    handleOfFields(table, identityType, columnFactoryChain, identityField -> new MybatisField(entityType, mybatisField, identityField, true, false));
+                                } else if (GeneralUtils.isNotEmpty(linkageType) && GeneralUtils.isNotEmpty(mybatisField.getAnnotation(RestLinkKey.class))) {
+                                    handleOfFields(table, linkageType, columnFactoryChain, linkField -> new MybatisField(entityType, mybatisField, linkField, false, true));
                                 } else {
-                                    Optional<List<MybatisColumn>> optionalColumns = columnFactoryChain.createColumn(table, field);
+                                    Optional<List<MybatisColumn>> optionalColumns = columnFactoryChain.createColumn(table, mybatisField);
                                     optionalColumns.ifPresent(columns -> columns.forEach(table::addColumn));
                                 }
                             }
                         }
-                        /* 迭代获取父类 */
-                        /* 排除父类 */
+                        /* 迭代获取父类 排除父类 */
                         do {
                             declaredClass = declaredClass.getSuperclass();
                         } while (table.isExcludeSuperClass(declaredClass) && declaredClass != Object.class);
@@ -101,9 +93,9 @@ public abstract class MybatisFactory {
         return table;
     }
 
-    protected static void handleOfIdentityFields(MybatisTable table, Class<?> entityType, Class<?> identityType, MybatisColumnFactory.Chain columnFactoryChain) {
+    protected static void handleOfFields(MybatisTable table, Class<?> declaredType, MybatisColumnFactory.Chain columnFactoryChain, Function<Field, MybatisField> fieldFunction) {
         /* 未处理的需要获取字段 */
-        Class<?> declaredClass = identityType;
+        Class<?> declaredClass = declaredType;
         boolean isSuperclass = true;
         while (declaredClass != null && declaredClass != Object.class) {
             Field[] declaredFields = declaredClass.getDeclaredFields();
@@ -112,7 +104,7 @@ public abstract class MybatisFactory {
                 int modifiers = declaredField.getModifiers();
                 /* 排除 static 和 transient 修饰的字段 */
                 if (!Modifier.isStatic(modifiers) && !Modifier.isTransient(modifiers)) {
-                    MybatisField field = new MybatisField(entityType, identityType, declaredField);
+                    MybatisField field = fieldFunction.apply(declaredField);
                     /* 是否需要排除字段 */
                     if (table.isExcludeField(field)) {
                         continue;

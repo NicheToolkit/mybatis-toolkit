@@ -121,6 +121,11 @@ public final class SqlBuilder implements Serializable, CharSequence {
         return this;
     }
 
+    public SqlBuilder delete(int start) {
+        sqlBuilder.delete(start, sqlBuilder.length());
+        return this;
+    }
+
     public SqlBuilder delete(int start, int end) {
         sqlBuilder.delete(start, end);
         return this;
@@ -699,7 +704,7 @@ public final class SqlBuilder implements Serializable, CharSequence {
     }
 
     public SqlBuilder braceLt() {
-        this.keyword(SQLConstants.BRACE_LT, false);
+        this.blank().append(SQLConstants.BRACE_LT);
         return this;
     }
 
@@ -744,35 +749,51 @@ public final class SqlBuilder implements Serializable, CharSequence {
     }
 
     public SqlBuilder eq() {
-        return this.blank().append(SQLConstants.CONTRAST_EQ).blank();
+        return this.keyword(SQLConstants.CONTRAST_EQ, false);
     }
 
     public SqlBuilder gt() {
-        return this.blank().append(SQLConstants.CONTRAST_GT).blank();
+        return this.keyword(SQLConstants.CONTRAST_GT, false);
     }
 
     public SqlBuilder lt() {
-        return this.blank().append(SQLConstants.CONTRAST_LT).blank();
+        return this.keyword(SQLConstants.CONTRAST_LT, false);
     }
 
     public SqlBuilder gte() {
-        return this.blank().append(SQLConstants.CONTRAST_GTE).blank();
+        return this.keyword(SQLConstants.CONTRAST_GTE, false);
     }
 
     public SqlBuilder lte() {
-        return this.blank().append(SQLConstants.CONTRAST_LTE).blank();
+        return this.keyword(SQLConstants.CONTRAST_LTE, false);
     }
 
     public SqlBuilder neq() {
-        return this.blank().append(SQLConstants.CONTRAST_NEQ).blank();
+        return this.keyword(SQLConstants.CONTRAST_NEQ, false);
     }
 
     public SqlBuilder isn() {
-        return this.blank().append(SQLConstants.IS_NULL).blank();
+        return this.keyword(SQLConstants.IS_NULL, false);
     }
 
     public SqlBuilder inn() {
-        return this.blank().append(SQLConstants.IS_NOT_NULL).blank();
+        return this.keyword(SQLConstants.IS_NOT_NULL, false);
+    }
+
+    public SqlBuilder like() {
+        return this.keyword(SQLConstants.LIKE, false);
+    }
+
+    public SqlBuilder in() {
+        return this.keyword(SQLConstants.IN, false);
+    }
+
+    public SqlBuilder nin() {
+        return this.keyword(SQLConstants.NOT_IN, false);
+    }
+
+    public SqlBuilder limit() {
+        return this.keyword(SQLConstants.LIMIT, false);
     }
 
     public SqlBuilder insert() {
@@ -800,31 +821,23 @@ public final class SqlBuilder implements Serializable, CharSequence {
     }
 
     public SqlBuilder values() {
-        return this.keyword(SQLConstants.VALUES, false);
+        return this.keyword(SQLConstants.VALUES, true);
     }
 
     public SqlBuilder from() {
-        return this.keyword(SQLConstants.FROM, false);
-    }
-
-    public SqlBuilder like() {
-        return this.keyword(SQLConstants.LIKE, false);
-    }
-
-    public SqlBuilder in() {
-        return this.keyword(SQLConstants.IN, false);
-    }
-
-    public SqlBuilder nin() {
-        return this.keyword(SQLConstants.NOT_IN, false);
+        return this.keyword(SQLConstants.FROM, true);
     }
 
     public SqlBuilder orderBy() {
-        return this.keyword(SQLConstants.ORDER_BY, false);
+        return this.keyword(SQLConstants.ORDER_BY, true);
+    }
+
+    public SqlBuilder groupBy() {
+        return this.keyword(SQLConstants.GROUP_BY, true);
     }
 
     public SqlBuilder onConflict() {
-        return this.keyword(SQLConstants.ON_CONFLICT_LT, false);
+        return this.keyword(SQLConstants.ON_CONFLICT_LT, true);
     }
 
     public SqlBuilder doNothing() {

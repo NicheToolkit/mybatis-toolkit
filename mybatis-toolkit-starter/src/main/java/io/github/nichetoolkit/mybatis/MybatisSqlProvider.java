@@ -40,6 +40,32 @@ public interface MybatisSqlProvider {
                     .braceLt().append(table.sqlOfInsertColumns()).braceGt()
                     .values().append(sql).toString();
 
+    MybatisSqlSupply REMOVE_SQL_SUPPLY = (tablename, table, sql, sqlScript) ->
+            SqlBuilder.sqlBuilder()
+                    .update().append(table.tablename(tablename))
+                    .set().append(table.getLogicColumn().columnEqualsLogic())
+                    .comma().append(table.sqlOfForceUpdateColumns())
+                    .where().append(sql).toString();
+
+    MybatisSqlSupply OPERATE_SQL_SUPPLY = (tablename, table, sql, sqlScript) ->
+            SqlBuilder.sqlBuilder()
+                    .update().append(table.tablename(tablename))
+                    .set().append(table.getOperateColumn().columnEqualsOperate())
+                    .comma().append(table.sqlOfForceUpdateColumns())
+                    .where().append(sql).toString();
+
+    MybatisSqlSupply DELETE_SQL_SUPPLY = (tablename, table, sql, sqlScript) ->
+            SqlBuilder.sqlBuilder()
+                    .delete().from().append(table.tablename(tablename))
+                    .where().append(sql).toString();
+
+    MybatisSqlSupply ALERT_SQL_SUPPLY = (tablename, table, sql, sqlScript) ->
+            SqlBuilder.sqlBuilder()
+                    .update().append(table.tablename(tablename))
+                    .set().append(table.getAlertColumn().columnEqualsKey())
+                    .comma().append(table.sqlOfForceUpdateColumns())
+                    .where().append(sql).toString();
+
     @SuppressWarnings("unchecked")
     static <P> Object reviseParameter(P parameter) throws RestException {
         Class<?> parameterClass = parameter.getClass();
@@ -52,54 +78,361 @@ public interface MybatisSqlProvider {
         }
     }
 
-    static <I> String providing(ProviderContext providerContext, @Nullable String tablename, I idParameter, MybatisSqlSupply sqlSupply) throws RestException {
-        return providing(providerContext, tablename, idParameter, table -> {
+    static <I> String providingOfIdFind(ProviderContext providerContext, @Nullable String tablename, I idParameter, MybatisSqlSupply sqlSupply) throws RestException {
+        return providingOfId(providerContext, tablename, idParameter, table -> {
         }, sqlSupply);
     }
 
-    static <I> String providing(ProviderContext providerContext, @Nullable String tablename, I idParameter, ConsumerActuator<MybatisTable> actuator, MybatisSqlSupply sqlSupply) throws RestException {
+    static <I> String providingOfIdFind(ProviderContext providerContext, @Nullable String tablename, I idParameter, ConsumerActuator<MybatisTable> tableOptional, MybatisSqlSupply sqlSupply) throws RestException {
+        return providingOfId(providerContext, tablename, idParameter, tableOptional, sqlSupply);
+    }
+
+    static <I> String providingOfAllFind(ProviderContext providerContext, @Nullable String tablename, Collection<I> idList, MybatisSqlSupply sqlSupply) throws RestException {
+        return providingOfAll(providerContext, tablename, idList, table -> {
+        }, sqlSupply);
+    }
+
+    static <I> String providingOfAllFind(ProviderContext providerContext, @Nullable String tablename, Collection<I> idList, ConsumerActuator<MybatisTable> tableOptional, MybatisSqlSupply sqlSupply) throws RestException {
+        return providingOfAll(providerContext, tablename, idList, tableOptional, sqlSupply);
+    }
+
+    static <I> String providingOfWhereFind(ProviderContext providerContext, @Nullable String tablename, String whereSqlParameter, MybatisSqlSupply sqlSupply) throws RestException {
+        return providingOfWhere(providerContext, tablename, whereSqlParameter, table -> {
+        }, sqlSupply);
+    }
+
+    static <I> String providingOfWhereFind(ProviderContext providerContext, @Nullable String tablename, String whereSqlParameter, ConsumerActuator<MybatisTable> tableOptional, MybatisSqlSupply sqlSupply) throws RestException {
+        return providingOfWhere(providerContext, tablename, whereSqlParameter, tableOptional, sqlSupply);
+    }
+
+    static <I> String providingOfIdRemove(ProviderContext providerContext, @Nullable String tablename, I idParameter, String logic, MybatisSqlSupply sqlSupply) throws RestException {
+        return providingOfId(providerContext, tablename, idParameter, table -> {
+        }, sqlSupply);
+    }
+
+    static <I> String providingOfIdRemove(ProviderContext providerContext, @Nullable String tablename, I idParameter, String logic, ConsumerActuator<MybatisTable> tableOptional, MybatisSqlSupply sqlSupply) throws RestException {
+        return providingOfId(providerContext, tablename, idParameter, tableOptional, sqlSupply);
+    }
+
+    static <I> String providingOfAllRemove(ProviderContext providerContext, @Nullable String tablename, Collection<I> idList, String logic, MybatisSqlSupply sqlSupply) throws RestException {
+        return providingOfAll(providerContext, tablename, idList, table -> {
+        }, sqlSupply);
+    }
+
+    static <I> String providingOfAllRemove(ProviderContext providerContext, @Nullable String tablename, Collection<I> idList, String logic, ConsumerActuator<MybatisTable> tableOptional, MybatisSqlSupply sqlSupply) throws RestException {
+        return providingOfAll(providerContext, tablename, idList, tableOptional, sqlSupply);
+    }
+
+    static <I> String providingOfWhereRemove(ProviderContext providerContext, @Nullable String tablename, String whereSqlParameter, String logic, MybatisSqlSupply sqlSupply) throws RestException {
+        return providingOfWhere(providerContext, tablename, whereSqlParameter, table -> {
+        }, sqlSupply);
+    }
+
+    static <I> String providingOfWhereRemove(ProviderContext providerContext, @Nullable String tablename, String whereSqlParameter, String logic, ConsumerActuator<MybatisTable> tableOptional, MybatisSqlSupply sqlSupply) throws RestException {
+        return providingOfWhere(providerContext, tablename, whereSqlParameter, tableOptional, sqlSupply);
+    }
+
+    static <I> String providingOfIdOperate(ProviderContext providerContext, @Nullable String tablename, I idParameter, Integer operate, MybatisSqlSupply sqlSupply) throws RestException {
+        return providingOfId(providerContext, tablename, idParameter, table -> {
+        }, sqlSupply);
+    }
+
+    static <I> String providingOfIdOperate(ProviderContext providerContext, @Nullable String tablename, I idParameter, Integer operate, ConsumerActuator<MybatisTable> tableOptional, MybatisSqlSupply sqlSupply) throws RestException {
+        return providingOfId(providerContext, tablename, idParameter, tableOptional, sqlSupply);
+    }
+
+    static <I> String providingOfAllOperate(ProviderContext providerContext, @Nullable String tablename, Collection<I> idList, Integer operate, MybatisSqlSupply sqlSupply) throws RestException {
+        return providingOfAll(providerContext, tablename, idList, table -> {
+        }, sqlSupply);
+    }
+
+    static <I> String providingOfAllOperate(ProviderContext providerContext, @Nullable String tablename, Collection<I> idList, Integer operate, ConsumerActuator<MybatisTable> tableOptional, MybatisSqlSupply sqlSupply) throws RestException {
+        return providingOfAll(providerContext, tablename, idList, tableOptional, sqlSupply);
+    }
+
+    static <I> String providingOfWhereOperate(ProviderContext providerContext, @Nullable String tablename, String whereSqlParameter, Integer operate, MybatisSqlSupply sqlSupply) throws RestException {
+        return providingOfWhere(providerContext, tablename, whereSqlParameter, table -> {
+        }, sqlSupply);
+    }
+
+    static <I> String providingOfWhereOperate(ProviderContext providerContext, @Nullable String tablename, String whereSqlParameter, Integer operate, ConsumerActuator<MybatisTable> tableOptional, MybatisSqlSupply sqlSupply) throws RestException {
+        return providingOfWhere(providerContext, tablename, whereSqlParameter, tableOptional, sqlSupply);
+    }
+
+    static <I> String providingOfIdDelete(ProviderContext providerContext, @Nullable String tablename, I idParameter, MybatisSqlSupply sqlSupply) throws RestException {
+        return providingOfId(providerContext, tablename, idParameter, table -> {
+        }, sqlSupply);
+    }
+
+    static <I> String providingOfIdDelete(ProviderContext providerContext, @Nullable String tablename, I idParameter, ConsumerActuator<MybatisTable> tableOptional, MybatisSqlSupply sqlSupply) throws RestException {
+        return providingOfId(providerContext, tablename, idParameter, tableOptional, sqlSupply);
+    }
+
+    static <I> String providingOfAllDelete(ProviderContext providerContext, @Nullable String tablename, Collection<I> idList, MybatisSqlSupply sqlSupply) throws RestException {
+        return providingOfAll(providerContext, tablename, idList, table -> {
+        }, sqlSupply);
+    }
+
+    static <I> String providingOfAllDelete(ProviderContext providerContext, @Nullable String tablename, Collection<I> idList, ConsumerActuator<MybatisTable> tableOptional, MybatisSqlSupply sqlSupply) throws RestException {
+        return providingOfAll(providerContext, tablename, idList, tableOptional, sqlSupply);
+    }
+
+    static <I> String providingOfWhereDelete(ProviderContext providerContext, @Nullable String tablename, String whereSqlParameter, MybatisSqlSupply sqlSupply) throws RestException {
+        return providingOfWhere(providerContext, tablename, whereSqlParameter, table -> {
+        }, sqlSupply);
+    }
+
+    static <I> String providingOfWhereDelete(ProviderContext providerContext, @Nullable String tablename, String whereSqlParameter, ConsumerActuator<MybatisTable> tableOptional, MybatisSqlSupply sqlSupply) throws RestException {
+        return providingOfWhere(providerContext, tablename, whereSqlParameter, tableOptional, sqlSupply);
+    }
+
+    static <I> String providingOfIdAlert(ProviderContext providerContext, @Nullable String tablename, I idParameter, Integer key, MybatisSqlSupply sqlSupply) throws RestException {
+        return providingOfId(providerContext, tablename, idParameter, table -> {
+        }, sqlSupply);
+    }
+
+    static <I> String providingOfIdAlert(ProviderContext providerContext, @Nullable String tablename, I idParameter, Integer key, ConsumerActuator<MybatisTable> tableOptional, MybatisSqlSupply sqlSupply) throws RestException {
+        return providingOfId(providerContext, tablename, idParameter, tableOptional, sqlSupply);
+    }
+
+    static <I> String providingOfAllAlert(ProviderContext providerContext, @Nullable String tablename, Collection<I> idList, Integer key, MybatisSqlSupply sqlSupply) throws RestException {
+        return providingOfAll(providerContext, tablename, idList, table -> {
+        }, sqlSupply);
+    }
+
+    static <I> String providingOfAllAlert(ProviderContext providerContext, @Nullable String tablename, Collection<I> idList, Integer key, ConsumerActuator<MybatisTable> tableOptional, MybatisSqlSupply sqlSupply) throws RestException {
+        return providingOfAll(providerContext, tablename, idList, tableOptional, sqlSupply);
+    }
+
+    static <L> String providingOfLinkIdRemove(ProviderContext providerContext, @Nullable String tablename, L linkIdParameter, String logic, MybatisSqlSupply sqlSupply) throws RestException {
+        return providingOfLinkIdRemove(providerContext, tablename, linkIdParameter, logic, table -> {
+        }, sqlSupply);
+    }
+
+    @SuppressWarnings("Duplicates")
+    static <L> String providingOfLinkIdRemove(ProviderContext providerContext, @Nullable String tablename, L linkIdParameter, String logic, ConsumerActuator<MybatisTable> tableOptional, MybatisSqlSupply sqlSupply) throws RestException {
+        Object linkId = reviseParameter(linkIdParameter);
+        return MybatisSqlScript.caching(providerContext, (table, sqlScript) -> {
+            tableOptional.actuate(table);
+            SqlBuilder sqlBuilder = SqlBuilder.sqlBuilder();
+            if (table.isSpecialLinkage()) {
+                valueOfParameter(table.linkageColumns(), linkId, table.getLinkageType());
+                String linkageSql = sqlOfColumns(linkId, table.getLinkageColumns(), true);
+                sqlBuilder.append(linkageSql);
+            } else {
+                Optional.ofNullable(table.getLinkColumn()).ifPresent(column -> sqlBuilder.append(column.columnName()).eq().value(linkId));
+            }
+            return sqlSupply.supply(tablename, table, sqlBuilder.toString(), sqlScript);
+        });
+    }
+
+    static <L> String providingOfLinkIdAllRemove(ProviderContext providerContext, @Nullable String tablename, Collection<L> linkIdList, String logic, MybatisSqlSupply sqlSupply) throws RestException {
+        return providingOfLinkIdAllRemove(providerContext, tablename, linkIdList, logic, table -> {
+        }, sqlSupply);
+    }
+
+    @SuppressWarnings("Duplicates")
+    static <L> String providingOfLinkIdAllRemove(ProviderContext providerContext, @Nullable String tablename, Collection<L> linkIdList, String logic, ConsumerActuator<MybatisTable> tableOptional, MybatisSqlSupply sqlSupply) throws RestException {
+        return MybatisSqlScript.caching(providerContext, (table, sqlScript) -> {
+            tableOptional.actuate(table);
+            SqlBuilder sqlBuilder = SqlBuilder.sqlBuilder();
+            if (table.isSpecialLinkage()) {
+                RestStream.stream(linkIdList).forEach(linkId -> valueOfParameter(table.linkageColumns(), linkId, table.getLinkageType()));
+                Map<Integer, List<L>> sliceOfColumnsMap = sliceOfColumns(table.linkageColumns(), linkIdList);
+                sqlBuilder.append(sqlOfColumns(sliceOfColumnsMap, table.linkageColumns(), sqlScript));
+            } else {
+                sqlBuilder.append(table.getIdentityColumn().columnName()).in().braceLt();
+                linkIdList.forEach(linkId -> sqlBuilder.value(linkId).comma());
+                sqlBuilder.delete(sqlBuilder.length() - 2).braceGt();
+            }
+            return sqlSupply.supply(tablename, table, sqlBuilder.toString(), sqlScript);
+        });
+    }
+
+    static <I> String providingOfNameFind(ProviderContext providerContext, @Nullable String tablename, String name, String logic, MybatisSqlSupply sqlSupply) throws RestException {
+        return providingOfNameFind(providerContext, tablename, name, logic, table -> {
+        }, sqlSupply);
+    }
+
+    @SuppressWarnings("Duplicates")
+    static String providingOfNameFind(ProviderContext providerContext, @Nullable String tablename, String name, String logic, ConsumerActuator<MybatisTable> tableOptional, MybatisSqlSupply sqlSupply) throws RestException {
+        return MybatisSqlScript.caching(providerContext, (table, sqlScript) -> {
+            tableOptional.actuate(table);
+            String nameSql = Optional.ofNullable(table.fieldColumn(EntityConstants.NAME)).map(MybatisColumn::columnEqualsProperty).orElse(ScriptConstants.NAME_EQUALS_PROPERTY);
+            SqlBuilder sqlBuilder = new SqlBuilder(nameSql);
+            Optional.ofNullable(table.getLogicColumn()).ifPresent(column -> sqlBuilder.and().append(column.columnName()).eq().value(logic));
+            return sqlSupply.supply(tablename, table, sqlBuilder.toString(), sqlScript);
+        });
+    }
+
+    static <I> String providingOfNameFind(ProviderContext providerContext, @Nullable String tablename, String name, I idParameter, String logic, MybatisSqlSupply sqlSupply) throws RestException {
+        return providingOfNameFind(providerContext, tablename, name, idParameter, logic, table -> {
+        }, sqlSupply);
+    }
+
+    @SuppressWarnings("Duplicates")
+    static <I> String providingOfNameFind(ProviderContext providerContext, @Nullable String tablename, String name, I idParameter, String logic, ConsumerActuator<MybatisTable> tableOptional, MybatisSqlSupply sqlSupply) throws RestException {
         Object identity = reviseParameter(idParameter);
         return MybatisSqlScript.caching(providerContext, (table, sqlScript) -> {
-            actuator.actuate(table);
-            String whereSql;
+            tableOptional.actuate(table);
+
+            SqlBuilder sqlBuilder = new SqlBuilder();
+
             if (table.isSpecialIdentity()) {
-                valueOfIdentity(table, identity);
-                whereSql = specialWhereSqlOfId(identity, table, sqlScript);
+                valueOfParameter(table.identityColumns(), identity, table.getIdentityType());
+                String identitySql = sqlOfColumns(identity, table.identityColumns(), false);
+                sqlBuilder.append(identitySql);
             } else {
-                whereSql = defaultWhereSqlOfId(table, sqlScript);
+                Optional.ofNullable(table.getIdentityColumn()).ifPresent(column -> sqlBuilder.append(column.columnName()).neq().value(identity));
             }
-            return sqlSupply.supply(tablename, table, whereSql, sqlScript);
+            String nameSql = Optional.ofNullable(table.fieldColumn(EntityConstants.NAME)).map(MybatisColumn::columnEqualsProperty).orElse(ScriptConstants.NAME_EQUALS_PROPERTY);
+            sqlBuilder.and().append(nameSql);
+            Optional.ofNullable(table.getLogicColumn()).ifPresent(column -> sqlBuilder.and().append(column.columnName()).eq().value(logic));
+            return sqlSupply.supply(tablename, table, sqlBuilder.toString(), sqlScript);
         });
     }
 
-    static <I> String providing(ProviderContext providerContext, @Nullable String tablename, Collection<I> idList, MybatisSqlSupply sqlSupply) throws RestException {
-        return providing(providerContext, tablename, idList, table -> {
+    static <I> String providingOfEntityFind(ProviderContext providerContext, @Nullable String tablename, I entityParameter, String logic, MybatisSqlSupply sqlSupply) throws RestException {
+        return providingOfEntityFind(providerContext, tablename, entityParameter, logic, table -> {
         }, sqlSupply);
     }
 
-    static <I> String providing(ProviderContext providerContext, @Nullable String tablename, Collection<I> idList, ConsumerActuator<MybatisTable> actuator, MybatisSqlSupply sqlSupply) throws RestException {
+    @SuppressWarnings("Duplicates")
+    static <E> String providingOfEntityFind(ProviderContext providerContext, @Nullable String tablename, E entityParameter, String logic, ConsumerActuator<MybatisTable> tableOptional, MybatisSqlSupply sqlSupply) throws RestException {
+        Object entity = reviseParameter(entityParameter);
         return MybatisSqlScript.caching(providerContext, (table, sqlScript) -> {
-            actuator.actuate(table);
-            String whereSql;
-            if (table.isSpecialIdentity()) {
-                RestStream.stream(idList).forEach(id -> valueOfIdentity(table, id));
-                Map<Integer, List<I>> identities = sliceOfIdentity(table, idList);
-                whereSql = specialWhereSqlOfIds(identities, table, sqlScript);
+            tableOptional.actuate(table);
+            SqlBuilder sqlBuilder = new SqlBuilder();
+            List<MybatisColumn> uniqueColumns = table.uniqueColumns();
+            String entitySql = table.uniqueColumns().stream()
+                    .map(column -> column.columnEqualsProperty(EntityConstants.ENTITY_PREFIX))
+                    .collect(Collectors.joining(SQLConstants.BLANK + SQLConstants.OR + SQLConstants.BLANK));
+            if (uniqueColumns.size() == 1) {
+                sqlBuilder.append(entitySql);
             } else {
-                whereSql = defaultWhereSqlOfIds(table, sqlScript);
+                sqlBuilder.braceLt().append(entitySql).braceGt();
             }
-            return sqlSupply.supply(tablename, table, whereSql, sqlScript);
+            Optional.ofNullable(table.getLogicColumn()).ifPresent(column -> sqlBuilder.and().append(column.columnName()).eq().value(logic));
+            return sqlSupply.supply(tablename, table, sqlBuilder.toString(), sqlScript);
         });
     }
 
-    static <I> String providing(ProviderContext providerContext, @Nullable String tablename, String whereSqlParameter, MybatisSqlSupply sqlProvider) throws RestException {
-        return providing(providerContext, tablename, whereSqlParameter, table -> {
-        }, sqlProvider);
+    static <I> String providingOfEntityFind(ProviderContext providerContext, @Nullable String tablename, I entityParameter, I idParameter, String logic, MybatisSqlSupply sqlSupply) throws RestException {
+        return providingOfEntityFind(providerContext, tablename, entityParameter, idParameter, logic, table -> {
+        }, sqlSupply);
     }
 
-    static <I> String providing(ProviderContext providerContext, @Nullable String tablename, String whereSqlParameter, ConsumerActuator<MybatisTable> actuator, MybatisSqlSupply sqlSupply) throws RestException {
+    @SuppressWarnings("Duplicates")
+    static <E, I> String providingOfEntityFind(ProviderContext providerContext, @Nullable String tablename, E entityParameter, I idParameter, String logic, ConsumerActuator<MybatisTable> tableOptional, MybatisSqlSupply sqlSupply) throws RestException {
+        Object identity = reviseParameter(idParameter);
         return MybatisSqlScript.caching(providerContext, (table, sqlScript) -> {
-            actuator.actuate(table);
+            tableOptional.actuate(table);
+            SqlBuilder sqlBuilder = new SqlBuilder();
+            if (table.isSpecialIdentity()) {
+                valueOfParameter(table.identityColumns(), identity, table.getIdentityType());
+                String identitySql = sqlOfColumns(identity, table.identityColumns(), false);
+                sqlBuilder.append(identitySql);
+            } else {
+                Optional.ofNullable(table.getIdentityColumn()).ifPresent(column -> sqlBuilder.append(column.columnName()).eq().value(identity));
+            }
+            List<MybatisColumn> uniqueColumns = table.uniqueColumns();
+            String entitySql = table.uniqueColumns().stream()
+                    .map(column -> column.columnEqualsProperty(EntityConstants.ENTITY_PREFIX))
+                    .collect(Collectors.joining(SQLConstants.BLANK + SQLConstants.OR + SQLConstants.BLANK));
+            if (uniqueColumns.size() == 1) {
+                sqlBuilder.and().append(entitySql);
+            } else {
+                sqlBuilder.and().braceLt().append(entitySql).braceGt();
+            }
+            Optional.ofNullable(table.getLogicColumn()).ifPresent(column -> sqlBuilder.and().append(column.columnName()).eq().value(logic));
+            return sqlSupply.supply(tablename, table, sqlBuilder.toString(), sqlScript);
+        });
+    }
+
+    static <E> String providingOfSave(ProviderContext providerContext, @Nullable String tablename, E entityParameter, MybatisSqlSupply sqlSupply) throws RestException {
+        return providingOfSave(providerContext, tablename, entityParameter, table -> {
+        }, sqlSupply);
+    }
+
+    @SuppressWarnings("Duplicates")
+    static <E> String providingOfSave(ProviderContext providerContext, @Nullable String tablename, E entityParameter, ConsumerActuator<MybatisTable> tableOptional, MybatisSqlSupply sqlSupply) throws RestException {
+        return MybatisSqlScript.caching(providerContext, (table, sqlScript) -> {
+            tableOptional.actuate(table);
+            String sqlOfInsert = table.insertColumns().stream()
+                    .map(column -> column.variable(EntityConstants.ENTITY_PREFIX))
+                    .collect(Collectors.joining(SQLConstants.COMMA + SQLConstants.BLANK));
+            SqlBuilder sqlBuilder = SqlBuilder.sqlBuilder().braceLt().append(sqlOfInsert).braceGt().append(insertOfSaveSql(tablename, table));
+            return sqlSupply.supply(tablename, table, sqlBuilder.toString(), sqlScript);
+        });
+    }
+
+    static <E> String providingOfAllSave(ProviderContext providerContext, @Nullable String tablename, Collection<E> entityList, MybatisSqlSupply sqlSupply) throws RestException {
+        return providingOfAllSave(providerContext, tablename, entityList, table -> {
+        }, sqlSupply);
+    }
+
+    static <E> String providingOfAllSave(ProviderContext providerContext, @Nullable String tablename, Collection<E> entityList, ConsumerActuator<MybatisTable> tableOptional, MybatisSqlSupply sqlSupply) throws RestException {
+        return MybatisSqlScript.caching(providerContext, (table, sqlScript) -> {
+            tableOptional.actuate(table);
+            String foreachValues = sqlScript.foreach(EntityConstants.ENTITY_LIST, EntityConstants.ENTITY, SQLConstants.COMMA + SQLConstants.BLANK, () ->
+                    SQLConstants.BRACE_LT + table.insertColumns().stream().map(column -> column.variable(EntityConstants.ENTITY_PREFIX))
+                            .collect(Collectors.joining(SQLConstants.COMMA + SQLConstants.BLANK)) + SQLConstants.BRACE_GT);
+            SqlBuilder sqlBuilder = SqlBuilder.sqlBuilder(foreachValues).append(insertOfSaveSql(tablename, table));
+            return sqlSupply.supply(tablename, table, sqlBuilder.toString(), sqlScript);
+        });
+    }
+
+    static <I> String providingOfId(ProviderContext providerContext, @Nullable String tablename, I idParameter, MybatisSqlSupply sqlSupply) throws RestException {
+        return providingOfId(providerContext, tablename, idParameter, table -> {
+        }, sqlSupply);
+    }
+
+    static <I> String providingOfId(ProviderContext providerContext, @Nullable String tablename, I idParameter, ConsumerActuator<MybatisTable> tableOptional, MybatisSqlSupply sqlSupply) throws RestException {
+        Object identity = reviseParameter(idParameter);
+        return MybatisSqlScript.caching(providerContext, (table, sqlScript) -> {
+            tableOptional.actuate(table);
+            SqlBuilder sqlBuilder = SqlBuilder.sqlBuilder();
+            if (table.isSpecialIdentity()) {
+                valueOfParameter(table.identityColumns(), identity, table.getIdentityType());
+                String identitySql = sqlOfColumns(identity, table.identityColumns(), true);
+                sqlBuilder.append(identitySql);
+            } else {
+                Optional.ofNullable(table.getIdentityColumn()).ifPresent(column -> sqlBuilder.append(column.columnName()).eq().value(identity));
+            }
+            return sqlSupply.supply(tablename, table, sqlBuilder.toString(), sqlScript);
+        });
+    }
+
+    static <I> String providingOfAll(ProviderContext providerContext, @Nullable String tablename, Collection<I> idList, MybatisSqlSupply sqlSupply) throws RestException {
+        return providingOfAll(providerContext, tablename, idList, table -> {
+        }, sqlSupply);
+    }
+
+    static <I> String providingOfAll(ProviderContext providerContext, @Nullable String tablename, Collection<I> idList, ConsumerActuator<MybatisTable> tableOptional, MybatisSqlSupply sqlSupply) throws RestException {
+        return MybatisSqlScript.caching(providerContext, (table, sqlScript) -> {
+            tableOptional.actuate(table);
+            SqlBuilder sqlBuilder = SqlBuilder.sqlBuilder();
+            if (table.isSpecialIdentity()) {
+                RestStream.stream(idList).forEach(id -> valueOfParameter(table.identityColumns(), id, table.getIdentityType()));
+                Map<Integer, List<I>> sliceOfColumnsMap = sliceOfColumns(table.identityColumns(), idList);
+                sqlBuilder.append(sqlOfColumns(sliceOfColumnsMap, table.identityColumns(), sqlScript));
+            } else {
+                sqlBuilder.append(table.getIdentityColumn().columnName()).in().braceLt();
+                idList.forEach(id -> sqlBuilder.value(id).comma());
+                sqlBuilder.delete(sqlBuilder.length() - 2).braceGt();
+            }
+            return sqlSupply.supply(tablename, table, sqlBuilder.toString(), sqlScript);
+        });
+    }
+
+    static <I> String providingOfWhere(ProviderContext providerContext, @Nullable String tablename, String whereSqlParameter, MybatisSqlSupply sqlSupply) throws RestException {
+        return providingOfWhere(providerContext, tablename, whereSqlParameter, table -> {
+        }, sqlSupply);
+    }
+
+    static <I> String providingOfWhere(ProviderContext providerContext, @Nullable String tablename, String whereSqlParameter, ConsumerActuator<MybatisTable> tableOptional, MybatisSqlSupply sqlSupply) throws RestException {
+        return MybatisSqlScript.caching(providerContext, (table, sqlScript) -> {
+            tableOptional.actuate(table);
             String whereSql = whereSqlParameter;
             if (whereSql.startsWith(SQLConstants.AND_MATCH)) {
                 whereSql = whereSql.substring(SQLConstants.AND_MATCH.length());
@@ -109,119 +442,16 @@ public interface MybatisSqlProvider {
         });
     }
 
-    @SuppressWarnings("Duplicates")
-    static String providing(ProviderContext providerContext, @Nullable String tablename, String name, String logic, ConsumerActuator<MybatisTable> actuator, MybatisSqlSupply sqlSupply) throws RestException {
-        return MybatisSqlScript.caching(providerContext, (table, sqlScript) -> {
-            actuator.actuate(table);
-            String nameSql = Optional.ofNullable(table.fieldColumn(EntityConstants.NAME)).map(MybatisColumn::columnEqualsProperty).orElse(ScriptConstants.NAME_EQUALS_PROPERTY);
-            SqlBuilder sqlBuilder = new SqlBuilder(nameSql);
-            Optional.ofNullable(table.getLogicColumn()).ifPresent(column -> sqlBuilder.and().append(column.columnEqualsLogic()));
-            return sqlSupply.supply(tablename, table, sqlBuilder.toString(), sqlScript);
-        });
-    }
-
-    @SuppressWarnings("Duplicates")
-    static <I> String providing(ProviderContext providerContext, @Nullable String tablename, String name, I idParameter, String logic, ConsumerActuator<MybatisTable> actuator, MybatisSqlSupply sqlSupply) throws RestException {
-        Object identity = reviseParameter(idParameter);
-        return MybatisSqlScript.caching(providerContext, (table, sqlScript) -> {
-            actuator.actuate(table);
-            String nameSql = Optional.ofNullable(table.fieldColumn(EntityConstants.NAME)).map(MybatisColumn::columnEqualsProperty).orElse(ScriptConstants.NAME_EQUALS_PROPERTY);
-            SqlBuilder sqlBuilder = new SqlBuilder(nameSql);
-            Optional.ofNullable(table.getLogicColumn()).ifPresent(column -> sqlBuilder.and().append(column.columnEqualsLogic()));
-            if (table.isSpecialIdentity()) {
-                valueOfIdentity(table, identity);
-                String identitySql = sqlOfIdentity(identity, table.identityColumns(), false);
-                sqlBuilder.append(identitySql);
-            } else {
-                Optional.ofNullable(table.getIdentityColumn()).ifPresent(column -> sqlBuilder.and().append(column.columnNotEqualsProperty()));
-            }
-            return sqlSupply.supply(tablename, table, sqlBuilder.toString(), sqlScript);
-        });
-    }
-
-    @SuppressWarnings("Duplicates")
-    static <E> String providing(ProviderContext providerContext, @Nullable String tablename, E entityParameter, String logic, ConsumerActuator<MybatisTable> actuator, MybatisSqlSupply sqlSupply) throws RestException {
-        Object entity = reviseParameter(entityParameter);
-        return MybatisSqlScript.caching(providerContext, (table, sqlScript) -> {
-            actuator.actuate(table);
-            SqlBuilder sqlBuilder = new SqlBuilder();
-            List<MybatisColumn> uniqueColumns = table.uniqueColumns();
-            String entitySql = table.uniqueColumns().stream()
-                    .map(column -> column.columnEqualsProperty(EntityConstants.ENTITY_PREFIX))
-                    .collect(Collectors.joining(SQLConstants.BLANK + SQLConstants.OR + SQLConstants.BLANK));
-            if (uniqueColumns.size() == 1) {
-                sqlBuilder.append(entitySql);
-            } else {
-                sqlBuilder.braceLt().append(entitySql).braceGt();
-            }
-            Optional.ofNullable(table.getLogicColumn()).ifPresent(column -> sqlBuilder.and().append(column.columnEqualsLogic()));
-            return sqlSupply.supply(tablename, table, sqlBuilder.toString(), sqlScript);
-        });
-    }
-
-    @SuppressWarnings("Duplicates")
-    static <E, I> String providing(ProviderContext providerContext, @Nullable String tablename, E entityParameter, I idParameter, String logic, ConsumerActuator<MybatisTable> actuator, MybatisSqlSupply sqlSupply) throws RestException {
-        Object entity = reviseParameter(entityParameter);
-        Object identity = reviseParameter(idParameter);
-        return MybatisSqlScript.caching(providerContext, (table, sqlScript) -> {
-            actuator.actuate(table);
-            SqlBuilder sqlBuilder = new SqlBuilder();
-            List<MybatisColumn> uniqueColumns = table.uniqueColumns();
-            String entitySql = table.uniqueColumns().stream()
-                    .map(column -> column.columnEqualsProperty(EntityConstants.ENTITY_PREFIX))
-                    .collect(Collectors.joining(SQLConstants.BLANK + SQLConstants.OR + SQLConstants.BLANK));
-            if (uniqueColumns.size() == 1) {
-                sqlBuilder.append(entitySql);
-            } else {
-                sqlBuilder.braceLt().append(entitySql).braceGt();
-            }
-            Optional.ofNullable(table.getLogicColumn()).ifPresent(column -> sqlBuilder.and().append(column.columnEqualsLogic()));
-            if (table.isSpecialIdentity()) {
-                valueOfIdentity(table, identity);
-                String identitySql = sqlOfIdentity(identity, table.identityColumns(), false);
-                sqlBuilder.append(identitySql);
-            } else {
-                Optional.ofNullable(table.getIdentityColumn()).ifPresent(column -> sqlBuilder.and().append(column.columnNotEqualsProperty()));
-            }
-            return sqlSupply.supply(tablename, table, sqlBuilder.toString(), sqlScript);
-        });
-    }
-
-    static <E> String providingOfSave(ProviderContext providerContext, @Nullable String tablename, E entityParameter, ConsumerActuator<MybatisTable> actuator, MybatisSqlSupply sqlSupply) throws RestException {
-        Object entity = reviseParameter(entityParameter);
-        return MybatisSqlScript.caching(providerContext, (table, sqlScript) -> {
-            actuator.actuate(table);
-            String sqlOfInsert = table.insertColumns().stream()
-                    .map(column -> column.variable(EntityConstants.ENTITY_PREFIX))
-                    .collect(Collectors.joining(SQLConstants.COMMA + SQLConstants.BLANK));
-            SqlBuilder sqlBuilder = SqlBuilder.sqlBuilder();
-            sqlBuilder.braceLt().append(sqlOfInsert).braceGt().append(insertOfSaveSql(tablename, table));
-            return sqlSupply.supply(tablename, table, sqlBuilder.toString(), sqlScript);
-        });
-    }
-
-    static <E> String providingOfSaveAll(ProviderContext providerContext, @Nullable String tablename, Collection<E> entityList, ConsumerActuator<MybatisTable> actuator, MybatisSqlSupply sqlSupply) throws RestException {
-        return MybatisSqlScript.caching(providerContext, (table, sqlScript) -> {
-            actuator.actuate(table);
-            String foreachValues = sqlScript.foreach(EntityConstants.ENTITY_LIST, EntityConstants.ENTITY, SQLConstants.COMMA + SQLConstants.BLANK, () ->
-                    SQLConstants.BRACE_LT + table.insertColumns().stream().map(column -> column.variable(EntityConstants.ENTITY_PREFIX))
-                            .collect(Collectors.joining(SQLConstants.COMMA + SQLConstants.BLANK)) + SQLConstants.BRACE_GT);
-            SqlBuilder sqlBuilder = SqlBuilder.sqlBuilder(foreachValues);
-            sqlBuilder.append(insertOfSaveSql(tablename, table));
-            return sqlSupply.supply(tablename, table, sqlBuilder.toString(), sqlScript);
-        });
-    }
-
-    static void valueOfIdentity(MybatisTable table, Object id) throws RestException {
-        Boolean logicalOr = RestStream.stream(table.identityColumns()).map(MybatisColumn::getField)
-                .map(mybatisField -> GeneralUtils.isNotEmpty(mybatisField.get(id)))
+    static void valueOfParameter(Collection<MybatisColumn> mybatisColumns, Object parameter, Class<?> parameterType) throws RestException {
+        Boolean logicalOr = RestStream.stream(mybatisColumns).map(MybatisColumn::getField)
+                .map(mybatisField -> GeneralUtils.isNotEmpty(mybatisField.get(parameter)))
                 .collect(RestCollectors.logicalOr());
-        String message = "The field values of identity can not all be empty, " + table.getIdentityType().getName();
+        String message = "The field values of parameter can not all be empty, " + parameterType.getName();
         OptionalUtils.ofFalseError(logicalOr, message, MybatisIdentityLackError::new);
     }
 
-    static <I> Map<Integer, List<I>> sliceOfIdentity(MybatisTable table, Collection<I> idList) throws RestException {
-        List<MybatisField> mybatisFields = RestStream.stream(table.identityColumns()).map(MybatisColumn::getField).collect(RestCollectors.toList());
+    static <I> Map<Integer, List<I>> sliceOfColumns(Collection<MybatisColumn> mybatisColumns, Collection<I> idList) throws RestException {
+        List<MybatisField> mybatisFields = RestStream.stream(mybatisColumns).map(MybatisColumn::getField).collect(RestCollectors.toList());
         /*
          * mybatisFields: {a,b,c}, index: 0,1,2 indexValue: 1,2,4
          * 0: {}, 1: {a}, 2: {b}, 3: {a,b}, 4: {c} 5: {a,c}, 6: {b,c}, 7: {a,b,c}
@@ -238,20 +468,7 @@ public interface MybatisSqlProvider {
         }));
     }
 
-    static String defaultWhereSqlOfId(MybatisTable table, MybatisSqlScript sqlScript) throws RestException {
-        return SqlBuilder.sqlBuilder().append(table.sqlOfIdentityColumn()).toString();
-    }
-
-    static String defaultWhereSqlOfIds(MybatisTable table, MybatisSqlScript sqlScript) throws RestException {
-        return SqlBuilder.sqlBuilder().append(EntityConstants.IDENTITY).in().append(sqlScript.foreachOfIdList(() ->
-                MybatisColumn.property(table.getIdentityType(), EntityConstants.IDENTITY))).toString();
-    }
-
-    static <I> String specialWhereSqlOfId(I identity, MybatisTable table, MybatisSqlScript sqlScript) throws RestException {
-        return sqlOfIdentity(identity, table.identityColumns(), true);
-    }
-
-    static <I> String sqlOfIdentity(I identity, Collection<MybatisColumn> mybatisColumns, boolean isEquals) throws RestException {
+    static <I> String sqlOfColumns(I identity, Collection<MybatisColumn> mybatisColumns, boolean isEquals) throws RestException {
         SqlBuilder sqlBuilder = new SqlBuilder();
         boolean isNotFirstValue = false;
         for (MybatisColumn mybatisColumn : mybatisColumns) {
@@ -284,24 +501,24 @@ public interface MybatisSqlProvider {
      * FROM ntr_template WHERE 1=1 AND ((template_pk1) IN (('1' )) OR (template_pk2) IN (('3' )))
      */
     @SuppressWarnings("Duplicates")
-    static <I> String specialWhereSqlOfIds(Map<Integer, List<I>> identitySliceMap, MybatisTable table, MybatisSqlScript sqlScript) throws RestException {
-        if (GeneralUtils.isEmpty(identitySliceMap)) {
+    static <I> String sqlOfColumns(Map<Integer, List<I>> columnsSliceMap, List<MybatisColumn> columns, MybatisSqlScript sqlScript) throws RestException {
+        if (GeneralUtils.isEmpty(columnsSliceMap)) {
             return SqlBuilder.EMPTY;
         }
         SqlBuilder sqlBuilder = new SqlBuilder(SQLConstants.BRACE_LT);
-        for (Map.Entry<Integer, List<I>> entry : identitySliceMap.entrySet()) {
+        for (Map.Entry<Integer, List<I>> entry : columnsSliceMap.entrySet()) {
             Integer key = entry.getKey();
             List<I> valueList = entry.getValue();
             if (GeneralUtils.isNotEmpty(key) && GeneralUtils.isNotEmpty(valueList)) {
                 List<Number> indices = RestReckon.denexNumber(key);
                 if (GeneralUtils.isNotEmpty(indices)) {
                     List<MybatisColumn> mybatisColumns = RestStream.stream(indices)
-                            .map(index -> table.identityColumns().get(index.intValue())).collect(RestCollectors.toList());
+                            .map(index -> columns.get(index.intValue())).collect(RestCollectors.toList());
                     boolean isMultiColumns = mybatisColumns.size() > 1;
                     boolean isSingleValue = valueList.size() == 1;
                     if (isSingleValue) {
                         if (isMultiColumns) {
-                            sqlBuilder.append(SQLConstants.BRACE_LT);
+                            sqlBuilder.braceLt();
                         }
                         boolean isNotFirst = false;
                         I value = valueList.get(0);
@@ -312,37 +529,37 @@ public interface MybatisSqlProvider {
                             isNotFirst = true;
                         }
                         if (isMultiColumns) {
-                            sqlBuilder.append(SQLConstants.BRACE_GT);
+                            sqlBuilder.braceGt();
                         }
                     } else {
                         String fieldSql = RestStream.stream(mybatisColumns).map(MybatisColumn::columnName).collect(RestCollectors.joining(SQLConstants.COMMA));
                         if (isMultiColumns) {
-                            sqlBuilder.append(SQLConstants.BRACE_LT).append(fieldSql).append(SQLConstants.BRACE_GT).in().append(SQLConstants.BRACE_LT);
+                            sqlBuilder.braceLt().append(fieldSql).braceGt().in().braceLt();
                         } else {
-                            sqlBuilder.append(fieldSql).in().append(SQLConstants.BRACE_LT);
+                            sqlBuilder.append(fieldSql).in().braceLt();
                         }
                         RestStream.stream(valueList).forEach(value -> {
                             if (isMultiColumns) {
-                                sqlBuilder.append(SQLConstants.BRACE_LT);
+                                sqlBuilder.braceLt();
                             }
                             RestStream.stream(mybatisColumns).map(MybatisColumn::getField).forEach(field -> {
                                 Object indexValue = field.get(value);
-                                sqlBuilder.value(indexValue).append(SQLConstants.COMMA);
+                                sqlBuilder.value(indexValue).comma();
                             });
                             sqlBuilder.deleteLastChar();
                             if (isMultiColumns) {
-                                sqlBuilder.append(SQLConstants.BRACE_GT).append(SQLConstants.COMMA);
+                                sqlBuilder.braceGt().comma();
                             } else {
-                                sqlBuilder.append(SQLConstants.COMMA);
+                                sqlBuilder.comma();
                             }
                         });
-                        sqlBuilder.deleteLastChar().append(SQLConstants.BRACE_GT);
+                        sqlBuilder.deleteLastChar().braceGt();
                     }
                 }
                 sqlBuilder.or();
             }
         }
-        sqlBuilder.delete(sqlBuilder.length() - 4, sqlBuilder.length()).append(SQLConstants.BRACE_GT);
+        sqlBuilder.delete(sqlBuilder.length() - 4).braceGt();
         return sqlBuilder.toString();
     }
 
@@ -363,18 +580,10 @@ public interface MybatisSqlProvider {
         }
         optionalColumns.ifEmptyPresent(updateColumns -> {
             String collect = RestStream.stream(updateColumns).map(column -> column.excluded(table.tablename(tablename)))
-                    .collect(RestCollectors.joining(SQLConstants.COMMA + SQLConstants.BLANK));
-            sqlBuilder.append(collect);
+                    .collect(RestCollectors.joining(SQLConstants.COMMA + SQLConstants.BLANK + SQLConstants.LINEFEED));
+            sqlBuilder.set().append(collect);
         });
         return sqlBuilder.toString();
-    }
-
-    default String updateOfAlertSql(String tablename, MybatisTable table, MybatisSqlScript sqlScript) throws RestException {
-        SqlBuilder sqlBuilder = SqlBuilder.sqlBuilder().update().append(table.tablename(tablename))
-                .set().eq("update_time", "now()", null);
-        return "UPDATE " + table.tablename(tablename)
-                + " SET update_time = now(),"
-                + table.getAlertColumn().columnEqualsKey();
     }
 
 //    default String updateOfAlertByFieldSql(String tablename, MybatisTable table, MybatisSqlScript sqlScript) throws RestException {
@@ -389,7 +598,6 @@ public interface MybatisSqlProvider {
 //        return sqlBuilder.toString();
 //    }
 //
-
 
 
 }

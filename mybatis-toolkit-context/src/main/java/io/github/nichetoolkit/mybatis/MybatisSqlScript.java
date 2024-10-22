@@ -110,6 +110,10 @@ public interface MybatisSqlScript extends MybatisOrder {
         return String.format(ScriptConstants.FOREACH_INDEX_LABEL, EntityConstants.IDENTITY_LIST, EntityConstants.IDENTITY, EntityConstants.INDEX,  SQLConstants.BRACE_LT,  SQLConstants.BRACE_GT, SQLConstants.COMMA + SQLConstants.BLANK, content.withLinefeed());
     }
 
+    default String foreachOfLinkIdList(LinefeedSupplier content) throws RestException {
+        return String.format(ScriptConstants.FOREACH_INDEX_LABEL, EntityConstants.LINK_ID_LIST, EntityConstants.LINK_ID, EntityConstants.INDEX,  SQLConstants.BRACE_LT,  SQLConstants.BRACE_GT, SQLConstants.COMMA + SQLConstants.BLANK, content.withLinefeed());
+    }
+
     default String bind(String name, String value) {
         return String.format(ScriptConstants.BIND_LABEL, name, value);
     }

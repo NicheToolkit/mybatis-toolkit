@@ -16,6 +16,7 @@ import java.util.Date;
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class SimpleModel extends RestInfoModel<SimpleModel,SimpleEntity> implements RestTablekey<String> {
+    private String linkId;
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date time;
@@ -32,6 +33,14 @@ public class SimpleModel extends RestInfoModel<SimpleModel,SimpleEntity> impleme
         this.time = builder.time;
     }
 
+    public String getLinkId() {
+        return linkId;
+    }
+
+    public void setLinkId(String linkId) {
+        this.linkId = linkId;
+    }
+
     public Date getTime() {
         return time;
     }
@@ -44,6 +53,7 @@ public class SimpleModel extends RestInfoModel<SimpleModel,SimpleEntity> impleme
     public SimpleEntity toEntity() {
         SimpleEntity entity = new SimpleEntity();
         BeanUtils.copyNonnullProperties(this,entity);
+        entity.setOperate(this.operate.getKey());
         return entity;
     }
 

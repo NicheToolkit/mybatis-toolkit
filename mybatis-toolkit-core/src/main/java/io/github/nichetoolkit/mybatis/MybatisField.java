@@ -2,6 +2,7 @@ package io.github.nichetoolkit.mybatis;
 
 import io.github.nichetoolkit.rest.error.lack.AccessibleLackError;
 import io.github.nichetoolkit.rest.reflect.RestGenericTypes;
+import io.github.nichetoolkit.rest.util.GeneralUtils;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -15,8 +16,10 @@ import java.lang.reflect.Field;
 @Accessors(fluent = true)
 public class MybatisField {
     protected Class<?> entityType;
+    protected MybatisField parentField;
     protected Field field;
-    protected boolean isSpecialIdentity = false;
+    protected boolean isIdentity = false;
+    protected boolean isLinkage = false;
     protected boolean ignored = false;
 
     public MybatisField() {
@@ -28,11 +31,21 @@ public class MybatisField {
         this.field.setAccessible(true);
     }
 
-    public MybatisField(Class<?> entityType, Class<?> identityType, Field field) {
+    public MybatisField(Class<?> entityType, MybatisField parentField, Field field, boolean isIdentity, boolean isLinkage) {
         this.entityType = entityType;
-        this.isSpecialIdentity = identityType != null;
+        this.parentField = parentField;
         this.field = field;
         this.field.setAccessible(true);
+        this.isIdentity = isIdentity;
+        this.isLinkage = isLinkage;
+    }
+
+    public boolean isParentNotEmpty() {
+        return GeneralUtils.isNotEmpty(this.parentField);
+    }
+
+    public String prefixOfParent() {
+        return this.parentField.fieldName();
     }
 
     public Class<?> declaringClass() {

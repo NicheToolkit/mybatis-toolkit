@@ -6,6 +6,7 @@ import io.github.nichetoolkit.rest.reflect.DefaultParameterizedType;
 import io.github.nichetoolkit.rest.reflect.DefaultWildcardType;
 import io.github.nichetoolkit.rest.reflect.RestGenericTypes;
 import org.springframework.lang.NonNull;
+import org.springframework.lang.Nullable;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
@@ -15,7 +16,7 @@ import java.util.function.Predicate;
 public abstract class MybatisEntityClassFinder implements MybatisClassFinder {
 
     @Override
-    public Optional<Class<?>> findEntity(@NonNull Class<?> mapperType, Method mapperMethod) {
+    public Optional<Class<?>> findEntity(@NonNull Class<?> mapperType, @Nullable Method mapperMethod) {
         /* 先判断返回值 */
         Optional<Class<?>> optionalClass;
         if (mapperMethod != null) {
@@ -38,9 +39,17 @@ public abstract class MybatisEntityClassFinder implements MybatisClassFinder {
     }
 
     @Override
-    public Optional<Class<?>> findIdentity(@NonNull Class<?> mapperType, @NonNull Class<?> entityType) {
+    public Optional<Class<?>> findIdentity(@NonNull Class<?> mapperType, @Nullable Method mapperMethod, @NonNull Class<?> entityType) {
         /* entityType 泛型寻找 */
-        Optional<Class<?>> optionalClass = identityTypeByEntityType(entityType);
+        Optional<Class<?>> optionalClass;
+        if (mapperMethod != null) {
+            /* 判断参数 */
+            optionalClass = identityTypeByParamTypes(mapperType, mapperMethod);
+            if (optionalClass.isPresent()) {
+                return optionalClass;
+            }
+        }
+        optionalClass = identityTypeByEntityType(entityType);
         if (optionalClass.isPresent()) {
             return optionalClass;
         }
@@ -48,9 +57,17 @@ public abstract class MybatisEntityClassFinder implements MybatisClassFinder {
         return identityTypeByMapperType(mapperType);
     }
 
-    public Optional<Class<?>> findLinkage(@NonNull Class<?> mapperType, @NonNull Class<?> entityType) {
+    public Optional<Class<?>> findLinkage(@NonNull Class<?> mapperType, @Nullable Method mapperMethod, @NonNull Class<?> entityType) {
         /* entityType 泛型寻找 */
-        Optional<Class<?>> optionalClass = linkageTypeByEntityType(entityType);
+        Optional<Class<?>> optionalClass;
+        if (mapperMethod != null) {
+            /* 判断参数 */
+            optionalClass = linkageTypeByParamTypes(mapperType, mapperMethod);
+            if (optionalClass.isPresent()) {
+                return optionalClass;
+            }
+        }
+        optionalClass = linkageTypeByEntityType(entityType);
         if (optionalClass.isPresent()) {
             return optionalClass;
         }
@@ -58,9 +75,17 @@ public abstract class MybatisEntityClassFinder implements MybatisClassFinder {
         return linkageTypeByMapperType(mapperType);
     }
 
-    public Optional<Class<?>> findAlertness(@NonNull Class<?> mapperType, @NonNull Class<?> entityType) {
+    public Optional<Class<?>> findAlertness(@NonNull Class<?> mapperType, @Nullable Method mapperMethod, @NonNull Class<?> entityType) {
         /* entityType 泛型寻找 */
-        Optional<Class<?>> optionalClass = alertnessTypeByEntityType(entityType);
+        Optional<Class<?>> optionalClass;
+        if (mapperMethod != null) {
+            /* 判断参数 */
+            optionalClass = alertnessTypeByParamTypes(mapperType, mapperMethod);
+            if (optionalClass.isPresent()) {
+                return optionalClass;
+            }
+        }
+        optionalClass = alertnessTypeByEntityType(entityType);
         if (optionalClass.isPresent()) {
             return optionalClass;
         }
@@ -85,12 +110,24 @@ public abstract class MybatisEntityClassFinder implements MybatisClassFinder {
         return classOfByTypes(RestGenericTypes.resolveSuperclassTypes(entityType), this::isIdentity);
     }
 
+    protected Optional<Class<?>> identityTypeByParamTypes(Class<?> mapperType, Method mapperMethod) {
+        return classOfByTypes(RestGenericTypes.resolveParamTypes(mapperMethod, mapperType), this::isIdentity);
+    }
+
     protected Optional<Class<?>> linkageTypeByEntityType(Class<?> entityType) {
         return classOfByTypes(RestGenericTypes.resolveSuperclassTypes(entityType), this::isLinkage);
     }
 
+    protected Optional<Class<?>> linkageTypeByParamTypes(Class<?> mapperType, Method mapperMethod) {
+        return classOfByTypes(RestGenericTypes.resolveParamTypes(mapperMethod, mapperType), this::isLinkage);
+    }
+
     protected Optional<Class<?>> alertnessTypeByEntityType(Class<?> entityType) {
         return classOfByTypes(RestGenericTypes.resolveSuperclassTypes(entityType), this::isAlertness);
+    }
+
+    protected Optional<Class<?>> alertnessTypeByParamTypes(Class<?> mapperType, Method mapperMethod) {
+        return classOfByTypes(RestGenericTypes.resolveParamTypes(mapperMethod, mapperType), this::isAlertness);
     }
 
     protected Optional<Class<?>> entityTypeByMapperType(Class<?> mapperType) {

@@ -16,6 +16,8 @@ import java.util.Date;
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class TemplateModel extends DefaultInfoModel<TemplateModel, TemplateEntity, TemplateIdentity> implements RestTablekey<String> {
+    private String linkId1;
+    private String linkId2;
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date time;
@@ -32,6 +34,22 @@ public class TemplateModel extends DefaultInfoModel<TemplateModel, TemplateEntit
         this.time = builder.time;
     }
 
+    public String getLinkId1() {
+        return linkId1;
+    }
+
+    public void setLinkId1(String linkId1) {
+        this.linkId1 = linkId1;
+    }
+
+    public String getLinkId2() {
+        return linkId2;
+    }
+
+    public void setLinkId2(String linkId2) {
+        this.linkId2 = linkId2;
+    }
+
     public Date getTime() {
         return time;
     }
@@ -44,6 +62,8 @@ public class TemplateModel extends DefaultInfoModel<TemplateModel, TemplateEntit
     public TemplateEntity toEntity() {
         TemplateEntity entity = new TemplateEntity();
         BeanUtils.copyNonnullProperties(this,entity);
+        entity.setOperate(this.operate.getKey());
+        entity.setLinkage(new TemplateLinkage(this.linkId1,this.linkId2));
         return entity;
     }
 

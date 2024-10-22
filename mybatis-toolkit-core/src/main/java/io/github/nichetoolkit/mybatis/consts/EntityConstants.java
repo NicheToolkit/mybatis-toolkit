@@ -2,9 +2,10 @@ package io.github.nichetoolkit.mybatis.consts;
 
 
 public interface EntityConstants {
-    String IDENTITY_PREFIX = "id.";
     String IDENTITY = "id";
     String IDENTITY_LIST = "idList";
+    String LINK_ID = "linkId";
+    String LINK_ID_LIST = "linkIdList";
     String INDEX = "index";
     String KEY = "key";
     String ENTITY_LIST = "entityList";
@@ -13,7 +14,6 @@ public interface EntityConstants {
     String NAME = "name";
     String LOGIC = "logic";
     String OPERATE = "operate";
-    String LINK_ID = "linkId";
 
     String CREATE_TIME = "create_time";
     String UPDATE_TIME = "update_time";

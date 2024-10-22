@@ -45,6 +45,6 @@ public class PostgresSaveProvider implements MybatisSqlProvider {
         String insertColumns = "The insert columns of table with 'save' method cannot be empty!";
         ConsumerActuator<MybatisTable> tableOptional = table -> OptionalUtils.ofEmpty(table.insertColumns(), insertColumns, log,
                 message -> new MybatisTableErrorException("saveAll", "insertColumns", message));
-        return MybatisSqlProvider.providingOfSaveAll(providerContext, tablename, entityList, tableOptional, MybatisSqlProvider.SAVE_SQL_SUPPLY);
+        return MybatisSqlProvider.providingOfAllSave(providerContext, tablename, entityList, tableOptional, MybatisSqlProvider.SAVE_SQL_SUPPLY);
     }
 }

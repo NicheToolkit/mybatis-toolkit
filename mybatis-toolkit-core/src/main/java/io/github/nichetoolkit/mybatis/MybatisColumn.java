@@ -87,7 +87,19 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
     }
 
     public boolean isSpecialIdentity() {
-        return this.field.isSpecialIdentity();
+        return this.field.isIdentity();
+    }
+
+    public boolean isSpecialLinkage() {
+        return this.field.isLinkage();
+    }
+
+    public boolean isParentNotEmpty() {
+        return this.field.isParentNotEmpty();
+    }
+
+    public String prefixOfParent() {
+        return this.field.prefixOfParent();
     }
 
     public String columnName() {
@@ -127,11 +139,13 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
         if (this.forceInsert) {
             return this.forceInsertValue;
         } else {
-            if (isSpecialIdentity()) {
-                prefix = prefix + EntityConstants.IDENTITY_PREFIX;
+            if ((isSpecialIdentity() || isSpecialLinkage()) && this.field.isParentNotEmpty()) {
+                prefix = prefix + this.field.prefixOfParent() + SQLConstants.PERIOD;
             }
             Class<?> fieldType = this.field.fieldType();
-            if (String.class == fieldType || Date.class == fieldType) {
+            if (isLogicKey() || isOperateKey()) {
+                return dollarVariable(prefix);
+            } else if (String.class == fieldType || Date.class == fieldType) {
                 return signerVariable(prefix);
             } else {
                 return dollarVariable(prefix);
@@ -245,41 +259,78 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
         return aliasColumn(alias);
     }
 
+    public String columnEqualsDollar(String variable) {
+        return aliasColumnEqualsVariable(SQLConstants.EMPTY, variable, true);
+    }
+
+    public String aliasColumnEqualsDollar(String alias, String variable) {
+        return aliasColumnEqualsVariable(alias, variable, true);
+    }
+
+    public String columnEqualsSigner(String variable) {
+        return aliasColumnEqualsVariable(SQLConstants.EMPTY, variable, false);
+    }
+
+    public String aliasColumnEqualsSigner(String alias, String variable) {
+        return aliasColumnEqualsVariable(alias, variable, false);
+    }
+
+    public String columnEqualsVariable(String variable, boolean isDollarOrSigner) {
+        return aliasColumnEqualsVariable(SQLConstants.EMPTY, variable, isDollarOrSigner);
+    }
+
+    public String aliasColumnEqualsVariable(String alias, String variable, boolean isDollarOrSigner) {
+        return aliasColumn(alias) + SQLConstants.BLANK + SQLConstants.CONTRAST_EQ
+                + SQLConstants.BLANK + (isDollarOrSigner ? dollarProperty(variable) : signerProperty(variable));
+    }
+
+    public String columnNotEqualsDollar(String variable) {
+        return aliasColumnEqualsVariable(SQLConstants.EMPTY, variable, true);
+    }
+
+    public String aliasNotColumnEqualsDollar(String alias, String variable) {
+        return aliasColumnEqualsVariable(alias, variable, true);
+    }
+
+    public String columnNotEqualsSigner(String variable) {
+        return aliasColumnEqualsVariable(SQLConstants.EMPTY, variable, false);
+    }
+
+    public String aliasColumnNotEqualsSigner(String alias, String variable) {
+        return aliasColumnEqualsVariable(alias, variable, false);
+    }
+
+    public String columnNotEqualsVariable(String variable, boolean isDollarOrSigner) {
+        return aliasColumnEqualsVariable(SQLConstants.EMPTY, variable, isDollarOrSigner);
+    }
+
+    public String aliasColumnNotEqualsVariable(String alias, String variable, boolean isDollarOrSigner) {
+        return aliasColumn(alias) + SQLConstants.BLANK + SQLConstants.CONTRAST_NEQ
+                + SQLConstants.BLANK + (isDollarOrSigner ? dollarProperty(variable) : signerProperty(variable));
+    }
 
     public String columnEqualsKey() {
-        return aliasColumnEqualsKey(SQLConstants.EMPTY);
+        return columnEqualsSigner(EntityConstants.KEY);
     }
 
     public String aliasColumnEqualsKey(String alias) {
-        return aliasColumn(alias) + SQLConstants.BLANK + SQLConstants.CONTRAST_EQ
-                + SQLConstants.BLANK + dollarProperty(EntityConstants.KEY);
+        return aliasColumnEqualsSigner(alias, EntityConstants.KEY);
     }
 
     public String columnEqualsLogic() {
-        return aliasColumnEqualsLogic(SQLConstants.EMPTY);
+        return columnEqualsDollar(EntityConstants.LOGIC);
     }
 
     public String aliasColumnEqualsLogic(String alias) {
-        return aliasColumn(alias) + SQLConstants.BLANK + SQLConstants.CONTRAST_EQ
-                + SQLConstants.BLANK + dollarProperty(EntityConstants.LOGIC);
+        return aliasColumnEqualsDollar(alias, EntityConstants.LOGIC);
     }
 
     public String columnEqualsOperate() {
-        return aliasColumnEqualsOperate(SQLConstants.EMPTY);
+        return columnEqualsDollar(EntityConstants.OPERATE);
     }
 
     public String aliasColumnEqualsOperate(String alias) {
-        return aliasColumn(alias) + SQLConstants.BLANK + SQLConstants.CONTRAST_EQ
-                + SQLConstants.BLANK + dollarProperty(EntityConstants.OPERATE);
-    }
-
-    public String columnEqualsLink() {
-        return aliasColumnEqualsLink(SQLConstants.EMPTY);
-    }
-
-    public String aliasColumnEqualsLink(String alias) {
-        return aliasColumn(alias) + SQLConstants.BLANK + SQLConstants.CONTRAST_EQ
-                + SQLConstants.BLANK + signerProperty(EntityConstants.LINK_ID);
+        return aliasColumnEqualsDollar(alias, EntityConstants.OPERATE);
     }
 
     public String columnEqualsProperty() {
@@ -293,7 +344,6 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
     public String columnNotEqualsProperty() {
         return aliasColumnNotEqualsProperty(SQLConstants.EMPTY);
     }
-
 
     public String aliasColumnNotEqualsProperty(String alias) {
         return aliasColumnNotEqualsProperty(alias, SQLConstants.EMPTY);
@@ -311,7 +361,6 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
     public String columnNotEqualsProperty(String prefix) {
         return aliasColumnNotEqualsProperty(SQLConstants.EMPTY, prefix);
     }
-
 
     public String aliasColumnNotEqualsProperty(String alias, String prefix) {
         return aliasColumn(alias) + SQLConstants.BLANK + SQLConstants.CONTRAST_NEQ
