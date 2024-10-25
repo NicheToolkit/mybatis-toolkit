@@ -51,6 +51,7 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
     private Map<String, MybatisColumn> fieldColumns = new HashMap<>();
     private List<MybatisColumn> identityColumns = new ArrayList<>();
     private List<MybatisColumn> linkageColumns = new ArrayList<>();
+    private List<MybatisColumn> alertnessColumns = new ArrayList<>();
     private int identityIndex;
     @Setter
     private boolean ready;
@@ -194,6 +195,22 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
                     linkKeyColumns.add(0, column);
                 }
             }
+            if (column.isSpecialAlertness()) {
+                if (column.isAlertKey() || (GeneralUtils.isNotEmpty(this.alertKeys) && this.alertKeys.contains(fieldName))) {
+                    this.alertnessColumns.remove(column);
+                    refreshColumn(this.alertnessColumns, column);
+                } else {
+                    alertKeyColumns.remove(column);
+                    alertKeyColumns.add(0, column);
+                }
+            } else {
+                /* 如果是链接外键 */
+                if (column.isAlertKey() || (GeneralUtils.isNotEmpty(this.alertKeys) && this.alertKeys.contains(fieldName))) {
+                    column.setAlertKey(true);
+                    alertKeyColumns.remove(column);
+                    alertKeyColumns.add(0, column);
+                }
+            }
             if (column.isPrimaryKey()) {
                 primaryKeyColumns.remove(column);
                 primaryKeyColumns.add(0, column);
@@ -212,13 +229,7 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
                 this.unionColumns.remove(column);
                 refreshColumn(this.unionColumns, column);
             }
-            /* 如果是修改外键 */
-            if (column.isAlertKey() || (GeneralUtils.isNotEmpty(this.alertKeys) && this.alertKeys.contains(fieldName))) {
-                column.setAlertKey(true);
-                alertKeyColumns.remove(column);
-                alertKeyColumns.add(0, column);
-            }
-            /* 如果是联合外键 */
+            /* 如果是唯一键 */
             if (column.isUniqueKey() || (GeneralUtils.isNotEmpty(this.uniqueKeys) && this.uniqueKeys.contains(fieldName))) {
                 column.setUniqueKey(true);
                 this.uniqueColumns.remove(column);
@@ -229,20 +240,6 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
         firstLogic.ifPresent(logicKeyColumn -> this.logicColumn = logicKeyColumn);
         Optional<MybatisColumn> firstOperate = operateKeyColumns.stream().findFirst();
         firstOperate.ifPresent(operateKeyColumn -> this.operateColumn = operateKeyColumn);
-        Optional<MybatisColumn> firstAlert = alertKeyColumns.stream().findFirst();
-        firstAlert.ifPresent(alertKeyColumn -> this.alertColumn = alertKeyColumn);
-        if (isSpecialLinkage()) {
-            if (GeneralUtils.isEmpty(this.linkageColumns)) {
-                if (GeneralUtils.isNotEmpty(linkKeyColumns)) {
-                    this.linkageColumns = new ArrayList<>(linkKeyColumns);
-                } else {
-                    throw new MybatisLinkageLackError("The special linkage columns must be not empty, linkage type: " + this.linkageType.getName());
-                }
-            }
-        } else {
-            Optional<MybatisColumn> firstLink = linkKeyColumns.stream().findFirst();
-            firstLink.ifPresent(linkKeyColumn -> this.linkColumn = linkKeyColumn);
-        }
         /*
          * 优先级别: RestIdentity > RestPrimaryKey > RestIdentityKey > RestUnionKey > RestUniqueKey
          */
@@ -258,6 +255,30 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
             /* RestPrimaryKey override RestIdentityKey */
             Optional<MybatisColumn> firstPrimaryKey = primaryKeyColumns.stream().findFirst();
             firstPrimaryKey.ifPresent(mybatisColumn -> this.identityColumn = mybatisColumn);
+        }
+        if (isSpecialLinkage()) {
+            if (GeneralUtils.isEmpty(this.linkageColumns)) {
+                if (GeneralUtils.isNotEmpty(linkKeyColumns)) {
+                    this.linkageColumns = new ArrayList<>(linkKeyColumns);
+                } else {
+                    throw new MybatisLinkageLackError("The special linkage columns must be not empty, linkage type: " + this.linkageType.getName());
+                }
+            }
+        } else {
+            Optional<MybatisColumn> firstLink = linkKeyColumns.stream().findFirst();
+            firstLink.ifPresent(linkKeyColumn -> this.linkColumn = linkKeyColumn);
+        }
+        if (isSpecialAlertness()) {
+            if (GeneralUtils.isEmpty(this.alertnessColumns)) {
+                if (GeneralUtils.isNotEmpty(alertKeyColumns)) {
+                    this.alertnessColumns = new ArrayList<>(alertKeyColumns);
+                } else {
+                    throw new MybatisLinkageLackError("The special alertness columns must be not empty, alertness type: " + this.alertnessType.getName());
+                }
+            }
+        } else {
+            Optional<MybatisColumn> firstAlert = alertKeyColumns.stream().findFirst();
+            firstAlert.ifPresent(alertKeyColumn -> this.alertColumn = alertKeyColumn);
         }
     }
 
@@ -479,6 +500,10 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
 
     public List<MybatisColumn> linkageColumns() {
         return this.linkageColumns;
+    }
+
+    public List<MybatisColumn> alertnessColumns() {
+        return this.alertnessColumns;
     }
 
     public List<MybatisColumn> normalColumns() {

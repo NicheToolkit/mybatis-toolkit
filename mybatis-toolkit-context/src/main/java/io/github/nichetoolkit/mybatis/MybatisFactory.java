@@ -4,6 +4,7 @@ import io.github.nichetoolkit.mybatis.builder.SqlUtils;
 import io.github.nichetoolkit.mybatis.defaults.DefaultColumnFactoryChain;
 import io.github.nichetoolkit.mybatis.defaults.DefaultTableFactoryChain;
 import io.github.nichetoolkit.mybatis.error.MybatisTableLackError;
+import io.github.nichetoolkit.mybatis.stereotype.column.RestAlertKey;
 import io.github.nichetoolkit.mybatis.stereotype.column.RestIdentityKey;
 import io.github.nichetoolkit.mybatis.stereotype.column.RestLinkKey;
 import io.github.nichetoolkit.rest.RestException;
@@ -69,9 +70,11 @@ public abstract class MybatisFactory {
                                 }
                                 /* 使用了自定义联合主键字 */
                                 if (GeneralUtils.isNotEmpty(identityType) && GeneralUtils.isNotEmpty(mybatisField.getAnnotation(RestIdentityKey.class))) {
-                                    handleOfFields(table, identityType, columnFactoryChain, identityField -> new MybatisField(entityType, mybatisField, identityField, true, false));
+                                    handleOfFields(table, identityType, columnFactoryChain, identityField -> new MybatisField(entityType, mybatisField, identityField, true, false,false));
                                 } else if (GeneralUtils.isNotEmpty(linkageType) && GeneralUtils.isNotEmpty(mybatisField.getAnnotation(RestLinkKey.class))) {
-                                    handleOfFields(table, linkageType, columnFactoryChain, linkField -> new MybatisField(entityType, mybatisField, linkField, false, true));
+                                    handleOfFields(table, linkageType, columnFactoryChain, linkField -> new MybatisField(entityType, mybatisField, linkField, false, true,false));
+                                } else if (GeneralUtils.isNotEmpty(alertnessType) && GeneralUtils.isNotEmpty(mybatisField.getAnnotation(RestAlertKey.class))) {
+                                    handleOfFields(table, alertnessType, columnFactoryChain, alertField -> new MybatisField(entityType, mybatisField, alertField, false, false,true));
                                 } else {
                                     Optional<List<MybatisColumn>> optionalColumns = columnFactoryChain.createColumn(table, mybatisField);
                                     optionalColumns.ifPresent(columns -> columns.forEach(table::addColumn));

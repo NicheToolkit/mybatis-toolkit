@@ -21,10 +21,10 @@ public class SqlUtils {
         }
     }
 
-    public static List<Field> fieldsOfIdentity(Class<?> identityType, List<String> excludeFields, List<Class<?>> excludeSuperClasses) {
+    public static List<Field> fieldsOfType(Class<?> declaredType, List<String> excludeFields, List<Class<?>> excludeSuperClasses) {
         List<Field> fieldList = new ArrayList<>();
         /* 未处理的需要获取字段 */
-        Class<?> declaredClass = identityType;
+        Class<?> declaredClass = declaredType;
         boolean isSuperclass = true;
         while (declaredClass != null && declaredClass != Object.class) {
             Field[] declaredFields = declaredClass.getDeclaredFields();
@@ -49,8 +49,8 @@ public class SqlUtils {
         return fieldList;
     }
 
-    public static <I> Map<Integer, List<I>> sliceOfIdentity(List<I> idList, List<Field> fieldList) {
-        return idList.stream()
+    public static <T> Map<Integer, List<T>> sliceOfType(List<T> typeList, List<Field> fieldList) {
+        return typeList.stream()
                 .collect(Collectors.groupingBy(id -> {
                     int indexValue = 0;
                     for (int index = 0; index < fieldList.size(); index++) {
@@ -68,10 +68,10 @@ public class SqlUtils {
                 }));
     }
 
-    public static <I> boolean valueOfIdentity(I id, List<Field> fieldList) {
+    public static <T> boolean valueOfType(T type, List<Field> fieldList) {
         Optional<Boolean> logicalOrOptional = fieldList.stream().map(field -> {
             try {
-                Object fieldValue = field.get(id);
+                Object fieldValue = field.get(type);
                 return GeneralUtils.isNotEmpty(fieldValue);
             } catch (IllegalAccessException ignored) {
                 return false;
@@ -80,30 +80,30 @@ public class SqlUtils {
         return logicalOrOptional.orElse(false);
     }
 
-    public static <I> String whereSqlOfIds(Collection<I> ids, Class<I> idType, StyleType styleType) {
-        return whereSqlOfIds(null,ids, idType, styleType);
+    public static <T> String whereSqlOfTypes(Collection<T> types, Class<T> idType, StyleType styleType) {
+        return whereSqlOfTypes(null,types, idType, styleType);
     }
 
-    public static <I> String whereSqlOfIds(String prefix, Collection<I> ids, Class<I> idType, StyleType styleType) {
-        List<Field> fieldList = fieldsOfIdentity(idType, Collections.emptyList(), Collections.emptyList());
+    public static <T> String whereSqlOfTypes(String prefix, Collection<T> types, Class<T> type, StyleType styleType) {
+        List<Field> fieldList = fieldsOfType(type, Collections.emptyList(), Collections.emptyList());
         if (GeneralUtils.isEmpty(fieldList)) {
             return SqlBuilder.EMPTY;
         }
-        List<I> idList = ids.stream().filter(id -> valueOfIdentity(id, fieldList)).collect(Collectors.toList());
-        Map<Integer, List<I>> identitiesOfMap = sliceOfIdentity(idList, fieldList);
-        return whereSqlOfIds(prefix,identitiesOfMap, fieldList, styleType);
+        List<T> typeList = types.stream().filter(typeValue -> valueOfType(typeValue, fieldList)).collect(Collectors.toList());
+        Map<Integer, List<T>> typesOfMap = sliceOfType(typeList, fieldList);
+        return whereSqlOfTypes(prefix,typesOfMap, fieldList, styleType);
     }
 
     @SuppressWarnings("Duplicates")
-    public static <I> String whereSqlOfIds(String prefix, Map<Integer, List<I>> idsOfMap, List<Field> fieldList, StyleType styleType) {
-        if (GeneralUtils.isEmpty(idsOfMap)) {
+    public static <T> String whereSqlOfTypes(String prefix, Map<Integer, List<T>> typesOfMap, List<Field> fieldList, StyleType styleType) {
+        if (GeneralUtils.isEmpty(typesOfMap)) {
             return SqlBuilder.EMPTY;
         }
         SqlBuilder sqlBuilder = new SqlBuilder();
-        sqlBuilder.and().append(SQLConstants.BRACE_LT);
-        for (Map.Entry<Integer, List<I>> entry : idsOfMap.entrySet()) {
+        sqlBuilder.and().braceLt();
+        for (Map.Entry<Integer, List<T>> entry : typesOfMap.entrySet()) {
             Integer key = entry.getKey();
-            List<I> valueList = entry.getValue();
+            List<T> valueList = entry.getValue();
             if (GeneralUtils.isNotEmpty(key) && GeneralUtils.isNotEmpty(valueList)) {
                 List<Number> indices = RestReckon.denexNumber(key);
                 if (GeneralUtils.isNotEmpty(indices)) {
@@ -115,10 +115,10 @@ public class SqlUtils {
                     boolean isSingleValue = valueList.size() == 1;
                     if (isSingleValue) {
                         if (isMultiColumns) {
-                            sqlBuilder.append(SQLConstants.BRACE_LT);
+                            sqlBuilder.braceLt();
                         }
                         boolean isNotFirst = false;
-                        I value = valueList.get(0);
+                        T value = valueList.get(0);
                         for (Field field : denexFields) {
                             try {
                                 Object fieldValue = field.get(value);
@@ -132,7 +132,7 @@ public class SqlUtils {
                             }
                         }
                         if (isMultiColumns) {
-                            sqlBuilder.append(SQLConstants.BRACE_GT);
+                            sqlBuilder.braceGt();
                         }
                     } else {
                         String fieldSql = denexFields.stream().map(field -> {
@@ -143,36 +143,36 @@ public class SqlUtils {
                             return columnName;
                         }).collect(Collectors.joining(SQLConstants.COMMA));
                         if (isMultiColumns) {
-                            sqlBuilder.append(SQLConstants.BRACE_LT).append(fieldSql).append(SQLConstants.BRACE_GT).in().append(SQLConstants.BRACE_LT);
+                            sqlBuilder.braceLt().append(fieldSql).braceGt().in().braceLt();
                         } else {
-                            sqlBuilder.append(fieldSql).in().append(SQLConstants.BRACE_LT);
+                            sqlBuilder.append(fieldSql).in().braceLt();
                         }
                         valueList.forEach(value -> {
                             if (isMultiColumns) {
-                                sqlBuilder.append(SQLConstants.BRACE_LT);
+                                sqlBuilder.braceLt();
                             }
                             denexFields.forEach(field -> {
                                 try {
                                     Object indexValue = field.get(value);
-                                    sqlBuilder.value(indexValue).append(SQLConstants.COMMA);
+                                    sqlBuilder.value(indexValue).comma();
                                 } catch (IllegalAccessException ignored) {
                                 }
                             });
                             sqlBuilder.deleteLastChar();
                             if (isMultiColumns) {
-                                sqlBuilder.append(SQLConstants.BRACE_GT).append(SQLConstants.COMMA);
+                                sqlBuilder.braceGt().comma();
                             } else {
-                                sqlBuilder.append(SQLConstants.COMMA);
+                                sqlBuilder.comma();
                             }
                         });
-                        sqlBuilder.deleteLastChar().append(SQLConstants.BRACE_GT);
+                        sqlBuilder.deleteLastChar().braceGt();
                     }
 
                 }
                 sqlBuilder.or();
             }
         }
-        sqlBuilder.delete(sqlBuilder.length() - 4, sqlBuilder.length()).append(SQLConstants.BRACE_GT);
+        sqlBuilder.delete(sqlBuilder.length() - 4).braceGt();
         return sqlBuilder.toString();
     }
 }

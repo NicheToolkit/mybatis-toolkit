@@ -41,7 +41,7 @@ public class PostgresSaveProvider implements MybatisSqlProvider {
     }
 
     public static <E> String saveDynamicAll(ProviderContext providerContext, String tablename, Collection<E> entityList) throws RestException {
-        OptionalUtils.ofFalse(GeneralUtils.isNotEmpty(entityList), "the entity list param of 'saveAll' method cannot be empty!", message -> new MybatisParamErrorException("saveAll", "entityList", message));
+        OptionalUtils.ofEmpty(entityList, "The entity list param of 'saveAll' method cannot be empty!", message -> new MybatisParamErrorException("saveAll", "entityList", message));
         String insertColumns = "The insert columns of table with 'save' method cannot be empty!";
         ConsumerActuator<MybatisTable> tableOptional = table -> OptionalUtils.ofEmpty(table.insertColumns(), insertColumns, log,
                 message -> new MybatisTableErrorException("saveAll", "insertColumns", message));

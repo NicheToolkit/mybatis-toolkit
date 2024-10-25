@@ -34,7 +34,7 @@ public class PostgresOperateProvider implements MybatisSqlProvider {
         String operateColumn = "The operate column of table with 'operateById' method cannot be empty!";
         ConsumerActuator<MybatisTable> tableOptional = table ->
                 OptionalUtils.ofEmpty(table.getOperateColumn(), operateColumn, log, message -> new MybatisTableErrorException("operateById", "operateColumn", message));
-        return MybatisSqlProvider.providingOfIdOperate(providerContext, tablename, id, operate, tableOptional, OPERATE_SQL_SUPPLY);
+        return MybatisSqlProvider.providingOfId(providerContext, tablename, id, tableOptional, OPERATE_SQL_SUPPLY);
     }
 
     public static <I> String operateAll(ProviderContext providerContext, Collection<I> idList, Integer operate) throws RestException {
@@ -42,12 +42,12 @@ public class PostgresOperateProvider implements MybatisSqlProvider {
     }
 
     public static <I> String operateDynamicAll(ProviderContext providerContext, String tablename, Collection<I> idList, Integer operate) throws RestException {
-        OptionalUtils.ofEmpty(idList, "the id list param of 'operateAll' method cannot be empty!", message -> new MybatisParamErrorException("operateAll", "idList", message));
-        OptionalUtils.ofEmpty(operate, "the operate param of 'operateAll' method cannot be empty!", message -> new MybatisParamErrorException("operateAll", "operate", message));
+        OptionalUtils.ofEmpty(idList, "The id list param of 'operateAll' method cannot be empty!", message -> new MybatisParamErrorException("operateAll", "idList", message));
+        OptionalUtils.ofEmpty(operate, "The operate param of 'operateAll' method cannot be empty!", message -> new MybatisParamErrorException("operateAll", "operate", message));
         String operateColumn = "The operate column of table with 'operateAll' method cannot be empty!";
         ConsumerActuator<MybatisTable> tableOptional = table ->
                 OptionalUtils.ofEmpty(table.getOperateColumn(), operateColumn, log, message -> new MybatisTableErrorException("operateAll", "operateColumn", message));
-        return MybatisSqlProvider.providingOfAllOperate(providerContext, tablename, idList, operate, tableOptional, OPERATE_SQL_SUPPLY);
+        return MybatisSqlProvider.providingOfAll(providerContext, tablename, idList, tableOptional, OPERATE_SQL_SUPPLY);
     }
 
     public static String operateAllByWhere(ProviderContext providerContext, String whereSql, Integer operate) throws RestException {
@@ -55,12 +55,12 @@ public class PostgresOperateProvider implements MybatisSqlProvider {
     }
 
     public static String operateDynamicAllByWhere(ProviderContext providerContext, String tablename, String whereSql, Integer operate) throws RestException {
-        OptionalUtils.ofFalse(GeneralUtils.isNotEmpty(whereSql), "the where sql param of 'operateAllByWhere' method cannot be empty!", message -> new MybatisParamErrorException("operateAllByWhere", "whereSql", message));
-        OptionalUtils.ofFalse(GeneralUtils.isNotEmpty(operate), "the operate param of 'operateAllByWhere' method cannot be empty!", message -> new MybatisParamErrorException("operateAllByWhere", "operate", message));
+        OptionalUtils.ofEmpty(whereSql, "The where sql param of 'operateAllByWhere' method cannot be empty!", message -> new MybatisParamErrorException("operateAllByWhere", "whereSql", message));
+        OptionalUtils.ofEmpty(operate, "The operate param of 'operateAllByWhere' method cannot be empty!", message -> new MybatisParamErrorException("operateAllByWhere", "operate", message));
         String operateColumn = "The operate column of table with 'operateAllByWhere' method cannot be empty!";
         ConsumerActuator<MybatisTable> tableOptional = table ->
                 OptionalUtils.ofEmpty(table.getOperateColumn(), operateColumn, log, message -> new MybatisTableErrorException("operateAllByWhere", "operateColumn", message));
-        return MybatisSqlProvider.providingOfWhereOperate(providerContext, tablename, whereSql, operate, tableOptional, OPERATE_SQL_SUPPLY);
+        return MybatisSqlProvider.providingOfWhere(providerContext, tablename, whereSql, tableOptional, OPERATE_SQL_SUPPLY);
     }
 
 

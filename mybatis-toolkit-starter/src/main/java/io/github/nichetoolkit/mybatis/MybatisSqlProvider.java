@@ -43,14 +43,14 @@ public interface MybatisSqlProvider {
     MybatisSqlSupply REMOVE_SQL_SUPPLY = (tablename, table, sql, sqlScript) ->
             SqlBuilder.sqlBuilder()
                     .update().append(table.tablename(tablename))
-                    .set().append(table.getLogicColumn().columnEqualsLogic())
+                    .set().append(table.getLogicColumn().columnEqualsProperty())
                     .comma().append(table.sqlOfForceUpdateColumns())
                     .where().append(sql).toString();
 
     MybatisSqlSupply OPERATE_SQL_SUPPLY = (tablename, table, sql, sqlScript) ->
             SqlBuilder.sqlBuilder()
                     .update().append(table.tablename(tablename))
-                    .set().append(table.getOperateColumn().columnEqualsOperate())
+                    .set().append(table.getOperateColumn().columnEqualsProperty())
                     .comma().append(table.sqlOfForceUpdateColumns())
                     .where().append(sql).toString();
 
@@ -62,7 +62,7 @@ public interface MybatisSqlProvider {
     MybatisSqlSupply ALERT_SQL_SUPPLY = (tablename, table, sql, sqlScript) ->
             SqlBuilder.sqlBuilder()
                     .update().append(table.tablename(tablename))
-                    .set().append(table.getAlertColumn().columnEqualsKey())
+                    .set().append(table.getAlertColumn().columnEqualsProperty())
                     .comma().append(table.sqlOfForceUpdateColumns())
                     .where().append(sql).toString();
 
@@ -78,139 +78,26 @@ public interface MybatisSqlProvider {
         }
     }
 
-    static <I> String providingOfIdFind(ProviderContext providerContext, @Nullable String tablename, I idParameter, MybatisSqlSupply sqlSupply) throws RestException {
-        return providingOfId(providerContext, tablename, idParameter, table -> {
-        }, sqlSupply);
-    }
-
-    static <I> String providingOfIdFind(ProviderContext providerContext, @Nullable String tablename, I idParameter, ConsumerActuator<MybatisTable> tableOptional, MybatisSqlSupply sqlSupply) throws RestException {
-        return providingOfId(providerContext, tablename, idParameter, tableOptional, sqlSupply);
-    }
-
-    static <I> String providingOfAllFind(ProviderContext providerContext, @Nullable String tablename, Collection<I> idList, MybatisSqlSupply sqlSupply) throws RestException {
-        return providingOfAll(providerContext, tablename, idList, table -> {
-        }, sqlSupply);
-    }
-
-    static <I> String providingOfAllFind(ProviderContext providerContext, @Nullable String tablename, Collection<I> idList, ConsumerActuator<MybatisTable> tableOptional, MybatisSqlSupply sqlSupply) throws RestException {
-        return providingOfAll(providerContext, tablename, idList, tableOptional, sqlSupply);
-    }
-
-    static <I> String providingOfWhereFind(ProviderContext providerContext, @Nullable String tablename, String whereSqlParameter, MybatisSqlSupply sqlSupply) throws RestException {
-        return providingOfWhere(providerContext, tablename, whereSqlParameter, table -> {
-        }, sqlSupply);
-    }
-
-    static <I> String providingOfWhereFind(ProviderContext providerContext, @Nullable String tablename, String whereSqlParameter, ConsumerActuator<MybatisTable> tableOptional, MybatisSqlSupply sqlSupply) throws RestException {
-        return providingOfWhere(providerContext, tablename, whereSqlParameter, tableOptional, sqlSupply);
-    }
-
-    static <I> String providingOfIdRemove(ProviderContext providerContext, @Nullable String tablename, I idParameter, String logic, MybatisSqlSupply sqlSupply) throws RestException {
-        return providingOfId(providerContext, tablename, idParameter, table -> {
-        }, sqlSupply);
-    }
-
-    static <I> String providingOfIdRemove(ProviderContext providerContext, @Nullable String tablename, I idParameter, String logic, ConsumerActuator<MybatisTable> tableOptional, MybatisSqlSupply sqlSupply) throws RestException {
-        return providingOfId(providerContext, tablename, idParameter, tableOptional, sqlSupply);
-    }
-
-    static <I> String providingOfAllRemove(ProviderContext providerContext, @Nullable String tablename, Collection<I> idList, String logic, MybatisSqlSupply sqlSupply) throws RestException {
-        return providingOfAll(providerContext, tablename, idList, table -> {
-        }, sqlSupply);
-    }
-
-    static <I> String providingOfAllRemove(ProviderContext providerContext, @Nullable String tablename, Collection<I> idList, String logic, ConsumerActuator<MybatisTable> tableOptional, MybatisSqlSupply sqlSupply) throws RestException {
-        return providingOfAll(providerContext, tablename, idList, tableOptional, sqlSupply);
-    }
-
-    static <I> String providingOfWhereRemove(ProviderContext providerContext, @Nullable String tablename, String whereSqlParameter, String logic, MybatisSqlSupply sqlSupply) throws RestException {
-        return providingOfWhere(providerContext, tablename, whereSqlParameter, table -> {
-        }, sqlSupply);
-    }
-
-    static <I> String providingOfWhereRemove(ProviderContext providerContext, @Nullable String tablename, String whereSqlParameter, String logic, ConsumerActuator<MybatisTable> tableOptional, MybatisSqlSupply sqlSupply) throws RestException {
-        return providingOfWhere(providerContext, tablename, whereSqlParameter, tableOptional, sqlSupply);
-    }
-
-    static <I> String providingOfIdOperate(ProviderContext providerContext, @Nullable String tablename, I idParameter, Integer operate, MybatisSqlSupply sqlSupply) throws RestException {
-        return providingOfId(providerContext, tablename, idParameter, table -> {
-        }, sqlSupply);
-    }
-
-    static <I> String providingOfIdOperate(ProviderContext providerContext, @Nullable String tablename, I idParameter, Integer operate, ConsumerActuator<MybatisTable> tableOptional, MybatisSqlSupply sqlSupply) throws RestException {
-        return providingOfId(providerContext, tablename, idParameter, tableOptional, sqlSupply);
-    }
-
-    static <I> String providingOfAllOperate(ProviderContext providerContext, @Nullable String tablename, Collection<I> idList, Integer operate, MybatisSqlSupply sqlSupply) throws RestException {
-        return providingOfAll(providerContext, tablename, idList, table -> {
-        }, sqlSupply);
-    }
-
-    static <I> String providingOfAllOperate(ProviderContext providerContext, @Nullable String tablename, Collection<I> idList, Integer operate, ConsumerActuator<MybatisTable> tableOptional, MybatisSqlSupply sqlSupply) throws RestException {
-        return providingOfAll(providerContext, tablename, idList, tableOptional, sqlSupply);
-    }
-
-    static <I> String providingOfWhereOperate(ProviderContext providerContext, @Nullable String tablename, String whereSqlParameter, Integer operate, MybatisSqlSupply sqlSupply) throws RestException {
-        return providingOfWhere(providerContext, tablename, whereSqlParameter, table -> {
-        }, sqlSupply);
-    }
-
-    static <I> String providingOfWhereOperate(ProviderContext providerContext, @Nullable String tablename, String whereSqlParameter, Integer operate, ConsumerActuator<MybatisTable> tableOptional, MybatisSqlSupply sqlSupply) throws RestException {
-        return providingOfWhere(providerContext, tablename, whereSqlParameter, tableOptional, sqlSupply);
-    }
-
-    static <I> String providingOfIdDelete(ProviderContext providerContext, @Nullable String tablename, I idParameter, MybatisSqlSupply sqlSupply) throws RestException {
-        return providingOfId(providerContext, tablename, idParameter, table -> {
-        }, sqlSupply);
-    }
-
-    static <I> String providingOfIdDelete(ProviderContext providerContext, @Nullable String tablename, I idParameter, ConsumerActuator<MybatisTable> tableOptional, MybatisSqlSupply sqlSupply) throws RestException {
-        return providingOfId(providerContext, tablename, idParameter, tableOptional, sqlSupply);
-    }
-
-    static <I> String providingOfAllDelete(ProviderContext providerContext, @Nullable String tablename, Collection<I> idList, MybatisSqlSupply sqlSupply) throws RestException {
-        return providingOfAll(providerContext, tablename, idList, table -> {
-        }, sqlSupply);
-    }
-
-    static <I> String providingOfAllDelete(ProviderContext providerContext, @Nullable String tablename, Collection<I> idList, ConsumerActuator<MybatisTable> tableOptional, MybatisSqlSupply sqlSupply) throws RestException {
-        return providingOfAll(providerContext, tablename, idList, tableOptional, sqlSupply);
-    }
-
-    static <I> String providingOfWhereDelete(ProviderContext providerContext, @Nullable String tablename, String whereSqlParameter, MybatisSqlSupply sqlSupply) throws RestException {
-        return providingOfWhere(providerContext, tablename, whereSqlParameter, table -> {
-        }, sqlSupply);
-    }
-
-    static <I> String providingOfWhereDelete(ProviderContext providerContext, @Nullable String tablename, String whereSqlParameter, ConsumerActuator<MybatisTable> tableOptional, MybatisSqlSupply sqlSupply) throws RestException {
-        return providingOfWhere(providerContext, tablename, whereSqlParameter, tableOptional, sqlSupply);
-    }
-
-    static <I> String providingOfIdAlert(ProviderContext providerContext, @Nullable String tablename, I idParameter, Integer key, MybatisSqlSupply sqlSupply) throws RestException {
-        return providingOfId(providerContext, tablename, idParameter, table -> {
-        }, sqlSupply);
-    }
-
-    static <I> String providingOfIdAlert(ProviderContext providerContext, @Nullable String tablename, I idParameter, Integer key, ConsumerActuator<MybatisTable> tableOptional, MybatisSqlSupply sqlSupply) throws RestException {
-        return providingOfId(providerContext, tablename, idParameter, tableOptional, sqlSupply);
-    }
-
-    static <I> String providingOfAllAlert(ProviderContext providerContext, @Nullable String tablename, Collection<I> idList, Integer key, MybatisSqlSupply sqlSupply) throws RestException {
-        return providingOfAll(providerContext, tablename, idList, table -> {
-        }, sqlSupply);
-    }
-
-    static <I> String providingOfAllAlert(ProviderContext providerContext, @Nullable String tablename, Collection<I> idList, Integer key, ConsumerActuator<MybatisTable> tableOptional, MybatisSqlSupply sqlSupply) throws RestException {
-        return providingOfAll(providerContext, tablename, idList, tableOptional, sqlSupply);
-    }
-
-    static <L> String providingOfLinkIdRemove(ProviderContext providerContext, @Nullable String tablename, L linkIdParameter, String logic, MybatisSqlSupply sqlSupply) throws RestException {
-        return providingOfLinkIdRemove(providerContext, tablename, linkIdParameter, logic, table -> {
-        }, sqlSupply);
+    @SuppressWarnings("Duplicates")
+    static <I, S> String providingOfIdAlert(ProviderContext providerContext, @Nullable String tablename, I idParameter, S statusParameter, ConsumerActuator<MybatisTable> tableOptional, MybatisSqlSupply sqlSupply) throws RestException {
+        Object identity = reviseParameter(idParameter);
+        Object status = reviseParameter(statusParameter);
+        return MybatisSqlScript.caching(providerContext, (table, sqlScript) -> {
+            tableOptional.actuate(table);
+            SqlBuilder sqlBuilder = SqlBuilder.sqlBuilder();
+            if (table.isSpecialIdentity()) {
+                valueOfParameter(table.identityColumns(), identity, table.getIdentityType());
+                String identitySql = sqlOfColumns(identity, table.identityColumns(), true);
+                sqlBuilder.append(identitySql);
+            } else {
+                Optional.ofNullable(table.getIdentityColumn()).ifPresent(column -> sqlBuilder.append(column.columnEqualsProperty()));
+            }
+            return sqlSupply.supply(tablename, table, sqlBuilder.toString(), sqlScript);
+        });
     }
 
     @SuppressWarnings("Duplicates")
-    static <L> String providingOfLinkIdRemove(ProviderContext providerContext, @Nullable String tablename, L linkIdParameter, String logic, ConsumerActuator<MybatisTable> tableOptional, MybatisSqlSupply sqlSupply) throws RestException {
+    static <L> String providingOfLinkId(ProviderContext providerContext, @Nullable String tablename, L linkIdParameter, ConsumerActuator<MybatisTable> tableOptional, MybatisSqlSupply sqlSupply) throws RestException {
         Object linkId = reviseParameter(linkIdParameter);
         return MybatisSqlScript.caching(providerContext, (table, sqlScript) -> {
             tableOptional.actuate(table);
@@ -220,19 +107,14 @@ public interface MybatisSqlProvider {
                 String linkageSql = sqlOfColumns(linkId, table.getLinkageColumns(), true);
                 sqlBuilder.append(linkageSql);
             } else {
-                Optional.ofNullable(table.getLinkColumn()).ifPresent(column -> sqlBuilder.append(column.columnName()).eq().value(linkId));
+                Optional.ofNullable(table.getLinkColumn()).ifPresent(column -> sqlBuilder.append(column.columnEqualsProperty()));
             }
             return sqlSupply.supply(tablename, table, sqlBuilder.toString(), sqlScript);
         });
     }
 
-    static <L> String providingOfLinkIdAllRemove(ProviderContext providerContext, @Nullable String tablename, Collection<L> linkIdList, String logic, MybatisSqlSupply sqlSupply) throws RestException {
-        return providingOfLinkIdAllRemove(providerContext, tablename, linkIdList, logic, table -> {
-        }, sqlSupply);
-    }
-
     @SuppressWarnings("Duplicates")
-    static <L> String providingOfLinkIdAllRemove(ProviderContext providerContext, @Nullable String tablename, Collection<L> linkIdList, String logic, ConsumerActuator<MybatisTable> tableOptional, MybatisSqlSupply sqlSupply) throws RestException {
+    static <L> String providingOfLinkIdAll(ProviderContext providerContext, @Nullable String tablename, Collection<L> linkIdList, ConsumerActuator<MybatisTable> tableOptional, MybatisSqlSupply sqlSupply) throws RestException {
         return MybatisSqlScript.caching(providerContext, (table, sqlScript) -> {
             tableOptional.actuate(table);
             SqlBuilder sqlBuilder = SqlBuilder.sqlBuilder();
@@ -249,29 +131,19 @@ public interface MybatisSqlProvider {
         });
     }
 
-    static <I> String providingOfNameFind(ProviderContext providerContext, @Nullable String tablename, String name, String logic, MybatisSqlSupply sqlSupply) throws RestException {
-        return providingOfNameFind(providerContext, tablename, name, logic, table -> {
-        }, sqlSupply);
-    }
-
     @SuppressWarnings("Duplicates")
-    static String providingOfNameFind(ProviderContext providerContext, @Nullable String tablename, String name, String logic, ConsumerActuator<MybatisTable> tableOptional, MybatisSqlSupply sqlSupply) throws RestException {
+    static String providingOfNameFind(ProviderContext providerContext, @Nullable String tablename, String name, Object logic, ConsumerActuator<MybatisTable> tableOptional, MybatisSqlSupply sqlSupply) throws RestException {
         return MybatisSqlScript.caching(providerContext, (table, sqlScript) -> {
             tableOptional.actuate(table);
             String nameSql = Optional.ofNullable(table.fieldColumn(EntityConstants.NAME)).map(MybatisColumn::columnEqualsProperty).orElse(ScriptConstants.NAME_EQUALS_PROPERTY);
             SqlBuilder sqlBuilder = new SqlBuilder(nameSql);
-            Optional.ofNullable(table.getLogicColumn()).ifPresent(column -> sqlBuilder.and().append(column.columnName()).eq().value(logic));
+            Optional.ofNullable(table.getLogicColumn()).ifPresent(column -> sqlBuilder.and().append(column.columnEqualsProperty()));
             return sqlSupply.supply(tablename, table, sqlBuilder.toString(), sqlScript);
         });
     }
 
-    static <I> String providingOfNameFind(ProviderContext providerContext, @Nullable String tablename, String name, I idParameter, String logic, MybatisSqlSupply sqlSupply) throws RestException {
-        return providingOfNameFind(providerContext, tablename, name, idParameter, logic, table -> {
-        }, sqlSupply);
-    }
-
     @SuppressWarnings("Duplicates")
-    static <I> String providingOfNameFind(ProviderContext providerContext, @Nullable String tablename, String name, I idParameter, String logic, ConsumerActuator<MybatisTable> tableOptional, MybatisSqlSupply sqlSupply) throws RestException {
+    static <I> String providingOfNameFind(ProviderContext providerContext, @Nullable String tablename, String name, I idParameter, Object logic, ConsumerActuator<MybatisTable> tableOptional, MybatisSqlSupply sqlSupply) throws RestException {
         Object identity = reviseParameter(idParameter);
         return MybatisSqlScript.caching(providerContext, (table, sqlScript) -> {
             tableOptional.actuate(table);
@@ -283,22 +155,17 @@ public interface MybatisSqlProvider {
                 String identitySql = sqlOfColumns(identity, table.identityColumns(), false);
                 sqlBuilder.append(identitySql);
             } else {
-                Optional.ofNullable(table.getIdentityColumn()).ifPresent(column -> sqlBuilder.append(column.columnName()).neq().value(identity));
+                Optional.ofNullable(table.getIdentityColumn()).ifPresent(column -> sqlBuilder.append(column.columnNotEqualsProperty()));
             }
             String nameSql = Optional.ofNullable(table.fieldColumn(EntityConstants.NAME)).map(MybatisColumn::columnEqualsProperty).orElse(ScriptConstants.NAME_EQUALS_PROPERTY);
             sqlBuilder.and().append(nameSql);
-            Optional.ofNullable(table.getLogicColumn()).ifPresent(column -> sqlBuilder.and().append(column.columnName()).eq().value(logic));
+            Optional.ofNullable(table.getLogicColumn()).ifPresent(column -> sqlBuilder.and().append(column.columnEqualsProperty()));
             return sqlSupply.supply(tablename, table, sqlBuilder.toString(), sqlScript);
         });
     }
 
-    static <I> String providingOfEntityFind(ProviderContext providerContext, @Nullable String tablename, I entityParameter, String logic, MybatisSqlSupply sqlSupply) throws RestException {
-        return providingOfEntityFind(providerContext, tablename, entityParameter, logic, table -> {
-        }, sqlSupply);
-    }
-
     @SuppressWarnings("Duplicates")
-    static <E> String providingOfEntityFind(ProviderContext providerContext, @Nullable String tablename, E entityParameter, String logic, ConsumerActuator<MybatisTable> tableOptional, MybatisSqlSupply sqlSupply) throws RestException {
+    static <E> String providingOfEntityFind(ProviderContext providerContext, @Nullable String tablename, E entityParameter, Object logic, ConsumerActuator<MybatisTable> tableOptional, MybatisSqlSupply sqlSupply) throws RestException {
         Object entity = reviseParameter(entityParameter);
         return MybatisSqlScript.caching(providerContext, (table, sqlScript) -> {
             tableOptional.actuate(table);
@@ -312,18 +179,13 @@ public interface MybatisSqlProvider {
             } else {
                 sqlBuilder.braceLt().append(entitySql).braceGt();
             }
-            Optional.ofNullable(table.getLogicColumn()).ifPresent(column -> sqlBuilder.and().append(column.columnName()).eq().value(logic));
+            Optional.ofNullable(table.getLogicColumn()).ifPresent(column -> sqlBuilder.and().append(column.columnEqualsProperty()));
             return sqlSupply.supply(tablename, table, sqlBuilder.toString(), sqlScript);
         });
     }
 
-    static <I> String providingOfEntityFind(ProviderContext providerContext, @Nullable String tablename, I entityParameter, I idParameter, String logic, MybatisSqlSupply sqlSupply) throws RestException {
-        return providingOfEntityFind(providerContext, tablename, entityParameter, idParameter, logic, table -> {
-        }, sqlSupply);
-    }
-
     @SuppressWarnings("Duplicates")
-    static <E, I> String providingOfEntityFind(ProviderContext providerContext, @Nullable String tablename, E entityParameter, I idParameter, String logic, ConsumerActuator<MybatisTable> tableOptional, MybatisSqlSupply sqlSupply) throws RestException {
+    static <E, I> String providingOfEntityFind(ProviderContext providerContext, @Nullable String tablename, E entityParameter, I idParameter, Object logic, ConsumerActuator<MybatisTable> tableOptional, MybatisSqlSupply sqlSupply) throws RestException {
         Object identity = reviseParameter(idParameter);
         return MybatisSqlScript.caching(providerContext, (table, sqlScript) -> {
             tableOptional.actuate(table);
@@ -333,7 +195,7 @@ public interface MybatisSqlProvider {
                 String identitySql = sqlOfColumns(identity, table.identityColumns(), false);
                 sqlBuilder.append(identitySql);
             } else {
-                Optional.ofNullable(table.getIdentityColumn()).ifPresent(column -> sqlBuilder.append(column.columnName()).eq().value(identity));
+                Optional.ofNullable(table.getIdentityColumn()).ifPresent(column -> sqlBuilder.append(column.columnEqualsProperty()));
             }
             List<MybatisColumn> uniqueColumns = table.uniqueColumns();
             String entitySql = table.uniqueColumns().stream()
@@ -344,14 +206,9 @@ public interface MybatisSqlProvider {
             } else {
                 sqlBuilder.and().braceLt().append(entitySql).braceGt();
             }
-            Optional.ofNullable(table.getLogicColumn()).ifPresent(column -> sqlBuilder.and().append(column.columnName()).eq().value(logic));
+            Optional.ofNullable(table.getLogicColumn()).ifPresent(column -> sqlBuilder.and().append(column.columnEqualsProperty()));
             return sqlSupply.supply(tablename, table, sqlBuilder.toString(), sqlScript);
         });
-    }
-
-    static <E> String providingOfSave(ProviderContext providerContext, @Nullable String tablename, E entityParameter, MybatisSqlSupply sqlSupply) throws RestException {
-        return providingOfSave(providerContext, tablename, entityParameter, table -> {
-        }, sqlSupply);
     }
 
     @SuppressWarnings("Duplicates")
@@ -366,11 +223,6 @@ public interface MybatisSqlProvider {
         });
     }
 
-    static <E> String providingOfAllSave(ProviderContext providerContext, @Nullable String tablename, Collection<E> entityList, MybatisSqlSupply sqlSupply) throws RestException {
-        return providingOfAllSave(providerContext, tablename, entityList, table -> {
-        }, sqlSupply);
-    }
-
     static <E> String providingOfAllSave(ProviderContext providerContext, @Nullable String tablename, Collection<E> entityList, ConsumerActuator<MybatisTable> tableOptional, MybatisSqlSupply sqlSupply) throws RestException {
         return MybatisSqlScript.caching(providerContext, (table, sqlScript) -> {
             tableOptional.actuate(table);
@@ -382,11 +234,7 @@ public interface MybatisSqlProvider {
         });
     }
 
-    static <I> String providingOfId(ProviderContext providerContext, @Nullable String tablename, I idParameter, MybatisSqlSupply sqlSupply) throws RestException {
-        return providingOfId(providerContext, tablename, idParameter, table -> {
-        }, sqlSupply);
-    }
-
+    @SuppressWarnings("Duplicates")
     static <I> String providingOfId(ProviderContext providerContext, @Nullable String tablename, I idParameter, ConsumerActuator<MybatisTable> tableOptional, MybatisSqlSupply sqlSupply) throws RestException {
         Object identity = reviseParameter(idParameter);
         return MybatisSqlScript.caching(providerContext, (table, sqlScript) -> {
@@ -397,15 +245,10 @@ public interface MybatisSqlProvider {
                 String identitySql = sqlOfColumns(identity, table.identityColumns(), true);
                 sqlBuilder.append(identitySql);
             } else {
-                Optional.ofNullable(table.getIdentityColumn()).ifPresent(column -> sqlBuilder.append(column.columnName()).eq().value(identity));
+                Optional.ofNullable(table.getIdentityColumn()).ifPresent(column -> sqlBuilder.append(column.columnEqualsProperty()));
             }
             return sqlSupply.supply(tablename, table, sqlBuilder.toString(), sqlScript);
         });
-    }
-
-    static <I> String providingOfAll(ProviderContext providerContext, @Nullable String tablename, Collection<I> idList, MybatisSqlSupply sqlSupply) throws RestException {
-        return providingOfAll(providerContext, tablename, idList, table -> {
-        }, sqlSupply);
     }
 
     static <I> String providingOfAll(ProviderContext providerContext, @Nullable String tablename, Collection<I> idList, ConsumerActuator<MybatisTable> tableOptional, MybatisSqlSupply sqlSupply) throws RestException {
@@ -423,11 +266,6 @@ public interface MybatisSqlProvider {
             }
             return sqlSupply.supply(tablename, table, sqlBuilder.toString(), sqlScript);
         });
-    }
-
-    static <I> String providingOfWhere(ProviderContext providerContext, @Nullable String tablename, String whereSqlParameter, MybatisSqlSupply sqlSupply) throws RestException {
-        return providingOfWhere(providerContext, tablename, whereSqlParameter, table -> {
-        }, sqlSupply);
     }
 
     static <I> String providingOfWhere(ProviderContext providerContext, @Nullable String tablename, String whereSqlParameter, ConsumerActuator<MybatisTable> tableOptional, MybatisSqlSupply sqlSupply) throws RestException {
@@ -585,19 +423,5 @@ public interface MybatisSqlProvider {
         });
         return sqlBuilder.toString();
     }
-
-//    default String updateOfAlertByFieldSql(String tablename, MybatisTable table, MybatisSqlScript sqlScript) throws RestException {
-//        SqlBuilder sqlBuilder = SqlBuilder.sqlBuilder()
-//                .update().append(table.tablename(tablename))
-//                .set();
-//
-//        sqlBuilder.append(table.tablename(tablename));
-//        sqlBuilder.append(" SET update_time = now()");
-//        String fieldIfTest = sqlScript.ifTest("field != null and field != ''", () -> ",${field} = ${key}");
-//        sqlBuilder.append(fieldIfTest);
-//        return sqlBuilder.toString();
-//    }
-//
-
 
 }

@@ -67,14 +67,14 @@ class SimpleServiceTest extends MybatisExampleApplicationTests {
     @Order(3)
     @Test
     public void queryById() throws RestException {
-        SimpleModel simpleModel = simpleService.queryById(tablekey,testId);
+        SimpleModel simpleModel = simpleService.queryById(tablekey, testId);
         System.out.println(JsonUtils.parseJson(simpleModel));
     }
 
     @Order(4)
     @Test
     public void queryAll() throws RestException {
-        List<SimpleModel> simpleModels = simpleService.queryAll(tablekey,Arrays.asList(testId1,testId2));
+        List<SimpleModel> simpleModels = simpleService.queryAll(tablekey, Arrays.asList(testId1, testId2));
         System.out.println(JsonUtils.parseJson(simpleModels));
     }
 
@@ -85,8 +85,8 @@ class SimpleServiceTest extends MybatisExampleApplicationTests {
         simpleFilter.setTablekey(tablekey);
         simpleFilter.setPageSize(10);
         Date nowDate = new Date();
-        simpleFilter.setStartTime(DateUtils.addMinutes(nowDate,-5));
-        simpleFilter.setEndTime(DateUtils.addMinutes(nowDate,5));
+        simpleFilter.setStartTime(DateUtils.addMinutes(nowDate, -5));
+        simpleFilter.setEndTime(DateUtils.addMinutes(nowDate, 5));
         RestPage<SimpleModel> restPage = simpleService.queryAllWithFilter(simpleFilter);
         System.out.println(JsonUtils.parseJson(restPage));
     }
@@ -94,13 +94,13 @@ class SimpleServiceTest extends MybatisExampleApplicationTests {
     @Order(6)
     @Test
     public void removeById() throws RestException {
-        simpleService.removeById(tablekey,testId);
+        simpleService.removeById(tablekey, testId);
     }
 
     @Order(7)
     @Test
     public void removeAll() throws RestException {
-        simpleService.removeAll(tablekey,Arrays.asList(testId1,testId2));
+        simpleService.removeAll(tablekey, Arrays.asList(testId1, testId2));
     }
 
     @Order(8)
@@ -108,32 +108,32 @@ class SimpleServiceTest extends MybatisExampleApplicationTests {
     public void removeAllByWhere() throws RestException {
         SimpleFilter simpleFilter = new SimpleFilter();
         simpleFilter.setTablekey(tablekey);
-        simpleFilter.setIds(testId,testId1,testId2);
+        simpleFilter.setIds(testId, testId1, testId2);
         simpleService.removeAllWithFilter(simpleFilter);
     }
 
     @Order(9)
     @Test
     public void removeByLinkId() throws RestException {
-        simpleService.removeByLinkId(tablekey,testLinkId);
+        simpleService.removeByLinkId(tablekey, testLinkId);
     }
 
     @Order(10)
     @Test
     public void removeAllByLinkIds() throws RestException {
-        simpleService.removeAllByLinkIds(tablekey,Arrays.asList(testLinkId1,testLinkId2));
+        simpleService.removeAllByLinkIds(tablekey, Arrays.asList(testLinkId1, testLinkId2));
     }
 
     @Order(11)
     @Test
     public void operateById() throws RestException {
-        simpleService.operateById(tablekey,testId, OperateType.NONE);
+        simpleService.operateById(tablekey, testId, OperateType.NONE);
     }
 
     @Order(12)
     @Test
     public void operateAll() throws RestException {
-        simpleService.operateAll(tablekey,Arrays.asList(testId1,testId2), OperateType.NONE);
+        simpleService.operateAll(tablekey, Arrays.asList(testId1, testId2), OperateType.NONE);
     }
 
     @Order(13)
@@ -142,29 +142,53 @@ class SimpleServiceTest extends MybatisExampleApplicationTests {
         SimpleFilter simpleFilter = new SimpleFilter();
         simpleFilter.setTablekey(tablekey);
         simpleFilter.setOperate(OperateType.NONE);
-        simpleFilter.setIds(testId,testId1,testId1);
+        simpleFilter.setIds(testId, testId1, testId1);
         simpleService.operateAllWithFilter(simpleFilter);
     }
 
     @Order(14)
     @Test
-    public void deleteById() throws RestException {
-        simpleService.deleteById(tablekey,testId);
+    public void operateByLinkId() throws RestException {
+        simpleService.operateByLinkId(tablekey, testLinkId, OperateType.NONE);
     }
 
     @Order(15)
     @Test
-    public void deleteAll() throws RestException {
-        simpleService.deleteAll(tablekey,Arrays.asList(testId1,testId2));
+    public void operateAllByLinkIds() throws RestException {
+        simpleService.operateAllByLinkIds(tablekey, Arrays.asList(testLinkId1, testLinkId2), OperateType.NONE);
     }
 
     @Order(16)
     @Test
+    public void deleteById() throws RestException {
+        simpleService.deleteById(tablekey, testId);
+    }
+
+    @Order(17)
+    @Test
+    public void deleteAll() throws RestException {
+        simpleService.deleteAll(tablekey, Arrays.asList(testId1, testId2));
+    }
+
+    @Order(18)
+    @Test
     public void deleteAllByWhere() throws RestException {
         SimpleFilter simpleFilter = new SimpleFilter();
         simpleFilter.setTablekey(tablekey);
-        simpleFilter.setIds(testId,testId1,testId2);
+        simpleFilter.setIds(testId, testId1, testId2);
         simpleService.deleteAllWithFilter(simpleFilter);
+    }
+
+    @Order(19)
+    @Test
+    public void deleteByLinkId() throws RestException {
+        simpleService.deleteByLinkId(tablekey, testLinkId);
+    }
+
+    @Order(20)
+    @Test
+    public void deleteAllByLinkIds() throws RestException {
+        simpleService.deleteAllByLinkIds(tablekey, Arrays.asList(testLinkId1, testLinkId2));
     }
 
 }

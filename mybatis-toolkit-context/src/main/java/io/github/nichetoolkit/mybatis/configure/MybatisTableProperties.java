@@ -17,6 +17,7 @@ import java.util.*;
 public class MybatisTableProperties {
     private String catalog;
     private String schema;
+    private Boolean updateLogic = false;
     private DatabaseType databaseType = DatabaseType.POSTGRESQL;
     private StyleType styleType = StyleType.LOWER_UNDERLINE;
     private Map<String, String> properties = new HashMap<>();

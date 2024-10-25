@@ -25,6 +25,13 @@
       "description": "the global schema of table on mybatis configuration."
     },
     {
+      "name": "nichetoolkit.mybatis.table.update-logic",
+      "type": "java.lang.Boolean",
+      "sourceType": "java.lang.Boolean",
+      "description": "the switch of update logic on mybatis configuration.",
+      "defaultValue": "false"
+    },
+    {
       "name": "nichetoolkit.mybatis.table.database-type",
       "type": "io.github.nichetoolkit.mybatis.enums.DatabaseType",
       "sourceType": "io.github.nichetoolkit.mybatis.enums.DatabaseType",
@@ -72,6 +79,19 @@
     }
   ],
   "hints": [
+    {
+      "name": "nichetoolkit.mybatis.table.update-logic",
+      "values": [
+        {
+          "value": false,
+          "description": "the switch of update logic is closed on mybatis configuration."
+        },
+        {
+          "value": true,
+          "description": "the switch of update logic is opened on mybatis configuration."
+        }
+      ]
+    },
     {
       "name": "nichetoolkit.mybatis.cache.use-once",
       "values": [

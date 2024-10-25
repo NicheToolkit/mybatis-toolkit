@@ -6,5 +6,8 @@ import io.github.nichetoolkit.mybatis.simple.TemplateLinkage;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
-public interface TemplateMapper extends MybatisInfoMapper<TemplateEntity, TemplateIdentity>, MybatisRemoveLinkMapper<TemplateLinkage,TemplateIdentity>, MybatisOperateMapper<TemplateIdentity> {
+public interface TemplateMapper extends MybatisInfoMapper<TemplateEntity, TemplateIdentity>,
+        MybatisDeleteLinkMapper<TemplateEntity, TemplateLinkage, TemplateIdentity>,
+        MybatisRemoveLinkMapper<TemplateEntity, TemplateLinkage, TemplateIdentity>,
+        MybatisOperateLinkMapper<TemplateEntity, TemplateLinkage, TemplateIdentity> {
 }

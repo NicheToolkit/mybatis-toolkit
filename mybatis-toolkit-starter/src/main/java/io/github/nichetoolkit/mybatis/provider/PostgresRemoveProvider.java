@@ -22,11 +22,11 @@ public class PostgresRemoveProvider implements MybatisSqlProvider {
         return DatabaseType.POSTGRESQL;
     }
 
-    public static <I> String removeById(ProviderContext providerContext, I id, String logic) throws RestException {
+    public static <I> String removeById(ProviderContext providerContext, I id, Object logic) throws RestException {
         return removeDynamicById(providerContext, null, id, logic);
     }
 
-    public static <I> String removeDynamicById(ProviderContext providerContext, String tablename, I id, String logic) throws RestException {
+    public static <I> String removeDynamicById(ProviderContext providerContext, String tablename, I id, Object logic) throws RestException {
         OptionalUtils.ofEmpty(id, "The id param of 'removeById' method cannot be empty!", message -> new MybatisTableErrorException("removeById", "id", message));
         OptionalUtils.ofEmpty(logic, "The logic param of 'removeById' method cannot be empty!", message -> new MybatisParamErrorException("removeById", "logic", message));
         String logicColumn = "The logic column of table with 'removeById' method cannot be empty!";
@@ -35,30 +35,30 @@ public class PostgresRemoveProvider implements MybatisSqlProvider {
         return MybatisSqlProvider.providingOfIdRemove(providerContext, tablename, id, logic, tableOptional, REMOVE_SQL_SUPPLY);
     }
 
-    public static <I> String removeAll(ProviderContext providerContext, Collection<I> idList,  String logic) throws RestException {
+    public static <I> String removeAll(ProviderContext providerContext, Collection<I> idList,  Object logic) throws RestException {
         return removeDynamicAll(providerContext, null, idList, logic);
     }
 
-    public static <I> String removeDynamicAll(ProviderContext providerContext,  String tablename, Collection<I> idList, String logic) throws RestException {
-        OptionalUtils.ofEmpty(idList, "the id list param of 'removeAll' method cannot be empty!", message -> new MybatisParamErrorException("removeAll", "idList", message));
-        OptionalUtils.ofEmpty(logic, "the logic param of 'removeAll' method cannot be empty!", message -> new MybatisParamErrorException("removeAll", "logic", message));
+    public static <I> String removeDynamicAll(ProviderContext providerContext,  String tablename, Collection<I> idList, Object logic) throws RestException {
+        OptionalUtils.ofEmpty(idList, "The id list param of 'removeAll' method cannot be empty!", message -> new MybatisParamErrorException("removeAll", "idList", message));
+        OptionalUtils.ofEmpty(logic, "The logic param of 'removeAll' method cannot be empty!", message -> new MybatisParamErrorException("removeAll", "logic", message));
         String logicColumn = "The logic column of table with 'removeAll' method cannot be empty!";
         ConsumerActuator<MybatisTable> tableOptional = table ->
                 OptionalUtils.ofEmpty(table.getLogicColumn(), logicColumn, log, message -> new MybatisTableErrorException("removeAll", "logicColumn", message));
-        return MybatisSqlProvider.providingOfAllRemove(providerContext, tablename, idList, logic, tableOptional, REMOVE_SQL_SUPPLY);
+        return MybatisSqlProvider.providingOfAll(providerContext, tablename, idList, tableOptional, REMOVE_SQL_SUPPLY);
     }
 
-    public static String removeAllByWhere(ProviderContext providerContext, String whereSql,String logic) throws RestException {
+    public static String removeAllByWhere(ProviderContext providerContext, String whereSql,Object logic) throws RestException {
         return removeDynamicAllByWhere(providerContext, null, whereSql, logic);
     }
 
-    public static String removeDynamicAllByWhere(ProviderContext providerContext,String tablename, String whereSql, String logic) throws RestException {
-        OptionalUtils.ofEmpty(whereSql, "the where sql param of 'removeAllByWhere' method cannot be empty!", message -> new MybatisParamErrorException("removeAllByWhere", "whereSql", message));
-        OptionalUtils.ofEmpty(logic, "the logic param of 'removeAllByWhere' method cannot be empty!", message -> new MybatisParamErrorException("removeAllByWhere", "logic", message));
+    public static String removeDynamicAllByWhere(ProviderContext providerContext,String tablename, String whereSql, Object logic) throws RestException {
+        OptionalUtils.ofEmpty(whereSql, "The where sql param of 'removeAllByWhere' method cannot be empty!", message -> new MybatisParamErrorException("removeAllByWhere", "whereSql", message));
+        OptionalUtils.ofEmpty(logic, "The logic param of 'removeAllByWhere' method cannot be empty!", message -> new MybatisParamErrorException("removeAllByWhere", "logic", message));
         String logicColumn = "The logic column of table with 'removeAllByWhere' method cannot be empty!";
         ConsumerActuator<MybatisTable> tableOptional = table ->
                 OptionalUtils.ofEmpty(table.getLogicColumn(), logicColumn, log, message -> new MybatisTableErrorException("removeAllByWhere", "logicColumn", message));
-        return MybatisSqlProvider.providingOfWhereRemove(providerContext, tablename, whereSql, logic, tableOptional, REMOVE_SQL_SUPPLY);
+        return MybatisSqlProvider.providingOfWhere(providerContext, tablename, whereSql, tableOptional, REMOVE_SQL_SUPPLY);
     }
 
 }

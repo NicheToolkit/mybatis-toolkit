@@ -156,7 +156,9 @@ public class DefaultColumnFactory implements MybatisColumnFactory {
         RestLogicKey restLogicKey = field.getAnnotation(RestLogicKey.class);
         if (GeneralUtils.isNotEmpty(restLogicKey) && !fieldIgnored) {
             mybatisColumn.setLogicKey(true);
-            mybatisColumn.setUpdate(false);
+            if (!this.tableProperties.getUpdateLogic()) {
+                mybatisColumn.setUpdate(false);
+            }
         }
         RestOperateKey restOperate = field.getAnnotation(RestOperateKey.class);
         if (GeneralUtils.isNotEmpty(restOperate) && !fieldIgnored) {

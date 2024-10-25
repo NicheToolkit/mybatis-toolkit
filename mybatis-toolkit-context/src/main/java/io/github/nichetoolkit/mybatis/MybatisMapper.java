@@ -1,6 +1,5 @@
 package io.github.nichetoolkit.mybatis;
 
-
 import io.github.nichetoolkit.rest.reflect.RestGenericTypes;
 
 import java.util.Map;

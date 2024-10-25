@@ -12,6 +12,7 @@ import org.apache.ibatis.type.TypeHandler;
 import org.apache.ibatis.type.UnknownTypeHandler;
 import org.springframework.lang.NonNull;
 
+import javax.xml.ws.Service;
 import java.util.Date;
 import java.util.Map;
 import java.util.Objects;
@@ -94,6 +95,10 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
         return this.field.isLinkage();
     }
 
+    public boolean isSpecialAlertness() {
+        return this.field.isAlertness();
+    }
+
     public boolean isParentNotEmpty() {
         return this.field.isParentNotEmpty();
     }
@@ -142,14 +147,7 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
             if ((isSpecialIdentity() || isSpecialLinkage()) && this.field.isParentNotEmpty()) {
                 prefix = prefix + this.field.prefixOfParent() + SQLConstants.PERIOD;
             }
-            Class<?> fieldType = this.field.fieldType();
-            if (isLogicKey() || isOperateKey()) {
-                return dollarVariable(prefix);
-            } else if (String.class == fieldType || Date.class == fieldType) {
-                return signerVariable(prefix);
-            } else {
-                return dollarVariable(prefix);
-            }
+            return signerVariable(prefix);
         }
     }
 
@@ -245,8 +243,6 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
     }
 
     public String aliasColumnAsProperty(String alias, String prefix) {
-        /* 这里的column 和 property 的比较 应该是需要忽略界定符之后再比较 */
-        /* mysql 中 【`order`】 应该认为是 和 field 的 【order】 相同 */
         String column = this.columnName();
         Matcher matcher = DELIMITER.matcher(this.columnName());
         if (matcher.find()) {
@@ -307,30 +303,6 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
     public String aliasColumnNotEqualsVariable(String alias, String variable, boolean isDollarOrSigner) {
         return aliasColumn(alias) + SQLConstants.BLANK + SQLConstants.CONTRAST_NEQ
                 + SQLConstants.BLANK + (isDollarOrSigner ? dollarProperty(variable) : signerProperty(variable));
-    }
-
-    public String columnEqualsKey() {
-        return columnEqualsSigner(EntityConstants.KEY);
-    }
-
-    public String aliasColumnEqualsKey(String alias) {
-        return aliasColumnEqualsSigner(alias, EntityConstants.KEY);
-    }
-
-    public String columnEqualsLogic() {
-        return columnEqualsDollar(EntityConstants.LOGIC);
-    }
-
-    public String aliasColumnEqualsLogic(String alias) {
-        return aliasColumnEqualsDollar(alias, EntityConstants.LOGIC);
-    }
-
-    public String columnEqualsOperate() {
-        return columnEqualsDollar(EntityConstants.OPERATE);
-    }
-
-    public String aliasColumnEqualsOperate(String alias) {
-        return aliasColumnEqualsDollar(alias, EntityConstants.OPERATE);
     }
 
     public String columnEqualsProperty() {

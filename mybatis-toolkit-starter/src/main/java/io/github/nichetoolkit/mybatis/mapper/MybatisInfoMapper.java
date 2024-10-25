@@ -15,40 +15,40 @@ public interface MybatisInfoMapper<E extends RestInfo<I>, I> extends MybatisSupe
     @Override
     @Lang(MybatisSqlSourceCaching.class)
     @SelectProvider(MybatisSqlProviderResolver.class)
-    List<E> findByName(@Param("name") String name, @Param("logic") String logic);
+    List<E> findByName(@Param("name") String name, @Param("logic") Object logic);
 
     @Override
     @Lang(MybatisSqlSourceCaching.class)
     @SelectProvider(MybatisSqlProviderResolver.class)
-    List<E> findDynamicByName(@Param("tablename") String tablename, @Param("name") String name, @Param("logic") String logic);
+    List<E> findDynamicByName(@Param("tablename") String tablename, @Param("name") String name, @Param("logic") Object logic);
 
     @Override
     @Lang(MybatisSqlSourceCaching.class)
     @SelectProvider(MybatisSqlProviderResolver.class)
-    List<E> findByNameAndNotId(@Param("name") String name, @Param("id") I id, @Param("logic") String logic);
+    List<E> findByNameAndNotId(@Param("name") String name, @Param("id") I id, @Param("logic") Object logic);
 
     @Override
     @Lang(MybatisSqlSourceCaching.class)
     @SelectProvider(MybatisSqlProviderResolver.class)
-    List<E> findDynamicByNameAndNotId(@Param("tablename") String tablename, @Param("name") String name, @Param("id") I id, @Param("logic") String logic);
+    List<E> findDynamicByNameAndNotId(@Param("tablename") String tablename, @Param("name") String name, @Param("id") I id, @Param("logic") Object logic);
 
     @Override
     @Lang(MybatisSqlSourceCaching.class)
     @SelectProvider(MybatisSqlProviderResolver.class)
-    List<E> findByEntityUnique(@Param("entity") E entity, @Param("logic") String logic);
+    List<E> findByEntityUnique(@Param("entity") E entity, @Param("logic") Object logic);
 
     @Override
     @Lang(MybatisSqlSourceCaching.class)
     @SelectProvider(MybatisSqlProviderResolver.class)
-    List<E> findDynamicByEntityUnique(@Param("tablename") String tablename, @Param("entity") E entity, @Param("logic") String logic);
+    List<E> findDynamicByEntityUnique(@Param("tablename") String tablename, @Param("entity") E entity, @Param("logic") Object logic);
 
     @Override
     @Lang(MybatisSqlSourceCaching.class)
     @SelectProvider(MybatisSqlProviderResolver.class)
-    List<E> findByEntityUniqueAndNotId(@Param("entity") E entity, @Param("id") I id, @Param("logic") String logic);
+    List<E> findByEntityUniqueAndNotId(@Param("entity") E entity, @Param("id") I id, @Param("logic") Object logic);
 
     @Override
     @Lang(MybatisSqlSourceCaching.class)
     @SelectProvider(MybatisSqlProviderResolver.class)
-    List<E> findDynamicByEntityUniqueAndNotId(@Param("tablename") String tablename, @Param("entity") E entity, @Param("id") I id, @Param("logic") String logic);
+    List<E> findDynamicByEntityUniqueAndNotId(@Param("tablename") String tablename, @Param("entity") E entity, @Param("id") I id, @Param("logic") Object logic);
 }

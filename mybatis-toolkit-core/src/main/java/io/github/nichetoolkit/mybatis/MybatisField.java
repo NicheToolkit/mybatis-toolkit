@@ -20,6 +20,7 @@ public class MybatisField {
     protected Field field;
     protected boolean isIdentity = false;
     protected boolean isLinkage = false;
+    protected boolean isAlertness = false;
     protected boolean ignored = false;
 
     public MybatisField() {
@@ -31,13 +32,14 @@ public class MybatisField {
         this.field.setAccessible(true);
     }
 
-    public MybatisField(Class<?> entityType, MybatisField parentField, Field field, boolean isIdentity, boolean isLinkage) {
+    public MybatisField(Class<?> entityType, MybatisField parentField, Field field, boolean isIdentity, boolean isLinkage, boolean isAlertness) {
         this.entityType = entityType;
         this.parentField = parentField;
         this.field = field;
         this.field.setAccessible(true);
         this.isIdentity = isIdentity;
         this.isLinkage = isLinkage;
+        this.isAlertness = isAlertness;
     }
 
     public boolean isParentNotEmpty() {

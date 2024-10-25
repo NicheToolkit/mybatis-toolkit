@@ -133,7 +133,7 @@ class TemplateServiceTest extends MybatisExampleApplicationTests {
     @Order(9)
     @Test
     public void removeByLinkId() throws RestException {
-        TemplateLinkage linkage = new TemplateLinkage(testLinkId1,testLinkId2);
+        TemplateLinkage linkage = new TemplateLinkage(testLinkId1, testLinkId2);
         templateService.removeByLinkId(tablekey, linkage);
     }
 
@@ -142,7 +142,7 @@ class TemplateServiceTest extends MybatisExampleApplicationTests {
     public void removeAllByLinkIds() throws RestException {
         TemplateLinkage linkage1 = new TemplateLinkage(testLinkId1_1, null);
         TemplateLinkage linkage2 = new TemplateLinkage(null, testLinkId2_2);
-        templateService.removeAllByLinkIds(tablekey,Arrays.asList(linkage1, linkage2));
+        templateService.removeAllByLinkIds(tablekey, Arrays.asList(linkage1, linkage2));
     }
 
     @Order(11)
@@ -174,20 +174,35 @@ class TemplateServiceTest extends MybatisExampleApplicationTests {
 
     @Order(14)
     @Test
-    public void deleteById() throws RestException {
-        TemplateIdentity identity = new TemplateIdentity(testTemplatePk1, testTemplatePk2);
-        templateService.deleteById(tablekey,identity);
+    public void operateByLinkId() throws RestException {
+        TemplateLinkage linkage = new TemplateLinkage(testLinkId1, testLinkId2);
+        templateService.operateByLinkId(tablekey, linkage, OperateType.NONE);
     }
 
     @Order(15)
     @Test
-    public void deleteAll() throws RestException {
-        TemplateIdentity identity1 = new TemplateIdentity(null, testTemplatePk2_1);
-        TemplateIdentity identity2 = new TemplateIdentity(testTemplatePk1_2, null);
-        templateService.deleteAll(tablekey,Arrays.asList(identity1,identity2));
+    public void operateAllByLinkIds() throws RestException {
+        TemplateLinkage linkage1 = new TemplateLinkage(testLinkId1_1, null);
+        TemplateLinkage linkage2 = new TemplateLinkage(null, testLinkId2_2);
+        templateService.operateAllByLinkIds(tablekey, Arrays.asList(linkage1, linkage2), OperateType.NONE);
     }
 
     @Order(16)
+    @Test
+    public void deleteById() throws RestException {
+        TemplateIdentity identity = new TemplateIdentity(testTemplatePk1, testTemplatePk2);
+        templateService.deleteById(tablekey, identity);
+    }
+
+    @Order(17)
+    @Test
+    public void deleteAll() throws RestException {
+        TemplateIdentity identity1 = new TemplateIdentity(null, testTemplatePk2_1);
+        TemplateIdentity identity2 = new TemplateIdentity(testTemplatePk1_2, null);
+        templateService.deleteAll(tablekey, Arrays.asList(identity1, identity2));
+    }
+
+    @Order(18)
     @Test
     public void deleteAllByWhere() throws RestException {
         TemplateFilter templateFilter = new TemplateFilter();
@@ -197,6 +212,21 @@ class TemplateServiceTest extends MybatisExampleApplicationTests {
         TemplateIdentity identity2 = new TemplateIdentity(testTemplatePk1_2, null);
         templateFilter.setIds(identity, identity1, identity2);
         templateService.deleteAllWithFilter(templateFilter);
+    }
+
+    @Order(19)
+    @Test
+    public void deleteByLinkId() throws RestException {
+        TemplateLinkage linkage = new TemplateLinkage(testLinkId1, testLinkId2);
+        templateService.deleteByLinkId(tablekey, linkage);
+    }
+
+    @Order(20)
+    @Test
+    public void deleteAllByLinkIds() throws RestException {
+        TemplateLinkage linkage1 = new TemplateLinkage(testLinkId1_1, null);
+        TemplateLinkage linkage2 = new TemplateLinkage(null, testLinkId2_2);
+        templateService.deleteAllByLinkIds(tablekey, Arrays.asList(linkage1, linkage2));
     }
 
 
