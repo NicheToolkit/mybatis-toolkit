@@ -3,6 +3,8 @@ package io.github.nichetoolkit.mybatis.simple;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import io.github.nichetoolkit.mybatis.enums.TemplateStatus1;
+import io.github.nichetoolkit.mybatis.enums.TemplateStatus2;
 import io.github.nichetoolkit.rest.util.BeanUtils;
 import io.github.nichetoolkit.rice.DefaultInfoModel;
 import io.github.nichetoolkit.rice.RestTablekey;
@@ -21,6 +23,10 @@ public class TemplateModel extends DefaultInfoModel<TemplateModel, TemplateEntit
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date time;
+
+    private TemplateStatus1 status1;
+
+    private TemplateStatus2 status2;
 
     public TemplateModel() {
     }
@@ -58,12 +64,29 @@ public class TemplateModel extends DefaultInfoModel<TemplateModel, TemplateEntit
         this.time = time;
     }
 
+    public TemplateStatus1 getStatus1() {
+        return status1;
+    }
+
+    public void setStatus1(TemplateStatus1 status1) {
+        this.status1 = status1;
+    }
+
+    public TemplateStatus2 getStatus2() {
+        return status2;
+    }
+
+    public void setStatus2(TemplateStatus2 status2) {
+        this.status2 = status2;
+    }
+
     @Override
     public TemplateEntity toEntity() {
         TemplateEntity entity = new TemplateEntity();
         BeanUtils.copyNonnullProperties(this,entity);
         entity.setOperate(this.operate.getKey());
         entity.setLinkage(new TemplateLinkage(this.linkId1,this.linkId2));
+        entity.setStatus(new TemplateAlertness(this.status1,this.status2));
         return entity;
     }
 

@@ -8,6 +8,8 @@ CREATE TABLE "public"."ntr_template"
   "link_id1"     VARCHAR(64) COLLATE "pg_catalog"."default",
   "link_id2"     VARCHAR(64) COLLATE "pg_catalog"."default",
   "time" TIMESTAMPTZ,
+  "status1" INT4,
+  "status2" INT4,
   "operate" INT4,
   "logic" INT4,
   "create_time" TIMESTAMPTZ,
@@ -39,6 +41,14 @@ CREATE INDEX "IDX_NTR_TEMPLATE_OPERATE" ON "public"."ntr_template" USING btree (
   "operate" "pg_catalog"."int4_ops" ASC NULLS LAST
 );
 
+CREATE INDEX "IDX_NTR_TEMPLATE_STATUS1" ON "public"."ntr_template" USING btree (
+  "status1" "pg_catalog"."int4_ops" ASC NULLS LAST
+);
+
+CREATE INDEX "IDX_NTR_TEMPLATE_STATUS2" ON "public"."ntr_template" USING btree (
+  "status2" "pg_catalog"."int4_ops" ASC NULLS LAST
+);
+
 CREATE INDEX "IDX_NTR_TEMPLATE_LOGIC" ON "public"."ntr_template" USING btree (
   "logic" "pg_catalog"."int4_ops" ASC NULLS LAST
 );
@@ -53,6 +63,8 @@ CREATE TABLE "public"."ntr_template_dynamic"
   "link_id1"     VARCHAR(64) COLLATE "pg_catalog"."default",
   "link_id2"     VARCHAR(64) COLLATE "pg_catalog"."default",
   "time" TIMESTAMPTZ,
+  "status1" INT4,
+  "status2" INT4,
   "operate" INT4,
   "logic" INT4,
   "create_time" TIMESTAMPTZ,
@@ -73,11 +85,19 @@ CREATE INDEX "IDX_NTR_TEMPLATE_DYNAMIC_LINK_ID1" ON "public"."ntr_template_dynam
 );
 
 CREATE INDEX "IDX_NTR_TEMPLATE_DYNAMIC_LINK_ID2" ON "public"."ntr_template_dynamic" USING btree (
-   "link_id2" COLLATE "pg_catalog"."default" "pg_catalog"."text_ops" ASC NULLS LAST
+  "link_id2" COLLATE "pg_catalog"."default" "pg_catalog"."text_ops" ASC NULLS LAST
 );
 
 CREATE INDEX "IDX_NTR_TEMPLATE_DYNAMIC_TIME" ON "public"."ntr_template_dynamic" USING btree (
   "time" "pg_catalog"."timestamptz_ops" ASC NULLS LAST
+);
+
+CREATE INDEX "IDX_NTR_TEMPLATE_DYNAMIC_STATUS1" ON "public"."ntr_template_dynamic" USING btree (
+  "status1" "pg_catalog"."int4_ops" ASC NULLS LAST
+);
+
+CREATE INDEX "IDX_NTR_TEMPLATE_DYNAMIC_STATUS2" ON "public"."ntr_template_dynamic" USING btree (
+  "status2" "pg_catalog"."int4_ops" ASC NULLS LAST
 );
 
 CREATE INDEX "IDX_NTR_TEMPLATE_DYNAMIC_OPERATE" ON "public"."ntr_template_dynamic" USING btree (

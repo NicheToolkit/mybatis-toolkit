@@ -27,7 +27,7 @@ public class PostgresOperateLinkProvider implements MybatisSqlProvider {
         return operateDynamicByLinkId(providerContext, null, linkId, operate);
     }
 
-    public static <L> String operateDynamicByLinkId(ProviderContext providerContext,  String tablename,  L linkId, Integer operate) throws RestException {
+    public static <L> String operateDynamicByLinkId(ProviderContext providerContext,  String tablename, L linkId, Integer operate) throws RestException {
         OptionalUtils.ofEmpty(linkId, "The link id param of 'operateByLinkId' method cannot be empty!", message -> new MybatisTableErrorException("operateByLinkId", "linkId", message));
         OptionalUtils.ofEmpty(operate, "The operate param of 'operateByLinkId' method cannot be empty!", message -> new MybatisParamErrorException("operateByLinkId", "operate", message));
         String operateColumn = "The operate column of table with 'operateByLinkId' method cannot be empty!";

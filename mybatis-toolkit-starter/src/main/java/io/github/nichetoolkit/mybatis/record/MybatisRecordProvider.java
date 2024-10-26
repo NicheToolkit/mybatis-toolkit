@@ -2,7 +2,7 @@ package io.github.nichetoolkit.mybatis.record;
 
 import io.github.nichetoolkit.mybatis.MybatisClassFinder;
 import io.github.nichetoolkit.mybatis.error.MybatisProviderLackError;
-import io.github.nichetoolkit.mybatis.mapper.MybatisSuperMapper;
+import io.github.nichetoolkit.mybatis.MybatisSuperMapper;
 import io.github.nichetoolkit.rest.util.GeneralUtils;
 import io.github.nichetoolkit.rice.IdEntity;
 import org.apache.ibatis.binding.MapperRegistry;

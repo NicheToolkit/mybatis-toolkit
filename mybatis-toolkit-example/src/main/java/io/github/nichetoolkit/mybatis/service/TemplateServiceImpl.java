@@ -27,6 +27,7 @@ public class TemplateServiceImpl extends DefaultInfoService<TemplateModel, Templ
 
     @Override
     public String queryWhereSql(TemplateFilter filter) throws RestException {
-        return filter.toTimeSql("time").toIdSql("id").addSorts("template_pk1","template_pk2").toSql();
+        return filter.toTimeSql("time").toIdSql("id").addSorts("template_pk1", "template_pk2").toSql();
     }
+
 }

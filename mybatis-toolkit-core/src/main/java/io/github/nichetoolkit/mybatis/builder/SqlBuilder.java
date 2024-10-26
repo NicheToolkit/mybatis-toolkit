@@ -1,6 +1,7 @@
 package io.github.nichetoolkit.mybatis.builder;
 
 import io.github.nichetoolkit.mybatis.consts.SQLConstants;
+import io.github.nichetoolkit.mybatis.consts.ScriptConstants;
 import io.github.nichetoolkit.rest.RestKey;
 import io.github.nichetoolkit.rest.util.DateUtils;
 import io.github.nichetoolkit.rest.util.GeneralUtils;
@@ -52,6 +53,16 @@ public final class SqlBuilder implements Serializable, CharSequence {
 
     public SqlBuilder append(String str) {
         sqlBuilder.append(str);
+        return this;
+    }
+
+    public SqlBuilder append(StringBuilder sb) {
+        sqlBuilder.append(sb);
+        return this;
+    }
+
+    public SqlBuilder append(SqlBuilder sb) {
+        sqlBuilder.append(sb.sqlBuilder);
         return this;
     }
 
@@ -700,6 +711,16 @@ public final class SqlBuilder implements Serializable, CharSequence {
 
     public SqlBuilder or() {
         this.keyword(SQLConstants.OR, false);
+        return this;
+    }
+
+    public SqlBuilder cdataLt() {
+        this.append(ScriptConstants.CDATA_LT).blank();
+        return this;
+    }
+
+    public SqlBuilder cdataGt() {
+        this.blank().append(ScriptConstants.CDATA_GT);
         return this;
     }
 

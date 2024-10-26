@@ -32,7 +32,7 @@ public class PostgresRemoveProvider implements MybatisSqlProvider {
         String logicColumn = "The logic column of table with 'removeById' method cannot be empty!";
         ConsumerActuator<MybatisTable> tableOptional = table ->
                 OptionalUtils.ofEmpty(table.getLogicColumn(), logicColumn, log, message -> new MybatisTableErrorException("removeById", "logicColumn", message));
-        return MybatisSqlProvider.providingOfIdRemove(providerContext, tablename, id, logic, tableOptional, REMOVE_SQL_SUPPLY);
+        return MybatisSqlProvider.providingOfId(providerContext, tablename, id, tableOptional, REMOVE_SQL_SUPPLY);
     }
 
     public static <I> String removeAll(ProviderContext providerContext, Collection<I> idList,  Object logic) throws RestException {

@@ -31,7 +31,7 @@ public class PostgresInfoProvider implements MybatisSqlProvider {
         String selectColumns = "The select columns of table with 'findByName' method cannot be empty!";
         ConsumerActuator<MybatisTable> tableOptional = table -> OptionalUtils.ofEmpty(table.selectColumns(), selectColumns, log,
                 message -> new MybatisTableErrorException("findByName", "selectColumns", message));
-        return MybatisSqlProvider.providingOfNameFind(providerContext, tablename, name, logic, tableOptional, SELECT_SQL_SUPPLY);
+        return MybatisSqlProvider.providingOfName(providerContext, tablename, name, tableOptional, SELECT_SQL_SUPPLY);
     }
 
     public static <I> String findByNameAndNotId(ProviderContext providerContext, String name, I id, Object logic) throws RestException {
@@ -43,7 +43,7 @@ public class PostgresInfoProvider implements MybatisSqlProvider {
         String selectColumns = "The select columns of table with 'findByNameAndNotId' method cannot be empty!";
         ConsumerActuator<MybatisTable> tableOptional = table -> OptionalUtils.ofEmpty(table.selectColumns(), selectColumns, log,
                 message -> new MybatisTableErrorException("findByNameAndNotId", "selectColumns", message));
-        return MybatisSqlProvider.providingOfNameFind(providerContext, tablename, name, id, logic, tableOptional, SELECT_SQL_SUPPLY);
+        return MybatisSqlProvider.providingOfName(providerContext, tablename, name, id, tableOptional, SELECT_SQL_SUPPLY);
     }
 
     public static <E> String findByEntityUnique(ProviderContext providerContext, E entity, Object logic) throws RestException {
@@ -53,7 +53,7 @@ public class PostgresInfoProvider implements MybatisSqlProvider {
     public static <E> String findDynamicByEntityUnique(ProviderContext providerContext, String tablename, E entity, Object logic) throws RestException {
         OptionalUtils.ofEmpty(entity, "The entity param of 'findByEntity' method cannot be empty!", log, message -> new MybatisParamErrorException("findByEntity", "entity", message));
         ConsumerActuator<MybatisTable> tableOptional = tableOptional("findByEntity");
-        return MybatisSqlProvider.providingOfEntityFind(providerContext, tablename, entity, logic, tableOptional, SELECT_SQL_SUPPLY);
+        return MybatisSqlProvider.providingOfEntity(providerContext, tablename, entity, tableOptional, SELECT_SQL_SUPPLY);
     }
 
     public static <I, E> String findByEntityUniqueAndNotId(ProviderContext providerContext, E entity, I id, Object logic) throws RestException {
@@ -63,7 +63,7 @@ public class PostgresInfoProvider implements MybatisSqlProvider {
     public static <I, E> String findDynamicByEntityUniqueAndNotId(ProviderContext providerContext, String tablename, E entity, I id, Object logic) throws RestException {
         OptionalUtils.ofFalse(GeneralUtils.isNotEmpty(id) && GeneralUtils.isNotEmpty(entity), "The id and entity params of 'findByEntityAndNotId' method cannot be empty!", log, message -> new MybatisParamErrorException("findByEntityAndNotId", "id and entity", message));
         ConsumerActuator<MybatisTable> tableOptional = tableOptional("findByEntityAndNotId");
-        return MybatisSqlProvider.providingOfEntityFind(providerContext, tablename, entity, id, logic, tableOptional, SELECT_SQL_SUPPLY);
+        return MybatisSqlProvider.providingOfEntity(providerContext, tablename, entity, id, tableOptional, SELECT_SQL_SUPPLY);
     }
 
     private static ConsumerActuator<MybatisTable> tableOptional(String methodName) {

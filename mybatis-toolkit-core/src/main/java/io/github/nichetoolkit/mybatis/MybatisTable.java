@@ -436,9 +436,7 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
                 columnName = matcher.group(1);
             }
             String property = column.property();
-            if (column.isSpecialIdentity() && column.isParentNotEmpty()) {
-                property = column.property(column.prefixOfParent() + SQLConstants.PERIOD);
-            } else if (column.isSpecialLinkage() && column.isParentNotEmpty()) {
+            if ((column.isSpecialIdentity() || column.isSpecialLinkage() || column.isSpecialAlertness()) && column.isParentNotEmpty()) {
                 property = column.property(column.prefixOfParent() + SQLConstants.PERIOD);
             }
             ResultMapping.Builder builder = new ResultMapping.Builder(configuration, property, columnName, column.javaType());

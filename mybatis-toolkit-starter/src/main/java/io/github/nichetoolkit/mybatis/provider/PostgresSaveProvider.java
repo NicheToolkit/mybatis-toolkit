@@ -7,7 +7,6 @@ import io.github.nichetoolkit.mybatis.error.MybatisParamErrorException;
 import io.github.nichetoolkit.mybatis.error.MybatisTableErrorException;
 import io.github.nichetoolkit.rest.RestException;
 import io.github.nichetoolkit.rest.actuator.ConsumerActuator;
-import io.github.nichetoolkit.rest.util.GeneralUtils;
 import io.github.nichetoolkit.rest.util.OptionalUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.builder.annotation.ProviderContext;
@@ -33,7 +32,7 @@ public class PostgresSaveProvider implements MybatisSqlProvider {
         String insertColumns = "The insert columns of table with 'save' method cannot be empty!";
         ConsumerActuator<MybatisTable> tableOptional = table -> OptionalUtils.ofEmpty(table.insertColumns(), insertColumns, log,
                 message -> new MybatisTableErrorException("save", "insertColumns", message));
-        return MybatisSqlProvider.providingOfSave(providerContext, tablename, entity, tableOptional, MybatisSqlProvider.SAVE_SQL_SUPPLY);
+        return MybatisSqlProvider.providingOfSave(providerContext, tablename, entity, tableOptional, SAVE_SQL_SUPPLY);
     }
 
     public static <E> String saveAll(ProviderContext providerContext, Collection<E> entityList) throws RestException {
@@ -45,6 +44,6 @@ public class PostgresSaveProvider implements MybatisSqlProvider {
         String insertColumns = "The insert columns of table with 'save' method cannot be empty!";
         ConsumerActuator<MybatisTable> tableOptional = table -> OptionalUtils.ofEmpty(table.insertColumns(), insertColumns, log,
                 message -> new MybatisTableErrorException("saveAll", "insertColumns", message));
-        return MybatisSqlProvider.providingOfAllSave(providerContext, tablename, entityList, tableOptional, MybatisSqlProvider.SAVE_SQL_SUPPLY);
+        return MybatisSqlProvider.providingOfAllSave(providerContext, tablename, entityList, tableOptional, SAVE_SQL_SUPPLY);
     }
 }

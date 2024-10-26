@@ -144,7 +144,7 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
         if (this.forceInsert) {
             return this.forceInsertValue;
         } else {
-            if ((isSpecialIdentity() || isSpecialLinkage()) && this.field.isParentNotEmpty()) {
+            if ((isSpecialIdentity() || isSpecialLinkage() || isSpecialAlertness()) && this.field.isParentNotEmpty()) {
                 prefix = prefix + this.field.prefixOfParent() + SQLConstants.PERIOD;
             }
             return signerVariable(prefix);

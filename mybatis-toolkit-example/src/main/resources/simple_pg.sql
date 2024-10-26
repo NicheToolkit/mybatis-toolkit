@@ -6,6 +6,7 @@ CREATE TABLE "public"."ntr_simple"
   "description" VARCHAR(256) COLLATE "pg_catalog"."default",
   "link_id"     VARCHAR(64) COLLATE "pg_catalog"."default",
   "time" TIMESTAMPTZ,
+  "status" INT4,
   "operate" INT4,
   "logic" INT4,
   "create_time" TIMESTAMPTZ,
@@ -19,6 +20,10 @@ CREATE INDEX "IDX_NTR_SIMPLE_LINK_ID" ON "public"."ntr_simple" USING btree (
 
 CREATE INDEX "IDX_NTR_SIMPLE_TIME" ON "public"."ntr_simple" USING btree (
   "time" "pg_catalog"."timestamptz_ops" ASC NULLS LAST
+);
+
+CREATE INDEX "IDX_NTR_SIMPLE_STATUS" ON "public"."ntr_simple" USING btree (
+  "status" "pg_catalog"."int4_ops" ASC NULLS LAST
 );
 
 CREATE INDEX "IDX_NTR_SIMPLE_OPERATE" ON "public"."ntr_simple" USING btree (
@@ -37,6 +42,7 @@ CREATE TABLE "public"."ntr_simple_dynamic"
   "description" VARCHAR(256) COLLATE "pg_catalog"."default",
   "link_id"     VARCHAR(64) COLLATE "pg_catalog"."default",
   "time" TIMESTAMPTZ,
+  "status" INT4,
   "operate" INT4,
   "logic" INT4,
   "create_time" TIMESTAMPTZ,
@@ -49,6 +55,10 @@ CREATE INDEX "IDX_NTR_SIMPLE_DYNAMIC_LINK_ID" ON "public"."ntr_simple_dynamic" U
 
 CREATE INDEX "IDX_NTR_SIMPLE_DYNAMIC_TIME" ON "public"."ntr_simple_dynamic" USING btree (
   "time" "pg_catalog"."timestamptz_ops" ASC NULLS LAST
+);
+
+CREATE INDEX "IDX_NTR_SIMPLE_DYNAMIC_STATUS" ON "public"."ntr_simple_dynamic" USING btree (
+  "status" "pg_catalog"."int4_ops" ASC NULLS LAST
 );
 
 CREATE INDEX "IDX_NTR_SIMPLE_DYNAMIC_OPERATE" ON "public"."ntr_simple_dynamic" USING btree (

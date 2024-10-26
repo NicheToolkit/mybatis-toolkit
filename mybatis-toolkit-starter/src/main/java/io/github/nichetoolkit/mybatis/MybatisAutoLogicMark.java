@@ -2,12 +2,9 @@ package io.github.nichetoolkit.mybatis;
 
 import io.github.nichetoolkit.rest.RestException;
 import io.github.nichetoolkit.rest.identity.IdentityUtils;
-import io.github.nichetoolkit.rest.util.GeneralUtils;
 import io.github.nichetoolkit.rice.DefaultLogicMark;
 import io.github.nichetoolkit.rice.configure.RiceServiceProperties;
 import org.springframework.stereotype.Component;
-
-import java.util.Date;
 
 /**
  * <code>DefaultAutoLogicMark</code>

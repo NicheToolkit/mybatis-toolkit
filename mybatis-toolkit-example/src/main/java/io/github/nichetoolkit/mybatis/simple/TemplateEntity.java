@@ -1,6 +1,8 @@
 package io.github.nichetoolkit.mybatis.simple;
 
+import io.github.nichetoolkit.mybatis.stereotype.column.RestAlertKey;
 import io.github.nichetoolkit.mybatis.stereotype.column.RestLinkKey;
+import io.github.nichetoolkit.mybatis.stereotype.table.RestAlertness;
 import io.github.nichetoolkit.rest.util.BeanUtils;
 import io.github.nichetoolkit.rice.DefaultInfoEntity;
 import io.github.nichetoolkit.mybatis.stereotype.column.RestForceInsert;
@@ -15,6 +17,8 @@ public class TemplateEntity extends DefaultInfoEntity<TemplateEntity, TemplateMo
     private TemplateLinkage linkage;
     @RestForceInsert("now()")
     private Date time;
+    @RestAlertKey
+    private TemplateAlertness status;
 
     public TemplateEntity() {
     }
@@ -37,6 +41,14 @@ public class TemplateEntity extends DefaultInfoEntity<TemplateEntity, TemplateMo
 
     public void setTime(Date time) {
         this.time = time;
+    }
+
+    public TemplateAlertness getStatus() {
+        return status;
+    }
+
+    public void setStatus(TemplateAlertness status) {
+        this.status = status;
     }
 
     @Override

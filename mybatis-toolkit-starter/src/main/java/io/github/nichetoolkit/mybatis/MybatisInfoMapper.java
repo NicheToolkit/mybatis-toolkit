@@ -1,7 +1,5 @@
-package io.github.nichetoolkit.mybatis.mapper;
+package io.github.nichetoolkit.mybatis;
 
-import io.github.nichetoolkit.mybatis.MybatisSqlProviderResolver;
-import io.github.nichetoolkit.mybatis.MybatisSqlSourceCaching;
 import io.github.nichetoolkit.rice.RestInfo;
 import io.github.nichetoolkit.rice.mapper.InfoMapper;
 import org.apache.ibatis.annotations.Lang;

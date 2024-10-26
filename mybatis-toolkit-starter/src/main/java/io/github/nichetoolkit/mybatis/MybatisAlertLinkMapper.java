@@ -1,8 +1,5 @@
-package io.github.nichetoolkit.mybatis.mapper;
+package io.github.nichetoolkit.mybatis;
 
-import io.github.nichetoolkit.mybatis.MybatisMapper;
-import io.github.nichetoolkit.mybatis.MybatisSqlProviderResolver;
-import io.github.nichetoolkit.mybatis.MybatisSqlSourceCaching;
 import io.github.nichetoolkit.rice.RestId;
 import io.github.nichetoolkit.rice.mapper.AlertLinkMapper;
 import org.apache.ibatis.annotations.Lang;
@@ -11,7 +8,7 @@ import org.apache.ibatis.annotations.UpdateProvider;
 
 import java.util.Collection;
 
-public interface MybatisAlertLinkMapper<E extends RestId<I>, L, S, I> extends MybatisMapper<E>, AlertLinkMapper<L, S, I> {
+public interface MybatisAlertLinkMapper<E extends RestId<I>, L, S, I> extends MybatisMapper<E>, MybatisAlertMapper<E, S, I>, AlertLinkMapper<L, S, I> {
 
     @Override
     @Lang(MybatisSqlSourceCaching.class)

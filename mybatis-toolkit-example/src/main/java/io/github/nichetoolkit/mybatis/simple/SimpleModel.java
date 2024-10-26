@@ -3,6 +3,7 @@ package io.github.nichetoolkit.mybatis.simple;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import io.github.nichetoolkit.mybatis.enums.SimpleStatus;
 import io.github.nichetoolkit.rest.util.BeanUtils;
 import io.github.nichetoolkit.rice.RestInfoModel;
 import io.github.nichetoolkit.rice.RestTablekey;
@@ -20,6 +21,8 @@ public class SimpleModel extends RestInfoModel<SimpleModel,SimpleEntity> impleme
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date time;
+
+    private SimpleStatus status;
 
     public SimpleModel() {
     }
@@ -49,11 +52,20 @@ public class SimpleModel extends RestInfoModel<SimpleModel,SimpleEntity> impleme
         this.time = time;
     }
 
+    public SimpleStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(SimpleStatus status) {
+        this.status = status;
+    }
+
     @Override
     public SimpleEntity toEntity() {
         SimpleEntity entity = new SimpleEntity();
         BeanUtils.copyNonnullProperties(this,entity);
         entity.setOperate(this.operate.getKey());
+        entity.setStatus(this.status.getKey());
         return entity;
     }
 
