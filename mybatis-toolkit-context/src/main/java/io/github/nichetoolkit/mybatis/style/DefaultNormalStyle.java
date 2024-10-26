@@ -8,6 +8,13 @@ import io.github.nichetoolkit.rest.util.GeneralUtils;
 
 import java.lang.reflect.Field;
 
+/**
+ * <code>DefaultNormalStyle</code>
+ * <p>The default normal style class.</p>
+ * @author Cyan (snow22314@outlook.com)
+ * @see io.github.nichetoolkit.mybatis.MybatisTableStyle
+ * @since Jdk1.8
+ */
 public class DefaultNormalStyle implements MybatisTableStyle {
     @Override
     public StyleType getStyleType() {

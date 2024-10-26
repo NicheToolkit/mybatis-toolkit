@@ -11,8 +11,20 @@ import java.lang.reflect.Modifier;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * <code>SqlUtils</code>
+ * <p>The sql utils class.</p>
+ * @author Cyan (snow22314@outlook.com)
+ * @since Jdk1.8
+ */
 public class SqlUtils {
 
+    /**
+     * <code>reverseArray</code>
+     * <p>The reverse array method.</p>
+     * @param array {@link java.lang.Object} <p>The array parameter is <code>Object</code> type.</p>
+     * @see java.lang.Object
+     */
     public static void reverseArray(Object[] array) {
         for (int i = 0; i < array.length / 2; i++) {
             Object temp = array[i];
@@ -21,6 +33,16 @@ public class SqlUtils {
         }
     }
 
+    /**
+     * <code>fieldsOfType</code>
+     * <p>The fields of type method.</p>
+     * @param declaredType        {@link java.lang.Class} <p>The declared type parameter is <code>Class</code> type.</p>
+     * @param excludeFields       {@link java.util.List} <p>The exclude fields parameter is <code>List</code> type.</p>
+     * @param excludeSuperClasses {@link java.util.List} <p>The exclude super classes parameter is <code>List</code> type.</p>
+     * @return {@link java.util.List} <p>The fields of type return object is <code>List</code> type.</p>
+     * @see java.lang.Class
+     * @see java.util.List
+     */
     public static List<Field> fieldsOfType(Class<?> declaredType, List<String> excludeFields, List<Class<?>> excludeSuperClasses) {
         List<Field> fieldList = new ArrayList<>();
         /* 未处理的需要获取字段 */
@@ -49,6 +71,16 @@ public class SqlUtils {
         return fieldList;
     }
 
+    /**
+     * <code>sliceOfType</code>
+     * <p>The slice of type method.</p>
+     * @param <T>       {@link java.lang.Object} <p>The parameter can be of any type.</p>
+     * @param typeList  {@link java.util.List} <p>The type list parameter is <code>List</code> type.</p>
+     * @param fieldList {@link java.util.List} <p>The field list parameter is <code>List</code> type.</p>
+     * @return {@link java.util.Map} <p>The slice of type return object is <code>Map</code> type.</p>
+     * @see java.util.List
+     * @see java.util.Map
+     */
     public static <T> Map<Integer, List<T>> sliceOfType(List<T> typeList, List<Field> fieldList) {
         return typeList.stream()
                 .collect(Collectors.groupingBy(id -> {
@@ -68,6 +100,15 @@ public class SqlUtils {
                 }));
     }
 
+    /**
+     * <code>valueOfType</code>
+     * <p>The value of type method.</p>
+     * @param <T>       {@link java.lang.Object} <p>The parameter can be of any type.</p>
+     * @param type      T <p>The type parameter is <code>T</code> type.</p>
+     * @param fieldList {@link java.util.List} <p>The field list parameter is <code>List</code> type.</p>
+     * @return boolean <p>The value of type return object is <code>boolean</code> type.</p>
+     * @see java.util.List
+     */
     public static <T> boolean valueOfType(T type, List<Field> fieldList) {
         Optional<Boolean> logicalOrOptional = fieldList.stream().map(field -> {
             try {
@@ -80,10 +121,37 @@ public class SqlUtils {
         return logicalOrOptional.orElse(false);
     }
 
+    /**
+     * <code>whereSqlOfTypes</code>
+     * <p>The where sql of types method.</p>
+     * @param <T>       {@link java.lang.Object} <p>The parameter can be of any type.</p>
+     * @param types     {@link java.util.Collection} <p>The types parameter is <code>Collection</code> type.</p>
+     * @param idType    {@link java.lang.Class} <p>The id type parameter is <code>Class</code> type.</p>
+     * @param styleType {@link io.github.nichetoolkit.mybatis.enums.StyleType} <p>The style type parameter is <code>StyleType</code> type.</p>
+     * @return {@link java.lang.String} <p>The where sql of types return object is <code>String</code> type.</p>
+     * @see java.util.Collection
+     * @see java.lang.Class
+     * @see io.github.nichetoolkit.mybatis.enums.StyleType
+     * @see java.lang.String
+     */
     public static <T> String whereSqlOfTypes(Collection<T> types, Class<T> idType, StyleType styleType) {
         return whereSqlOfTypes(null,types, idType, styleType);
     }
 
+    /**
+     * <code>whereSqlOfTypes</code>
+     * <p>The where sql of types method.</p>
+     * @param <T>       {@link java.lang.Object} <p>The parameter can be of any type.</p>
+     * @param prefix    {@link java.lang.String} <p>The prefix parameter is <code>String</code> type.</p>
+     * @param types     {@link java.util.Collection} <p>The types parameter is <code>Collection</code> type.</p>
+     * @param type      {@link java.lang.Class} <p>The type parameter is <code>Class</code> type.</p>
+     * @param styleType {@link io.github.nichetoolkit.mybatis.enums.StyleType} <p>The style type parameter is <code>StyleType</code> type.</p>
+     * @return {@link java.lang.String} <p>The where sql of types return object is <code>String</code> type.</p>
+     * @see java.lang.String
+     * @see java.util.Collection
+     * @see java.lang.Class
+     * @see io.github.nichetoolkit.mybatis.enums.StyleType
+     */
     public static <T> String whereSqlOfTypes(String prefix, Collection<T> types, Class<T> type, StyleType styleType) {
         List<Field> fieldList = fieldsOfType(type, Collections.emptyList(), Collections.emptyList());
         if (GeneralUtils.isEmpty(fieldList)) {
@@ -94,6 +162,21 @@ public class SqlUtils {
         return whereSqlOfTypes(prefix,typesOfMap, fieldList, styleType);
     }
 
+    /**
+     * <code>whereSqlOfTypes</code>
+     * <p>The where sql of types method.</p>
+     * @param <T>        {@link java.lang.Object} <p>The parameter can be of any type.</p>
+     * @param prefix     {@link java.lang.String} <p>The prefix parameter is <code>String</code> type.</p>
+     * @param typesOfMap {@link java.util.Map} <p>The types of map parameter is <code>Map</code> type.</p>
+     * @param fieldList  {@link java.util.List} <p>The field list parameter is <code>List</code> type.</p>
+     * @param styleType  {@link io.github.nichetoolkit.mybatis.enums.StyleType} <p>The style type parameter is <code>StyleType</code> type.</p>
+     * @return {@link java.lang.String} <p>The where sql of types return object is <code>String</code> type.</p>
+     * @see java.lang.String
+     * @see java.util.Map
+     * @see java.util.List
+     * @see io.github.nichetoolkit.mybatis.enums.StyleType
+     * @see java.lang.SuppressWarnings
+     */
     @SuppressWarnings("Duplicates")
     public static <T> String whereSqlOfTypes(String prefix, Map<Integer, List<T>> typesOfMap, List<Field> fieldList, StyleType styleType) {
         if (GeneralUtils.isEmpty(typesOfMap)) {

@@ -14,11 +14,33 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * <code>MybatisSqlProviderResolver</code>
+ * <p>The mybatis sql provider resolver class.</p>
+ * @author Cyan (snow22314@outlook.com)
+ * @see org.apache.ibatis.builder.annotation.ProviderMethodResolver
+ * @see lombok.extern.slf4j.Slf4j
+ * @since Jdk1.8
+ */
 @Slf4j
 public class MybatisSqlProviderResolver implements ProviderMethodResolver {
 
+    /**
+     * <code>SQL_PROVIDER_METHOD_CACHES</code>
+     * {@link java.util.Map} <p>The constant <code>SQL_PROVIDER_METHOD_CACHES</code> field.</p>
+     * @see java.util.Map
+     */
     private static final Map<String,Method> SQL_PROVIDER_METHOD_CACHES = new ConcurrentHashMap<>();
 
+    /**
+     * <code>resolveMethod</code>
+     * <p>The resolve method method.</p>
+     * @param providerName {@link java.lang.String} <p>The provider name parameter is <code>String</code> type.</p>
+     * @param message      {@link java.lang.String} <p>The message parameter is <code>String</code> type.</p>
+     * @return {@link java.lang.reflect.Method} <p>The resolve method return object is <code>Method</code> type.</p>
+     * @see java.lang.String
+     * @see java.lang.reflect.Method
+     */
     private Method resolveMethod(String providerName,String message) {
         Method findMethod = null;
         if (GeneralUtils.isNotEmpty(SQL_PROVIDER_METHOD_CACHES)) {

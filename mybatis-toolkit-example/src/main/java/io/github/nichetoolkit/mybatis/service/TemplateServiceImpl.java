@@ -12,6 +12,14 @@ import org.springframework.stereotype.Service;
 import java.util.Date;
 import java.util.Optional;
 
+/**
+ * <code>TemplateServiceImpl</code>
+ * <p>The template service class.</p>
+ * @author Cyan (snow22314@outlook.com)
+ * @see io.github.nichetoolkit.rice.DefaultInfoService
+ * @see org.springframework.stereotype.Service
+ * @since Jdk1.8
+ */
 @Service
 public class TemplateServiceImpl extends DefaultInfoService<TemplateModel, TemplateEntity, TemplateFilter, TemplateIdentity, String> implements TemplateService {
 

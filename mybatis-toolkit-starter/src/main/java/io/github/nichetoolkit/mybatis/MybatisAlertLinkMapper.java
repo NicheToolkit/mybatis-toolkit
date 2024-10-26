@@ -8,6 +8,20 @@ import org.apache.ibatis.annotations.UpdateProvider;
 
 import java.util.Collection;
 
+/**
+ * <code>MybatisAlertLinkMapper</code>
+ * <p>The mybatis alert link mapper interface.</p>
+ * @param <E> {@link io.github.nichetoolkit.rice.RestId} <p>The generic parameter is <code>RestId</code> type.</p>
+ * @param <L> {@link java.lang.Object} <p>The parameter can be of any type.</p>
+ * @param <S> {@link java.lang.Object} <p>The parameter can be of any type.</p>
+ * @param <I> {@link java.lang.Object} <p>The parameter can be of any type.</p>
+ * @author Cyan (snow22314@outlook.com)
+ * @see io.github.nichetoolkit.rice.RestId
+ * @see io.github.nichetoolkit.mybatis.MybatisMapper
+ * @see io.github.nichetoolkit.mybatis.MybatisAlertMapper
+ * @see io.github.nichetoolkit.rice.mapper.AlertLinkMapper
+ * @since Jdk1.8
+ */
 public interface MybatisAlertLinkMapper<E extends RestId<I>, L, S, I> extends MybatisMapper<E>, MybatisAlertMapper<E, S, I>, AlertLinkMapper<L, S, I> {
 
     @Override

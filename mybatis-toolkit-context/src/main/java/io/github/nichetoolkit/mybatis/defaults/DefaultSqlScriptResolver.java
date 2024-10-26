@@ -18,6 +18,14 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * <code>DefaultSqlScriptResolver</code>
+ * <p>The default sql script resolver class.</p>
+ * @author Cyan (snow22314@outlook.com)
+ * @see io.github.nichetoolkit.mybatis.MybatisSqlScriptResolver
+ * @see lombok.extern.slf4j.Slf4j
+ * @since Jdk1.8
+ */
 @Slf4j
 public class DefaultSqlScriptResolver implements MybatisSqlScriptResolver {
 
@@ -45,6 +53,18 @@ public class DefaultSqlScriptResolver implements MybatisSqlScriptResolver {
         return sqlScript;
     }
 
+    /**
+     * <code>parseAnnotations</code>
+     * <p>The parse annotations method.</p>
+     * @param target      {@link java.lang.Object} <p>The target parameter is <code>Object</code> type.</p>
+     * @param type        {@link java.lang.annotation.ElementType} <p>The type parameter is <code>ElementType</code> type.</p>
+     * @param annotations {@link java.lang.annotation.Annotation} <p>The annotations parameter is <code>Annotation</code> type.</p>
+     * @return {@link java.util.List} <p>The parse annotations return object is <code>List</code> type.</p>
+     * @see java.lang.Object
+     * @see java.lang.annotation.ElementType
+     * @see java.lang.annotation.Annotation
+     * @see java.util.List
+     */
     private List<DefaultSqlResolver> parseAnnotations(Object target, ElementType type, Annotation[] annotations) {
         List<Class<? extends DefaultSqlResolver>> classes = new ArrayList<>();
         for (Annotation annotation : annotations) {
@@ -62,6 +82,20 @@ public class DefaultSqlScriptResolver implements MybatisSqlScriptResolver {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * <code>newInstance</code>
+     * <p>The new instance method.</p>
+     * @param <T>           {@link java.lang.Object} <p>The parameter can be of any type.</p>
+     * @param instanceClass {@link java.lang.Class} <p>The instance class parameter is <code>Class</code> type.</p>
+     * @param target        {@link java.lang.Object} <p>The target parameter is <code>Object</code> type.</p>
+     * @param type          {@link java.lang.annotation.ElementType} <p>The type parameter is <code>ElementType</code> type.</p>
+     * @param annotations   {@link java.lang.annotation.Annotation} <p>The annotations parameter is <code>Annotation</code> type.</p>
+     * @return T <p>The new instance return object is <code>T</code> type.</p>
+     * @see java.lang.Class
+     * @see java.lang.Object
+     * @see java.lang.annotation.ElementType
+     * @see java.lang.annotation.Annotation
+     */
     public <T> T newInstance(Class<T> instanceClass, Object target, ElementType type, Annotation[] annotations) {
         try {
             return instanceClass.getConstructor(Object.class, ElementType.class, Annotation[].class).newInstance(target, type, annotations);

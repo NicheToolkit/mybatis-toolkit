@@ -11,14 +11,39 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * <code>DefaultColumnFactory</code>
+ * <p>The default column factory class.</p>
+ * @author Cyan (snow22314@outlook.com)
+ * @see io.github.nichetoolkit.mybatis.MybatisColumnFactory
+ * @since Jdk1.8
+ */
 public class DefaultColumnFactory implements MybatisColumnFactory {
 
+    /**
+     * <code>tableProperties</code>
+     * {@link io.github.nichetoolkit.mybatis.configure.MybatisTableProperties} <p>The <code>tableProperties</code> field.</p>
+     * @see io.github.nichetoolkit.mybatis.configure.MybatisTableProperties
+     */
     private final MybatisTableProperties tableProperties;
 
+    /**
+     * <code>DefaultColumnFactory</code>
+     * <p>Instantiates a new default column factory.</p>
+     */
     public DefaultColumnFactory() {
         this.tableProperties = MybatisContextHolder.tableProperties();
     }
 
+    /**
+     * <code>excludeSupport</code>
+     * <p>The exclude support method.</p>
+     * @param table {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>The table parameter is <code>MybatisTable</code> type.</p>
+     * @param field {@link io.github.nichetoolkit.mybatis.MybatisField} <p>The field parameter is <code>MybatisField</code> type.</p>
+     * @return boolean <p>The exclude support return object is <code>boolean</code> type.</p>
+     * @see io.github.nichetoolkit.mybatis.MybatisTable
+     * @see io.github.nichetoolkit.mybatis.MybatisField
+     */
     private boolean excludeSupport(MybatisTable table, MybatisField field) {
         String fieldName = field.fieldName();
         List<String> globalExcludes = this.tableProperties.getExcludes();
@@ -52,6 +77,14 @@ public class DefaultColumnFactory implements MybatisColumnFactory {
         return true;
     }
 
+    /**
+     * <code>ignoreHandle</code>
+     * <p>The ignore handle method.</p>
+     * @param table {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>The table parameter is <code>MybatisTable</code> type.</p>
+     * @param field {@link io.github.nichetoolkit.mybatis.MybatisField} <p>The field parameter is <code>MybatisField</code> type.</p>
+     * @see io.github.nichetoolkit.mybatis.MybatisTable
+     * @see io.github.nichetoolkit.mybatis.MybatisField
+     */
     private void ignoreHandle(MybatisTable table, MybatisField field) {
         String fieldName = field.fieldName();
         List<String> globalIgnores = this.tableProperties.getIgnores();

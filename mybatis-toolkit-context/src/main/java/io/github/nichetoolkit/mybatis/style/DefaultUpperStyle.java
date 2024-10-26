@@ -8,6 +8,13 @@ import io.github.nichetoolkit.rest.util.GeneralUtils;
 
 import java.lang.reflect.Field;
 
+/**
+ * <code>DefaultUpperStyle</code>
+ * <p>The default upper style class.</p>
+ * @author Cyan (snow22314@outlook.com)
+ * @see io.github.nichetoolkit.mybatis.MybatisTableStyle
+ * @since Jdk1.8
+ */
 public class DefaultUpperStyle implements MybatisTableStyle {
     @Override
     public StyleType getStyleType() {
