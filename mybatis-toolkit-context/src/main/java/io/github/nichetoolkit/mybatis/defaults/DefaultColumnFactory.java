@@ -122,9 +122,9 @@ public class DefaultColumnFactory implements MybatisColumnFactory {
         /* 默认针对 entity 实体中的所有字段构建 column 数据 */
         MybatisColumn mybatisColumn = MybatisColumn.of(field, this.tableProperties.getProperties());
         boolean fieldIgnored = field.ignored();
-        RestColname restName = field.getAnnotation(RestColname.class);
-        String columnName = Optional.ofNullable(restName).map(RestColname::name).orElse(null);
-        String columnComment = Optional.ofNullable(restName).map(RestColname::comment).orElse(null);
+        RestName restName = field.getAnnotation(RestName.class);
+        String columnName = Optional.ofNullable(restName).map(RestName::name).orElse(null);
+        String columnComment = Optional.ofNullable(restName).map(RestName::comment).orElse(null);
         MybatisTableStyle mybatisStyle = MybatisTableStyle.style(mybatisTable.getStyleName());
         if (GeneralUtils.isNotEmpty(restName)) {
             mybatisColumn.setColumn(GeneralUtils.isEmpty(columnName) ? mybatisStyle.columnName(mybatisTable, field) : restName.name());

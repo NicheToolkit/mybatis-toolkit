@@ -21,7 +21,7 @@ import java.lang.annotation.*;
  * @see java.lang.annotation.Target
  * @see java.lang.annotation.Documented
  * @see org.springframework.stereotype.Indexed
- * @see io.github.nichetoolkit.mybatis.stereotype.column.RestColname
+ * @see RestName
  * @see io.github.nichetoolkit.mybatis.stereotype.column.RestOrder
  * @see io.github.nichetoolkit.mybatis.stereotype.column.RestSelect
  * @see io.github.nichetoolkit.mybatis.stereotype.column.RestInsert
@@ -38,7 +38,7 @@ import java.lang.annotation.*;
 @Documented
 @Indexed
 
-@RestColname
+@RestName
 @RestOrder
 @RestSelect
 @RestInsert
@@ -57,7 +57,7 @@ public @interface RestColumn {
      * @see java.lang.String
      * @see org.springframework.core.annotation.AliasFor
      */
-    @AliasFor(annotation = RestColname.class, attribute = "name")
+    @AliasFor(annotation = RestName.class, attribute = "name")
     String value() default "";
 
     /**
@@ -67,7 +67,7 @@ public @interface RestColumn {
      * @see java.lang.String
      * @see org.springframework.core.annotation.AliasFor
      */
-    @AliasFor(annotation = RestColname.class, attribute = "comment")
+    @AliasFor(annotation = RestName.class, attribute = "comment")
     String comment() default "";
 
     /**

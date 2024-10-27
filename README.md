@@ -133,22 +133,26 @@ nichetoolkit.mybatis.cache.use-once=false
 * values
 
 |      value      |      type      |   defaultValue    |                         description                          |
-|:---------------:|:--------------:|:-----------------:|:------------------------------------------------------------:|
+| :-------------: | :------------: | :---------------: | :----------------------------------------------------------: |
 |    `catalog`    |    `String`    |                   |    the global catalog of table on mybatis configuration.     |
 |    `schema`     |    `String`    |                   |     the global schema of table on mybatis configuration.     |
+| `update-logic`  |   `Boolean`    |      `false`      |     the switch of update logic on mybatis configuration.     |
 | `database-type` | `DatabaseType` |   `postgresql`    | the global database type of table on mybatis configuration.  |
 |  `style-type`   |  `StyleType`   | `lower_underline` | the global sql style type of table on mybatis configuration. |
 |  `properties`   |     `Map`      |                   |   the global properties of table on mybatis configuration.   |
 |   `excludes`    |   `String[]`   |                   |    the global excludes of table on mybatis configuration.    |
+|    `ignores`    |   `String[]`   |                   |    the global ignores of table on mybatis configuration.     |
 
 * properties
 
 ```properties
 nichetoolkit.mybatis.table.catalog=
 nichetoolkit.mybatis.table.schema=
+nichetoolkit.mybatis.table.update-logic=false
 nichetoolkit.mybatis.table.database-type=postgresql
 nichetoolkit.mybatis.table.style-type=lower_underline
-nichetoolkit.mybatis.table.excludes=operate
+nichetoolkit.mybatis.table.excludes=
+nichetoolkit.mybatis.table.ignores=
 ```
 
 #### record configuration
@@ -171,7 +175,38 @@ nichetoolkit.mybatis.table.excludes=operate
 nichetoolkit.mybatis.record.enabled=false
 ```
 
-### Model & Entity & Filter
+### Stereotype Annotation
+
+* default whole annotation
+
+|  annotation  |                            target                            |                         description                          |
+| :----------: | :----------------------------------------------------------: | :----------------------------------------------------------: |
+| `RestMapper` | `ElementType.TYPE`、 `ElementType.METHOD`、`ElementType.FIELD`、`ElementType.PARAMETER` | the annotation is used to annotate mybatis mapper interfaces there need to mark `entityType` 、`identityType` 、`linkageType` and `alertnessType`. |
+| `RestTable`  |                      `ElementType.TYPE`                      | the annotation is used to annotate mybatis table entity objects there need to set table configuration. |
+| `RestColumn` |                     `ElementType.FIELD`                      | the annotation is used to annotate mybatis entity  column objects there need to set column configuration. |
+
+* default table annotation
+
+|    annotation    |                            target                            |                         description                          |
+| :--------------: | :----------------------------------------------------------: | :----------------------------------------------------------: |
+|   `RestEntity`   | `ElementType.TYPE`、 `ElementType.METHOD`、`ElementType.ANNOTATION_TYPE` | the annotation is used to annotate mybatis table entity objects there need to set table configuration. it is maybe `name`、`comment`、`alias` 、`entityType` 、`identityType` 、`linkageType` and `alertnessType`. |
+|  `RestIdentity`  |                      `ElementType.TYPE`                      | the annotation is used to annotate table customize identity of entity. it must be a class that is included the primary key or union keys of database. |
+|  `RestLinkage`   |                      `ElementType.TYPE`                      | the annotation is used to annotate table customize link id of entity. it must be a class that is included the foreign keys of database. |
+| `RestAlertness`  |                      `ElementType.TYPE`                      | the annotation is used to annotate table customize alert status (it's better to enum) of entity. it must be a class that is included the status keys. |
+|  `RestLinkKeys`  |                      `ElementType.TYPE`                      | the annotation is used to annotate alert link keys of entity when the attribute of the parent class cannot be annotated with `RestLinkKey`. |
+| `RestAlertKeys`  |                      `ElementType.TYPE`                      | the annotation is used to annotate alert status keys of entity when the attribute of the parent class cannot be annotated with `RestAlertKey`. |
+|  `RestExcludes`  |                      `ElementType.TYPE`                      | the annotation is used to annotate a field of need to exclude for entity. |
+|  `RestIgnores`   |                      `ElementType.TYPE`                      | the annotation is used to annotate a field of need to ignore for entity. |
+| `RestProperties` | `ElementType.TYPE`、`ElementType.FIELD`、`ElementType.METHOD` | the annotation is used to annotate a property field of entity. |
+| `RestResultMap`  |                      `ElementType.TYPE`                      |  the annotation is used to annotate a result map of table.   |
+| `RestTableStyle` |                      `ElementType.TYPE`                      |   the annotation is used to annotate style of table name.    |
+| `RestUnionKeys`  |                      `ElementType.TYPE`                      | the annotation is used to annotate union keys of entity when the attribute of the parent class cannot be annotated with `RestUnionKey`. |
+| `RestUniqueKeys` |                      `ElementType.TYPE`                      | the annotation is used to annotate unique keys of entity when the attribute of the parent class cannot be annotated with `RestUniqueKey`. |
+
+* default column annotation
+
+
+
 
 ## Test Example
 
