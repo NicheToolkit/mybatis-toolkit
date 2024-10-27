@@ -175,7 +175,7 @@ nichetoolkit.mybatis.table.ignores=
 nichetoolkit.mybatis.record.enabled=false
 ```
 
-### Stereotype Annotation
+### Stereotype & Annotation
 
 * default whole annotation
 
