@@ -5,7 +5,7 @@
 
     <groupId>io.github.nichetoolkit</groupId>
     <artifactId>mybatis-toolkit-parent</artifactId>
-    <version>1.1.0</version>
+    <version>1.1.1-SNAPSHOT</version>
 
     <modules>
         <module>mybatis-toolkit-core</module>
@@ -97,7 +97,7 @@
 
         <rest-toolkit.version>1.1.0</rest-toolkit.version>
         <rice-toolkit.version>1.1.0</rice-toolkit.version>
-        <mybatis-toolkit.version>1.1.0</mybatis-toolkit.version>
+        <mybatis-toolkit.version>1.1.1-SNAPSHOT</mybatis-toolkit.version>
 
         <spring-boot-maven-plugin.version>2.7.18</spring-boot-maven-plugin.version>
         <maven-gpg-plugin.version>3.2.5</maven-gpg-plugin.version>
