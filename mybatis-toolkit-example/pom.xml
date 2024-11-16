@@ -20,8 +20,8 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <skipTests>true</skipTests>
 
-        <!-- fix postgresql:42.3.8 CVE-2024-1597 10.0 vulnerability    -->
         <postgresql.version>42.3.9</postgresql.version>
+        <mybatis-spring.version>2.3.2</mybatis-spring.version>
     </properties>
 
     <dependencies>
@@ -43,6 +43,7 @@
         <dependency>
             <groupId>org.mybatis.spring.boot</groupId>
             <artifactId>mybatis-spring-boot-starter</artifactId>
+            <version>${mybatis-spring.version}</version>
         </dependency>
 
         <dependency>
