@@ -2,7 +2,7 @@ package io.github.nichetoolkit.mybatis.simple;
 
 import io.github.nichetoolkit.mybatis.enums.TemplateStatus1;
 import io.github.nichetoolkit.mybatis.enums.TemplateStatus2;
-import io.github.nichetoolkit.mybatis.stereotype.table.RestAlertness;
+import io.github.nichetoolkit.rice.table.RestAlertness;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -11,9 +11,9 @@ import java.util.Optional;
 /**
  * <code>TemplateAlertness</code>
  * <p>The template alertness class.</p>
+ * @see  java.io.Serializable
+ * @see  io.github.nichetoolkit.rice.table.RestAlertness
  * @author Cyan (snow22314@outlook.com)
- * @see java.io.Serializable
- * @see io.github.nichetoolkit.mybatis.stereotype.table.RestAlertness
  * @since Jdk1.8
  */
 @RestAlertness
@@ -22,14 +22,14 @@ public class TemplateAlertness implements Serializable {
     /**
      * <code>status1</code>
      * {@link java.lang.Integer} <p>The <code>status1</code> field.</p>
-     * @see java.lang.Integer
+     * @see  java.lang.Integer
      */
     private Integer status1;
 
     /**
      * <code>status2</code>
      * {@link java.lang.Integer} <p>The <code>status2</code> field.</p>
-     * @see java.lang.Integer
+     * @see  java.lang.Integer
      */
     private Integer status2;
 
@@ -45,7 +45,7 @@ public class TemplateAlertness implements Serializable {
      * <p>Instantiates a new template alertness.</p>
      * @param status1 {@link java.lang.Integer} <p>The status 1 parameter is <code>Integer</code> type.</p>
      * @param status2 {@link java.lang.Integer} <p>The status 2 parameter is <code>Integer</code> type.</p>
-     * @see java.lang.Integer
+     * @see  java.lang.Integer
      */
     public TemplateAlertness(Integer status1, Integer status2) {
         this.status1 = status1;
@@ -57,8 +57,8 @@ public class TemplateAlertness implements Serializable {
      * <p>Instantiates a new template alertness.</p>
      * @param status1 {@link io.github.nichetoolkit.mybatis.enums.TemplateStatus1} <p>The status 1 parameter is <code>TemplateStatus1</code> type.</p>
      * @param status2 {@link io.github.nichetoolkit.mybatis.enums.TemplateStatus2} <p>The status 2 parameter is <code>TemplateStatus2</code> type.</p>
-     * @see io.github.nichetoolkit.mybatis.enums.TemplateStatus1
-     * @see io.github.nichetoolkit.mybatis.enums.TemplateStatus2
+     * @see  io.github.nichetoolkit.mybatis.enums.TemplateStatus1
+     * @see  io.github.nichetoolkit.mybatis.enums.TemplateStatus2
      */
     public TemplateAlertness(TemplateStatus1 status1, TemplateStatus2 status2) {
         this.status1 = Optional.ofNullable(status1).map(TemplateStatus1::getKey).orElse(null);
@@ -68,8 +68,8 @@ public class TemplateAlertness implements Serializable {
     /**
      * <code>getStatus1</code>
      * <p>The get status 1 getter method.</p>
-     * @return {@link java.lang.Integer} <p>The get status 1 return object is <code>Integer</code> type.</p>
-     * @see java.lang.Integer
+     * @return  {@link java.lang.Integer} <p>The get status 1 return object is <code>Integer</code> type.</p>
+     * @see  java.lang.Integer
      */
     public Integer getStatus1() {
         return status1;
@@ -79,7 +79,7 @@ public class TemplateAlertness implements Serializable {
      * <code>setStatus1</code>
      * <p>The set status 1 setter method.</p>
      * @param status1 {@link java.lang.Integer} <p>The status 1 parameter is <code>Integer</code> type.</p>
-     * @see java.lang.Integer
+     * @see  java.lang.Integer
      */
     public void setStatus1(Integer status1) {
         this.status1 = status1;
@@ -88,8 +88,8 @@ public class TemplateAlertness implements Serializable {
     /**
      * <code>getStatus2</code>
      * <p>The get status 2 getter method.</p>
-     * @return {@link java.lang.Integer} <p>The get status 2 return object is <code>Integer</code> type.</p>
-     * @see java.lang.Integer
+     * @return  {@link java.lang.Integer} <p>The get status 2 return object is <code>Integer</code> type.</p>
+     * @see  java.lang.Integer
      */
     public Integer getStatus2() {
         return status2;
@@ -99,7 +99,7 @@ public class TemplateAlertness implements Serializable {
      * <code>setStatus2</code>
      * <p>The set status 2 setter method.</p>
      * @param status2 {@link java.lang.Integer} <p>The status 2 parameter is <code>Integer</code> type.</p>
-     * @see java.lang.Integer
+     * @see  java.lang.Integer
      */
     public void setStatus2(Integer status2) {
         this.status2 = status2;

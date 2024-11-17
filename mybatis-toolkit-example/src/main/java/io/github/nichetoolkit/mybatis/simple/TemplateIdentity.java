@@ -1,7 +1,7 @@
 package io.github.nichetoolkit.mybatis.simple;
 
-import io.github.nichetoolkit.mybatis.stereotype.column.RestUnionKey;
-import io.github.nichetoolkit.mybatis.stereotype.table.RestIdentity;
+import io.github.nichetoolkit.rice.column.RestUnionKey;
+import io.github.nichetoolkit.rice.table.RestIdentity;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -9,9 +9,9 @@ import java.util.Objects;
 /**
  * <code>TemplateIdentity</code>
  * <p>The template identity class.</p>
+ * @see  java.io.Serializable
+ * @see  io.github.nichetoolkit.rice.table.RestIdentity
  * @author Cyan (snow22314@outlook.com)
- * @see java.io.Serializable
- * @see io.github.nichetoolkit.mybatis.stereotype.table.RestIdentity
  * @since Jdk1.8
  */
 @RestIdentity
@@ -19,16 +19,16 @@ public class TemplateIdentity implements Serializable {
     /**
      * <code>templatePk1</code>
      * {@link java.lang.String} <p>The <code>templatePk1</code> field.</p>
-     * @see java.lang.String
-     * @see io.github.nichetoolkit.mybatis.stereotype.column.RestUnionKey
+     * @see  java.lang.String
+     * @see  io.github.nichetoolkit.rice.column.RestUnionKey
      */
     @RestUnionKey
     private String templatePk1;
     /**
      * <code>templatePk2</code>
      * {@link java.lang.String} <p>The <code>templatePk2</code> field.</p>
-     * @see java.lang.String
-     * @see io.github.nichetoolkit.mybatis.stereotype.column.RestUnionKey
+     * @see  java.lang.String
+     * @see  io.github.nichetoolkit.rice.column.RestUnionKey
      */
     @RestUnionKey
     private String templatePk2;
@@ -45,7 +45,7 @@ public class TemplateIdentity implements Serializable {
      * <p>Instantiates a new template identity.</p>
      * @param templatePk1 {@link java.lang.String} <p>The template pk 1 parameter is <code>String</code> type.</p>
      * @param templatePk2 {@link java.lang.String} <p>The template pk 2 parameter is <code>String</code> type.</p>
-     * @see java.lang.String
+     * @see  java.lang.String
      */
     public TemplateIdentity(String templatePk1, String templatePk2) {
         this.templatePk1 = templatePk1;
@@ -55,8 +55,8 @@ public class TemplateIdentity implements Serializable {
     /**
      * <code>getTemplatePk1</code>
      * <p>The get template pk 1 getter method.</p>
-     * @return {@link java.lang.String} <p>The get template pk 1 return object is <code>String</code> type.</p>
-     * @see java.lang.String
+     * @return  {@link java.lang.String} <p>The get template pk 1 return object is <code>String</code> type.</p>
+     * @see  java.lang.String
      */
     public String getTemplatePk1() {
         return templatePk1;
@@ -66,7 +66,7 @@ public class TemplateIdentity implements Serializable {
      * <code>setTemplatePk1</code>
      * <p>The set template pk 1 setter method.</p>
      * @param templatePk1 {@link java.lang.String} <p>The template pk 1 parameter is <code>String</code> type.</p>
-     * @see java.lang.String
+     * @see  java.lang.String
      */
     public void setTemplatePk1(String templatePk1) {
         this.templatePk1 = templatePk1;
@@ -75,8 +75,8 @@ public class TemplateIdentity implements Serializable {
     /**
      * <code>getTemplatePk2</code>
      * <p>The get template pk 2 getter method.</p>
-     * @return {@link java.lang.String} <p>The get template pk 2 return object is <code>String</code> type.</p>
-     * @see java.lang.String
+     * @return  {@link java.lang.String} <p>The get template pk 2 return object is <code>String</code> type.</p>
+     * @see  java.lang.String
      */
     public String getTemplatePk2() {
         return templatePk2;
@@ -86,7 +86,7 @@ public class TemplateIdentity implements Serializable {
      * <code>setTemplatePk2</code>
      * <p>The set template pk 2 setter method.</p>
      * @param templatePk2 {@link java.lang.String} <p>The template pk 2 parameter is <code>String</code> type.</p>
-     * @see java.lang.String
+     * @see  java.lang.String
      */
     public void setTemplatePk2(String templatePk2) {
         this.templatePk2 = templatePk2;
