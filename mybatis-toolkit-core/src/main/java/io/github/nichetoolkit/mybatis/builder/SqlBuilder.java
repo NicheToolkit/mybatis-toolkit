@@ -1884,7 +1884,7 @@ public final class SqlBuilder implements Serializable, CharSequence {
     }
 
     public SqlBuilder onDuplicateKey() {
-        return this.keyword(SQLConstants.ON_DUPLICATE_KEY_LT, false);
+        return this.keyword(SQLConstants.ON_DUPLICATE_KEY_LT, true);
     }
 
     /**

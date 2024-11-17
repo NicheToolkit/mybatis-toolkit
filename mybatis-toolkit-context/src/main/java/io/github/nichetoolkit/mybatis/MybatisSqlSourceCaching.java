@@ -119,8 +119,12 @@ public class MybatisSqlSourceCaching extends XMLLanguageDriver {
                         } catch (RestException exception) {
                             throw new MethodLackError("the sql script has error, you need to configure entity with annotation, " + exception.getMessage(), exception);
                         }
-                        if (log.isDebugEnabled()) {
-                            log.debug("{}:\n{}", cacheKey, sqlScript);
+                        if(MybatisContextHolder.sqlScriptShow()) {
+                            if (log.isDebugEnabled()) {
+                                log.debug("{}:\n{}", cacheKey, sqlScript);
+                            } else {
+                                log.info("{}:\n{}", cacheKey, sqlScript);
+                            }
                         }
                         /* 缓存 sqlSource */
                         SqlSource sqlSource = super.createSqlSource(configuration, sqlScript, parameterType);

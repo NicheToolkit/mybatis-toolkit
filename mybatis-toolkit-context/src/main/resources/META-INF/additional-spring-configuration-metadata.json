@@ -32,6 +32,20 @@
       "defaultValue": "false"
     },
     {
+      "name": "nichetoolkit.mybatis.table.sql-script-show",
+      "type": "java.lang.Boolean",
+      "sourceType": "java.lang.Boolean",
+      "description": "the switch of sql script show on mybatis configuration.",
+      "defaultValue": "false"
+    },
+    {
+      "name": "nichetoolkit.mybatis.table.datetime-now",
+      "type": "java.lang.String",
+      "sourceType": "java.lang.String",
+      "description": "the function of datetime now on mybatis configuration.",
+      "defaultValue": "now()"
+    },
+    {
       "name": "nichetoolkit.mybatis.table.database-type",
       "type": "io.github.nichetoolkit.mybatis.enums.DatabaseType",
       "sourceType": "io.github.nichetoolkit.mybatis.enums.DatabaseType",
@@ -96,6 +110,19 @@
         {
           "value": true,
           "description": "the switch of update logic is opened on mybatis configuration."
+        }
+      ]
+    },
+    {
+      "name": "nichetoolkit.mybatis.table.sql-script-show",
+      "values": [
+        {
+          "value": false,
+          "description": "the switch of sql script show is closed on mybatis configuration."
+        },
+        {
+          "value": true,
+          "description": "the switch of sql script show is opened on mybatis configuration."
         }
       ]
     },

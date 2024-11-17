@@ -2,6 +2,8 @@ package io.github.nichetoolkit.mybatis.defaults;
 
 import io.github.nichetoolkit.mybatis.*;
 import io.github.nichetoolkit.mybatis.configure.MybatisTableProperties;
+import io.github.nichetoolkit.mybatis.consts.SQLConstants;
+import io.github.nichetoolkit.mybatis.consts.ScriptConstants;
 import io.github.nichetoolkit.mybatis.stereotype.column.*;
 import io.github.nichetoolkit.rest.util.GeneralUtils;
 import org.apache.ibatis.type.JdbcType;
@@ -150,15 +152,26 @@ public class DefaultColumnFactory implements MybatisColumnFactory {
         if (GeneralUtils.isNotEmpty(restUpdate) && !fieldIgnored) {
             mybatisColumn.setUpdate(restUpdate.value());
         }
+        String datetimeNow = tableProperties.getDatetimeNow();
         RestForceInsert restForceInsert = field.getAnnotation(RestForceInsert.class);
         if (GeneralUtils.isNotEmpty(restForceInsert) && !fieldIgnored) {
             mybatisColumn.setForceInsert(true);
-            mybatisColumn.setForceInsertValue(restForceInsert.value());
+            String forceInsertValue = restForceInsert.value();
+            if (ScriptConstants.NOW.equals(forceInsertValue)) {
+                mybatisColumn.setForceInsertValue(datetimeNow);
+            } else {
+                mybatisColumn.setForceInsertValue(forceInsertValue);
+            }
         }
         RestForceUpdate restForceUpdate = field.getAnnotation(RestForceUpdate.class);
         if (GeneralUtils.isNotEmpty(restForceUpdate) && !fieldIgnored) {
             mybatisColumn.setForceUpdate(true);
-            mybatisColumn.setForceUpdateValue(restForceUpdate.value());
+            String forceUpdateValue = restForceUpdate.value();
+            if (ScriptConstants.NOW.equals(forceUpdateValue)) {
+                mybatisColumn.setForceUpdateValue(datetimeNow);
+            } else {
+                mybatisColumn.setForceUpdateValue(forceUpdateValue);
+            }
         }
         RestIdentityKey restIdentityKey = field.getAnnotation(RestIdentityKey.class);
         if (GeneralUtils.isNotEmpty(restIdentityKey) && !fieldIgnored) {

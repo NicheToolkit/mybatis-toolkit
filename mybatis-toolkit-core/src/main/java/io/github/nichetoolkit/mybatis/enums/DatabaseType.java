@@ -31,6 +31,11 @@ public enum DatabaseType implements RestValue<String, String> {
      */
     MYSQL("mysql", DriverConstants.MYSQL),
     /**
+     * <code>SQLITE</code>
+     * <p>The sqlite database type field.</p>
+     */
+    SQLITE("sqlite", DriverConstants.SQLITE),
+    /**
      * <code>MARIADB</code>
      * <p>The mariadb database type field.</p>
      */
@@ -45,11 +50,6 @@ public enum DatabaseType implements RestValue<String, String> {
      * <p>The oracle database type field.</p>
      */
     ORACLE("oracle", DriverConstants.ORACLE),
-    /**
-     * <code>SQLITE</code>
-     * <p>The sqlite database type field.</p>
-     */
-    SQLITE("sqlite", DriverConstants.SQLITE),
     /**
      * <code>H2</code>
      * <p>The h 2 database type field.</p>

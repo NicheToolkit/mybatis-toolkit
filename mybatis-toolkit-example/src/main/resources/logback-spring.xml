@@ -22,8 +22,8 @@
         </root>
     </springProfile>
 
-    <!--开发环境:打印控制台-->
-    <springProfile name="dev">
+    <!--postgresql:打印控制台-->
+    <springProfile name="postgresql">
         <logger name="io.github.nichetoolkit" level="debug"/>
         <root level="info" >
             <appender-ref ref="CONSOLE" />
@@ -35,8 +35,34 @@
         </root>
     </springProfile>
 
-    <!--生产环境:打印控制台-->
-    <springProfile name="pro">
+    <!--gaussdb:打印控制台-->
+    <springProfile name="gaussdb">
+        <logger name="io.github.nichetoolkit" level="debug"/>
+        <root level="info" >
+            <appender-ref ref="CONSOLE" />
+            <appender-ref ref="LOGS_FILE" />
+            <appender-ref ref="DEBUG_FILE" />
+            <appender-ref ref="INFO_FILE" />
+            <appender-ref ref="WARN_FILE" />
+            <appender-ref ref="ERROR_FILE" />
+        </root>
+    </springProfile>
+
+    <!--mysql:打印控制台-->
+    <springProfile name="mysql">
+        <logger name="io.github.nichetoolkit" level="debug"/>
+        <root level="info">
+            <appender-ref ref="CONSOLE" />
+            <appender-ref ref="LOGS_FILE" />
+            <appender-ref ref="DEBUG_FILE" />
+            <appender-ref ref="INFO_FILE" />
+            <appender-ref ref="ERROR_FILE" />
+            <appender-ref ref="WARN_FILE" />
+        </root>
+    </springProfile>
+
+    <!--sqlite:打印控制台-->
+    <springProfile name="sqlite">
         <logger name="io.github.nichetoolkit" level="debug"/>
         <root level="info">
             <appender-ref ref="CONSOLE" />

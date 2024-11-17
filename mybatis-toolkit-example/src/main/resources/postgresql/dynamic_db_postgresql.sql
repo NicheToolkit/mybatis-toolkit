@@ -1,0 +1,4 @@
+CREATE DATABASE "dynamic_db" WITH
+   ENCODING = 'UTF8'
+   OWNER = postgres
+   CONNECTION LIMIT = 100;

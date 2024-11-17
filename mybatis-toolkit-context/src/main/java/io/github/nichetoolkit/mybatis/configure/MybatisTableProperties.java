@@ -1,5 +1,6 @@
 package io.github.nichetoolkit.mybatis.configure;
 
+import io.github.nichetoolkit.mybatis.consts.ScriptConstants;
 import io.github.nichetoolkit.mybatis.enums.DatabaseType;
 import io.github.nichetoolkit.mybatis.enums.ExcludedType;
 import io.github.nichetoolkit.mybatis.enums.StyleType;
@@ -44,6 +45,19 @@ public class MybatisTableProperties {
      * @see  java.lang.Boolean
      */
     private Boolean updateLogic = false;
+
+    /**
+     * <code>sqlScriptShow</code>
+     * {@link java.lang.Boolean} <p>The <code>sqlScriptShow</code> field.</p>
+     * @see  java.lang.Boolean
+     */
+    private Boolean sqlScriptShow = false;
+    /**
+     * <code>datetimeNow</code>
+     * {@link java.lang.String} <p>The <code>datetimeNow</code> field.</p>
+     * @see  java.lang.String
+     */
+    private String datetimeNow = ScriptConstants.NOW;
     /**
      * <code>databaseType</code>
      * {@link io.github.nichetoolkit.mybatis.enums.DatabaseType} <p>The <code>databaseType</code> field.</p>

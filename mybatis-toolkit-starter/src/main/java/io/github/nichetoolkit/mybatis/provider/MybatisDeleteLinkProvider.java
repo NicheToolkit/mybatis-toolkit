@@ -29,7 +29,7 @@ public class MybatisDeleteLinkProvider implements MybatisSqlProvider {
 
     @Override
     public List<DatabaseType> databaseTypes() {
-        return Arrays.asList(DatabaseType.POSTGRESQL, DatabaseType.MYSQL, DatabaseType.GAUSSDB);
+        return Arrays.asList(DatabaseType.POSTGRESQL, DatabaseType.MYSQL, DatabaseType.GAUSSDB,DatabaseType.SQLITE);
     }
     /**
      * <code>deleteByLinkId</code>

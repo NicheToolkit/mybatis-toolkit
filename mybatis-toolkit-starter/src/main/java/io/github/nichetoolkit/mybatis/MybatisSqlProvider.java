@@ -543,7 +543,7 @@ public interface MybatisSqlProvider {
                     .map(column -> column.variable(EntityConstants.ENTITY_PREFIX))
                     .collect(Collectors.joining(SQLConstants.COMMA + SQLConstants.BLANK));
             SqlBuilder sqlBuilder = SqlBuilder.sqlBuilder().braceLt().append(sqlOfInsert).braceGt();
-            databaseTypeOfSql(tablename,table,sqlBuilder,databaseType);
+            databaseTypeOfSql(tablename, table, sqlBuilder, databaseType);
             return sqlSupply.supply(tablename, table, sqlBuilder);
         });
     }
@@ -575,7 +575,7 @@ public interface MybatisSqlProvider {
                     SQLConstants.BRACE_LT + table.insertColumns().stream().map(column -> column.variable(EntityConstants.ENTITY_PREFIX))
                             .collect(Collectors.joining(SQLConstants.COMMA + SQLConstants.BLANK)) + SQLConstants.BRACE_GT);
             SqlBuilder sqlBuilder = SqlBuilder.sqlBuilder(sqlOfInsert);
-            databaseTypeOfSql(tablename,table,sqlBuilder,databaseType);
+            databaseTypeOfSql(tablename, table, sqlBuilder, databaseType);
             return sqlSupply.supply(tablename, table, sqlBuilder);
         });
     }
@@ -594,14 +594,19 @@ public interface MybatisSqlProvider {
      * @see  io.github.nichetoolkit.rest.RestException
      * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
      */
-    static void databaseTypeOfSql(String tablename, MybatisTable table,SqlBuilder sqlBuilder,DatabaseType databaseType) throws RestException {
-        if (DatabaseType.POSTGRESQL == databaseType || DatabaseType.GAUSSDB == databaseType) {
-            sqlBuilder.append(insertOfSaveSql(tablename, table,true));
-        } else if (DatabaseType.MYSQL == databaseType) {
-            sqlBuilder.append(insertOfSaveSql(tablename, table,false));
-        } else {
-            String message = "it is unsupported currently of the " + databaseType.getKey() + "database type.";
-            throw new MybatisUnsupportedErrorException(databaseType.getKey(), "save", message);
+    static void databaseTypeOfSql(String tablename, MybatisTable table, SqlBuilder sqlBuilder, DatabaseType databaseType) throws RestException {
+        switch (databaseType) {
+            case SQLITE:
+            case GAUSSDB:
+            case POSTGRESQL:
+                sqlBuilder.append(insertOfSaveSql(tablename, table, true));
+                break;
+            case MYSQL:
+                sqlBuilder.append(insertOfSaveSql(tablename, table, false));
+                break;
+            default:
+                String message = "it is unsupported currently of the " + databaseType.getKey() + "database type.";
+                throw new MybatisUnsupportedErrorException(databaseType.getKey(), "save", message);
         }
     }
 
