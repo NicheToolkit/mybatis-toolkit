@@ -68,7 +68,7 @@
 <dependency>
     <groupId>io.github.nichetoolkit</groupId>
     <artifactId>mybatis-toolkit-core</artifactId>
-    <version>1.1.0</version>
+    <version>1.1.1</version>
 </dependency>
 ```
 
@@ -81,7 +81,7 @@
 <dependency>
     <groupId>io.github.nichetoolkit</groupId>
     <artifactId>mybatis-toolkit-context</artifactId>
-    <version>1.1.0</version>
+    <version>1.1.1</version>
 </dependency>
 ```
 
@@ -94,7 +94,7 @@
 <dependency>
     <groupId>io.github.nichetoolkit</groupId>
     <artifactId>mybatis-toolkit-starter</artifactId>
-    <version>1.1.0</version>
+    <version>1.1.1</version>
 </dependency>
 ```
 
