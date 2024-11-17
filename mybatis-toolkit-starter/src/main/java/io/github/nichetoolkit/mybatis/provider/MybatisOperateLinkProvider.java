@@ -12,7 +12,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.builder.annotation.ProviderContext;
 import org.springframework.stereotype.Component;
 
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * <code>PostgresOperateLinkProvider</code>
@@ -25,13 +27,12 @@ import java.util.Collection;
  */
 @Slf4j
 @Component
-public class PostgresOperateLinkProvider implements MybatisSqlProvider {
+public class MybatisOperateLinkProvider implements MybatisSqlProvider {
 
     @Override
-    public DatabaseType databaseType() {
-        return DatabaseType.POSTGRESQL;
+    public List<DatabaseType> databaseTypes() {
+        return Arrays.asList(DatabaseType.POSTGRESQL, DatabaseType.MYSQL, DatabaseType.GAUSSDB);
     }
-
     /**
      * <code>operateByLinkId</code>
      * <p>The operate by link id method.</p>

@@ -10,7 +10,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.builder.annotation.ProviderContext;
 import org.springframework.stereotype.Component;
 
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * <code>PostgresDeleteLinkProvider</code>
@@ -23,13 +25,12 @@ import java.util.Collection;
  */
 @Slf4j
 @Component
-public class PostgresDeleteLinkProvider implements MybatisSqlProvider {
+public class MybatisDeleteLinkProvider implements MybatisSqlProvider {
 
     @Override
-    public DatabaseType databaseType() {
-        return DatabaseType.POSTGRESQL;
+    public List<DatabaseType> databaseTypes() {
+        return Arrays.asList(DatabaseType.POSTGRESQL, DatabaseType.MYSQL, DatabaseType.GAUSSDB);
     }
-
     /**
      * <code>deleteByLinkId</code>
      * <p>The delete by link id method.</p>

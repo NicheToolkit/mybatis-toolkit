@@ -11,7 +11,10 @@ import io.github.nichetoolkit.rest.util.OptionalUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.builder.annotation.ProviderContext;
 import org.springframework.stereotype.Component;
+
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * <code>PostgresRemoveProvider</code>
@@ -24,13 +27,12 @@ import java.util.Collection;
  */
 @Slf4j
 @Component
-public class PostgresRemoveProvider implements MybatisSqlProvider {
+public class MybatisRemoveProvider implements MybatisSqlProvider {
 
     @Override
-    public DatabaseType databaseType() {
-        return DatabaseType.POSTGRESQL;
+    public List<DatabaseType> databaseTypes() {
+        return Arrays.asList(DatabaseType.POSTGRESQL, DatabaseType.MYSQL, DatabaseType.GAUSSDB);
     }
-
     /**
      * <code>removeById</code>
      * <p>The remove by id method.</p>

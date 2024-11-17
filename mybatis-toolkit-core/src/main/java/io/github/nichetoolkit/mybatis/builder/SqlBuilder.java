@@ -1883,6 +1883,10 @@ public final class SqlBuilder implements Serializable, CharSequence {
         return this.keyword(SQLConstants.GROUP_BY, true);
     }
 
+    public SqlBuilder onDuplicateKey() {
+        return this.keyword(SQLConstants.ON_DUPLICATE_KEY_LT, false);
+    }
+
     /**
      * <code>onConflict</code>
      * <p>The on conflict method.</p>
@@ -1898,7 +1902,7 @@ public final class SqlBuilder implements Serializable, CharSequence {
      * @return {@link io.github.nichetoolkit.mybatis.builder.SqlBuilder} <p>The do nothing return object is <code>SqlBuilder</code> type.</p>
      */
     public SqlBuilder doNothing() {
-        return this.keyword(SQLConstants.ON_CONFLICT_DO_NOTHING_GT, false);
+        return this.keyword(SQLConstants.DO_NOTHING_GT, false);
     }
 
     /**
@@ -1906,8 +1910,8 @@ public final class SqlBuilder implements Serializable, CharSequence {
      * <p>The do update method.</p>
      * @return {@link io.github.nichetoolkit.mybatis.builder.SqlBuilder} <p>The do update return object is <code>SqlBuilder</code> type.</p>
      */
-    public SqlBuilder doUpdate() {
-        return this.keyword(SQLConstants.ON_CONFLICT_DO_UPDATE_GT, false);
+    public SqlBuilder doUpdate(boolean doOrNone) {
+        return this.keyword(doOrNone ? SQLConstants.DO_UPDATE_GT : SQLConstants.UPDATE_GT, false);
     }
 
     /**

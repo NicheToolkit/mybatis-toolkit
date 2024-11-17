@@ -12,10 +12,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.support.SpringFactoriesLoader;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.stream.Collectors;
 
 /**
  * <code>MybatisSqlProviderHolder</code>
@@ -88,14 +88,20 @@ public class MybatisSqlProviderHolder implements ServiceIntend<MybatisSqlProvide
             this.sqlProviders.addAll(sqlProvidersOfServiceLoader);
         }
         if (GeneralUtils.isNotEmpty(this.sqlProviders)) {
-            this.sqlProviders.stream().distinct().collect(Collectors.groupingBy(MybatisSqlProvider::databaseType))
-                    .forEach((databaseType, sqlProviderList) -> {
+            this.sqlProviders.stream().distinct().forEach(sqlProvider -> {
+                List<DatabaseType> databaseTypes = sqlProvider.databaseTypes();
+                if (GeneralUtils.isNotEmpty(databaseTypes)) {
+                    databaseTypes.forEach(databaseType -> {
                         if (SQL_PROVIDER_CACHES.containsKey(databaseType)) {
-                            SQL_PROVIDER_CACHES.get(databaseType).addAll(sqlProviderList);
+                            SQL_PROVIDER_CACHES.get(databaseType).add(sqlProvider);
                         } else {
+                            List<MybatisSqlProvider> sqlProviderList =new ArrayList<>();
+                            sqlProviderList.add(sqlProvider);
                             SQL_PROVIDER_CACHES.put(databaseType, sqlProviderList);
                         }
                     });
+                }
+            });
         }
         String messageOfSqlProviders = "the sql providers can not be loaded from spring factories loader or spring beans";
         OptionalUtils.ofEmptyError(RestOptional.ofEmptyable(SQL_PROVIDER_CACHES), messageOfSqlProviders, log, MybatisProviderLackError::new);
@@ -109,7 +115,7 @@ public class MybatisSqlProviderHolder implements ServiceIntend<MybatisSqlProvide
         DatabaseType databaseType = defaultDatabaseType();
         List<MybatisSqlProvider> sqlProviders = defaultSqlProviders(databaseType);
         String messageOfDatabaseType = "the sql providers can not found, maybe it is unsupported with '" + databaseType.name() + "' type";
-        OptionalUtils.ofEmptyError(RestOptional.ofEmptyable(sqlProviders), messageOfDatabaseType, log,MybatisProviderLackError::new);
+        OptionalUtils.ofEmptyError(RestOptional.ofEmptyable(sqlProviders), messageOfDatabaseType, log, MybatisProviderLackError::new);
     }
 
     /**

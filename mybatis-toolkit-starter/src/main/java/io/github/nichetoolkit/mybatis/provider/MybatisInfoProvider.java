@@ -13,6 +13,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.builder.annotation.ProviderContext;
 import org.springframework.stereotype.Component;
 
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * <code>PostgresInfoProvider</code>
  * <p>The postgres info provider class.</p>
@@ -24,13 +27,12 @@ import org.springframework.stereotype.Component;
  */
 @Slf4j
 @Component
-public class PostgresInfoProvider implements MybatisSqlProvider {
+public class MybatisInfoProvider implements MybatisSqlProvider {
 
     @Override
-    public DatabaseType databaseType() {
-        return DatabaseType.POSTGRESQL;
+    public List<DatabaseType> databaseTypes() {
+        return Arrays.asList(DatabaseType.POSTGRESQL, DatabaseType.MYSQL, DatabaseType.GAUSSDB);
     }
-
     /**
      * <code>findByName</code>
      * <p>The find by name method.</p>
