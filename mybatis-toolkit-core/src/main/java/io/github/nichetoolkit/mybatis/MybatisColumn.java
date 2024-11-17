@@ -2,6 +2,7 @@ package io.github.nichetoolkit.mybatis;
 
 import io.github.nichetoolkit.mybatis.consts.SQLConstants;
 import io.github.nichetoolkit.mybatis.consts.ScriptConstants;
+import io.github.nichetoolkit.mybatis.enums.ExcludedType;
 import io.github.nichetoolkit.mybatis.enums.SortType;
 import io.github.nichetoolkit.rest.util.GeneralUtils;
 import lombok.Getter;
@@ -22,10 +23,10 @@ import static io.github.nichetoolkit.mybatis.MybatisTable.DELIMITER;
 /**
  * <code>MybatisColumn</code>
  * <p>The mybatis column class.</p>
+ * @see  io.github.nichetoolkit.mybatis.MybatisProperty
+ * @see  lombok.Setter
+ * @see  lombok.Getter
  * @author Cyan (snow22314@outlook.com)
- * @see io.github.nichetoolkit.mybatis.MybatisProperty
- * @see lombok.Setter
- * @see lombok.Getter
  * @since Jdk1.8
  */
 @Setter
@@ -34,43 +35,43 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
     /**
      * <code>field</code>
      * {@link io.github.nichetoolkit.mybatis.MybatisField} <p>The <code>field</code> field.</p>
-     * @see io.github.nichetoolkit.mybatis.MybatisField
+     * @see  io.github.nichetoolkit.mybatis.MybatisField
      */
     protected final MybatisField field;
     /**
      * <code>table</code>
      * {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>The <code>table</code> field.</p>
-     * @see io.github.nichetoolkit.mybatis.MybatisTable
+     * @see  io.github.nichetoolkit.mybatis.MybatisTable
      */
     protected MybatisTable table;
     /**
      * <code>column</code>
      * {@link java.lang.String} <p>The <code>column</code> field.</p>
-     * @see java.lang.String
+     * @see  java.lang.String
      */
     protected String column;
     /**
      * <code>comment</code>
      * {@link java.lang.String} <p>The <code>comment</code> field.</p>
-     * @see java.lang.String
+     * @see  java.lang.String
      */
     protected String comment;
     /**
      * <code>order</code>
      * {@link java.lang.Integer} <p>The <code>order</code> field.</p>
-     * @see java.lang.Integer
+     * @see  java.lang.Integer
      */
     protected Integer order;
     /**
      * <code>sortType</code>
      * {@link io.github.nichetoolkit.mybatis.enums.SortType} <p>The <code>sortType</code> field.</p>
-     * @see io.github.nichetoolkit.mybatis.enums.SortType
+     * @see  io.github.nichetoolkit.mybatis.enums.SortType
      */
     protected SortType sortType;
     /**
      * <code>priority</code>
      * {@link java.lang.Integer} <p>The <code>priority</code> field.</p>
-     * @see java.lang.Integer
+     * @see  java.lang.Integer
      */
     protected Integer priority;
 
@@ -82,7 +83,7 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
     /**
      * <code>forceInsertValue</code>
      * {@link java.lang.String} <p>The <code>forceInsertValue</code> field.</p>
-     * @see java.lang.String
+     * @see  java.lang.String
      */
     protected String forceInsertValue;
     /**
@@ -93,26 +94,26 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
     /**
      * <code>forceUpdateValue</code>
      * {@link java.lang.String} <p>The <code>forceUpdateValue</code> field.</p>
-     * @see java.lang.String
+     * @see  java.lang.String
      */
     protected String forceUpdateValue;
 
     /**
      * <code>jdbcType</code>
      * {@link org.apache.ibatis.type.JdbcType} <p>The <code>jdbcType</code> field.</p>
-     * @see org.apache.ibatis.type.JdbcType
+     * @see  org.apache.ibatis.type.JdbcType
      */
     protected JdbcType jdbcType;
     /**
      * <code>typeHandler</code>
      * {@link java.lang.Class} <p>The <code>typeHandler</code> field.</p>
-     * @see java.lang.Class
+     * @see  java.lang.Class
      */
     protected Class<? extends TypeHandler<?>> typeHandler;
     /**
      * <code>numericScale</code>
      * {@link java.lang.String} <p>The <code>numericScale</code> field.</p>
-     * @see java.lang.String
+     * @see  java.lang.String
      */
     protected String numericScale;
 
@@ -190,7 +191,7 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
      * <code>MybatisColumn</code>
      * <p>Instantiates a new mybatis column.</p>
      * @param field {@link io.github.nichetoolkit.mybatis.MybatisField} <p>The field parameter is <code>MybatisField</code> type.</p>
-     * @see io.github.nichetoolkit.mybatis.MybatisField
+     * @see  io.github.nichetoolkit.mybatis.MybatisField
      */
     protected MybatisColumn(MybatisField field) {
         this.field = field;
@@ -201,9 +202,9 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
      * <code>MybatisColumn</code>
      * <p>Instantiates a new mybatis column.</p>
      * @param properties {@link java.util.Map} <p>The properties parameter is <code>Map</code> type.</p>
-     * @param field      {@link io.github.nichetoolkit.mybatis.MybatisField} <p>The field parameter is <code>MybatisField</code> type.</p>
-     * @see java.util.Map
-     * @see io.github.nichetoolkit.mybatis.MybatisField
+     * @param field {@link io.github.nichetoolkit.mybatis.MybatisField} <p>The field parameter is <code>MybatisField</code> type.</p>
+     * @see  java.util.Map
+     * @see  io.github.nichetoolkit.mybatis.MybatisField
      */
     protected MybatisColumn(Map<String, String> properties, MybatisField field) {
         super(properties);
@@ -215,8 +216,8 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
      * <code>of</code>
      * <p>The of method.</p>
      * @param field {@link io.github.nichetoolkit.mybatis.MybatisField} <p>The field parameter is <code>MybatisField</code> type.</p>
-     * @return {@link io.github.nichetoolkit.mybatis.MybatisColumn} <p>The of return object is <code>MybatisColumn</code> type.</p>
-     * @see io.github.nichetoolkit.mybatis.MybatisField
+     * @see  io.github.nichetoolkit.mybatis.MybatisField
+     * @return  {@link io.github.nichetoolkit.mybatis.MybatisColumn} <p>The of return object is <code>MybatisColumn</code> type.</p>
      */
     public static MybatisColumn of(MybatisField field) {
         return new MybatisColumn(field);
@@ -225,11 +226,11 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
     /**
      * <code>of</code>
      * <p>The of method.</p>
-     * @param field      {@link io.github.nichetoolkit.mybatis.MybatisField} <p>The field parameter is <code>MybatisField</code> type.</p>
+     * @param field {@link io.github.nichetoolkit.mybatis.MybatisField} <p>The field parameter is <code>MybatisField</code> type.</p>
      * @param properties {@link java.util.Map} <p>The properties parameter is <code>Map</code> type.</p>
-     * @return {@link io.github.nichetoolkit.mybatis.MybatisColumn} <p>The of return object is <code>MybatisColumn</code> type.</p>
-     * @see io.github.nichetoolkit.mybatis.MybatisField
-     * @see java.util.Map
+     * @see  io.github.nichetoolkit.mybatis.MybatisField
+     * @see  java.util.Map
+     * @return  {@link io.github.nichetoolkit.mybatis.MybatisColumn} <p>The of return object is <code>MybatisColumn</code> type.</p>
      */
     public static MybatisColumn of(MybatisField field, Map<String, String> properties) {
         if (GeneralUtils.isNotEmpty(properties)) {
@@ -288,8 +289,8 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
     /**
      * <code>prefixOfParent</code>
      * <p>The prefix of parent method.</p>
-     * @return {@link java.lang.String} <p>The prefix of parent return object is <code>String</code> type.</p>
-     * @see java.lang.String
+     * @return  {@link java.lang.String} <p>The prefix of parent return object is <code>String</code> type.</p>
+     * @see  java.lang.String
      */
     public String prefixOfParent() {
         return this.field.prefixOfParent();
@@ -298,8 +299,8 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
     /**
      * <code>columnName</code>
      * <p>The column name method.</p>
-     * @return {@link java.lang.String} <p>The column name return object is <code>String</code> type.</p>
-     * @see java.lang.String
+     * @return  {@link java.lang.String} <p>The column name return object is <code>String</code> type.</p>
+     * @see  java.lang.String
      */
     public String columnName() {
         return this.column;
@@ -308,8 +309,8 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
     /**
      * <code>fieldName</code>
      * <p>The field name method.</p>
-     * @return {@link java.lang.String} <p>The field name return object is <code>String</code> type.</p>
-     * @see java.lang.String
+     * @return  {@link java.lang.String} <p>The field name return object is <code>String</code> type.</p>
+     * @see  java.lang.String
      */
     public String fieldName() {
         return this.field.fieldName();
@@ -318,8 +319,8 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
     /**
      * <code>javaType</code>
      * <p>The java type method.</p>
-     * @return {@link java.lang.Class} <p>The java type return object is <code>Class</code> type.</p>
-     * @see java.lang.Class
+     * @return  {@link java.lang.Class} <p>The java type return object is <code>Class</code> type.</p>
+     * @see  java.lang.Class
      */
     public Class<?> javaType() {
         return this.field.fieldType();
@@ -328,8 +329,8 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
     /**
      * <code>property</code>
      * <p>The property method.</p>
-     * @return {@link java.lang.String} <p>The property return object is <code>String</code> type.</p>
-     * @see java.lang.String
+     * @return  {@link java.lang.String} <p>The property return object is <code>String</code> type.</p>
+     * @see  java.lang.String
      */
     public String property() {
         return property(SQLConstants.EMPTY);
@@ -340,8 +341,8 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
      * <code>aliasColumn</code>
      * <p>The alias column method.</p>
      * @param alias {@link java.lang.String} <p>The alias parameter is <code>String</code> type.</p>
-     * @return {@link java.lang.String} <p>The alias column return object is <code>String</code> type.</p>
-     * @see java.lang.String
+     * @see  java.lang.String
+     * @return  {@link java.lang.String} <p>The alias column return object is <code>String</code> type.</p>
      */
     public String aliasColumn(String alias) {
         if (GeneralUtils.isNotEmpty(alias)) {
@@ -355,8 +356,8 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
      * <code>property</code>
      * <p>The property method.</p>
      * @param prefix {@link java.lang.String} <p>The prefix parameter is <code>String</code> type.</p>
-     * @return {@link java.lang.String} <p>The property return object is <code>String</code> type.</p>
-     * @see java.lang.String
+     * @see  java.lang.String
+     * @return  {@link java.lang.String} <p>The property return object is <code>String</code> type.</p>
      */
     public String property(String prefix) {
         return prefix + this.field.fieldName();
@@ -365,8 +366,8 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
     /**
      * <code>variable</code>
      * <p>The variable method.</p>
-     * @return {@link java.lang.String} <p>The variable return object is <code>String</code> type.</p>
-     * @see java.lang.String
+     * @return  {@link java.lang.String} <p>The variable return object is <code>String</code> type.</p>
+     * @see  java.lang.String
      */
     public String variable() {
         return variable(SQLConstants.EMPTY);
@@ -376,8 +377,8 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
      * <code>variable</code>
      * <p>The variable method.</p>
      * @param prefix {@link java.lang.String} <p>The prefix parameter is <code>String</code> type.</p>
-     * @return {@link java.lang.String} <p>The variable return object is <code>String</code> type.</p>
-     * @see java.lang.String
+     * @see  java.lang.String
+     * @return  {@link java.lang.String} <p>The variable return object is <code>String</code> type.</p>
      */
     public String variable(String prefix) {
         if (this.forceInsert) {
@@ -394,8 +395,8 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
      * <code>signerVariable</code>
      * <p>The signer variable method.</p>
      * @param prefix {@link java.lang.String} <p>The prefix parameter is <code>String</code> type.</p>
-     * @return {@link java.lang.String} <p>The signer variable return object is <code>String</code> type.</p>
-     * @see java.lang.String
+     * @see  java.lang.String
+     * @return  {@link java.lang.String} <p>The signer variable return object is <code>String</code> type.</p>
      */
     public String signerVariable(String prefix) {
         return SQLConstants.SIGNER + SQLConstants.CURLY_LT
@@ -410,8 +411,8 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
      * <code>dollarVariable</code>
      * <p>The dollar variable method.</p>
      * @param prefix {@link java.lang.String} <p>The prefix parameter is <code>String</code> type.</p>
-     * @return {@link java.lang.String} <p>The dollar variable return object is <code>String</code> type.</p>
-     * @see java.lang.String
+     * @see  java.lang.String
+     * @return  {@link java.lang.String} <p>The dollar variable return object is <code>String</code> type.</p>
      */
     public String dollarVariable(String prefix) {
         return SQLConstants.DOLLAR + SQLConstants.CURLY_LT
@@ -427,10 +428,10 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
      * <code>property</code>
      * <p>The property method.</p>
      * @param identityType {@link java.lang.Class} <p>The identity type parameter is <code>Class</code> type.</p>
-     * @param property     {@link java.lang.String} <p>The property parameter is <code>String</code> type.</p>
-     * @return {@link java.lang.String} <p>The property return object is <code>String</code> type.</p>
-     * @see java.lang.Class
-     * @see java.lang.String
+     * @param property {@link java.lang.String} <p>The property parameter is <code>String</code> type.</p>
+     * @see  java.lang.Class
+     * @see  java.lang.String
+     * @return  {@link java.lang.String} <p>The property return object is <code>String</code> type.</p>
      */
     public static String property(Class<?> identityType, String property) {
         if (String.class == identityType || Date.class == identityType) {
@@ -444,8 +445,8 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
      * <code>signerProperty</code>
      * <p>The signer property method.</p>
      * @param property {@link java.lang.String} <p>The property parameter is <code>String</code> type.</p>
-     * @return {@link java.lang.String} <p>The signer property return object is <code>String</code> type.</p>
-     * @see java.lang.String
+     * @see  java.lang.String
+     * @return  {@link java.lang.String} <p>The signer property return object is <code>String</code> type.</p>
      */
     public static String signerProperty(String property) {
         return SQLConstants.SIGNER + SQLConstants.CURLY_LT
@@ -456,8 +457,8 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
      * <code>dollarProperty</code>
      * <p>The dollar property method.</p>
      * @param property {@link java.lang.String} <p>The property parameter is <code>String</code> type.</p>
-     * @return {@link java.lang.String} <p>The dollar property return object is <code>String</code> type.</p>
-     * @see java.lang.String
+     * @see  java.lang.String
+     * @return  {@link java.lang.String} <p>The dollar property return object is <code>String</code> type.</p>
      */
     public static String dollarProperty(String property) {
         return SQLConstants.DOLLAR + SQLConstants.CURLY_LT
@@ -467,20 +468,31 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
     /**
      * <code>excluded</code>
      * <p>The excluded method.</p>
+     * @param excludedType {@link io.github.nichetoolkit.mybatis.enums.ExcludedType} <p>The excluded type parameter is <code>ExcludedType</code> type.</p>
      * @param tablename {@link java.lang.String} <p>The tablename parameter is <code>String</code> type.</p>
-     * @return {@link java.lang.String} <p>The excluded return object is <code>String</code> type.</p>
-     * @see java.lang.String
-     * @see org.springframework.lang.NonNull
+     * @see  io.github.nichetoolkit.mybatis.enums.ExcludedType
+     * @see  java.lang.String
+     * @see  org.springframework.lang.NonNull
+     * @return  {@link java.lang.String} <p>The excluded return object is <code>String</code> type.</p>
      */
-    public String excluded(@NonNull String tablename) {
+    public String excluded(ExcludedType excludedType, @NonNull String tablename) {
         if (this.forceUpdate) {
             return this.columnName() + SQLConstants.BLANK + SQLConstants.CONTRAST_EQ
                     + SQLConstants.BLANK + this.forceUpdateValue;
         } else {
+            String excludedColumn;
+            switch (excludedType) {
+                case VALUES:
+                    excludedColumn = excludedType.getKey() + SQLConstants.BRACE_LT + this.columnName() + SQLConstants.BRACE_GT;
+                    break;
+                case EXCLUDED:
+                default:
+                    excludedColumn = excludedType.getKey() + SQLConstants.PERIOD + this.columnName();
+                    break;
+            }
             return this.columnName() + SQLConstants.BLANK + SQLConstants.CONTRAST_EQ + SQLConstants.BLANK + SQLConstants.CASE
-                    + SQLConstants.BLANK + SQLConstants.WHEN + SQLConstants.BLANK + SQLConstants.EXCLUDED + SQLConstants.PERIOD
-                    + this.columnName() + SQLConstants.BLANK + SQLConstants.IS_NOT_NULL + SQLConstants.BLANK + SQLConstants.THEN
-                    + SQLConstants.BLANK + SQLConstants.EXCLUDED + SQLConstants.PERIOD + this.columnName() + SQLConstants.BLANK
+                    + SQLConstants.BLANK + SQLConstants.WHEN + SQLConstants.BLANK + excludedColumn + SQLConstants.BLANK
+                    + SQLConstants.IS_NOT_NULL + SQLConstants.BLANK + SQLConstants.THEN + SQLConstants.BLANK + excludedColumn + SQLConstants.BLANK
                     + SQLConstants.ELSE + SQLConstants.BLANK + tablename + SQLConstants.PERIOD + this.columnName() + SQLConstants.BLANK + SQLConstants.END;
         }
     }
@@ -488,19 +500,31 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
     /**
      * <code>excluded</code>
      * <p>The excluded method.</p>
-     * @return {@link java.lang.String} <p>The excluded return object is <code>String</code> type.</p>
-     * @see java.lang.String
+     * @return  {@link java.lang.String} <p>The excluded return object is <code>String</code> type.</p>
+     * @see  java.lang.String
      */
     public String excluded() {
-        return excluded(this.table.tablename());
+        return excluded(ExcludedType.EXCLUDED, this.table.tablename());
+    }
+
+    /**
+     * <code>excluded</code>
+     * <p>The excluded method.</p>
+     * @param excludedType {@link io.github.nichetoolkit.mybatis.enums.ExcludedType} <p>The excluded type parameter is <code>ExcludedType</code> type.</p>
+     * @see  io.github.nichetoolkit.mybatis.enums.ExcludedType
+     * @see  java.lang.String
+     * @return  {@link java.lang.String} <p>The excluded return object is <code>String</code> type.</p>
+     */
+    public String excluded(ExcludedType excludedType) {
+        return excluded(excludedType, this.table.tablename());
     }
 
     /**
      * <code>keyword</code>
      * <p>The keyword method.</p>
      * @param keyword {@link java.lang.String} <p>The keyword parameter is <code>String</code> type.</p>
-     * @return {@link java.lang.String} <p>The keyword return object is <code>String</code> type.</p>
-     * @see java.lang.String
+     * @see  java.lang.String
+     * @return  {@link java.lang.String} <p>The keyword return object is <code>String</code> type.</p>
      */
     public String keyword(String keyword) {
         return SQLConstants.COMMA + SQLConstants.BLANK + keyword + SQLConstants.CONTRAST_EQ;
@@ -509,8 +533,8 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
     /**
      * <code>jdbcTypeVariable</code>
      * <p>The jdbc type variable method.</p>
-     * @return {@link java.util.Optional} <p>The jdbc type variable return object is <code>Optional</code> type.</p>
-     * @see java.util.Optional
+     * @return  {@link java.util.Optional} <p>The jdbc type variable return object is <code>Optional</code> type.</p>
+     * @see  java.util.Optional
      */
     public Optional<String> jdbcTypeVariable() {
         if (this.jdbcType != null && this.jdbcType != JdbcType.UNDEFINED) {
@@ -522,8 +546,8 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
     /**
      * <code>typeHandlerVariable</code>
      * <p>The type handler variable method.</p>
-     * @return {@link java.util.Optional} <p>The type handler variable return object is <code>Optional</code> type.</p>
-     * @see java.util.Optional
+     * @return  {@link java.util.Optional} <p>The type handler variable return object is <code>Optional</code> type.</p>
+     * @see  java.util.Optional
      */
     public Optional<String> typeHandlerVariable() {
         if (this.typeHandler != null && this.typeHandler != UnknownTypeHandler.class) {
@@ -535,8 +559,8 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
     /**
      * <code>numericScaleVariable</code>
      * <p>The numeric scale variable method.</p>
-     * @return {@link java.util.Optional} <p>The numeric scale variable return object is <code>Optional</code> type.</p>
-     * @see java.util.Optional
+     * @return  {@link java.util.Optional} <p>The numeric scale variable return object is <code>Optional</code> type.</p>
+     * @see  java.util.Optional
      */
     public Optional<String> numericScaleVariable() {
         if (GeneralUtils.isNotEmpty(this.numericScale)) {
@@ -548,8 +572,8 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
     /**
      * <code>columnAsProperty</code>
      * <p>The column as property method.</p>
-     * @return {@link java.lang.String} <p>The column as property return object is <code>String</code> type.</p>
-     * @see java.lang.String
+     * @return  {@link java.lang.String} <p>The column as property return object is <code>String</code> type.</p>
+     * @see  java.lang.String
      */
     public String columnAsProperty() {
         return columnAsProperty(SQLConstants.EMPTY);
@@ -559,8 +583,8 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
      * <code>aliasColumnAsProperty</code>
      * <p>The alias column as property method.</p>
      * @param alias {@link java.lang.String} <p>The alias parameter is <code>String</code> type.</p>
-     * @return {@link java.lang.String} <p>The alias column as property return object is <code>String</code> type.</p>
-     * @see java.lang.String
+     * @see  java.lang.String
+     * @return  {@link java.lang.String} <p>The alias column as property return object is <code>String</code> type.</p>
      */
     public String aliasColumnAsProperty(String alias) {
         return aliasColumnAsProperty(alias, SQLConstants.EMPTY);
@@ -570,8 +594,8 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
      * <code>columnAsProperty</code>
      * <p>The column as property method.</p>
      * @param prefix {@link java.lang.String} <p>The prefix parameter is <code>String</code> type.</p>
-     * @return {@link java.lang.String} <p>The column as property return object is <code>String</code> type.</p>
-     * @see java.lang.String
+     * @see  java.lang.String
+     * @return  {@link java.lang.String} <p>The column as property return object is <code>String</code> type.</p>
      */
     public String columnAsProperty(String prefix) {
         return aliasColumnAsProperty(SQLConstants.EMPTY, prefix);
@@ -580,10 +604,10 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
     /**
      * <code>aliasColumnAsProperty</code>
      * <p>The alias column as property method.</p>
-     * @param alias  {@link java.lang.String} <p>The alias parameter is <code>String</code> type.</p>
+     * @param alias {@link java.lang.String} <p>The alias parameter is <code>String</code> type.</p>
      * @param prefix {@link java.lang.String} <p>The prefix parameter is <code>String</code> type.</p>
-     * @return {@link java.lang.String} <p>The alias column as property return object is <code>String</code> type.</p>
-     * @see java.lang.String
+     * @see  java.lang.String
+     * @return  {@link java.lang.String} <p>The alias column as property return object is <code>String</code> type.</p>
      */
     public String aliasColumnAsProperty(String alias, String prefix) {
         String column = this.columnName();
@@ -602,8 +626,8 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
      * <code>columnEqualsDollar</code>
      * <p>The column equals dollar method.</p>
      * @param variable {@link java.lang.String} <p>The variable parameter is <code>String</code> type.</p>
-     * @return {@link java.lang.String} <p>The column equals dollar return object is <code>String</code> type.</p>
-     * @see java.lang.String
+     * @see  java.lang.String
+     * @return  {@link java.lang.String} <p>The column equals dollar return object is <code>String</code> type.</p>
      */
     public String columnEqualsDollar(String variable) {
         return aliasColumnEqualsVariable(SQLConstants.EMPTY, variable, true);
@@ -612,10 +636,10 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
     /**
      * <code>aliasColumnEqualsDollar</code>
      * <p>The alias column equals dollar method.</p>
-     * @param alias    {@link java.lang.String} <p>The alias parameter is <code>String</code> type.</p>
+     * @param alias {@link java.lang.String} <p>The alias parameter is <code>String</code> type.</p>
      * @param variable {@link java.lang.String} <p>The variable parameter is <code>String</code> type.</p>
-     * @return {@link java.lang.String} <p>The alias column equals dollar return object is <code>String</code> type.</p>
-     * @see java.lang.String
+     * @see  java.lang.String
+     * @return  {@link java.lang.String} <p>The alias column equals dollar return object is <code>String</code> type.</p>
      */
     public String aliasColumnEqualsDollar(String alias, String variable) {
         return aliasColumnEqualsVariable(alias, variable, true);
@@ -625,8 +649,8 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
      * <code>columnEqualsSigner</code>
      * <p>The column equals signer method.</p>
      * @param variable {@link java.lang.String} <p>The variable parameter is <code>String</code> type.</p>
-     * @return {@link java.lang.String} <p>The column equals signer return object is <code>String</code> type.</p>
-     * @see java.lang.String
+     * @see  java.lang.String
+     * @return  {@link java.lang.String} <p>The column equals signer return object is <code>String</code> type.</p>
      */
     public String columnEqualsSigner(String variable) {
         return aliasColumnEqualsVariable(SQLConstants.EMPTY, variable, false);
@@ -635,10 +659,10 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
     /**
      * <code>aliasColumnEqualsSigner</code>
      * <p>The alias column equals signer method.</p>
-     * @param alias    {@link java.lang.String} <p>The alias parameter is <code>String</code> type.</p>
+     * @param alias {@link java.lang.String} <p>The alias parameter is <code>String</code> type.</p>
      * @param variable {@link java.lang.String} <p>The variable parameter is <code>String</code> type.</p>
-     * @return {@link java.lang.String} <p>The alias column equals signer return object is <code>String</code> type.</p>
-     * @see java.lang.String
+     * @see  java.lang.String
+     * @return  {@link java.lang.String} <p>The alias column equals signer return object is <code>String</code> type.</p>
      */
     public String aliasColumnEqualsSigner(String alias, String variable) {
         return aliasColumnEqualsVariable(alias, variable, false);
@@ -647,10 +671,10 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
     /**
      * <code>columnEqualsVariable</code>
      * <p>The column equals variable method.</p>
-     * @param variable         {@link java.lang.String} <p>The variable parameter is <code>String</code> type.</p>
+     * @param variable {@link java.lang.String} <p>The variable parameter is <code>String</code> type.</p>
      * @param isDollarOrSigner boolean <p>The is dollar or signer parameter is <code>boolean</code> type.</p>
-     * @return {@link java.lang.String} <p>The column equals variable return object is <code>String</code> type.</p>
-     * @see java.lang.String
+     * @see  java.lang.String
+     * @return  {@link java.lang.String} <p>The column equals variable return object is <code>String</code> type.</p>
      */
     public String columnEqualsVariable(String variable, boolean isDollarOrSigner) {
         return aliasColumnEqualsVariable(SQLConstants.EMPTY, variable, isDollarOrSigner);
@@ -659,11 +683,11 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
     /**
      * <code>aliasColumnEqualsVariable</code>
      * <p>The alias column equals variable method.</p>
-     * @param alias            {@link java.lang.String} <p>The alias parameter is <code>String</code> type.</p>
-     * @param variable         {@link java.lang.String} <p>The variable parameter is <code>String</code> type.</p>
+     * @param alias {@link java.lang.String} <p>The alias parameter is <code>String</code> type.</p>
+     * @param variable {@link java.lang.String} <p>The variable parameter is <code>String</code> type.</p>
      * @param isDollarOrSigner boolean <p>The is dollar or signer parameter is <code>boolean</code> type.</p>
-     * @return {@link java.lang.String} <p>The alias column equals variable return object is <code>String</code> type.</p>
-     * @see java.lang.String
+     * @see  java.lang.String
+     * @return  {@link java.lang.String} <p>The alias column equals variable return object is <code>String</code> type.</p>
      */
     public String aliasColumnEqualsVariable(String alias, String variable, boolean isDollarOrSigner) {
         return aliasColumn(alias) + SQLConstants.BLANK + SQLConstants.CONTRAST_EQ
@@ -674,8 +698,8 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
      * <code>columnNotEqualsDollar</code>
      * <p>The column not equals dollar method.</p>
      * @param variable {@link java.lang.String} <p>The variable parameter is <code>String</code> type.</p>
-     * @return {@link java.lang.String} <p>The column not equals dollar return object is <code>String</code> type.</p>
-     * @see java.lang.String
+     * @see  java.lang.String
+     * @return  {@link java.lang.String} <p>The column not equals dollar return object is <code>String</code> type.</p>
      */
     public String columnNotEqualsDollar(String variable) {
         return aliasColumnEqualsVariable(SQLConstants.EMPTY, variable, true);
@@ -684,10 +708,10 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
     /**
      * <code>aliasNotColumnEqualsDollar</code>
      * <p>The alias not column equals dollar method.</p>
-     * @param alias    {@link java.lang.String} <p>The alias parameter is <code>String</code> type.</p>
+     * @param alias {@link java.lang.String} <p>The alias parameter is <code>String</code> type.</p>
      * @param variable {@link java.lang.String} <p>The variable parameter is <code>String</code> type.</p>
-     * @return {@link java.lang.String} <p>The alias not column equals dollar return object is <code>String</code> type.</p>
-     * @see java.lang.String
+     * @see  java.lang.String
+     * @return  {@link java.lang.String} <p>The alias not column equals dollar return object is <code>String</code> type.</p>
      */
     public String aliasNotColumnEqualsDollar(String alias, String variable) {
         return aliasColumnEqualsVariable(alias, variable, true);
@@ -697,8 +721,8 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
      * <code>columnNotEqualsSigner</code>
      * <p>The column not equals signer method.</p>
      * @param variable {@link java.lang.String} <p>The variable parameter is <code>String</code> type.</p>
-     * @return {@link java.lang.String} <p>The column not equals signer return object is <code>String</code> type.</p>
-     * @see java.lang.String
+     * @see  java.lang.String
+     * @return  {@link java.lang.String} <p>The column not equals signer return object is <code>String</code> type.</p>
      */
     public String columnNotEqualsSigner(String variable) {
         return aliasColumnEqualsVariable(SQLConstants.EMPTY, variable, false);
@@ -707,10 +731,10 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
     /**
      * <code>aliasColumnNotEqualsSigner</code>
      * <p>The alias column not equals signer method.</p>
-     * @param alias    {@link java.lang.String} <p>The alias parameter is <code>String</code> type.</p>
+     * @param alias {@link java.lang.String} <p>The alias parameter is <code>String</code> type.</p>
      * @param variable {@link java.lang.String} <p>The variable parameter is <code>String</code> type.</p>
-     * @return {@link java.lang.String} <p>The alias column not equals signer return object is <code>String</code> type.</p>
-     * @see java.lang.String
+     * @see  java.lang.String
+     * @return  {@link java.lang.String} <p>The alias column not equals signer return object is <code>String</code> type.</p>
      */
     public String aliasColumnNotEqualsSigner(String alias, String variable) {
         return aliasColumnEqualsVariable(alias, variable, false);
@@ -719,10 +743,10 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
     /**
      * <code>columnNotEqualsVariable</code>
      * <p>The column not equals variable method.</p>
-     * @param variable         {@link java.lang.String} <p>The variable parameter is <code>String</code> type.</p>
+     * @param variable {@link java.lang.String} <p>The variable parameter is <code>String</code> type.</p>
      * @param isDollarOrSigner boolean <p>The is dollar or signer parameter is <code>boolean</code> type.</p>
-     * @return {@link java.lang.String} <p>The column not equals variable return object is <code>String</code> type.</p>
-     * @see java.lang.String
+     * @see  java.lang.String
+     * @return  {@link java.lang.String} <p>The column not equals variable return object is <code>String</code> type.</p>
      */
     public String columnNotEqualsVariable(String variable, boolean isDollarOrSigner) {
         return aliasColumnEqualsVariable(SQLConstants.EMPTY, variable, isDollarOrSigner);
@@ -731,11 +755,11 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
     /**
      * <code>aliasColumnNotEqualsVariable</code>
      * <p>The alias column not equals variable method.</p>
-     * @param alias            {@link java.lang.String} <p>The alias parameter is <code>String</code> type.</p>
-     * @param variable         {@link java.lang.String} <p>The variable parameter is <code>String</code> type.</p>
+     * @param alias {@link java.lang.String} <p>The alias parameter is <code>String</code> type.</p>
+     * @param variable {@link java.lang.String} <p>The variable parameter is <code>String</code> type.</p>
      * @param isDollarOrSigner boolean <p>The is dollar or signer parameter is <code>boolean</code> type.</p>
-     * @return {@link java.lang.String} <p>The alias column not equals variable return object is <code>String</code> type.</p>
-     * @see java.lang.String
+     * @see  java.lang.String
+     * @return  {@link java.lang.String} <p>The alias column not equals variable return object is <code>String</code> type.</p>
      */
     public String aliasColumnNotEqualsVariable(String alias, String variable, boolean isDollarOrSigner) {
         return aliasColumn(alias) + SQLConstants.BLANK + SQLConstants.CONTRAST_NEQ
@@ -745,8 +769,8 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
     /**
      * <code>columnEqualsProperty</code>
      * <p>The column equals property method.</p>
-     * @return {@link java.lang.String} <p>The column equals property return object is <code>String</code> type.</p>
-     * @see java.lang.String
+     * @return  {@link java.lang.String} <p>The column equals property return object is <code>String</code> type.</p>
+     * @see  java.lang.String
      */
     public String columnEqualsProperty() {
         return aliasColumnEqualsProperty(SQLConstants.EMPTY);
@@ -756,8 +780,8 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
      * <code>aliasColumnEqualsProperty</code>
      * <p>The alias column equals property method.</p>
      * @param alias {@link java.lang.String} <p>The alias parameter is <code>String</code> type.</p>
-     * @return {@link java.lang.String} <p>The alias column equals property return object is <code>String</code> type.</p>
-     * @see java.lang.String
+     * @see  java.lang.String
+     * @return  {@link java.lang.String} <p>The alias column equals property return object is <code>String</code> type.</p>
      */
     public String aliasColumnEqualsProperty(String alias) {
         return aliasColumnEqualsProperty(alias, SQLConstants.EMPTY);
@@ -766,8 +790,8 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
     /**
      * <code>columnNotEqualsProperty</code>
      * <p>The column not equals property method.</p>
-     * @return {@link java.lang.String} <p>The column not equals property return object is <code>String</code> type.</p>
-     * @see java.lang.String
+     * @return  {@link java.lang.String} <p>The column not equals property return object is <code>String</code> type.</p>
+     * @see  java.lang.String
      */
     public String columnNotEqualsProperty() {
         return aliasColumnNotEqualsProperty(SQLConstants.EMPTY);
@@ -777,8 +801,8 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
      * <code>aliasColumnNotEqualsProperty</code>
      * <p>The alias column not equals property method.</p>
      * @param alias {@link java.lang.String} <p>The alias parameter is <code>String</code> type.</p>
-     * @return {@link java.lang.String} <p>The alias column not equals property return object is <code>String</code> type.</p>
-     * @see java.lang.String
+     * @see  java.lang.String
+     * @return  {@link java.lang.String} <p>The alias column not equals property return object is <code>String</code> type.</p>
      */
     public String aliasColumnNotEqualsProperty(String alias) {
         return aliasColumnNotEqualsProperty(alias, SQLConstants.EMPTY);
@@ -788,8 +812,8 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
      * <code>columnEqualsProperty</code>
      * <p>The column equals property method.</p>
      * @param prefix {@link java.lang.String} <p>The prefix parameter is <code>String</code> type.</p>
-     * @return {@link java.lang.String} <p>The column equals property return object is <code>String</code> type.</p>
-     * @see java.lang.String
+     * @see  java.lang.String
+     * @return  {@link java.lang.String} <p>The column equals property return object is <code>String</code> type.</p>
      */
     public String columnEqualsProperty(String prefix) {
         return aliasColumnEqualsProperty(SQLConstants.EMPTY, prefix);
@@ -798,10 +822,10 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
     /**
      * <code>aliasColumnEqualsProperty</code>
      * <p>The alias column equals property method.</p>
-     * @param alias  {@link java.lang.String} <p>The alias parameter is <code>String</code> type.</p>
+     * @param alias {@link java.lang.String} <p>The alias parameter is <code>String</code> type.</p>
      * @param prefix {@link java.lang.String} <p>The prefix parameter is <code>String</code> type.</p>
-     * @return {@link java.lang.String} <p>The alias column equals property return object is <code>String</code> type.</p>
-     * @see java.lang.String
+     * @see  java.lang.String
+     * @return  {@link java.lang.String} <p>The alias column equals property return object is <code>String</code> type.</p>
      */
     public String aliasColumnEqualsProperty(String alias, String prefix) {
         return aliasColumn(alias) + SQLConstants.BLANK + SQLConstants.CONTRAST_EQ
@@ -812,8 +836,8 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
      * <code>columnNotEqualsProperty</code>
      * <p>The column not equals property method.</p>
      * @param prefix {@link java.lang.String} <p>The prefix parameter is <code>String</code> type.</p>
-     * @return {@link java.lang.String} <p>The column not equals property return object is <code>String</code> type.</p>
-     * @see java.lang.String
+     * @see  java.lang.String
+     * @return  {@link java.lang.String} <p>The column not equals property return object is <code>String</code> type.</p>
      */
     public String columnNotEqualsProperty(String prefix) {
         return aliasColumnNotEqualsProperty(SQLConstants.EMPTY, prefix);
@@ -822,10 +846,10 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
     /**
      * <code>aliasColumnNotEqualsProperty</code>
      * <p>The alias column not equals property method.</p>
-     * @param alias  {@link java.lang.String} <p>The alias parameter is <code>String</code> type.</p>
+     * @param alias {@link java.lang.String} <p>The alias parameter is <code>String</code> type.</p>
      * @param prefix {@link java.lang.String} <p>The prefix parameter is <code>String</code> type.</p>
-     * @return {@link java.lang.String} <p>The alias column not equals property return object is <code>String</code> type.</p>
-     * @see java.lang.String
+     * @see  java.lang.String
+     * @return  {@link java.lang.String} <p>The alias column not equals property return object is <code>String</code> type.</p>
      */
     public String aliasColumnNotEqualsProperty(String alias, String prefix) {
         return aliasColumn(alias) + SQLConstants.BLANK + SQLConstants.CONTRAST_NEQ
@@ -835,8 +859,8 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
     /**
      * <code>notNullTest</code>
      * <p>The not null test method.</p>
-     * @return {@link java.lang.String} <p>The not null test return object is <code>String</code> type.</p>
-     * @see java.lang.String
+     * @return  {@link java.lang.String} <p>The not null test return object is <code>String</code> type.</p>
+     * @see  java.lang.String
      */
     public String notNullTest() {
         return notNullTest(SQLConstants.EMPTY);
@@ -846,8 +870,8 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
      * <code>notNullTest</code>
      * <p>The not null test method.</p>
      * @param prefix {@link java.lang.String} <p>The prefix parameter is <code>String</code> type.</p>
-     * @return {@link java.lang.String} <p>The not null test return object is <code>String</code> type.</p>
-     * @see java.lang.String
+     * @see  java.lang.String
+     * @return  {@link java.lang.String} <p>The not null test return object is <code>String</code> type.</p>
      */
     public String notNullTest(String prefix) {
         return property(prefix) + SQLConstants.BLANK + SQLConstants.CONTRAST_NEQ
@@ -857,8 +881,8 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
     /**
      * <code>notEmptyTest</code>
      * <p>The not empty test method.</p>
-     * @return {@link java.lang.String} <p>The not empty test return object is <code>String</code> type.</p>
-     * @see java.lang.String
+     * @return  {@link java.lang.String} <p>The not empty test return object is <code>String</code> type.</p>
+     * @see  java.lang.String
      */
     public String notEmptyTest() {
         return notEmptyTest(SQLConstants.EMPTY);
@@ -868,8 +892,8 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
      * <code>notEmptyTest</code>
      * <p>The not empty test method.</p>
      * @param prefix {@link java.lang.String} <p>The prefix parameter is <code>String</code> type.</p>
-     * @return {@link java.lang.String} <p>The not empty test return object is <code>String</code> type.</p>
-     * @see java.lang.String
+     * @see  java.lang.String
+     * @return  {@link java.lang.String} <p>The not empty test return object is <code>String</code> type.</p>
      */
     public String notEmptyTest(String prefix) {
         if (this.field.fieldType() == String.class || this.field.fieldType() == Date.class) {

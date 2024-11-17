@@ -5,6 +5,7 @@ import io.github.nichetoolkit.mybatis.consts.EntityConstants;
 import io.github.nichetoolkit.mybatis.consts.SQLConstants;
 import io.github.nichetoolkit.mybatis.consts.ScriptConstants;
 import io.github.nichetoolkit.mybatis.enums.DatabaseType;
+import io.github.nichetoolkit.mybatis.enums.ExcludedType;
 import io.github.nichetoolkit.mybatis.error.MybatisParamErrorException;
 import io.github.nichetoolkit.mybatis.error.MybatisUnsupportedErrorException;
 import io.github.nichetoolkit.rest.RestException;
@@ -918,14 +919,18 @@ public interface MybatisSqlProvider {
             sqlBuilder.onDuplicateKey();
         }
         if (optionalColumns.isPresent()) {
-            sqlBuilder.doUpdate(conflictOrDuplicate).set();
+            sqlBuilder.doUpdate(conflictOrDuplicate);
+            if (conflictOrDuplicate) {
+                sqlBuilder.set();
+            }
         } else {
             sqlBuilder.doNothing();
         }
+        ExcludedType excludedType = MybatisSqlProviderHolder.defaultExcludedType();
         optionalColumns.ifEmptyPresent(updateColumns -> {
-            String collect = RestStream.stream(updateColumns).map(column -> column.excluded(table.tablename(tablename)))
+            String collect = RestStream.stream(updateColumns).map(column -> column.excluded(excludedType, table.tablename(tablename)))
                     .collect(RestCollectors.joining(SQLConstants.COMMA + SQLConstants.BLANK + SQLConstants.LINEFEED));
-            sqlBuilder.set().append(collect);
+            sqlBuilder.append(collect);
         });
         return sqlBuilder.toString();
     }

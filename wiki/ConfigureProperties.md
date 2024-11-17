@@ -37,6 +37,7 @@ nichetoolkit.mybatis.cache.use-once=false
 | `update-logic`  |   `Boolean`    |      `false`      |     the switch of update logic on mybatis configuration.     |
 | `database-type` | `DatabaseType` |   `postgresql`    | the global database type of table on mybatis configuration.  |
 |  `style-type`   |  `StyleType`   | `lower_underline` | the global sql style type of table on mybatis configuration. |
+|  `excluded-type`   | `ExcludedType` | `excluded` | the global sql excluded type of table on mybatis configuration. |
 |  `properties`   |     `Map`      |                   |   the global properties of table on mybatis configuration.   |
 |   `excludes`    |   `String[]`   |                   |    the global excludes of table on mybatis configuration.    |
 |    `ignores`    |   `String[]`   |                   |    the global ignores of table on mybatis configuration.     |
@@ -49,6 +50,7 @@ nichetoolkit.mybatis.table.schema=
 nichetoolkit.mybatis.table.update-logic=false
 nichetoolkit.mybatis.table.database-type=postgresql
 nichetoolkit.mybatis.table.style-type=lower_underline
+nichetoolkit.mybatis.table.excluded-type=excluded
 nichetoolkit.mybatis.table.excludes=
 nichetoolkit.mybatis.table.ignores=
 ```

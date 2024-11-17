@@ -46,6 +46,13 @@
       "defaultValue": "lowerUnderline"
     },
     {
+      "name": "nichetoolkit.mybatis.table.excluded-type",
+      "type": "io.github.nichetoolkit.mybatis.enums.ExcludedType",
+      "sourceType": "io.github.nichetoolkit.mybatis.enums.ExcludedType",
+      "description": "the global sql excluded type of table on mybatis configuration.",
+      "defaultValue": "excluded"
+    },
+    {
       "name": "nichetoolkit.mybatis.table.properties",
       "type": "java.util.Map",
       "sourceType": "java.util.Map",
