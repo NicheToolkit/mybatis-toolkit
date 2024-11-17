@@ -3,7 +3,7 @@ package io.github.nichetoolkit.mybatis.style;
 import io.github.nichetoolkit.mybatis.MybatisField;
 import io.github.nichetoolkit.mybatis.MybatisTableStyle;
 import io.github.nichetoolkit.mybatis.MybatisTable;
-import io.github.nichetoolkit.mybatis.enums.StyleType;
+import io.github.nichetoolkit.rice.enums.StyleType;
 import io.github.nichetoolkit.rest.util.GeneralUtils;
 
 import java.lang.reflect.Field;
@@ -11,8 +11,8 @@ import java.lang.reflect.Field;
 /**
  * <code>DefaultNormalStyle</code>
  * <p>The default normal style class.</p>
+ * @see  io.github.nichetoolkit.mybatis.MybatisTableStyle
  * @author Cyan (snow22314@outlook.com)
- * @see io.github.nichetoolkit.mybatis.MybatisTableStyle
  * @since Jdk1.8
  */
 public class DefaultNormalStyle implements MybatisTableStyle {

@@ -1,6 +1,6 @@
 package io.github.nichetoolkit.mybatis;
 
-import io.github.nichetoolkit.mybatis.enums.DatabaseType;
+import io.github.nichetoolkit.rice.enums.DatabaseType;
 import io.github.nichetoolkit.mybatis.error.MybatisProviderLackError;
 import io.github.nichetoolkit.rest.stream.RestStream;
 import io.github.nichetoolkit.rest.util.GeneralUtils;

@@ -6,9 +6,10 @@ import io.github.nichetoolkit.mybatis.MybatisTable;
 import io.github.nichetoolkit.mybatis.MybatisTableFactory;
 import io.github.nichetoolkit.mybatis.configure.MybatisTableProperties;
 import io.github.nichetoolkit.rest.util.GeneralUtils;
-import io.github.nichetoolkit.mybatis.enums.StyleType;
-import io.github.nichetoolkit.mybatis.stereotype.table.RestProperties;
-import io.github.nichetoolkit.mybatis.stereotype.table.*;
+import io.github.nichetoolkit.rice.RestStyle;
+import io.github.nichetoolkit.rice.enums.StyleType;
+import io.github.nichetoolkit.rice.table.RestProperties;
+import io.github.nichetoolkit.rice.table.*;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
@@ -163,17 +164,17 @@ public class DefaultTableFactory implements MybatisTableFactory {
             mybatisTable.setCatalog(GeneralUtils.isEmpty(catalog) ? tableProperties.getCatalog() : catalog);
             mybatisTable.setSchema(GeneralUtils.isEmpty(schema) ? tableProperties.getSchema() : schema);
             if (GeneralUtils.isNotEmpty(styleName)) {
-                mybatisStyle = MybatisTableStyle.style(styleName);
+                mybatisStyle = (MybatisTableStyle) RestStyle.style(styleName);
             } else if (GeneralUtils.isNotEmpty(styleType)) {
                 mybatisTable.setStyleName(styleType.getKey());
-                mybatisStyle = MybatisTableStyle.style(styleType);
+                mybatisStyle = (MybatisTableStyle) RestStyle.style(styleType);
             } else {
                 StyleType defaultStyleType = tableProperties.getStyleType();
-                mybatisStyle = MybatisTableStyle.style(defaultStyleType);
+                mybatisStyle = (MybatisTableStyle) RestStyle.style(defaultStyleType);
             }
         } else {
             StyleType defaultStyleType = tableProperties.getStyleType();
-            mybatisStyle = MybatisTableStyle.style(defaultStyleType);
+            mybatisStyle = (MybatisTableStyle) RestStyle.style(defaultStyleType);
         }
         return mybatisStyle;
     }

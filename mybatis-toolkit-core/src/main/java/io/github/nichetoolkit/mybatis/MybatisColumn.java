@@ -1,9 +1,9 @@
 package io.github.nichetoolkit.mybatis;
 
-import io.github.nichetoolkit.mybatis.consts.SQLConstants;
-import io.github.nichetoolkit.mybatis.consts.ScriptConstants;
-import io.github.nichetoolkit.mybatis.enums.ExcludedType;
-import io.github.nichetoolkit.mybatis.enums.SortType;
+import io.github.nichetoolkit.rice.consts.SQLConstants;
+import io.github.nichetoolkit.rice.consts.ScriptConstants;
+import io.github.nichetoolkit.rice.enums.ExcludedType;
+import io.github.nichetoolkit.rice.enums.SortType;
 import io.github.nichetoolkit.rest.util.GeneralUtils;
 import lombok.Getter;
 import lombok.Setter;
@@ -64,8 +64,8 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
     protected Integer order;
     /**
      * <code>sortType</code>
-     * {@link io.github.nichetoolkit.mybatis.enums.SortType} <p>The <code>sortType</code> field.</p>
-     * @see  io.github.nichetoolkit.mybatis.enums.SortType
+     * {@link io.github.nichetoolkit.rice.enums.SortType} <p>The <code>sortType</code> field.</p>
+     * @see  io.github.nichetoolkit.rice.enums.SortType
      */
     protected SortType sortType;
     /**
@@ -468,9 +468,9 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
     /**
      * <code>excluded</code>
      * <p>The excluded method.</p>
-     * @param excludedType {@link io.github.nichetoolkit.mybatis.enums.ExcludedType} <p>The excluded type parameter is <code>ExcludedType</code> type.</p>
+     * @param excludedType {@link io.github.nichetoolkit.rice.enums.ExcludedType} <p>The excluded type parameter is <code>ExcludedType</code> type.</p>
      * @param tablename {@link java.lang.String} <p>The tablename parameter is <code>String</code> type.</p>
-     * @see  io.github.nichetoolkit.mybatis.enums.ExcludedType
+     * @see  io.github.nichetoolkit.rice.enums.ExcludedType
      * @see  java.lang.String
      * @see  org.springframework.lang.NonNull
      * @return  {@link java.lang.String} <p>The excluded return object is <code>String</code> type.</p>
@@ -510,8 +510,8 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
     /**
      * <code>excluded</code>
      * <p>The excluded method.</p>
-     * @param excludedType {@link io.github.nichetoolkit.mybatis.enums.ExcludedType} <p>The excluded type parameter is <code>ExcludedType</code> type.</p>
-     * @see  io.github.nichetoolkit.mybatis.enums.ExcludedType
+     * @param excludedType {@link io.github.nichetoolkit.rice.enums.ExcludedType} <p>The excluded type parameter is <code>ExcludedType</code> type.</p>
+     * @see  io.github.nichetoolkit.rice.enums.ExcludedType
      * @see  java.lang.String
      * @return  {@link java.lang.String} <p>The excluded return object is <code>String</code> type.</p>
      */

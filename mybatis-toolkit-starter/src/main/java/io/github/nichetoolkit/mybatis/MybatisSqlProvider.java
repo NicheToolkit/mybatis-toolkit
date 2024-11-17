@@ -1,11 +1,11 @@
 package io.github.nichetoolkit.mybatis;
 
-import io.github.nichetoolkit.mybatis.builder.SqlBuilder;
-import io.github.nichetoolkit.mybatis.consts.EntityConstants;
-import io.github.nichetoolkit.mybatis.consts.SQLConstants;
-import io.github.nichetoolkit.mybatis.consts.ScriptConstants;
-import io.github.nichetoolkit.mybatis.enums.DatabaseType;
-import io.github.nichetoolkit.mybatis.enums.ExcludedType;
+import io.github.nichetoolkit.rice.builder.SqlBuilder;
+import io.github.nichetoolkit.rice.consts.EntityConstants;
+import io.github.nichetoolkit.rice.consts.SQLConstants;
+import io.github.nichetoolkit.rice.consts.ScriptConstants;
+import io.github.nichetoolkit.rice.enums.DatabaseType;
+import io.github.nichetoolkit.rice.enums.ExcludedType;
 import io.github.nichetoolkit.mybatis.error.MybatisParamErrorException;
 import io.github.nichetoolkit.mybatis.error.MybatisUnsupportedErrorException;
 import io.github.nichetoolkit.rest.RestException;
@@ -584,12 +584,12 @@ public interface MybatisSqlProvider {
      * <p>The database type of sql method.</p>
      * @param tablename {@link java.lang.String} <p>The tablename parameter is <code>String</code> type.</p>
      * @param table {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>The table parameter is <code>MybatisTable</code> type.</p>
-     * @param sqlBuilder {@link io.github.nichetoolkit.mybatis.builder.SqlBuilder} <p>The sql builder parameter is <code>SqlBuilder</code> type.</p>
-     * @param databaseType {@link io.github.nichetoolkit.mybatis.enums.DatabaseType} <p>The database type parameter is <code>DatabaseType</code> type.</p>
+     * @param sqlBuilder {@link io.github.nichetoolkit.rice.builder.SqlBuilder} <p>The sql builder parameter is <code>SqlBuilder</code> type.</p>
+     * @param databaseType {@link io.github.nichetoolkit.rice.enums.DatabaseType} <p>The database type parameter is <code>DatabaseType</code> type.</p>
      * @see  java.lang.String
      * @see  io.github.nichetoolkit.mybatis.MybatisTable
-     * @see  io.github.nichetoolkit.mybatis.builder.SqlBuilder
-     * @see  io.github.nichetoolkit.mybatis.enums.DatabaseType
+     * @see  io.github.nichetoolkit.rice.builder.SqlBuilder
+     * @see  io.github.nichetoolkit.rice.enums.DatabaseType
      * @see  io.github.nichetoolkit.rest.RestException
      * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
      */

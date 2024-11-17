@@ -1,12 +1,12 @@
 package io.github.nichetoolkit.mybatis;
 
-import io.github.nichetoolkit.mybatis.builder.SqlUtils;
+import io.github.nichetoolkit.rice.builder.SqlUtils;
 import io.github.nichetoolkit.mybatis.defaults.DefaultColumnFactoryChain;
 import io.github.nichetoolkit.mybatis.defaults.DefaultTableFactoryChain;
 import io.github.nichetoolkit.mybatis.error.MybatisTableLackError;
-import io.github.nichetoolkit.mybatis.stereotype.column.RestAlertKey;
-import io.github.nichetoolkit.mybatis.stereotype.column.RestIdentityKey;
-import io.github.nichetoolkit.mybatis.stereotype.column.RestLinkKey;
+import io.github.nichetoolkit.rice.column.RestAlertKey;
+import io.github.nichetoolkit.rice.column.RestIdentityKey;
+import io.github.nichetoolkit.rice.column.RestLinkKey;
 import io.github.nichetoolkit.rest.RestException;
 import io.github.nichetoolkit.rest.error.lack.InterfaceLackError;
 import io.github.nichetoolkit.rest.util.GeneralUtils;
@@ -26,8 +26,8 @@ import java.util.function.Function;
 /**
  * <code>MybatisFactory</code>
  * <p>The mybatis factory class.</p>
+ * @see  lombok.extern.slf4j.Slf4j
  * @author Cyan (snow22314@outlook.com)
- * @see lombok.extern.slf4j.Slf4j
  * @since Jdk1.8
  */
 @Slf4j
@@ -36,17 +36,17 @@ public abstract class MybatisFactory {
     /**
      * <code>createTable</code>
      * <p>The create table method.</p>
-     * @param mapperType   {@link java.lang.Class} <p>The mapper type parameter is <code>Class</code> type.</p>
+     * @param mapperType {@link java.lang.Class} <p>The mapper type parameter is <code>Class</code> type.</p>
      * @param mapperMethod {@link java.lang.reflect.Method} <p>The mapper method parameter is <code>Method</code> type.</p>
-     * @return {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>The create table return object is <code>MybatisTable</code> type.</p>
+     * @see  java.lang.Class
+     * @see  org.springframework.lang.NonNull
+     * @see  java.lang.reflect.Method
+     * @see  org.springframework.lang.Nullable
+     * @see  io.github.nichetoolkit.mybatis.MybatisTable
+     * @see  java.lang.SuppressWarnings
+     * @see  io.github.nichetoolkit.rest.RestException
+     * @return  {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>The create table return object is <code>MybatisTable</code> type.</p>
      * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
-     * @see java.lang.Class
-     * @see org.springframework.lang.NonNull
-     * @see java.lang.reflect.Method
-     * @see org.springframework.lang.Nullable
-     * @see io.github.nichetoolkit.mybatis.MybatisTable
-     * @see java.lang.SuppressWarnings
-     * @see io.github.nichetoolkit.rest.RestException
      */
     @SuppressWarnings("all")
     public static MybatisTable createTable(@NonNull Class<?> mapperType, @Nullable Method mapperMethod) throws RestException {
@@ -62,16 +62,16 @@ public abstract class MybatisFactory {
     /**
      * <code>createTable</code>
      * <p>The create table method.</p>
-     * @param entityType    {@link java.lang.Class} <p>The entity type parameter is <code>Class</code> type.</p>
-     * @param identityType  {@link java.lang.Class} <p>The identity type parameter is <code>Class</code> type.</p>
-     * @param linkageType   {@link java.lang.Class} <p>The linkage type parameter is <code>Class</code> type.</p>
+     * @param entityType {@link java.lang.Class} <p>The entity type parameter is <code>Class</code> type.</p>
+     * @param identityType {@link java.lang.Class} <p>The identity type parameter is <code>Class</code> type.</p>
+     * @param linkageType {@link java.lang.Class} <p>The linkage type parameter is <code>Class</code> type.</p>
      * @param alertnessType {@link java.lang.Class} <p>The alertness type parameter is <code>Class</code> type.</p>
-     * @return {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>The create table return object is <code>MybatisTable</code> type.</p>
-     * @see java.lang.Class
-     * @see org.springframework.lang.NonNull
-     * @see org.springframework.lang.Nullable
-     * @see io.github.nichetoolkit.mybatis.MybatisTable
-     * @see java.lang.SuppressWarnings
+     * @see  java.lang.Class
+     * @see  org.springframework.lang.NonNull
+     * @see  org.springframework.lang.Nullable
+     * @see  io.github.nichetoolkit.mybatis.MybatisTable
+     * @see  java.lang.SuppressWarnings
+     * @return  {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>The create table return object is <code>MybatisTable</code> type.</p>
      */
     @SuppressWarnings("all")
     public static MybatisTable createTable(@NonNull Class<?> entityType, @Nullable Class<?> identityType, @Nullable Class<?> linkageType, @Nullable Class<?> alertnessType) {
@@ -135,14 +135,14 @@ public abstract class MybatisFactory {
     /**
      * <code>handleOfFields</code>
      * <p>The handle of fields method.</p>
-     * @param table              {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>The table parameter is <code>MybatisTable</code> type.</p>
-     * @param declaredType       {@link java.lang.Class} <p>The declared type parameter is <code>Class</code> type.</p>
+     * @param table {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>The table parameter is <code>MybatisTable</code> type.</p>
+     * @param declaredType {@link java.lang.Class} <p>The declared type parameter is <code>Class</code> type.</p>
      * @param columnFactoryChain {@link io.github.nichetoolkit.mybatis.MybatisColumnFactory.Chain} <p>The column factory chain parameter is <code>Chain</code> type.</p>
-     * @param fieldFunction      {@link java.util.function.Function} <p>The field function parameter is <code>Function</code> type.</p>
-     * @see io.github.nichetoolkit.mybatis.MybatisTable
-     * @see java.lang.Class
-     * @see io.github.nichetoolkit.mybatis.MybatisColumnFactory.Chain
-     * @see java.util.function.Function
+     * @param fieldFunction {@link java.util.function.Function} <p>The field function parameter is <code>Function</code> type.</p>
+     * @see  io.github.nichetoolkit.mybatis.MybatisTable
+     * @see  java.lang.Class
+     * @see  io.github.nichetoolkit.mybatis.MybatisColumnFactory.Chain
+     * @see  java.util.function.Function
      */
     protected static void handleOfFields(MybatisTable table, Class<?> declaredType, MybatisColumnFactory.Chain columnFactoryChain, Function<Field, MybatisField> fieldFunction) {
         /* 未处理的需要获取字段 */
@@ -181,21 +181,21 @@ public abstract class MybatisFactory {
         /**
          * <code>TABLE_FACTORY_CHAIN</code>
          * {@link io.github.nichetoolkit.mybatis.MybatisTableFactory.Chain} <p>The constant <code>TABLE_FACTORY_CHAIN</code> field.</p>
-         * @see io.github.nichetoolkit.mybatis.MybatisTableFactory.Chain
+         * @see  io.github.nichetoolkit.mybatis.MybatisTableFactory.Chain
          */
         private static volatile MybatisTableFactory.Chain TABLE_FACTORY_CHAIN;
         /**
          * <code>COLUMN_FACTORY_CHAIN</code>
          * {@link io.github.nichetoolkit.mybatis.MybatisColumnFactory.Chain} <p>The constant <code>COLUMN_FACTORY_CHAIN</code> field.</p>
-         * @see io.github.nichetoolkit.mybatis.MybatisColumnFactory.Chain
+         * @see  io.github.nichetoolkit.mybatis.MybatisColumnFactory.Chain
          */
         private static volatile MybatisColumnFactory.Chain COLUMN_FACTORY_CHAIN;
 
         /**
          * <code>tableFactoryChain</code>
          * <p>The table factory chain method.</p>
-         * @return {@link io.github.nichetoolkit.mybatis.MybatisTableFactory.Chain} <p>The table factory chain return object is <code>Chain</code> type.</p>
-         * @see io.github.nichetoolkit.mybatis.MybatisTableFactory.Chain
+         * @return  {@link io.github.nichetoolkit.mybatis.MybatisTableFactory.Chain} <p>The table factory chain return object is <code>Chain</code> type.</p>
+         * @see  io.github.nichetoolkit.mybatis.MybatisTableFactory.Chain
          */
         public static MybatisTableFactory.Chain tableFactoryChain() {
 
@@ -213,8 +213,8 @@ public abstract class MybatisFactory {
         /**
          * <code>columnFactoryChain</code>
          * <p>The column factory chain method.</p>
-         * @return {@link io.github.nichetoolkit.mybatis.MybatisColumnFactory.Chain} <p>The column factory chain return object is <code>Chain</code> type.</p>
-         * @see io.github.nichetoolkit.mybatis.MybatisColumnFactory.Chain
+         * @return  {@link io.github.nichetoolkit.mybatis.MybatisColumnFactory.Chain} <p>The column factory chain return object is <code>Chain</code> type.</p>
+         * @see  io.github.nichetoolkit.mybatis.MybatisColumnFactory.Chain
          */
         public static MybatisColumnFactory.Chain columnFactoryChain() {
             if (COLUMN_FACTORY_CHAIN == null) {

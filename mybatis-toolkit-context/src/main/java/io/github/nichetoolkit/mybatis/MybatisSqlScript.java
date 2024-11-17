@@ -1,8 +1,8 @@
 package io.github.nichetoolkit.mybatis;
 
-import io.github.nichetoolkit.mybatis.consts.EntityConstants;
-import io.github.nichetoolkit.mybatis.consts.SQLConstants;
-import io.github.nichetoolkit.mybatis.consts.ScriptConstants;
+import io.github.nichetoolkit.rice.consts.EntityConstants;
+import io.github.nichetoolkit.rice.consts.SQLConstants;
+import io.github.nichetoolkit.rice.consts.ScriptConstants;
 import io.github.nichetoolkit.mybatis.error.MybatisAssertErrorException;
 import io.github.nichetoolkit.rest.RestException;
 import io.github.nichetoolkit.rest.actuator.SupplierActuator;

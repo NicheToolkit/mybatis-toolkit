@@ -1,6 +1,6 @@
 package io.github.nichetoolkit.mybatis;
 
-import io.github.nichetoolkit.mybatis.consts.SQLConstants;
+import io.github.nichetoolkit.rice.consts.SQLConstants;
 import io.github.nichetoolkit.rest.RestException;
 import io.github.nichetoolkit.rest.actuator.SupplierActuator;
 import io.github.nichetoolkit.rest.error.lack.ConfigureLackError;

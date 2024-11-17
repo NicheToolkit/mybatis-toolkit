@@ -4,7 +4,7 @@ io.github.nichetoolkit.mybatis.MybatisColumnFactory=io.github.nichetoolkit.mybat
 io.github.nichetoolkit.mybatis.MybatisSqlScriptResolver=io.github.nichetoolkit.mybatis.defaults.DefaultSqlScriptResolver
 io.github.nichetoolkit.mybatis.MybatisTableFactory=io.github.nichetoolkit.mybatis.defaults.DefaultCachingTableFactory,\
   io.github.nichetoolkit.mybatis.defaults.DefaultTableFactory
-io.github.nichetoolkit.mybatis.MybatisTableStyle=io.github.nichetoolkit.mybatis.style.DefaultLowerStyle,\
+io.github.nichetoolkit.rice.RestStyle=io.github.nichetoolkit.mybatis.style.DefaultLowerStyle,\
 io.github.nichetoolkit.mybatis.style.DefaultLowerUnderlineStyle,\
 io.github.nichetoolkit.mybatis.style.DefaultNormalStyle,\
 io.github.nichetoolkit.mybatis.style.DefaultUpperStyle,\

@@ -2,9 +2,9 @@ package io.github.nichetoolkit.mybatis.defaults;
 
 import io.github.nichetoolkit.mybatis.*;
 import io.github.nichetoolkit.mybatis.configure.MybatisTableProperties;
-import io.github.nichetoolkit.mybatis.consts.SQLConstants;
-import io.github.nichetoolkit.mybatis.consts.ScriptConstants;
-import io.github.nichetoolkit.mybatis.stereotype.column.*;
+import io.github.nichetoolkit.rice.RestStyle;
+import io.github.nichetoolkit.rice.consts.ScriptConstants;
+import io.github.nichetoolkit.rice.column.*;
 import io.github.nichetoolkit.rest.util.GeneralUtils;
 import org.apache.ibatis.type.JdbcType;
 import org.springframework.lang.NonNull;
@@ -16,16 +16,16 @@ import java.util.Optional;
 /**
  * <code>DefaultColumnFactory</code>
  * <p>The default column factory class.</p>
+ * @see  MybatisColumnFactory
  * @author Cyan (snow22314@outlook.com)
- * @see io.github.nichetoolkit.mybatis.MybatisColumnFactory
  * @since Jdk1.8
  */
 public class DefaultColumnFactory implements MybatisColumnFactory {
 
     /**
      * <code>tableProperties</code>
-     * {@link io.github.nichetoolkit.mybatis.configure.MybatisTableProperties} <p>The <code>tableProperties</code> field.</p>
-     * @see io.github.nichetoolkit.mybatis.configure.MybatisTableProperties
+     * {@link MybatisTableProperties} <p>The <code>tableProperties</code> field.</p>
+     * @see  MybatisTableProperties
      */
     private final MybatisTableProperties tableProperties;
 
@@ -40,11 +40,11 @@ public class DefaultColumnFactory implements MybatisColumnFactory {
     /**
      * <code>excludeSupport</code>
      * <p>The exclude support method.</p>
-     * @param table {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>The table parameter is <code>MybatisTable</code> type.</p>
-     * @param field {@link io.github.nichetoolkit.mybatis.MybatisField} <p>The field parameter is <code>MybatisField</code> type.</p>
+     * @param table {@link MybatisTable} <p>The table parameter is <code>MybatisTable</code> type.</p>
+     * @param field {@link MybatisField} <p>The field parameter is <code>MybatisField</code> type.</p>
+     * @see  MybatisTable
+     * @see  MybatisField
      * @return boolean <p>The exclude support return object is <code>boolean</code> type.</p>
-     * @see io.github.nichetoolkit.mybatis.MybatisTable
-     * @see io.github.nichetoolkit.mybatis.MybatisField
      */
     private boolean excludeSupport(MybatisTable table, MybatisField field) {
         String fieldName = field.fieldName();
@@ -82,10 +82,10 @@ public class DefaultColumnFactory implements MybatisColumnFactory {
     /**
      * <code>ignoreHandle</code>
      * <p>The ignore handle method.</p>
-     * @param table {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>The table parameter is <code>MybatisTable</code> type.</p>
-     * @param field {@link io.github.nichetoolkit.mybatis.MybatisField} <p>The field parameter is <code>MybatisField</code> type.</p>
-     * @see io.github.nichetoolkit.mybatis.MybatisTable
-     * @see io.github.nichetoolkit.mybatis.MybatisField
+     * @param table {@link MybatisTable} <p>The table parameter is <code>MybatisTable</code> type.</p>
+     * @param field {@link MybatisField} <p>The field parameter is <code>MybatisField</code> type.</p>
+     * @see  MybatisTable
+     * @see  MybatisField
      */
     private void ignoreHandle(MybatisTable table, MybatisField field) {
         String fieldName = field.fieldName();
@@ -127,7 +127,7 @@ public class DefaultColumnFactory implements MybatisColumnFactory {
         RestName restName = field.getAnnotation(RestName.class);
         String columnName = Optional.ofNullable(restName).map(RestName::name).orElse(null);
         String columnComment = Optional.ofNullable(restName).map(RestName::comment).orElse(null);
-        MybatisTableStyle mybatisStyle = MybatisTableStyle.style(mybatisTable.getStyleName());
+        MybatisTableStyle mybatisStyle = ((MybatisTableStyle) RestStyle.style(mybatisTable.getStyleName()));
         if (GeneralUtils.isNotEmpty(restName)) {
             mybatisColumn.setColumn(GeneralUtils.isEmpty(columnName) ? mybatisStyle.columnName(mybatisTable, field) : restName.name());
             mybatisColumn.setComment(columnComment);

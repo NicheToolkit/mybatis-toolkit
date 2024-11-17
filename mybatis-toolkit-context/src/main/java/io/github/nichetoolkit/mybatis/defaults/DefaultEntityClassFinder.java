@@ -2,11 +2,11 @@ package io.github.nichetoolkit.mybatis.defaults;
 
 
 import io.github.nichetoolkit.mybatis.MybatisEntityClassFinder;
-import io.github.nichetoolkit.mybatis.stereotype.table.RestAlertness;
-import io.github.nichetoolkit.mybatis.stereotype.table.RestIdentity;
-import io.github.nichetoolkit.mybatis.stereotype.RestMapper;
-import io.github.nichetoolkit.mybatis.stereotype.table.RestEntity;
-import io.github.nichetoolkit.mybatis.stereotype.table.RestLinkage;
+import io.github.nichetoolkit.rice.table.RestAlertness;
+import io.github.nichetoolkit.rice.table.RestIdentity;
+import io.github.nichetoolkit.rice.RestMapper;
+import io.github.nichetoolkit.rice.table.RestEntity;
+import io.github.nichetoolkit.rice.table.RestLinkage;
 import io.github.nichetoolkit.rest.util.GeneralUtils;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
@@ -17,8 +17,8 @@ import java.util.Optional;
 /**
  * <code>DefaultEntityClassFinder</code>
  * <p>The default entity class finder class.</p>
+ * @see  io.github.nichetoolkit.mybatis.MybatisEntityClassFinder
  * @author Cyan (snow22314@outlook.com)
- * @see io.github.nichetoolkit.mybatis.MybatisEntityClassFinder
  * @since Jdk1.8
  */
 public class DefaultEntityClassFinder extends MybatisEntityClassFinder {

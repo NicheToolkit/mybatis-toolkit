@@ -1,9 +1,9 @@
 package io.github.nichetoolkit.mybatis.configure;
 
-import io.github.nichetoolkit.mybatis.consts.ScriptConstants;
-import io.github.nichetoolkit.mybatis.enums.DatabaseType;
-import io.github.nichetoolkit.mybatis.enums.ExcludedType;
-import io.github.nichetoolkit.mybatis.enums.StyleType;
+import io.github.nichetoolkit.rice.consts.ScriptConstants;
+import io.github.nichetoolkit.rice.enums.DatabaseType;
+import io.github.nichetoolkit.rice.enums.ExcludedType;
+import io.github.nichetoolkit.rice.enums.StyleType;
 import io.github.nichetoolkit.rest.util.GeneralUtils;
 import lombok.Getter;
 import lombok.Setter;
@@ -60,21 +60,21 @@ public class MybatisTableProperties {
     private String datetimeNow = ScriptConstants.NOW;
     /**
      * <code>databaseType</code>
-     * {@link io.github.nichetoolkit.mybatis.enums.DatabaseType} <p>The <code>databaseType</code> field.</p>
-     * @see  io.github.nichetoolkit.mybatis.enums.DatabaseType
+     * {@link io.github.nichetoolkit.rice.enums.DatabaseType} <p>The <code>databaseType</code> field.</p>
+     * @see  io.github.nichetoolkit.rice.enums.DatabaseType
      */
     private DatabaseType databaseType = DatabaseType.POSTGRESQL;
     /**
      * <code>styleType</code>
-     * {@link io.github.nichetoolkit.mybatis.enums.StyleType} <p>The <code>styleType</code> field.</p>
-     * @see  io.github.nichetoolkit.mybatis.enums.StyleType
+     * {@link io.github.nichetoolkit.rice.enums.StyleType} <p>The <code>styleType</code> field.</p>
+     * @see  io.github.nichetoolkit.rice.enums.StyleType
      */
     private StyleType styleType = StyleType.LOWER_UNDERLINE;
 
     /**
      * <code>excludedType</code>
-     * {@link io.github.nichetoolkit.mybatis.enums.ExcludedType} <p>The <code>excludedType</code> field.</p>
-     * @see  io.github.nichetoolkit.mybatis.enums.ExcludedType
+     * {@link io.github.nichetoolkit.rice.enums.ExcludedType} <p>The <code>excludedType</code> field.</p>
+     * @see  io.github.nichetoolkit.rice.enums.ExcludedType
      */
     private ExcludedType excludedType = ExcludedType.EXCLUDED;
     /**

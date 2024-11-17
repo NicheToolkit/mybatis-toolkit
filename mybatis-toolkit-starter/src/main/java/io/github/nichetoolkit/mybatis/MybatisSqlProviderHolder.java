@@ -1,8 +1,8 @@
 package io.github.nichetoolkit.mybatis;
 
 import io.github.nichetoolkit.mybatis.configure.MybatisTableProperties;
-import io.github.nichetoolkit.mybatis.enums.DatabaseType;
-import io.github.nichetoolkit.mybatis.enums.ExcludedType;
+import io.github.nichetoolkit.rice.enums.DatabaseType;
+import io.github.nichetoolkit.rice.enums.ExcludedType;
 import io.github.nichetoolkit.mybatis.error.MybatisProviderLackError;
 import io.github.nichetoolkit.rest.RestOptional;
 import io.github.nichetoolkit.rest.util.GeneralUtils;
@@ -122,8 +122,8 @@ public class MybatisSqlProviderHolder implements ServiceIntend<MybatisSqlProvide
     /**
      * <code>defaultDatabaseType</code>
      * <p>The default database type method.</p>
-     * @return  {@link io.github.nichetoolkit.mybatis.enums.DatabaseType} <p>The default database type return object is <code>DatabaseType</code> type.</p>
-     * @see  io.github.nichetoolkit.mybatis.enums.DatabaseType
+     * @return  {@link io.github.nichetoolkit.rice.enums.DatabaseType} <p>The default database type return object is <code>DatabaseType</code> type.</p>
+     * @see  io.github.nichetoolkit.rice.enums.DatabaseType
      */
     public static DatabaseType defaultDatabaseType() {
         return INSTANCE.tableProperties.getDatabaseType();
@@ -132,8 +132,8 @@ public class MybatisSqlProviderHolder implements ServiceIntend<MybatisSqlProvide
     /**
      * <code>defaultExcludedType</code>
      * <p>The default excluded type method.</p>
-     * @return  {@link io.github.nichetoolkit.mybatis.enums.ExcludedType} <p>The default excluded type return object is <code>ExcludedType</code> type.</p>
-     * @see  io.github.nichetoolkit.mybatis.enums.ExcludedType
+     * @return  {@link io.github.nichetoolkit.rice.enums.ExcludedType} <p>The default excluded type return object is <code>ExcludedType</code> type.</p>
+     * @see  io.github.nichetoolkit.rice.enums.ExcludedType
      */
     public static ExcludedType defaultExcludedType() {
         return INSTANCE.tableProperties.getExcludedType();
@@ -142,8 +142,8 @@ public class MybatisSqlProviderHolder implements ServiceIntend<MybatisSqlProvide
     /**
      * <code>defaultSqlProviders</code>
      * <p>The default sql providers method.</p>
-     * @param databaseType {@link io.github.nichetoolkit.mybatis.enums.DatabaseType} <p>The database type parameter is <code>DatabaseType</code> type.</p>
-     * @see  io.github.nichetoolkit.mybatis.enums.DatabaseType
+     * @param databaseType {@link io.github.nichetoolkit.rice.enums.DatabaseType} <p>The database type parameter is <code>DatabaseType</code> type.</p>
+     * @see  io.github.nichetoolkit.rice.enums.DatabaseType
      * @see  java.util.List
      * @return  {@link java.util.List} <p>The default sql providers return object is <code>List</code> type.</p>
      */
