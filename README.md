@@ -8,8 +8,6 @@
 
 ## Toolkit Usages
 
-- [Rice-Toolkit](https://github.com/NicheToolkit/rice-toolkit)
-
 - [File-Toolkit](https://github.com/NicheToolkit/file-toolkit)
 
 ## Maven Central Repository
