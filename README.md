@@ -30,6 +30,13 @@
 
 ## Instructions
 
+### Database Type Supported
+
+* Postgresql
+* GaussDB / OpenGauss
+* Mysql
+* Sqlite
+
 ### Rice & Mybatis Toolkit Usages
 
 * Maven (`pom.xml`)
