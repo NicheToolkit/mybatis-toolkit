@@ -7,6 +7,8 @@ import io.github.nichetoolkit.rice.DefaultInfoEntity;
 import io.github.nichetoolkit.rice.column.RestForceInsert;
 import io.github.nichetoolkit.rice.table.RestEntity;
 import io.github.nichetoolkit.rice.enums.OperateType;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Date;
 
@@ -18,6 +20,8 @@ import java.util.Date;
  * @author Cyan (snow22314@outlook.com)
  * @since Jdk1.8
  */
+@Setter
+@Getter
 @RestEntity(name = "ntr_template")
 public class TemplateEntity extends DefaultInfoEntity<TemplateEntity, TemplateModel, TemplateIdentity> {
     /**
@@ -60,66 +64,6 @@ public class TemplateEntity extends DefaultInfoEntity<TemplateEntity, TemplateMo
      */
     public TemplateEntity(TemplateIdentity id) {
         super(id);
-    }
-
-    /**
-     * <code>getLinkage</code>
-     * <p>The get linkage getter method.</p>
-     * @return  {@link io.github.nichetoolkit.mybatis.simple.TemplateLinkage} <p>The get linkage return object is <code>TemplateLinkage</code> type.</p>
-     * @see  io.github.nichetoolkit.mybatis.simple.TemplateLinkage
-     */
-    public TemplateLinkage getLinkage() {
-        return linkage;
-    }
-
-    /**
-     * <code>setLinkage</code>
-     * <p>The set linkage setter method.</p>
-     * @param linkage {@link io.github.nichetoolkit.mybatis.simple.TemplateLinkage} <p>The linkage parameter is <code>TemplateLinkage</code> type.</p>
-     * @see  io.github.nichetoolkit.mybatis.simple.TemplateLinkage
-     */
-    public void setLinkage(TemplateLinkage linkage) {
-        this.linkage = linkage;
-    }
-
-    /**
-     * <code>getTime</code>
-     * <p>The get time getter method.</p>
-     * @return  {@link java.util.Date} <p>The get time return object is <code>Date</code> type.</p>
-     * @see  java.util.Date
-     */
-    public Date getTime() {
-        return time;
-    }
-
-    /**
-     * <code>setTime</code>
-     * <p>The set time setter method.</p>
-     * @param time {@link java.util.Date} <p>The time parameter is <code>Date</code> type.</p>
-     * @see  java.util.Date
-     */
-    public void setTime(Date time) {
-        this.time = time;
-    }
-
-    /**
-     * <code>getStatus</code>
-     * <p>The get status getter method.</p>
-     * @return  {@link io.github.nichetoolkit.mybatis.simple.TemplateAlertness} <p>The get status return object is <code>TemplateAlertness</code> type.</p>
-     * @see  io.github.nichetoolkit.mybatis.simple.TemplateAlertness
-     */
-    public TemplateAlertness getStatus() {
-        return status;
-    }
-
-    /**
-     * <code>setStatus</code>
-     * <p>The set status setter method.</p>
-     * @param status {@link io.github.nichetoolkit.mybatis.simple.TemplateAlertness} <p>The status parameter is <code>TemplateAlertness</code> type.</p>
-     * @see  io.github.nichetoolkit.mybatis.simple.TemplateAlertness
-     */
-    public void setStatus(TemplateAlertness status) {
-        this.status = status;
     }
 
     @Override

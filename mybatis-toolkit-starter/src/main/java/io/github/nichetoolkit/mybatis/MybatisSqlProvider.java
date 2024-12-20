@@ -58,11 +58,20 @@ public interface MybatisSqlProvider {
      * {@link io.github.nichetoolkit.mybatis.MybatisSqlSupply.SimpleSqlSupply} <p>The constant <code>SAVE_SQL_SUPPLY</code> field.</p>
      * @see  io.github.nichetoolkit.mybatis.MybatisSqlSupply.SimpleSqlSupply
      */
-    MybatisSqlSupply.SimpleSqlSupply SAVE_SQL_SUPPLY = (tablename, table, sqlBuilder) ->
-            SqlBuilder.sqlBuilder()
-                    .insert().append(table.tablename(tablename))
-                    .braceLt().append(table.sqlOfInsertColumns()).braceGt()
-                    .values().append(sqlBuilder).toString();
+    MybatisSqlSupply.SimpleSqlSupply SAVE_SQL_SUPPLY = (tablename, table, sqlBuilder) -> {
+        boolean mysqlIgnoreInsert = MybatisSqlProviderHolder.mysqlIgnoreInsert();
+        SqlBuilder savesSqlBuilder = SqlBuilder.sqlBuilder();
+        if (mysqlIgnoreInsert) {
+            savesSqlBuilder.insertIgnore();
+        } else {
+            savesSqlBuilder.insert();
+        }
+        return savesSqlBuilder.append(table.tablename(tablename))
+                .braceLt().append(table.sqlOfInsertColumns()).braceGt()
+                .values().append(sqlBuilder).toString();
+    };
+
+
 
     /**
      * <code>REMOVE_SQL_SUPPLY</code>
@@ -910,7 +919,8 @@ public interface MybatisSqlProvider {
      */
     static String insertOfSaveSql(@Nullable String tablename, MybatisTable table, boolean conflictOrDuplicate) throws RestException {
         SqlBuilder sqlBuilder = SqlBuilder.sqlBuilder();
-        RestOptional<List<MybatisColumn>> optionalColumns = RestOptional.ofEmptyable(table.updateColumns());
+        RestOptional<List<MybatisColumn>> optionalUpdate = RestOptional.ofEmptyable(table.updateColumns());
+        boolean mysqlIgnoreInsert = MybatisSqlProviderHolder.mysqlIgnoreInsert();
         if (conflictOrDuplicate) {
             sqlBuilder.onConflict().braceLt();
             if (table.isSpecialIdentity()) {
@@ -919,19 +929,19 @@ public interface MybatisSqlProvider {
                 sqlBuilder.append(table.getIdentityColumn().columnName());
             }
             sqlBuilder.braceGt();
-        } else {
+        } else if (optionalUpdate.isPresent()) {
             sqlBuilder.onDuplicateKey();
         }
-        if (optionalColumns.isPresent()) {
+        if (optionalUpdate.isPresent()) {
             sqlBuilder.doUpdate(conflictOrDuplicate);
             if (conflictOrDuplicate) {
                 sqlBuilder.set();
             }
-        } else {
+        } else if (!mysqlIgnoreInsert) {
             sqlBuilder.doNothing();
         }
         ExcludedType excludedType = MybatisSqlProviderHolder.defaultExcludedType();
-        optionalColumns.ifEmptyPresent(updateColumns -> {
+        optionalUpdate.ifEmptyPresent(updateColumns -> {
             String collect = RestStream.stream(updateColumns).map(column -> column.excluded(excludedType, table.tablename(tablename)))
                     .collect(RestCollectors.joining(SQLConstants.COMMA + SQLConstants.BLANK + SQLConstants.LINEFEED));
             sqlBuilder.append(collect);

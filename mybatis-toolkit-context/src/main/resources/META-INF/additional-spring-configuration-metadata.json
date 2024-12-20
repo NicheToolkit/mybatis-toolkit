@@ -39,6 +39,13 @@
       "defaultValue": "false"
     },
     {
+      "name": "nichetoolkit.mybatis.table.mysql-ignore-insert",
+      "type": "java.lang.Boolean",
+      "sourceType": "java.lang.Boolean",
+      "description": "the switch of mysql ignore insert on mybatis configuration.",
+      "defaultValue": "false"
+    },
+    {
       "name": "nichetoolkit.mybatis.table.datetime-now",
       "type": "java.lang.String",
       "sourceType": "java.lang.String",
@@ -123,6 +130,19 @@
         {
           "value": true,
           "description": "the switch of sql script show is opened on mybatis configuration."
+        }
+      ]
+    },
+    {
+      "name": "nichetoolkit.mybatis.table.mysql-ignore-insert",
+      "values": [
+        {
+          "value": false,
+          "description": "the switch of mysql ignore insert is closed on mybatis configuration."
+        },
+        {
+          "value": true,
+          "description": "the switch of mysql ignore insert is opened on mybatis configuration."
         }
       ]
     },

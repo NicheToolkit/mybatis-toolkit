@@ -140,6 +140,15 @@ public class MybatisSqlProviderHolder implements ServiceIntend<MybatisSqlProvide
     }
 
     /**
+     * <code>mysqlIgnoreInsert</code>
+     * <p>The mysql ignore insert method.</p>
+     * @return boolean <p>The mysql ignore insert return object is <code>boolean</code> type.</p>
+     */
+    public static boolean mysqlIgnoreInsert() {
+        return INSTANCE.tableProperties.getMysqlIgnoreInsert();
+    }
+
+    /**
      * <code>defaultSqlProviders</code>
      * <p>The default sql providers method.</p>
      * @param databaseType {@link io.github.nichetoolkit.rice.enums.DatabaseType} <p>The database type parameter is <code>DatabaseType</code> type.</p>

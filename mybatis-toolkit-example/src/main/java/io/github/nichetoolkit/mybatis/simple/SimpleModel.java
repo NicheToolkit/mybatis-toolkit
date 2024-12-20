@@ -9,6 +9,9 @@ import io.github.nichetoolkit.rice.RestInfoModel;
 import io.github.nichetoolkit.rice.RestTablekey;
 import io.github.nichetoolkit.rice.enums.OperateType;
 import io.github.nichetoolkit.rice.enums.SaveType;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.lang.NonNull;
 
@@ -24,6 +27,8 @@ import java.util.Date;
  * @see com.fasterxml.jackson.annotation.JsonIgnoreProperties
  * @since Jdk1.8
  */
+@Setter
+@Getter
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class SimpleModel extends RestInfoModel<SimpleModel,SimpleEntity> implements RestTablekey<String> {
@@ -77,66 +82,6 @@ public class SimpleModel extends RestInfoModel<SimpleModel,SimpleEntity> impleme
     public SimpleModel(Builder builder) {
         super(builder);
         this.time = builder.time;
-    }
-
-    /**
-     * <code>getLinkId</code>
-     * <p>The get link id getter method.</p>
-     * @return {@link java.lang.String} <p>The get link id return object is <code>String</code> type.</p>
-     * @see java.lang.String
-     */
-    public String getLinkId() {
-        return linkId;
-    }
-
-    /**
-     * <code>setLinkId</code>
-     * <p>The set link id setter method.</p>
-     * @param linkId {@link java.lang.String} <p>The link id parameter is <code>String</code> type.</p>
-     * @see java.lang.String
-     */
-    public void setLinkId(String linkId) {
-        this.linkId = linkId;
-    }
-
-    /**
-     * <code>getTime</code>
-     * <p>The get time getter method.</p>
-     * @return {@link java.util.Date} <p>The get time return object is <code>Date</code> type.</p>
-     * @see java.util.Date
-     */
-    public Date getTime() {
-        return time;
-    }
-
-    /**
-     * <code>setTime</code>
-     * <p>The set time setter method.</p>
-     * @param time {@link java.util.Date} <p>The time parameter is <code>Date</code> type.</p>
-     * @see java.util.Date
-     */
-    public void setTime(Date time) {
-        this.time = time;
-    }
-
-    /**
-     * <code>getStatus</code>
-     * <p>The get status getter method.</p>
-     * @return {@link io.github.nichetoolkit.mybatis.enums.SimpleStatus} <p>The get status return object is <code>SimpleStatus</code> type.</p>
-     * @see io.github.nichetoolkit.mybatis.enums.SimpleStatus
-     */
-    public SimpleStatus getStatus() {
-        return status;
-    }
-
-    /**
-     * <code>setStatus</code>
-     * <p>The set status setter method.</p>
-     * @param status {@link io.github.nichetoolkit.mybatis.enums.SimpleStatus} <p>The status parameter is <code>SimpleStatus</code> type.</p>
-     * @see io.github.nichetoolkit.mybatis.enums.SimpleStatus
-     */
-    public void setStatus(SimpleStatus status) {
-        this.status = status;
     }
 
     @Override

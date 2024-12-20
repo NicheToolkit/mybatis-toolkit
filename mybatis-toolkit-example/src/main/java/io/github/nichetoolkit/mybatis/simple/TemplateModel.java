@@ -10,6 +10,8 @@ import io.github.nichetoolkit.rice.DefaultInfoModel;
 import io.github.nichetoolkit.rice.RestTablekey;
 import io.github.nichetoolkit.rice.enums.OperateType;
 import io.github.nichetoolkit.rice.enums.SaveType;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.lang.NonNull;
 
@@ -25,6 +27,8 @@ import java.util.Date;
  * @see com.fasterxml.jackson.annotation.JsonIgnoreProperties
  * @since Jdk1.8
  */
+@Setter
+@Getter
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class TemplateModel extends DefaultInfoModel<TemplateModel, TemplateEntity, TemplateIdentity> implements RestTablekey<String> {
@@ -91,106 +95,6 @@ public class TemplateModel extends DefaultInfoModel<TemplateModel, TemplateEntit
     public TemplateModel(Builder builder) {
         super(builder);
         this.time = builder.time;
-    }
-
-    /**
-     * <code>getLinkId1</code>
-     * <p>The get link id 1 getter method.</p>
-     * @return {@link java.lang.String} <p>The get link id 1 return object is <code>String</code> type.</p>
-     * @see java.lang.String
-     */
-    public String getLinkId1() {
-        return linkId1;
-    }
-
-    /**
-     * <code>setLinkId1</code>
-     * <p>The set link id 1 setter method.</p>
-     * @param linkId1 {@link java.lang.String} <p>The link id 1 parameter is <code>String</code> type.</p>
-     * @see java.lang.String
-     */
-    public void setLinkId1(String linkId1) {
-        this.linkId1 = linkId1;
-    }
-
-    /**
-     * <code>getLinkId2</code>
-     * <p>The get link id 2 getter method.</p>
-     * @return {@link java.lang.String} <p>The get link id 2 return object is <code>String</code> type.</p>
-     * @see java.lang.String
-     */
-    public String getLinkId2() {
-        return linkId2;
-    }
-
-    /**
-     * <code>setLinkId2</code>
-     * <p>The set link id 2 setter method.</p>
-     * @param linkId2 {@link java.lang.String} <p>The link id 2 parameter is <code>String</code> type.</p>
-     * @see java.lang.String
-     */
-    public void setLinkId2(String linkId2) {
-        this.linkId2 = linkId2;
-    }
-
-    /**
-     * <code>getTime</code>
-     * <p>The get time getter method.</p>
-     * @return {@link java.util.Date} <p>The get time return object is <code>Date</code> type.</p>
-     * @see java.util.Date
-     */
-    public Date getTime() {
-        return time;
-    }
-
-    /**
-     * <code>setTime</code>
-     * <p>The set time setter method.</p>
-     * @param time {@link java.util.Date} <p>The time parameter is <code>Date</code> type.</p>
-     * @see java.util.Date
-     */
-    public void setTime(Date time) {
-        this.time = time;
-    }
-
-    /**
-     * <code>getStatus1</code>
-     * <p>The get status 1 getter method.</p>
-     * @return {@link io.github.nichetoolkit.mybatis.enums.TemplateStatus1} <p>The get status 1 return object is <code>TemplateStatus1</code> type.</p>
-     * @see io.github.nichetoolkit.mybatis.enums.TemplateStatus1
-     */
-    public TemplateStatus1 getStatus1() {
-        return status1;
-    }
-
-    /**
-     * <code>setStatus1</code>
-     * <p>The set status 1 setter method.</p>
-     * @param status1 {@link io.github.nichetoolkit.mybatis.enums.TemplateStatus1} <p>The status 1 parameter is <code>TemplateStatus1</code> type.</p>
-     * @see io.github.nichetoolkit.mybatis.enums.TemplateStatus1
-     */
-    public void setStatus1(TemplateStatus1 status1) {
-        this.status1 = status1;
-    }
-
-    /**
-     * <code>getStatus2</code>
-     * <p>The get status 2 getter method.</p>
-     * @return {@link io.github.nichetoolkit.mybatis.enums.TemplateStatus2} <p>The get status 2 return object is <code>TemplateStatus2</code> type.</p>
-     * @see io.github.nichetoolkit.mybatis.enums.TemplateStatus2
-     */
-    public TemplateStatus2 getStatus2() {
-        return status2;
-    }
-
-    /**
-     * <code>setStatus2</code>
-     * <p>The set status 2 setter method.</p>
-     * @param status2 {@link io.github.nichetoolkit.mybatis.enums.TemplateStatus2} <p>The status 2 parameter is <code>TemplateStatus2</code> type.</p>
-     * @see io.github.nichetoolkit.mybatis.enums.TemplateStatus2
-     */
-    public void setStatus2(TemplateStatus2 status2) {
-        this.status2 = status2;
     }
 
     @Override

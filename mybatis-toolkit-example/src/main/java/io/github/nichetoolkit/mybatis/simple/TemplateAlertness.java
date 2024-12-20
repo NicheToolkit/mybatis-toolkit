@@ -3,6 +3,8 @@ package io.github.nichetoolkit.mybatis.simple;
 import io.github.nichetoolkit.mybatis.enums.TemplateStatus1;
 import io.github.nichetoolkit.mybatis.enums.TemplateStatus2;
 import io.github.nichetoolkit.rice.table.RestAlertness;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -16,6 +18,8 @@ import java.util.Optional;
  * @author Cyan (snow22314@outlook.com)
  * @since Jdk1.8
  */
+@Setter
+@Getter
 @RestAlertness
 public class TemplateAlertness implements Serializable {
 
@@ -63,46 +67,6 @@ public class TemplateAlertness implements Serializable {
     public TemplateAlertness(TemplateStatus1 status1, TemplateStatus2 status2) {
         this.status1 = Optional.ofNullable(status1).map(TemplateStatus1::getKey).orElse(null);
         this.status2 = Optional.ofNullable(status2).map(TemplateStatus2::getKey).orElse(null);
-    }
-
-    /**
-     * <code>getStatus1</code>
-     * <p>The get status 1 getter method.</p>
-     * @return  {@link java.lang.Integer} <p>The get status 1 return object is <code>Integer</code> type.</p>
-     * @see  java.lang.Integer
-     */
-    public Integer getStatus1() {
-        return status1;
-    }
-
-    /**
-     * <code>setStatus1</code>
-     * <p>The set status 1 setter method.</p>
-     * @param status1 {@link java.lang.Integer} <p>The status 1 parameter is <code>Integer</code> type.</p>
-     * @see  java.lang.Integer
-     */
-    public void setStatus1(Integer status1) {
-        this.status1 = status1;
-    }
-
-    /**
-     * <code>getStatus2</code>
-     * <p>The get status 2 getter method.</p>
-     * @return  {@link java.lang.Integer} <p>The get status 2 return object is <code>Integer</code> type.</p>
-     * @see  java.lang.Integer
-     */
-    public Integer getStatus2() {
-        return status2;
-    }
-
-    /**
-     * <code>setStatus2</code>
-     * <p>The set status 2 setter method.</p>
-     * @param status2 {@link java.lang.Integer} <p>The status 2 parameter is <code>Integer</code> type.</p>
-     * @see  java.lang.Integer
-     */
-    public void setStatus2(Integer status2) {
-        this.status2 = status2;
     }
 
     @Override

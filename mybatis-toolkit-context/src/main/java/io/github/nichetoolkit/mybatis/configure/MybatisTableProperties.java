@@ -52,6 +52,13 @@ public class MybatisTableProperties {
      * @see  java.lang.Boolean
      */
     private Boolean sqlScriptShow = false;
+
+    /**
+     * <code>mysqlIgnoreInsert</code>
+     * {@link java.lang.Boolean} <p>The <code>mysqlIgnoreInsert</code> field.</p>
+     * @see  java.lang.Boolean
+     */
+    private Boolean mysqlIgnoreInsert = false;
     /**
      * <code>datetimeNow</code>
      * {@link java.lang.String} <p>The <code>datetimeNow</code> field.</p>

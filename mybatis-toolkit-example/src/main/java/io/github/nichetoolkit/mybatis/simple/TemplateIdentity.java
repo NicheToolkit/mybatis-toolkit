@@ -2,6 +2,8 @@ package io.github.nichetoolkit.mybatis.simple;
 
 import io.github.nichetoolkit.rice.column.RestUnionKey;
 import io.github.nichetoolkit.rice.table.RestIdentity;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -14,6 +16,8 @@ import java.util.Objects;
  * @author Cyan (snow22314@outlook.com)
  * @since Jdk1.8
  */
+@Setter
+@Getter
 @RestIdentity
 public class TemplateIdentity implements Serializable {
     /**
@@ -49,46 +53,6 @@ public class TemplateIdentity implements Serializable {
      */
     public TemplateIdentity(String templatePk1, String templatePk2) {
         this.templatePk1 = templatePk1;
-        this.templatePk2 = templatePk2;
-    }
-
-    /**
-     * <code>getTemplatePk1</code>
-     * <p>The get template pk 1 getter method.</p>
-     * @return  {@link java.lang.String} <p>The get template pk 1 return object is <code>String</code> type.</p>
-     * @see  java.lang.String
-     */
-    public String getTemplatePk1() {
-        return templatePk1;
-    }
-
-    /**
-     * <code>setTemplatePk1</code>
-     * <p>The set template pk 1 setter method.</p>
-     * @param templatePk1 {@link java.lang.String} <p>The template pk 1 parameter is <code>String</code> type.</p>
-     * @see  java.lang.String
-     */
-    public void setTemplatePk1(String templatePk1) {
-        this.templatePk1 = templatePk1;
-    }
-
-    /**
-     * <code>getTemplatePk2</code>
-     * <p>The get template pk 2 getter method.</p>
-     * @return  {@link java.lang.String} <p>The get template pk 2 return object is <code>String</code> type.</p>
-     * @see  java.lang.String
-     */
-    public String getTemplatePk2() {
-        return templatePk2;
-    }
-
-    /**
-     * <code>setTemplatePk2</code>
-     * <p>The set template pk 2 setter method.</p>
-     * @param templatePk2 {@link java.lang.String} <p>The template pk 2 parameter is <code>String</code> type.</p>
-     * @see  java.lang.String
-     */
-    public void setTemplatePk2(String templatePk2) {
         this.templatePk2 = templatePk2;
     }
 

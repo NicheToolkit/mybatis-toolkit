@@ -8,6 +8,8 @@ import io.github.nichetoolkit.rice.table.RestEntity;
 import io.github.nichetoolkit.rest.util.BeanUtils;
 import io.github.nichetoolkit.rice.RestInfoEntity;
 import io.github.nichetoolkit.rice.enums.OperateType;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Date;
 
@@ -16,10 +18,14 @@ import java.util.Date;
  * <code>SimpleEntity</code>
  * <p>The simple entity class.</p>
  * @see  io.github.nichetoolkit.rice.RestInfoEntity
+ * @see  lombok.Setter
+ * @see  lombok.Getter
  * @see  io.github.nichetoolkit.rice.table.RestEntity
  * @author Cyan (snow22314@outlook.com)
  * @since Jdk1.8
  */
+@Setter
+@Getter
 @RestEntity(name = "ntr_simple")
 public class SimpleEntity extends RestInfoEntity<SimpleEntity, SimpleModel> {
     /**
@@ -62,66 +68,6 @@ public class SimpleEntity extends RestInfoEntity<SimpleEntity, SimpleModel> {
      */
     public SimpleEntity(String id) {
         super(id);
-    }
-
-    /**
-     * <code>getLinkId</code>
-     * <p>The get link id getter method.</p>
-     * @return  {@link java.lang.String} <p>The get link id return object is <code>String</code> type.</p>
-     * @see  java.lang.String
-     */
-    public String getLinkId() {
-        return linkId;
-    }
-
-    /**
-     * <code>setLinkId</code>
-     * <p>The set link id setter method.</p>
-     * @param linkId {@link java.lang.String} <p>The link id parameter is <code>String</code> type.</p>
-     * @see  java.lang.String
-     */
-    public void setLinkId(String linkId) {
-        this.linkId = linkId;
-    }
-
-    /**
-     * <code>getTime</code>
-     * <p>The get time getter method.</p>
-     * @return  {@link java.util.Date} <p>The get time return object is <code>Date</code> type.</p>
-     * @see  java.util.Date
-     */
-    public Date getTime() {
-        return time;
-    }
-
-    /**
-     * <code>setTime</code>
-     * <p>The set time setter method.</p>
-     * @param time {@link java.util.Date} <p>The time parameter is <code>Date</code> type.</p>
-     * @see  java.util.Date
-     */
-    public void setTime(Date time) {
-        this.time = time;
-    }
-
-    /**
-     * <code>getStatus</code>
-     * <p>The get status getter method.</p>
-     * @return  {@link java.lang.Integer} <p>The get status return object is <code>Integer</code> type.</p>
-     * @see  java.lang.Integer
-     */
-    public Integer getStatus() {
-        return status;
-    }
-
-    /**
-     * <code>setStatus</code>
-     * <p>The set status setter method.</p>
-     * @param status {@link java.lang.Integer} <p>The status parameter is <code>Integer</code> type.</p>
-     * @see  java.lang.Integer
-     */
-    public void setStatus(Integer status) {
-        this.status = status;
     }
 
     @Override
