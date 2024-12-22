@@ -8,8 +8,8 @@ import java.util.Optional;
 /**
  * <code>MybatisColumnFactory</code>
  * <p>The mybatis column factory interface.</p>
+ * @see  io.github.nichetoolkit.mybatis.MybatisOrder
  * @author Cyan (snow22314@outlook.com)
- * @see io.github.nichetoolkit.mybatis.MybatisOrder
  * @since Jdk1.8
  */
 public interface MybatisColumnFactory extends MybatisOrder {
@@ -19,10 +19,10 @@ public interface MybatisColumnFactory extends MybatisOrder {
      * <p>The supports method.</p>
      * @param table {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>The table parameter is <code>MybatisTable</code> type.</p>
      * @param field {@link io.github.nichetoolkit.mybatis.MybatisField} <p>The field parameter is <code>MybatisField</code> type.</p>
+     * @see  io.github.nichetoolkit.mybatis.MybatisTable
+     * @see  org.springframework.lang.NonNull
+     * @see  io.github.nichetoolkit.mybatis.MybatisField
      * @return boolean <p>The supports return object is <code>boolean</code> type.</p>
-     * @see io.github.nichetoolkit.mybatis.MybatisTable
-     * @see org.springframework.lang.NonNull
-     * @see io.github.nichetoolkit.mybatis.MybatisField
      */
     boolean supports(@NonNull MybatisTable table, @NonNull MybatisField field);
 
@@ -32,12 +32,12 @@ public interface MybatisColumnFactory extends MybatisOrder {
      * @param table {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>The table parameter is <code>MybatisTable</code> type.</p>
      * @param field {@link io.github.nichetoolkit.mybatis.MybatisField} <p>The field parameter is <code>MybatisField</code> type.</p>
      * @param chain {@link io.github.nichetoolkit.mybatis.MybatisColumnFactory.Chain} <p>The chain parameter is <code>Chain</code> type.</p>
-     * @return {@link java.util.Optional} <p>The create column return object is <code>Optional</code> type.</p>
-     * @see io.github.nichetoolkit.mybatis.MybatisTable
-     * @see org.springframework.lang.NonNull
-     * @see io.github.nichetoolkit.mybatis.MybatisField
-     * @see io.github.nichetoolkit.mybatis.MybatisColumnFactory.Chain
-     * @see java.util.Optional
+     * @see  io.github.nichetoolkit.mybatis.MybatisTable
+     * @see  org.springframework.lang.NonNull
+     * @see  io.github.nichetoolkit.mybatis.MybatisField
+     * @see  io.github.nichetoolkit.mybatis.MybatisColumnFactory.Chain
+     * @see  java.util.Optional
+     * @return  {@link java.util.Optional} <p>The create column return object is <code>Optional</code> type.</p>
      */
     Optional<List<MybatisColumn>> createColumn(@NonNull MybatisTable table, @NonNull MybatisField field, Chain chain);
 
@@ -53,11 +53,11 @@ public interface MybatisColumnFactory extends MybatisOrder {
          * <p>The create column method.</p>
          * @param table {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>The table parameter is <code>MybatisTable</code> type.</p>
          * @param field {@link io.github.nichetoolkit.mybatis.MybatisField} <p>The field parameter is <code>MybatisField</code> type.</p>
-         * @return {@link java.util.Optional} <p>The create column return object is <code>Optional</code> type.</p>
-         * @see io.github.nichetoolkit.mybatis.MybatisTable
-         * @see org.springframework.lang.NonNull
-         * @see io.github.nichetoolkit.mybatis.MybatisField
-         * @see java.util.Optional
+         * @see  io.github.nichetoolkit.mybatis.MybatisTable
+         * @see  org.springframework.lang.NonNull
+         * @see  io.github.nichetoolkit.mybatis.MybatisField
+         * @see  java.util.Optional
+         * @return  {@link java.util.Optional} <p>The create column return object is <code>Optional</code> type.</p>
          */
         Optional<List<MybatisColumn>> createColumn(@NonNull MybatisTable table, @NonNull MybatisField field);
     }

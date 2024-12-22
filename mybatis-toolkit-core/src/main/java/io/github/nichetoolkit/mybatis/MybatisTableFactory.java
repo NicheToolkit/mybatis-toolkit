@@ -6,8 +6,8 @@ import org.springframework.lang.Nullable;
 /**
  * <code>MybatisTableFactory</code>
  * <p>The mybatis table factory interface.</p>
+ * @see  io.github.nichetoolkit.mybatis.MybatisOrder
  * @author Cyan (snow22314@outlook.com)
- * @see io.github.nichetoolkit.mybatis.MybatisOrder
  * @since Jdk1.8
  */
 public interface MybatisTableFactory extends MybatisOrder {
@@ -16,25 +16,25 @@ public interface MybatisTableFactory extends MybatisOrder {
      * <code>supports</code>
      * <p>The supports method.</p>
      * @param entityType {@link java.lang.Class} <p>The entity type parameter is <code>Class</code> type.</p>
+     * @see  java.lang.Class
+     * @see  org.springframework.lang.NonNull
      * @return boolean <p>The supports return object is <code>boolean</code> type.</p>
-     * @see java.lang.Class
-     * @see org.springframework.lang.NonNull
      */
     boolean supports(@NonNull Class<?> entityType);
 
     /**
      * <code>createTable</code>
      * <p>The create table method.</p>
-     * @param entityType    {@link java.lang.Class} <p>The entity type parameter is <code>Class</code> type.</p>
-     * @param identityType  {@link java.lang.Class} <p>The identity type parameter is <code>Class</code> type.</p>
-     * @param linkageType   {@link java.lang.Class} <p>The linkage type parameter is <code>Class</code> type.</p>
+     * @param entityType {@link java.lang.Class} <p>The entity type parameter is <code>Class</code> type.</p>
+     * @param identityType {@link java.lang.Class} <p>The identity type parameter is <code>Class</code> type.</p>
+     * @param linkageType {@link java.lang.Class} <p>The linkage type parameter is <code>Class</code> type.</p>
      * @param alertnessType {@link java.lang.Class} <p>The alertness type parameter is <code>Class</code> type.</p>
-     * @param chain         {@link io.github.nichetoolkit.mybatis.MybatisTableFactory.Chain} <p>The chain parameter is <code>Chain</code> type.</p>
-     * @return {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>The create table return object is <code>MybatisTable</code> type.</p>
-     * @see java.lang.Class
-     * @see org.springframework.lang.NonNull
-     * @see org.springframework.lang.Nullable
-     * @see io.github.nichetoolkit.mybatis.MybatisTableFactory.Chain
+     * @param chain {@link io.github.nichetoolkit.mybatis.MybatisTableFactory.Chain} <p>The chain parameter is <code>Chain</code> type.</p>
+     * @see  java.lang.Class
+     * @see  org.springframework.lang.NonNull
+     * @see  org.springframework.lang.Nullable
+     * @see  io.github.nichetoolkit.mybatis.MybatisTableFactory.Chain
+     * @return  {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>The create table return object is <code>MybatisTable</code> type.</p>
      */
     MybatisTable createTable(@NonNull Class<?> entityType, @Nullable Class<?> identityType, @Nullable Class<?> linkageType, @Nullable Class<?> alertnessType, Chain chain);
 
@@ -48,14 +48,14 @@ public interface MybatisTableFactory extends MybatisOrder {
         /**
          * <code>createTable</code>
          * <p>The create table method.</p>
-         * @param entityType    {@link java.lang.Class} <p>The entity type parameter is <code>Class</code> type.</p>
-         * @param identityType  {@link java.lang.Class} <p>The identity type parameter is <code>Class</code> type.</p>
-         * @param linkageType   {@link java.lang.Class} <p>The linkage type parameter is <code>Class</code> type.</p>
+         * @param entityType {@link java.lang.Class} <p>The entity type parameter is <code>Class</code> type.</p>
+         * @param identityType {@link java.lang.Class} <p>The identity type parameter is <code>Class</code> type.</p>
+         * @param linkageType {@link java.lang.Class} <p>The linkage type parameter is <code>Class</code> type.</p>
          * @param alertnessType {@link java.lang.Class} <p>The alertness type parameter is <code>Class</code> type.</p>
-         * @return {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>The create table return object is <code>MybatisTable</code> type.</p>
-         * @see java.lang.Class
-         * @see org.springframework.lang.NonNull
-         * @see org.springframework.lang.Nullable
+         * @see  java.lang.Class
+         * @see  org.springframework.lang.NonNull
+         * @see  org.springframework.lang.Nullable
+         * @return  {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>The create table return object is <code>MybatisTable</code> type.</p>
          */
         MybatisTable createTable(@NonNull Class<?> entityType, @Nullable Class<?> identityType, @Nullable Class<?> linkageType, @Nullable Class<?> alertnessType);
     }

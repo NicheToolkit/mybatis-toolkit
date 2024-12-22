@@ -11,12 +11,12 @@ import java.util.Collection;
 /**
  * <code>MybatisOperateMapper</code>
  * <p>The mybatis operate mapper interface.</p>
- * @param <E> {@link io.github.nichetoolkit.rice.RestId} <p>The generic parameter is <code>RestId</code> type.</p>
- * @param <I> {@link java.lang.Object} <p>The parameter can be of any type.</p>
+ * @param <E>  {@link io.github.nichetoolkit.rice.RestId} <p>The generic parameter is <code>RestId</code> type.</p>
+ * @param <I>  {@link java.lang.Object} <p>The parameter can be of any type.</p>
+ * @see  io.github.nichetoolkit.rice.RestId
+ * @see  io.github.nichetoolkit.mybatis.MybatisMapper
+ * @see  io.github.nichetoolkit.rice.mapper.OperateMapper
  * @author Cyan (snow22314@outlook.com)
- * @see io.github.nichetoolkit.rice.RestId
- * @see io.github.nichetoolkit.mybatis.MybatisMapper
- * @see io.github.nichetoolkit.rice.mapper.OperateMapper
  * @since Jdk1.8
  */
 public interface MybatisOperateMapper<E extends RestId<I>, I> extends MybatisMapper<E>, OperateMapper<I> {

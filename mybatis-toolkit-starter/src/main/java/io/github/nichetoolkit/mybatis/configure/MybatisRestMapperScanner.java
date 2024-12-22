@@ -1,6 +1,6 @@
 package io.github.nichetoolkit.mybatis.configure;
 
-import io.github.nichetoolkit.rice.RestMapper;
+import io.github.nichetoolkit.mybatis.RestMapper;
 import org.springframework.beans.factory.config.BeanDefinitionHolder;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.context.annotation.ClassPathBeanDefinitionScanner;

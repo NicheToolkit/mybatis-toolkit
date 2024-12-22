@@ -20,11 +20,13 @@ import java.util.Date;
 /**
  * <code>SimpleModel</code>
  * <p>The simple model class.</p>
+ * @see  io.github.nichetoolkit.rice.RestInfoModel
+ * @see  io.github.nichetoolkit.rice.RestTablekey
+ * @see  lombok.Setter
+ * @see  lombok.Getter
+ * @see  com.fasterxml.jackson.annotation.JsonInclude
+ * @see  com.fasterxml.jackson.annotation.JsonIgnoreProperties
  * @author Cyan (snow22314@outlook.com)
- * @see io.github.nichetoolkit.rice.RestInfoModel
- * @see io.github.nichetoolkit.rice.RestTablekey
- * @see com.fasterxml.jackson.annotation.JsonInclude
- * @see com.fasterxml.jackson.annotation.JsonIgnoreProperties
  * @since Jdk1.8
  */
 @Setter
@@ -35,15 +37,15 @@ public class SimpleModel extends RestInfoModel<SimpleModel,SimpleEntity> impleme
     /**
      * <code>linkId</code>
      * {@link java.lang.String} <p>The <code>linkId</code> field.</p>
-     * @see java.lang.String
+     * @see  java.lang.String
      */
     private String linkId;
     /**
      * <code>time</code>
      * {@link java.util.Date} <p>The <code>time</code> field.</p>
-     * @see java.util.Date
-     * @see org.springframework.format.annotation.DateTimeFormat
-     * @see com.fasterxml.jackson.annotation.JsonFormat
+     * @see  java.util.Date
+     * @see  org.springframework.format.annotation.DateTimeFormat
+     * @see  com.fasterxml.jackson.annotation.JsonFormat
      */
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
@@ -52,7 +54,7 @@ public class SimpleModel extends RestInfoModel<SimpleModel,SimpleEntity> impleme
     /**
      * <code>status</code>
      * {@link io.github.nichetoolkit.mybatis.enums.SimpleStatus} <p>The <code>status</code> field.</p>
-     * @see io.github.nichetoolkit.mybatis.enums.SimpleStatus
+     * @see  io.github.nichetoolkit.mybatis.enums.SimpleStatus
      */
     private SimpleStatus status;
 
@@ -67,7 +69,7 @@ public class SimpleModel extends RestInfoModel<SimpleModel,SimpleEntity> impleme
      * <code>SimpleModel</code>
      * <p>Instantiates a new simple model.</p>
      * @param id {@link java.lang.String} <p>The id parameter is <code>String</code> type.</p>
-     * @see java.lang.String
+     * @see  java.lang.String
      */
     public SimpleModel(String id) {
         super(id);
@@ -77,7 +79,7 @@ public class SimpleModel extends RestInfoModel<SimpleModel,SimpleEntity> impleme
      * <code>SimpleModel</code>
      * <p>Instantiates a new simple model.</p>
      * @param builder {@link io.github.nichetoolkit.mybatis.simple.SimpleModel.Builder} <p>The builder parameter is <code>Builder</code> type.</p>
-     * @see io.github.nichetoolkit.mybatis.simple.SimpleModel.Builder
+     * @see  io.github.nichetoolkit.mybatis.simple.SimpleModel.Builder
      */
     public SimpleModel(Builder builder) {
         super(builder);
@@ -101,15 +103,15 @@ public class SimpleModel extends RestInfoModel<SimpleModel,SimpleEntity> impleme
     /**
      * <code>Builder</code>
      * <p>The builder class.</p>
+     * @see  io.github.nichetoolkit.rice.RestInfoModel.Builder
      * @author Cyan (snow22314@outlook.com)
-     * @see io.github.nichetoolkit.rice.RestInfoModel.Builder
      * @since Jdk1.8
      */
     public static class Builder extends RestInfoModel.Builder<SimpleModel,SimpleEntity> {
         /**
          * <code>time</code>
          * {@link java.util.Date} <p>The <code>time</code> field.</p>
-         * @see java.util.Date
+         * @see  java.util.Date
          */
         protected Date time;
 
@@ -124,8 +126,8 @@ public class SimpleModel extends RestInfoModel<SimpleModel,SimpleEntity> impleme
          * <code>time</code>
          * <p>The time method.</p>
          * @param time {@link java.lang.Long} <p>The time parameter is <code>Long</code> type.</p>
-         * @return {@link io.github.nichetoolkit.mybatis.simple.SimpleModel.Builder} <p>The time return object is <code>Builder</code> type.</p>
-         * @see java.lang.Long
+         * @see  java.lang.Long
+         * @return  {@link io.github.nichetoolkit.mybatis.simple.SimpleModel.Builder} <p>The time return object is <code>Builder</code> type.</p>
          */
         public Builder time(Long time) {
             this.time = new Date(time);
@@ -136,8 +138,8 @@ public class SimpleModel extends RestInfoModel<SimpleModel,SimpleEntity> impleme
          * <code>time</code>
          * <p>The time method.</p>
          * @param time {@link java.util.Date} <p>The time parameter is <code>Date</code> type.</p>
-         * @return {@link io.github.nichetoolkit.mybatis.simple.SimpleModel.Builder} <p>The time return object is <code>Builder</code> type.</p>
-         * @see java.util.Date
+         * @see  java.util.Date
+         * @return  {@link io.github.nichetoolkit.mybatis.simple.SimpleModel.Builder} <p>The time return object is <code>Builder</code> type.</p>
          */
         public Builder time(Date time) {
             this.time = time;

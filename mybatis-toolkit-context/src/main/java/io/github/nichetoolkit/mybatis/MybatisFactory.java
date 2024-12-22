@@ -1,12 +1,12 @@
 package io.github.nichetoolkit.mybatis;
 
-import io.github.nichetoolkit.rice.builder.SqlUtils;
+import io.github.nichetoolkit.mybatis.builder.SqlUtils;
 import io.github.nichetoolkit.mybatis.defaults.DefaultColumnFactoryChain;
 import io.github.nichetoolkit.mybatis.defaults.DefaultTableFactoryChain;
 import io.github.nichetoolkit.mybatis.error.MybatisTableLackError;
-import io.github.nichetoolkit.rice.column.RestAlertKey;
-import io.github.nichetoolkit.rice.column.RestIdentityKey;
-import io.github.nichetoolkit.rice.column.RestLinkKey;
+import io.github.nichetoolkit.mybatis.column.RestAlertKey;
+import io.github.nichetoolkit.mybatis.column.RestIdentityKey;
+import io.github.nichetoolkit.mybatis.column.RestLinkKey;
 import io.github.nichetoolkit.rest.RestException;
 import io.github.nichetoolkit.rest.error.lack.InterfaceLackError;
 import io.github.nichetoolkit.rest.util.GeneralUtils;

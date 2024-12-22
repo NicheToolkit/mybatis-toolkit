@@ -7,13 +7,13 @@ import org.apache.ibatis.annotations.Mapper;
 /**
  * <code>SimpleMapper</code>
  * <p>The simple mapper interface.</p>
+ * @see  io.github.nichetoolkit.mybatis.MybatisInfoMapper
+ * @see  io.github.nichetoolkit.mybatis.MybatisAlertLinkMapper
+ * @see  io.github.nichetoolkit.mybatis.MybatisDeleteLinkMapper
+ * @see  io.github.nichetoolkit.mybatis.MybatisRemoveLinkMapper
+ * @see  io.github.nichetoolkit.mybatis.MybatisOperateLinkMapper
+ * @see  org.apache.ibatis.annotations.Mapper
  * @author Cyan (snow22314@outlook.com)
- * @see io.github.nichetoolkit.mybatis.MybatisInfoMapper
- * @see io.github.nichetoolkit.mybatis.MybatisAlertLinkMapper
- * @see io.github.nichetoolkit.mybatis.MybatisDeleteLinkMapper
- * @see io.github.nichetoolkit.mybatis.MybatisRemoveLinkMapper
- * @see io.github.nichetoolkit.mybatis.MybatisOperateLinkMapper
- * @see org.apache.ibatis.annotations.Mapper
  * @since Jdk1.8
  */
 @Mapper

@@ -1,9 +1,9 @@
 package io.github.nichetoolkit.mybatis;
 
-import io.github.nichetoolkit.rice.consts.SQLConstants;
-import io.github.nichetoolkit.rice.consts.ScriptConstants;
-import io.github.nichetoolkit.rice.enums.SortType;
-import io.github.nichetoolkit.rice.enums.StyleType;
+import io.github.nichetoolkit.mybatis.consts.SQLConstants;
+import io.github.nichetoolkit.mybatis.consts.ScriptConstants;
+import io.github.nichetoolkit.mybatis.enums.SortType;
+import io.github.nichetoolkit.mybatis.enums.StyleType;
 import io.github.nichetoolkit.mybatis.error.MybatisIdentityLackError;
 import io.github.nichetoolkit.mybatis.error.MybatisLinkageLackError;
 import io.github.nichetoolkit.rest.error.lack.ConfigureLackError;
@@ -209,8 +209,8 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
     private String styleName;
     /**
      * <code>styleType</code>
-     * {@link io.github.nichetoolkit.rice.enums.StyleType} <p>The <code>styleType</code> field.</p>
-     * @see  io.github.nichetoolkit.rice.enums.StyleType
+     * {@link io.github.nichetoolkit.mybatis.enums.StyleType} <p>The <code>styleType</code> field.</p>
+     * @see  io.github.nichetoolkit.mybatis.enums.StyleType
      * @see  lombok.Setter
      */
     @Setter
@@ -295,29 +295,37 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
     @Setter
     private List<Class<?>> excludeSuperClasses;
     /**
-     * <code>ignoreFields</code>
-     * {@link java.util.List} <p>The <code>ignoreFields</code> field.</p>
-     * @see  java.util.List
+     * <code>ignored</code>
+     * {@link io.github.nichetoolkit.mybatis.MybatisIgnored} <p>The <code>ignored</code> field.</p>
+     * @see  io.github.nichetoolkit.mybatis.MybatisIgnored
      * @see  lombok.Setter
      */
     @Setter
-    private List<String> ignoreFields;
+    private MybatisIgnored ignored;
     /**
-     * <code>ignoreFieldTypes</code>
-     * {@link java.util.List} <p>The <code>ignoreFieldTypes</code> field.</p>
-     * @see  java.util.List
+     * <code>selectIgnored</code>
+     * {@link io.github.nichetoolkit.mybatis.MybatisIgnored} <p>The <code>selectIgnored</code> field.</p>
+     * @see  io.github.nichetoolkit.mybatis.MybatisIgnored
      * @see  lombok.Setter
      */
     @Setter
-    private List<Class<?>> ignoreFieldTypes;
+    private MybatisIgnored selectIgnored;
     /**
-     * <code>ignoreSuperClasses</code>
-     * {@link java.util.List} <p>The <code>ignoreSuperClasses</code> field.</p>
-     * @see  java.util.List
+     * <code>insertIgnored</code>
+     * {@link io.github.nichetoolkit.mybatis.MybatisIgnored} <p>The <code>insertIgnored</code> field.</p>
+     * @see  io.github.nichetoolkit.mybatis.MybatisIgnored
      * @see  lombok.Setter
      */
     @Setter
-    private List<Class<?>> ignoreSuperClasses;
+    private MybatisIgnored insertIgnored;
+    /**
+     * <code>updateIgnored</code>
+     * {@link io.github.nichetoolkit.mybatis.MybatisIgnored} <p>The <code>updateIgnored</code> field.</p>
+     * @see  io.github.nichetoolkit.mybatis.MybatisIgnored
+     * @see  lombok.Setter
+     */
+    @Setter
+    private MybatisIgnored updateIgnored;
 
     /**
      * <code>identityColumn</code>
@@ -1403,51 +1411,6 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
         if (this.excludeFields != null) {
             String fieldName = field.fieldName();
             for (String excludeField : this.excludeFields) {
-                if (excludeField.equals(fieldName)) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    /**
-     * <code>isIgnoreSuperClass</code>
-     * <p>The is ignore super class method.</p>
-     * @param superClass {@link java.lang.Class} <p>The super class parameter is <code>Class</code> type.</p>
-     * @see  java.lang.Class
-     * @return boolean <p>The is ignore super class return object is <code>boolean</code> type.</p>
-     */
-    public boolean isIgnoreSuperClass(Class<?> superClass) {
-        if (this.ignoreSuperClasses != null) {
-            for (Class<?> clazz : this.ignoreSuperClasses) {
-                if (clazz == superClass) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    /**
-     * <code>isIgnoreField</code>
-     * <p>The is ignore field method.</p>
-     * @param field {@link io.github.nichetoolkit.mybatis.MybatisField} <p>The field parameter is <code>MybatisField</code> type.</p>
-     * @see  io.github.nichetoolkit.mybatis.MybatisField
-     * @return boolean <p>The is ignore field return object is <code>boolean</code> type.</p>
-     */
-    public boolean isIgnoreField(MybatisField field) {
-        if (this.ignoreFieldTypes != null) {
-            Class<?> fieldType = field.fieldType();
-            for (Class<?> clazz : this.ignoreFieldTypes) {
-                if (clazz == fieldType) {
-                    return true;
-                }
-            }
-        }
-        if (this.ignoreFields != null) {
-            String fieldName = field.fieldName();
-            for (String excludeField : this.ignoreFields) {
                 if (excludeField.equals(fieldName)) {
                     return true;
                 }

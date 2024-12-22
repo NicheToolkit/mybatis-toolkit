@@ -15,12 +15,12 @@ import org.springframework.context.annotation.ComponentScan;
 /**
  * <code>MybatisRecordAutoConfigure</code>
  * <p>The mybatis record auto configure class.</p>
+ * @see  lombok.extern.slf4j.Slf4j
+ * @see  org.springframework.boot.autoconfigure.AutoConfiguration
+ * @see  org.springframework.context.annotation.ComponentScan
+ * @see  org.springframework.boot.context.properties.EnableConfigurationProperties
+ * @see  org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
  * @author Cyan (snow22314@outlook.com)
- * @see lombok.extern.slf4j.Slf4j
- * @see org.springframework.boot.autoconfigure.AutoConfiguration
- * @see org.springframework.context.annotation.ComponentScan
- * @see org.springframework.boot.context.properties.EnableConfigurationProperties
- * @see org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
  * @since Jdk1.8
  */
 @Slf4j
@@ -42,11 +42,11 @@ public class MybatisRecordAutoConfigure {
      * <code>recordProvider</code>
      * <p>The record provider method.</p>
      * @param sqlSessionTemplate {@link org.mybatis.spring.SqlSessionTemplate} <p>The sql session template parameter is <code>SqlSessionTemplate</code> type.</p>
-     * @return {@link io.github.nichetoolkit.mybatis.record.MybatisRecordProvider} <p>The record provider return object is <code>MybatisRecordProvider</code> type.</p>
-     * @see org.mybatis.spring.SqlSessionTemplate
-     * @see io.github.nichetoolkit.mybatis.record.MybatisRecordProvider
-     * @see org.springframework.context.annotation.Bean
-     * @see org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
+     * @see  org.mybatis.spring.SqlSessionTemplate
+     * @see  io.github.nichetoolkit.mybatis.record.MybatisRecordProvider
+     * @see  org.springframework.context.annotation.Bean
+     * @see  org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
+     * @return  {@link io.github.nichetoolkit.mybatis.record.MybatisRecordProvider} <p>The record provider return object is <code>MybatisRecordProvider</code> type.</p>
      */
     @Bean
     @ConditionalOnMissingBean(MybatisRecordProvider.class)
@@ -57,9 +57,9 @@ public class MybatisRecordAutoConfigure {
     /**
      * <code>MybatisRecordAutoRegister</code>
      * <p>The mybatis record auto register class.</p>
+     * @see  org.springframework.beans.factory.InitializingBean
+     * @see  org.springframework.boot.autoconfigure.AutoConfiguration
      * @author Cyan (snow22314@outlook.com)
-     * @see org.springframework.beans.factory.InitializingBean
-     * @see org.springframework.boot.autoconfigure.AutoConfiguration
      * @since Jdk1.8
      */
     @AutoConfiguration
@@ -67,7 +67,7 @@ public class MybatisRecordAutoConfigure {
         /**
          * <code>recordProvider</code>
          * {@link io.github.nichetoolkit.mybatis.record.MybatisRecordProvider} <p>The <code>recordProvider</code> field.</p>
-         * @see io.github.nichetoolkit.mybatis.record.MybatisRecordProvider
+         * @see  io.github.nichetoolkit.mybatis.record.MybatisRecordProvider
          */
         private final MybatisRecordProvider<?,?,?> recordProvider;
 
@@ -75,8 +75,8 @@ public class MybatisRecordAutoConfigure {
          * <code>MybatisRecordAutoRegister</code>
          * <p>Instantiates a new mybatis record auto register.</p>
          * @param recordProvider {@link io.github.nichetoolkit.mybatis.record.MybatisRecordProvider} <p>The record provider parameter is <code>MybatisRecordProvider</code> type.</p>
-         * @see io.github.nichetoolkit.mybatis.record.MybatisRecordProvider
-         * @see org.springframework.beans.factory.annotation.Autowired
+         * @see  io.github.nichetoolkit.mybatis.record.MybatisRecordProvider
+         * @see  org.springframework.beans.factory.annotation.Autowired
          */
         @Autowired
         public MybatisRecordAutoRegister(MybatisRecordProvider<?,?,?> recordProvider) {

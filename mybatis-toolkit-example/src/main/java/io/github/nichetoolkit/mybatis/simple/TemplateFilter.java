@@ -10,9 +10,9 @@ import java.util.*;
 /**
  * <code>TemplateFilter</code>
  * <p>The template filter class.</p>
+ * @see  io.github.nichetoolkit.rice.DefaultFilter
+ * @see  io.github.nichetoolkit.rice.filter.StatusFilter
  * @author Cyan (snow22314@outlook.com)
- * @see io.github.nichetoolkit.rice.DefaultFilter
- * @see io.github.nichetoolkit.rice.filter.StatusFilter
  * @since Jdk1.8
  */
 public class TemplateFilter extends DefaultFilter<TemplateIdentity,String> implements StatusFilter<TemplateAlertness> {
@@ -20,14 +20,14 @@ public class TemplateFilter extends DefaultFilter<TemplateIdentity,String> imple
     /**
      * <code>status</code>
      * {@link io.github.nichetoolkit.mybatis.simple.TemplateAlertness} <p>The <code>status</code> field.</p>
-     * @see io.github.nichetoolkit.mybatis.simple.TemplateAlertness
+     * @see  io.github.nichetoolkit.mybatis.simple.TemplateAlertness
      */
     private TemplateAlertness status;
 
     /**
      * <code>statuses</code>
      * {@link java.util.Set} <p>The <code>statuses</code> field.</p>
-     * @see java.util.Set
+     * @see  java.util.Set
      */
     private Set<TemplateAlertness> statuses;
 
@@ -70,8 +70,8 @@ public class TemplateFilter extends DefaultFilter<TemplateIdentity,String> imple
      * <code>addStatuses</code>
      * <p>The add statuses method.</p>
      * @param statuses {@link io.github.nichetoolkit.mybatis.simple.TemplateAlertness} <p>The statuses parameter is <code>TemplateAlertness</code> type.</p>
-     * @see io.github.nichetoolkit.mybatis.simple.TemplateAlertness
-     * @see org.springframework.lang.NonNull
+     * @see  io.github.nichetoolkit.mybatis.simple.TemplateAlertness
+     * @see  org.springframework.lang.NonNull
      */
     public void addStatuses(@NonNull TemplateAlertness... statuses) {
         if (GeneralUtils.isEmpty(this.statuses)) {
@@ -85,8 +85,8 @@ public class TemplateFilter extends DefaultFilter<TemplateIdentity,String> imple
      * <code>addStatuses</code>
      * <p>The add statuses method.</p>
      * @param statuses {@link java.util.Collection} <p>The statuses parameter is <code>Collection</code> type.</p>
-     * @see java.util.Collection
-     * @see org.springframework.lang.NonNull
+     * @see  java.util.Collection
+     * @see  org.springframework.lang.NonNull
      */
     public void addStatuses(@NonNull Collection<TemplateAlertness> statuses) {
         if (GeneralUtils.isEmpty(this.statuses)) {

@@ -1,15 +1,11 @@
 package io.github.nichetoolkit.mybatis.defaults;
 
-import io.github.nichetoolkit.mybatis.MybatisContextHolder;
-import io.github.nichetoolkit.mybatis.MybatisTableStyle;
-import io.github.nichetoolkit.mybatis.MybatisTable;
-import io.github.nichetoolkit.mybatis.MybatisTableFactory;
+import io.github.nichetoolkit.mybatis.*;
 import io.github.nichetoolkit.mybatis.configure.MybatisTableProperties;
 import io.github.nichetoolkit.rest.util.GeneralUtils;
-import io.github.nichetoolkit.rice.RestStyle;
-import io.github.nichetoolkit.rice.enums.StyleType;
-import io.github.nichetoolkit.rice.table.RestProperties;
-import io.github.nichetoolkit.rice.table.*;
+import io.github.nichetoolkit.mybatis.enums.StyleType;
+import io.github.nichetoolkit.mybatis.table.RestProperties;
+import io.github.nichetoolkit.mybatis.table.*;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
@@ -21,8 +17,8 @@ import java.util.Optional;
 /**
  * <code>DefaultTableFactory</code>
  * <p>The default table factory class.</p>
+ * @see  io.github.nichetoolkit.mybatis.MybatisTableFactory
  * @author Cyan (snow22314@outlook.com)
- * @see io.github.nichetoolkit.mybatis.MybatisTableFactory
  * @since Jdk1.8
  */
 public class DefaultTableFactory implements MybatisTableFactory {
@@ -30,7 +26,7 @@ public class DefaultTableFactory implements MybatisTableFactory {
     /**
      * <code>tableProperties</code>
      * {@link io.github.nichetoolkit.mybatis.configure.MybatisTableProperties} <p>The <code>tableProperties</code> field.</p>
-     * @see io.github.nichetoolkit.mybatis.configure.MybatisTableProperties
+     * @see  io.github.nichetoolkit.mybatis.configure.MybatisTableProperties
      */
     private final MybatisTableProperties tableProperties;
 
@@ -75,16 +71,19 @@ public class DefaultTableFactory implements MybatisTableFactory {
         restProperties(entityType, mybatisTable);
         restExcludes(entityType, mybatisTable);
         restIgnores(entityType, mybatisTable);
+        restSelectIgnores(entityType, mybatisTable);
+        restInsertIgnores(entityType, mybatisTable);
+        restUpdateIgnores(entityType, mybatisTable);
         return mybatisTable;
     }
 
     /**
      * <code>restUniqueKeys</code>
      * <p>The rest unique keys method.</p>
-     * @param clazz        {@link java.lang.Class} <p>The clazz parameter is <code>Class</code> type.</p>
+     * @param clazz {@link java.lang.Class} <p>The clazz parameter is <code>Class</code> type.</p>
      * @param mybatisTable {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>The mybatis table parameter is <code>MybatisTable</code> type.</p>
-     * @see java.lang.Class
-     * @see io.github.nichetoolkit.mybatis.MybatisTable
+     * @see  java.lang.Class
+     * @see  io.github.nichetoolkit.mybatis.MybatisTable
      */
     public void restUniqueKeys(Class<?> clazz, MybatisTable mybatisTable) {
         /* restUniqueKeys 注解处理 */
@@ -97,10 +96,10 @@ public class DefaultTableFactory implements MybatisTableFactory {
     /**
      * <code>restUnionKeys</code>
      * <p>The rest union keys method.</p>
-     * @param clazz        {@link java.lang.Class} <p>The clazz parameter is <code>Class</code> type.</p>
+     * @param clazz {@link java.lang.Class} <p>The clazz parameter is <code>Class</code> type.</p>
      * @param mybatisTable {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>The mybatis table parameter is <code>MybatisTable</code> type.</p>
-     * @see java.lang.Class
-     * @see io.github.nichetoolkit.mybatis.MybatisTable
+     * @see  java.lang.Class
+     * @see  io.github.nichetoolkit.mybatis.MybatisTable
      */
     public void restUnionKeys(Class<?> clazz, MybatisTable mybatisTable) {
         /* restUnionKeys 注解处理 */
@@ -113,10 +112,10 @@ public class DefaultTableFactory implements MybatisTableFactory {
     /**
      * <code>restLinkKeys</code>
      * <p>The rest link keys method.</p>
-     * @param clazz        {@link java.lang.Class} <p>The clazz parameter is <code>Class</code> type.</p>
+     * @param clazz {@link java.lang.Class} <p>The clazz parameter is <code>Class</code> type.</p>
      * @param mybatisTable {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>The mybatis table parameter is <code>MybatisTable</code> type.</p>
-     * @see java.lang.Class
-     * @see io.github.nichetoolkit.mybatis.MybatisTable
+     * @see  java.lang.Class
+     * @see  io.github.nichetoolkit.mybatis.MybatisTable
      */
     public void restLinkKeys(Class<?> clazz, MybatisTable mybatisTable) {
         /* restLinkKeys 注解处理 */
@@ -129,10 +128,10 @@ public class DefaultTableFactory implements MybatisTableFactory {
     /**
      * <code>restAlertKeys</code>
      * <p>The rest alert keys method.</p>
-     * @param clazz        {@link java.lang.Class} <p>The clazz parameter is <code>Class</code> type.</p>
+     * @param clazz {@link java.lang.Class} <p>The clazz parameter is <code>Class</code> type.</p>
      * @param mybatisTable {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>The mybatis table parameter is <code>MybatisTable</code> type.</p>
-     * @see java.lang.Class
-     * @see io.github.nichetoolkit.mybatis.MybatisTable
+     * @see  java.lang.Class
+     * @see  io.github.nichetoolkit.mybatis.MybatisTable
      */
     public void restAlertKeys(Class<?> clazz, MybatisTable mybatisTable) {
         /* restAlertKeys 注解处理 */
@@ -145,12 +144,12 @@ public class DefaultTableFactory implements MybatisTableFactory {
     /**
      * <code>restStyle</code>
      * <p>The rest style method.</p>
-     * @param clazz        {@link java.lang.Class} <p>The clazz parameter is <code>Class</code> type.</p>
+     * @param clazz {@link java.lang.Class} <p>The clazz parameter is <code>Class</code> type.</p>
      * @param mybatisTable {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>The mybatis table parameter is <code>MybatisTable</code> type.</p>
-     * @return {@link io.github.nichetoolkit.mybatis.MybatisTableStyle} <p>The rest style return object is <code>MybatisTableStyle</code> type.</p>
-     * @see java.lang.Class
-     * @see io.github.nichetoolkit.mybatis.MybatisTable
-     * @see io.github.nichetoolkit.mybatis.MybatisTableStyle
+     * @see  java.lang.Class
+     * @see  io.github.nichetoolkit.mybatis.MybatisTable
+     * @see  io.github.nichetoolkit.mybatis.MybatisTableStyle
+     * @return  {@link io.github.nichetoolkit.mybatis.MybatisTableStyle} <p>The rest style return object is <code>MybatisTableStyle</code> type.</p>
      */
     public MybatisTableStyle restStyle(Class<?> clazz, MybatisTable mybatisTable) {
         /* restStyle 注解处理 */
@@ -182,10 +181,10 @@ public class DefaultTableFactory implements MybatisTableFactory {
     /**
      * <code>restResultMap</code>
      * <p>The rest result map method.</p>
-     * @param clazz        {@link java.lang.Class} <p>The clazz parameter is <code>Class</code> type.</p>
+     * @param clazz {@link java.lang.Class} <p>The clazz parameter is <code>Class</code> type.</p>
      * @param mybatisTable {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>The mybatis table parameter is <code>MybatisTable</code> type.</p>
-     * @see java.lang.Class
-     * @see io.github.nichetoolkit.mybatis.MybatisTable
+     * @see  java.lang.Class
+     * @see  io.github.nichetoolkit.mybatis.MybatisTable
      */
     public void restResultMap(Class<?> clazz, MybatisTable mybatisTable) {
         /* restResultMap 注解处理 */
@@ -199,10 +198,10 @@ public class DefaultTableFactory implements MybatisTableFactory {
     /**
      * <code>restProperties</code>
      * <p>The rest properties method.</p>
-     * @param clazz        {@link java.lang.Class} <p>The clazz parameter is <code>Class</code> type.</p>
+     * @param clazz {@link java.lang.Class} <p>The clazz parameter is <code>Class</code> type.</p>
      * @param mybatisTable {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>The mybatis table parameter is <code>MybatisTable</code> type.</p>
-     * @see java.lang.Class
-     * @see io.github.nichetoolkit.mybatis.MybatisTable
+     * @see  java.lang.Class
+     * @see  io.github.nichetoolkit.mybatis.MybatisTable
      */
     public void restProperties(Class<?> clazz, MybatisTable mybatisTable) {
         /* restResultMap 注解处理 */
@@ -219,10 +218,10 @@ public class DefaultTableFactory implements MybatisTableFactory {
     /**
      * <code>restExcludes</code>
      * <p>The rest excludes method.</p>
-     * @param clazz        {@link java.lang.Class} <p>The clazz parameter is <code>Class</code> type.</p>
+     * @param clazz {@link java.lang.Class} <p>The clazz parameter is <code>Class</code> type.</p>
      * @param mybatisTable {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>The mybatis table parameter is <code>MybatisTable</code> type.</p>
-     * @see java.lang.Class
-     * @see io.github.nichetoolkit.mybatis.MybatisTable
+     * @see  java.lang.Class
+     * @see  io.github.nichetoolkit.mybatis.MybatisTable
      */
     public void restExcludes(Class<?> clazz, MybatisTable mybatisTable) {
         /* restIgnores 注解处理 */
@@ -243,24 +242,113 @@ public class DefaultTableFactory implements MybatisTableFactory {
     /**
      * <code>restIgnores</code>
      * <p>The rest ignores method.</p>
-     * @param clazz        {@link java.lang.Class} <p>The clazz parameter is <code>Class</code> type.</p>
+     * @param clazz {@link java.lang.Class} <p>The clazz parameter is <code>Class</code> type.</p>
      * @param mybatisTable {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>The mybatis table parameter is <code>MybatisTable</code> type.</p>
-     * @see java.lang.Class
-     * @see io.github.nichetoolkit.mybatis.MybatisTable
+     * @see  java.lang.Class
+     * @see  io.github.nichetoolkit.mybatis.MybatisTable
+     * @see  java.lang.SuppressWarnings
      */
+    @SuppressWarnings("Duplicates")
     public void restIgnores(Class<?> clazz, MybatisTable mybatisTable) {
         /* restIgnores 注解处理 */
         RestIgnores restIgnores = AnnotationUtils.getAnnotation(clazz, RestIgnores.class);
         if (GeneralUtils.isNotEmpty(restIgnores)) {
+            MybatisIgnored mybatisIgnored = new MybatisIgnored();
             if (GeneralUtils.isNotEmpty(restIgnores.fields())) {
-                mybatisTable.setIgnoreFields(Arrays.asList(restIgnores.fields()));
+                mybatisIgnored.fields(Arrays.asList(restIgnores.fields()));
             }
             if (GeneralUtils.isNotEmpty(restIgnores.fieldTypes())) {
-                mybatisTable.setIgnoreFieldTypes(Arrays.asList(restIgnores.fieldTypes()));
+                mybatisIgnored.fieldTypes(Arrays.asList(restIgnores.fieldTypes()));
             }
             if (GeneralUtils.isNotEmpty(restIgnores.superClasses())) {
-                mybatisTable.setIgnoreSuperClasses(Arrays.asList(restIgnores.superClasses()));
+                mybatisIgnored.superClasses(Arrays.asList(restIgnores.superClasses()));
             }
+            mybatisTable.setIgnored(mybatisIgnored);
         }
     }
+
+    /**
+     * <code>restSelectIgnores</code>
+     * <p>The rest select ignores method.</p>
+     * @param clazz {@link java.lang.Class} <p>The clazz parameter is <code>Class</code> type.</p>
+     * @param mybatisTable {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>The mybatis table parameter is <code>MybatisTable</code> type.</p>
+     * @see  java.lang.Class
+     * @see  io.github.nichetoolkit.mybatis.MybatisTable
+     * @see  java.lang.SuppressWarnings
+     */
+    @SuppressWarnings("Duplicates")
+    public void restSelectIgnores(Class<?> clazz, MybatisTable mybatisTable) {
+        /* restSelectIgnores 注解处理 */
+        RestSelectIgnores selectIgnores = AnnotationUtils.getAnnotation(clazz, RestSelectIgnores.class);
+        if (GeneralUtils.isNotEmpty(selectIgnores)) {
+            MybatisIgnored selectIgnored = new MybatisIgnored();
+            if (GeneralUtils.isNotEmpty(selectIgnores.fields())) {
+                selectIgnored.fields(Arrays.asList(selectIgnores.fields()));
+            }
+            if (GeneralUtils.isNotEmpty(selectIgnores.fieldTypes())) {
+                selectIgnored.fieldTypes(Arrays.asList(selectIgnores.fieldTypes()));
+            }
+            if (GeneralUtils.isNotEmpty(selectIgnores.superClasses())) {
+                selectIgnored.superClasses(Arrays.asList(selectIgnores.superClasses()));
+            }
+            mybatisTable.setIgnored(selectIgnored);
+        }
+    }
+
+    /**
+     * <code>restInsertIgnores</code>
+     * <p>The rest insert ignores method.</p>
+     * @param clazz {@link java.lang.Class} <p>The clazz parameter is <code>Class</code> type.</p>
+     * @param mybatisTable {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>The mybatis table parameter is <code>MybatisTable</code> type.</p>
+     * @see  java.lang.Class
+     * @see  io.github.nichetoolkit.mybatis.MybatisTable
+     * @see  java.lang.SuppressWarnings
+     */
+    @SuppressWarnings("Duplicates")
+    public void restInsertIgnores(Class<?> clazz, MybatisTable mybatisTable) {
+        /* restInsertIgnores 注解处理 */
+        RestInsertIgnores insertIgnores = AnnotationUtils.getAnnotation(clazz, RestInsertIgnores.class);
+        if (GeneralUtils.isNotEmpty(insertIgnores)) {
+            MybatisIgnored insertIgnored = new MybatisIgnored();
+            if (GeneralUtils.isNotEmpty(insertIgnores.fields())) {
+                insertIgnored.fields(Arrays.asList(insertIgnores.fields()));
+            }
+            if (GeneralUtils.isNotEmpty(insertIgnores.fieldTypes())) {
+                insertIgnored.fieldTypes(Arrays.asList(insertIgnores.fieldTypes()));
+            }
+            if (GeneralUtils.isNotEmpty(insertIgnores.superClasses())) {
+                insertIgnored.superClasses(Arrays.asList(insertIgnores.superClasses()));
+            }
+            mybatisTable.setInsertIgnored(insertIgnored);
+        }
+    }
+
+    /**
+     * <code>restUpdateIgnores</code>
+     * <p>The rest update ignores method.</p>
+     * @param clazz {@link java.lang.Class} <p>The clazz parameter is <code>Class</code> type.</p>
+     * @param mybatisTable {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>The mybatis table parameter is <code>MybatisTable</code> type.</p>
+     * @see  java.lang.Class
+     * @see  io.github.nichetoolkit.mybatis.MybatisTable
+     * @see  java.lang.SuppressWarnings
+     */
+    @SuppressWarnings("Duplicates")
+    public void restUpdateIgnores(Class<?> clazz, MybatisTable mybatisTable) {
+        /* restUpdateIgnores 注解处理 */
+        RestUpdateIgnores updateIgnores = AnnotationUtils.getAnnotation(clazz, RestUpdateIgnores.class);
+        if (GeneralUtils.isNotEmpty(updateIgnores)) {
+            MybatisIgnored updateIgnored = new MybatisIgnored();
+            if (GeneralUtils.isNotEmpty(updateIgnores.fields())) {
+                updateIgnored.fields(Arrays.asList(updateIgnores.fields()));
+            }
+            if (GeneralUtils.isNotEmpty(updateIgnores.fieldTypes())) {
+                updateIgnored.fieldTypes(Arrays.asList(updateIgnores.fieldTypes()));
+            }
+            if (GeneralUtils.isNotEmpty(updateIgnores.superClasses())) {
+                updateIgnored.superClasses(Arrays.asList(updateIgnores.superClasses()));
+            }
+            mybatisTable.setUpdateIgnored(updateIgnored);
+        }
+    }
+
 }

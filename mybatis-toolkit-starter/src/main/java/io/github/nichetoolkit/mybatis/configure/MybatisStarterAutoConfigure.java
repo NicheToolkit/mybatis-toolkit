@@ -13,12 +13,12 @@ import org.springframework.lang.NonNull;
 /**
  * <code>MybatisStarterAutoConfigure</code>
  * <p>The mybatis starter auto configure class.</p>
+ * @see  lombok.extern.slf4j.Slf4j
+ * @see  org.springframework.boot.autoconfigure.AutoConfiguration
+ * @see  org.springframework.context.annotation.ComponentScan
+ * @see  org.springframework.context.annotation.Import
+ * @see  org.springframework.boot.autoconfigure.ImportAutoConfiguration
  * @author Cyan (snow22314@outlook.com)
- * @see lombok.extern.slf4j.Slf4j
- * @see org.springframework.boot.autoconfigure.AutoConfiguration
- * @see org.springframework.context.annotation.ComponentScan
- * @see org.springframework.context.annotation.Import
- * @see org.springframework.boot.autoconfigure.ImportAutoConfiguration
  * @since Jdk1.8
  */
 @Slf4j
@@ -39,8 +39,8 @@ public class MybatisStarterAutoConfigure {
     /**
      * <code>MybatisMapperAutoRegister</code>
      * <p>The mybatis mapper auto register class.</p>
+     * @see  org.springframework.context.annotation.ImportBeanDefinitionRegistrar
      * @author Cyan (snow22314@outlook.com)
-     * @see org.springframework.context.annotation.ImportBeanDefinitionRegistrar
      * @since Jdk1.8
      */
     public static class MybatisMapperAutoRegister implements ImportBeanDefinitionRegistrar {

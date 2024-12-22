@@ -1,7 +1,7 @@
 package io.github.nichetoolkit.mybatis.simple;
 
-import io.github.nichetoolkit.rice.column.RestUnionKey;
-import io.github.nichetoolkit.rice.table.RestIdentity;
+import io.github.nichetoolkit.mybatis.column.RestUnionKey;
+import io.github.nichetoolkit.mybatis.table.RestIdentity;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,7 +12,9 @@ import java.util.Objects;
  * <code>TemplateIdentity</code>
  * <p>The template identity class.</p>
  * @see  java.io.Serializable
- * @see  io.github.nichetoolkit.rice.table.RestIdentity
+ * @see  lombok.Setter
+ * @see  lombok.Getter
+ * @see  RestIdentity
  * @author Cyan (snow22314@outlook.com)
  * @since Jdk1.8
  */
@@ -24,7 +26,7 @@ public class TemplateIdentity implements Serializable {
      * <code>templatePk1</code>
      * {@link java.lang.String} <p>The <code>templatePk1</code> field.</p>
      * @see  java.lang.String
-     * @see  io.github.nichetoolkit.rice.column.RestUnionKey
+     * @see  RestUnionKey
      */
     @RestUnionKey
     private String templatePk1;
@@ -32,7 +34,7 @@ public class TemplateIdentity implements Serializable {
      * <code>templatePk2</code>
      * {@link java.lang.String} <p>The <code>templatePk2</code> field.</p>
      * @see  java.lang.String
-     * @see  io.github.nichetoolkit.rice.column.RestUnionKey
+     * @see  RestUnionKey
      */
     @RestUnionKey
     private String templatePk2;

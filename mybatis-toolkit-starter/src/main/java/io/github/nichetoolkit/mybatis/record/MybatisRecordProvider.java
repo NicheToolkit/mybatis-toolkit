@@ -21,14 +21,14 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * <code>MybatisRecordProvider</code>
  * <p>The mybatis record provider class.</p>
- * @param <M> {@link io.github.nichetoolkit.mybatis.MybatisSuperMapper} <p>The generic parameter is <code>MybatisSuperMapper</code> type.</p>
- * @param <E> {@link io.github.nichetoolkit.rice.IdEntity} <p>The generic parameter is <code>IdEntity</code> type.</p>
- * @param <I> {@link java.lang.Object} <p>The parameter can be of any type.</p>
+ * @param <M>  {@link io.github.nichetoolkit.mybatis.MybatisSuperMapper} <p>The generic parameter is <code>MybatisSuperMapper</code> type.</p>
+ * @param <E>  {@link io.github.nichetoolkit.rice.IdEntity} <p>The generic parameter is <code>IdEntity</code> type.</p>
+ * @param <I>  {@link java.lang.Object} <p>The parameter can be of any type.</p>
+ * @see  io.github.nichetoolkit.mybatis.MybatisSuperMapper
+ * @see  io.github.nichetoolkit.rice.IdEntity
+ * @see  org.springframework.context.ApplicationContextAware
+ * @see  org.springframework.context.ApplicationListener
  * @author Cyan (snow22314@outlook.com)
- * @see io.github.nichetoolkit.mybatis.MybatisSuperMapper
- * @see io.github.nichetoolkit.rice.IdEntity
- * @see org.springframework.context.ApplicationContextAware
- * @see org.springframework.context.ApplicationListener
  * @since Jdk1.8
  */
 public class MybatisRecordProvider<M extends MybatisSuperMapper<E, I>, E extends IdEntity<I>, I> implements ApplicationContextAware, ApplicationListener<ContextRefreshedEvent> {
@@ -36,21 +36,21 @@ public class MybatisRecordProvider<M extends MybatisSuperMapper<E, I>, E extends
     /**
      * <code>SUPER_MAPPER_CACHE</code>
      * {@link java.util.Map} <p>The <code>SUPER_MAPPER_CACHE</code> field.</p>
-     * @see java.util.Map
+     * @see  java.util.Map
      */
     protected final Map<Class<?>, MybatisSuperMapper<E, I>> SUPER_MAPPER_CACHE = new ConcurrentHashMap<>();
 
     /**
      * <code>applicationContext</code>
      * {@link org.springframework.context.ApplicationContext} <p>The constant <code>applicationContext</code> field.</p>
-     * @see org.springframework.context.ApplicationContext
+     * @see  org.springframework.context.ApplicationContext
      */
     protected static ApplicationContext applicationContext;
 
     /**
      * <code>sqlSessionTemplate</code>
      * {@link org.mybatis.spring.SqlSessionTemplate} <p>The <code>sqlSessionTemplate</code> field.</p>
-     * @see org.mybatis.spring.SqlSessionTemplate
+     * @see  org.mybatis.spring.SqlSessionTemplate
      */
     protected SqlSessionTemplate sqlSessionTemplate;
 
@@ -58,8 +58,8 @@ public class MybatisRecordProvider<M extends MybatisSuperMapper<E, I>, E extends
      * <code>MybatisRecordProvider</code>
      * <p>Instantiates a new mybatis record provider.</p>
      * @param sqlSessionTemplate {@link org.mybatis.spring.SqlSessionTemplate} <p>The sql session template parameter is <code>SqlSessionTemplate</code> type.</p>
-     * @see org.mybatis.spring.SqlSessionTemplate
-     * @see org.springframework.beans.factory.annotation.Autowired
+     * @see  org.mybatis.spring.SqlSessionTemplate
+     * @see  org.springframework.beans.factory.annotation.Autowired
      */
     @Autowired
     public MybatisRecordProvider(SqlSessionTemplate sqlSessionTemplate) {
@@ -79,12 +79,12 @@ public class MybatisRecordProvider<M extends MybatisSuperMapper<E, I>, E extends
     /**
      * <code>defaultInstance</code>
      * <p>The default instance method.</p>
-     * @param <M> {@link io.github.nichetoolkit.mybatis.MybatisSuperMapper} <p>The generic parameter is <code>MybatisSuperMapper</code> type.</p>
-     * @param <E> {@link io.github.nichetoolkit.rice.IdEntity} <p>The generic parameter is <code>IdEntity</code> type.</p>
-     * @param <I> {@link java.lang.Object} <p>The parameter can be of any type.</p>
-     * @return {@link io.github.nichetoolkit.mybatis.record.MybatisRecordProvider} <p>The default instance return object is <code>MybatisRecordProvider</code> type.</p>
-     * @see io.github.nichetoolkit.mybatis.MybatisSuperMapper
-     * @see io.github.nichetoolkit.rice.IdEntity
+     * @param <M>  {@link io.github.nichetoolkit.mybatis.MybatisSuperMapper} <p>The generic parameter is <code>MybatisSuperMapper</code> type.</p>
+     * @param <E>  {@link io.github.nichetoolkit.rice.IdEntity} <p>The generic parameter is <code>IdEntity</code> type.</p>
+     * @param <I>  {@link java.lang.Object} <p>The parameter can be of any type.</p>
+     * @see  io.github.nichetoolkit.mybatis.MybatisSuperMapper
+     * @see  io.github.nichetoolkit.rice.IdEntity
+     * @return  {@link io.github.nichetoolkit.mybatis.record.MybatisRecordProvider} <p>The default instance return object is <code>MybatisRecordProvider</code> type.</p>
      */
     public static <M extends MybatisSuperMapper<E, I>, E extends IdEntity<I>, I> MybatisRecordProvider<M, E, I> defaultInstance() {
         return MybatisMapperProviderInstance.instance();
@@ -93,15 +93,15 @@ public class MybatisRecordProvider<M extends MybatisSuperMapper<E, I>, E extends
     /**
      * <code>getInstance</code>
      * <p>The get instance getter method.</p>
-     * @param <M>          {@link io.github.nichetoolkit.mybatis.MybatisSuperMapper} <p>The generic parameter is <code>MybatisSuperMapper</code> type.</p>
-     * @param <E>          {@link io.github.nichetoolkit.rice.IdEntity} <p>The generic parameter is <code>IdEntity</code> type.</p>
-     * @param <I>          {@link java.lang.Object} <p>The parameter can be of any type.</p>
+     * @param <M>  {@link io.github.nichetoolkit.mybatis.MybatisSuperMapper} <p>The generic parameter is <code>MybatisSuperMapper</code> type.</p>
+     * @param <E>  {@link io.github.nichetoolkit.rice.IdEntity} <p>The generic parameter is <code>IdEntity</code> type.</p>
+     * @param <I>  {@link java.lang.Object} <p>The parameter can be of any type.</p>
      * @param instanceName {@link java.lang.String} <p>The instance name parameter is <code>String</code> type.</p>
-     * @return {@link io.github.nichetoolkit.mybatis.record.MybatisRecordProvider} <p>The get instance return object is <code>MybatisRecordProvider</code> type.</p>
-     * @see io.github.nichetoolkit.mybatis.MybatisSuperMapper
-     * @see io.github.nichetoolkit.rice.IdEntity
-     * @see java.lang.String
-     * @see java.lang.SuppressWarnings
+     * @see  io.github.nichetoolkit.mybatis.MybatisSuperMapper
+     * @see  io.github.nichetoolkit.rice.IdEntity
+     * @see  java.lang.String
+     * @see  java.lang.SuppressWarnings
+     * @return  {@link io.github.nichetoolkit.mybatis.record.MybatisRecordProvider} <p>The get instance return object is <code>MybatisRecordProvider</code> type.</p>
      */
     @SuppressWarnings(value = "unchecked")
     public static <M extends MybatisSuperMapper<E, I>, E extends IdEntity<I>, I> MybatisRecordProvider<M, E, I> getInstance(String instanceName) {
@@ -121,10 +121,10 @@ public class MybatisRecordProvider<M extends MybatisSuperMapper<E, I>, E extends
      * <code>cacheMapper</code>
      * <p>The cache mapper method.</p>
      * @param mapperClass {@link java.lang.Class} <p>The mapper class parameter is <code>Class</code> type.</p>
-     * @param mapper      {@link java.lang.Object} <p>The mapper parameter is <code>Object</code> type.</p>
-     * @see java.lang.Class
-     * @see java.lang.Object
-     * @see java.lang.SuppressWarnings
+     * @param mapper {@link java.lang.Object} <p>The mapper parameter is <code>Object</code> type.</p>
+     * @see  java.lang.Class
+     * @see  java.lang.Object
+     * @see  java.lang.SuppressWarnings
      */
     @SuppressWarnings(value = "unchecked")
     public void cacheMapper(Class<?> mapperClass, Object mapper) {
@@ -143,9 +143,9 @@ public class MybatisRecordProvider<M extends MybatisSuperMapper<E, I>, E extends
      * <code>superMapper</code>
      * <p>The super mapper method.</p>
      * @param entityClazz {@link java.lang.Class} <p>The entity clazz parameter is <code>Class</code> type.</p>
+     * @see  java.lang.Class
+     * @see  java.lang.SuppressWarnings
      * @return M <p>The super mapper return object is <code>M</code> type.</p>
-     * @see java.lang.Class
-     * @see java.lang.SuppressWarnings
      */
     @SuppressWarnings(value = "unchecked")
     public M superMapper(Class<E> entityClazz) {
@@ -186,13 +186,13 @@ public class MybatisRecordProvider<M extends MybatisSuperMapper<E, I>, E extends
         /**
          * <code>instance</code>
          * <p>The instance method.</p>
-         * @param <M> {@link io.github.nichetoolkit.mybatis.MybatisSuperMapper} <p>The generic parameter is <code>MybatisSuperMapper</code> type.</p>
-         * @param <E> {@link io.github.nichetoolkit.rice.IdEntity} <p>The generic parameter is <code>IdEntity</code> type.</p>
-         * @param <I> {@link java.lang.Object} <p>The parameter can be of any type.</p>
-         * @return {@link io.github.nichetoolkit.mybatis.record.MybatisRecordProvider} <p>The instance return object is <code>MybatisRecordProvider</code> type.</p>
-         * @see io.github.nichetoolkit.mybatis.MybatisSuperMapper
-         * @see io.github.nichetoolkit.rice.IdEntity
-         * @see java.lang.SuppressWarnings
+         * @param <M>  {@link io.github.nichetoolkit.mybatis.MybatisSuperMapper} <p>The generic parameter is <code>MybatisSuperMapper</code> type.</p>
+         * @param <E>  {@link io.github.nichetoolkit.rice.IdEntity} <p>The generic parameter is <code>IdEntity</code> type.</p>
+         * @param <I>  {@link java.lang.Object} <p>The parameter can be of any type.</p>
+         * @see  io.github.nichetoolkit.mybatis.MybatisSuperMapper
+         * @see  io.github.nichetoolkit.rice.IdEntity
+         * @see  java.lang.SuppressWarnings
+         * @return  {@link io.github.nichetoolkit.mybatis.record.MybatisRecordProvider} <p>The instance return object is <code>MybatisRecordProvider</code> type.</p>
          */
         @SuppressWarnings(value = "unchecked")
         private static <M extends MybatisSuperMapper<E, I>, E extends IdEntity<I>, I> MybatisRecordProvider<M, E, I> instance() {
@@ -205,12 +205,12 @@ public class MybatisRecordProvider<M extends MybatisSuperMapper<E, I>, E extends
         /**
          * <code>instance</code>
          * <p>The instance method.</p>
-         * @param <M>      {@link io.github.nichetoolkit.mybatis.MybatisSuperMapper} <p>The generic parameter is <code>MybatisSuperMapper</code> type.</p>
-         * @param <E>      {@link io.github.nichetoolkit.rice.IdEntity} <p>The generic parameter is <code>IdEntity</code> type.</p>
-         * @param <I>      {@link java.lang.Object} <p>The parameter can be of any type.</p>
+         * @param <M>  {@link io.github.nichetoolkit.mybatis.MybatisSuperMapper} <p>The generic parameter is <code>MybatisSuperMapper</code> type.</p>
+         * @param <E>  {@link io.github.nichetoolkit.rice.IdEntity} <p>The generic parameter is <code>IdEntity</code> type.</p>
+         * @param <I>  {@link java.lang.Object} <p>The parameter can be of any type.</p>
          * @param instance {@link io.github.nichetoolkit.mybatis.record.MybatisRecordProvider} <p>The instance parameter is <code>MybatisRecordProvider</code> type.</p>
-         * @see io.github.nichetoolkit.mybatis.MybatisSuperMapper
-         * @see io.github.nichetoolkit.rice.IdEntity
+         * @see  io.github.nichetoolkit.mybatis.MybatisSuperMapper
+         * @see  io.github.nichetoolkit.rice.IdEntity
          */
         private static <M extends MybatisSuperMapper<E, I>, E extends IdEntity<I>, I> void instance(MybatisRecordProvider<M, E, I> instance) {
             MybatisMapperProviderInstance.INSTANCE = instance;

@@ -1,7 +1,7 @@
 package io.github.nichetoolkit.mybatis;
 
 import io.github.nichetoolkit.rest.util.GeneralUtils;
-import io.github.nichetoolkit.rice.table.RestProperty;
+import io.github.nichetoolkit.mybatis.table.RestProperty;
 import io.github.nichetoolkit.rest.util.ValueUtils;
 
 import java.util.Arrays;
@@ -148,8 +148,8 @@ public class MybatisProperty<P extends MybatisProperty<P>> {
     /**
      * <code>setProperty</code>
      * <p>The set property setter method.</p>
-     * @param property {@link io.github.nichetoolkit.rice.table.RestProperty} <p>The property parameter is <code>RestProperty</code> type.</p>
-     * @see  io.github.nichetoolkit.rice.table.RestProperty
+     * @param property {@link io.github.nichetoolkit.mybatis.table.RestProperty} <p>The property parameter is <code>RestProperty</code> type.</p>
+     * @see  io.github.nichetoolkit.mybatis.table.RestProperty
      */
     public void setProperty(RestProperty property) {
         setProperty(property.name(), property.value());
@@ -174,8 +174,8 @@ public class MybatisProperty<P extends MybatisProperty<P>> {
     /**
      * <code>setProperties</code>
      * <p>The set properties setter method.</p>
-     * @param properties {@link io.github.nichetoolkit.rice.table.RestProperty} <p>The properties parameter is <code>RestProperty</code> type.</p>
-     * @see  io.github.nichetoolkit.rice.table.RestProperty
+     * @param properties {@link io.github.nichetoolkit.mybatis.table.RestProperty} <p>The properties parameter is <code>RestProperty</code> type.</p>
+     * @see  io.github.nichetoolkit.mybatis.table.RestProperty
      * @see  java.lang.SuppressWarnings
      * @return P <p>The set properties return object is <code>P</code> type.</p>
      */

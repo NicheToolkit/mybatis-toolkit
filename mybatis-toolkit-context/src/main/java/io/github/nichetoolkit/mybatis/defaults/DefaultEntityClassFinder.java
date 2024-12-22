@@ -2,11 +2,11 @@ package io.github.nichetoolkit.mybatis.defaults;
 
 
 import io.github.nichetoolkit.mybatis.MybatisEntityClassFinder;
-import io.github.nichetoolkit.rice.table.RestAlertness;
-import io.github.nichetoolkit.rice.table.RestIdentity;
-import io.github.nichetoolkit.rice.RestMapper;
-import io.github.nichetoolkit.rice.table.RestEntity;
-import io.github.nichetoolkit.rice.table.RestLinkage;
+import io.github.nichetoolkit.mybatis.table.RestAlertness;
+import io.github.nichetoolkit.mybatis.table.RestIdentity;
+import io.github.nichetoolkit.mybatis.RestMapper;
+import io.github.nichetoolkit.mybatis.table.RestEntity;
+import io.github.nichetoolkit.mybatis.table.RestLinkage;
 import io.github.nichetoolkit.rest.util.GeneralUtils;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;

@@ -11,10 +11,10 @@ import org.springframework.context.annotation.Configuration;
 /**
  * <code>MybatisExampleAutoConfigure</code>
  * <p>The mybatis example auto configure class.</p>
+ * @see  lombok.extern.slf4j.Slf4j
+ * @see  org.springframework.context.annotation.Configuration
+ * @see  org.springframework.context.annotation.ComponentScan
  * @author Cyan (snow22314@outlook.com)
- * @see lombok.extern.slf4j.Slf4j
- * @see org.springframework.context.annotation.Configuration
- * @see org.springframework.context.annotation.ComponentScan
  * @since Jdk1.8
  */
 @Slf4j
@@ -32,9 +32,9 @@ public class MybatisExampleAutoConfigure {
     /**
      * <code>templateIdentityResolver</code>
      * <p>The template identity resolver method.</p>
-     * @return {@link io.github.nichetoolkit.rice.resolver.RestIdentityResolver} <p>The template identity resolver return object is <code>RestIdentityResolver</code> type.</p>
-     * @see io.github.nichetoolkit.rice.resolver.RestIdentityResolver
-     * @see org.springframework.context.annotation.Bean
+     * @return  {@link io.github.nichetoolkit.rice.resolver.RestIdentityResolver} <p>The template identity resolver return object is <code>RestIdentityResolver</code> type.</p>
+     * @see  io.github.nichetoolkit.rice.resolver.RestIdentityResolver
+     * @see  org.springframework.context.annotation.Bean
      */
     @Bean
     public RestIdentityResolver<TemplateIdentity> templateIdentityResolver() {

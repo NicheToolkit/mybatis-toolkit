@@ -1,9 +1,9 @@
 package io.github.nichetoolkit.mybatis.configure;
 
-import io.github.nichetoolkit.rice.consts.ScriptConstants;
-import io.github.nichetoolkit.rice.enums.DatabaseType;
-import io.github.nichetoolkit.rice.enums.ExcludedType;
-import io.github.nichetoolkit.rice.enums.StyleType;
+import io.github.nichetoolkit.mybatis.consts.ScriptConstants;
+import io.github.nichetoolkit.mybatis.enums.DatabaseType;
+import io.github.nichetoolkit.mybatis.enums.ExcludedType;
+import io.github.nichetoolkit.mybatis.enums.StyleType;
 import io.github.nichetoolkit.rest.util.GeneralUtils;
 import lombok.Getter;
 import lombok.Setter;
@@ -67,21 +67,21 @@ public class MybatisTableProperties {
     private String datetimeNow = ScriptConstants.NOW;
     /**
      * <code>databaseType</code>
-     * {@link io.github.nichetoolkit.rice.enums.DatabaseType} <p>The <code>databaseType</code> field.</p>
-     * @see  io.github.nichetoolkit.rice.enums.DatabaseType
+     * {@link io.github.nichetoolkit.mybatis.enums.DatabaseType} <p>The <code>databaseType</code> field.</p>
+     * @see  io.github.nichetoolkit.mybatis.enums.DatabaseType
      */
     private DatabaseType databaseType = DatabaseType.POSTGRESQL;
     /**
      * <code>styleType</code>
-     * {@link io.github.nichetoolkit.rice.enums.StyleType} <p>The <code>styleType</code> field.</p>
-     * @see  io.github.nichetoolkit.rice.enums.StyleType
+     * {@link io.github.nichetoolkit.mybatis.enums.StyleType} <p>The <code>styleType</code> field.</p>
+     * @see  io.github.nichetoolkit.mybatis.enums.StyleType
      */
     private StyleType styleType = StyleType.LOWER_UNDERLINE;
 
     /**
      * <code>excludedType</code>
-     * {@link io.github.nichetoolkit.rice.enums.ExcludedType} <p>The <code>excludedType</code> field.</p>
-     * @see  io.github.nichetoolkit.rice.enums.ExcludedType
+     * {@link io.github.nichetoolkit.mybatis.enums.ExcludedType} <p>The <code>excludedType</code> field.</p>
+     * @see  io.github.nichetoolkit.mybatis.enums.ExcludedType
      */
     private ExcludedType excludedType = ExcludedType.EXCLUDED;
     /**
@@ -102,6 +102,28 @@ public class MybatisTableProperties {
      * @see  java.lang.String
      */
     private String[] ignores;
+
+
+    /**
+     * <code>selectIgnores</code>
+     * {@link java.lang.String} <p>The <code>selectIgnores</code> field.</p>
+     * @see  java.lang.String
+     */
+    private String[] selectIgnores;
+
+    /**
+     * <code>insertIgnores</code>
+     * {@link java.lang.String} <p>The <code>insertIgnores</code> field.</p>
+     * @see  java.lang.String
+     */
+    private String[] insertIgnores;
+
+    /**
+     * <code>updateIgnores</code>
+     * {@link java.lang.String} <p>The <code>updateIgnores</code> field.</p>
+     * @see  java.lang.String
+     */
+    private String[] updateIgnores;
 
     /**
      * <code>getExcludes</code>
@@ -147,5 +169,74 @@ public class MybatisTableProperties {
      */
     public void setIgnores(String... ignores) {
         this.ignores = ignores;
+    }
+
+    /**
+     * <code>getSelectIgnores</code>
+     * <p>The get select ignores getter method.</p>
+     * @return  {@link java.util.List} <p>The get select ignores return object is <code>List</code> type.</p>
+     * @see  java.util.List
+     */
+    public List<String> getSelectIgnores() {
+        if (GeneralUtils.isNotEmpty(this.selectIgnores)) {
+            return new ArrayList<>(Arrays.asList(this.selectIgnores));
+        }
+        return null;
+    }
+
+    /**
+     * <code>setSelectIgnores</code>
+     * <p>The set select ignores setter method.</p>
+     * @param selectIgnores {@link java.lang.String} <p>The select ignores parameter is <code>String</code> type.</p>
+     * @see  java.lang.String
+     */
+    public void setSelectIgnores(String... selectIgnores) {
+        this.selectIgnores = selectIgnores;
+    }
+
+    /**
+     * <code>getInsertIgnores</code>
+     * <p>The get insert ignores getter method.</p>
+     * @return  {@link java.util.List} <p>The get insert ignores return object is <code>List</code> type.</p>
+     * @see  java.util.List
+     */
+    public List<String> getInsertIgnores() {
+        if (GeneralUtils.isNotEmpty(this.insertIgnores)) {
+            return new ArrayList<>(Arrays.asList(this.insertIgnores));
+        }
+        return null;
+    }
+
+    /**
+     * <code>setInsertIgnores</code>
+     * <p>The set insert ignores setter method.</p>
+     * @param insertIgnores {@link java.lang.String} <p>The insert ignores parameter is <code>String</code> type.</p>
+     * @see  java.lang.String
+     */
+    public void setInsertIgnores(String... insertIgnores) {
+        this.insertIgnores = insertIgnores;
+    }
+
+    /**
+     * <code>getUpdateIgnores</code>
+     * <p>The get update ignores getter method.</p>
+     * @return  {@link java.util.List} <p>The get update ignores return object is <code>List</code> type.</p>
+     * @see  java.util.List
+     */
+    public List<String> getUpdateIgnores() {
+        if (GeneralUtils.isNotEmpty(this.updateIgnores)) {
+            return new ArrayList<>(Arrays.asList(this.updateIgnores));
+        }
+        return null;
+    }
+
+    /**
+     * <code>setUpdateIgnores</code>
+     * <p>The set update ignores setter method.</p>
+     * @param updateIgnores {@link java.lang.String} <p>The update ignores parameter is <code>String</code> type.</p>
+     * @see  java.lang.String
+     */
+    public void setUpdateIgnores(String... updateIgnores) {
+        this.updateIgnores = updateIgnores;
     }
 }

@@ -1,10 +1,10 @@
 package io.github.nichetoolkit.mybatis.simple;
 
 import io.github.nichetoolkit.mybatis.enums.SimpleStatus;
-import io.github.nichetoolkit.rice.column.RestAlertKey;
-import io.github.nichetoolkit.rice.column.RestForceInsert;
-import io.github.nichetoolkit.rice.column.RestLinkKey;
-import io.github.nichetoolkit.rice.table.RestEntity;
+import io.github.nichetoolkit.mybatis.column.RestAlertKey;
+import io.github.nichetoolkit.mybatis.column.RestForceInsert;
+import io.github.nichetoolkit.mybatis.column.RestLinkKey;
+import io.github.nichetoolkit.mybatis.table.RestEntity;
 import io.github.nichetoolkit.rest.util.BeanUtils;
 import io.github.nichetoolkit.rice.RestInfoEntity;
 import io.github.nichetoolkit.rice.enums.OperateType;
@@ -20,7 +20,7 @@ import java.util.Date;
  * @see  io.github.nichetoolkit.rice.RestInfoEntity
  * @see  lombok.Setter
  * @see  lombok.Getter
- * @see  io.github.nichetoolkit.rice.table.RestEntity
+ * @see  RestEntity
  * @author Cyan (snow22314@outlook.com)
  * @since Jdk1.8
  */
@@ -32,7 +32,7 @@ public class SimpleEntity extends RestInfoEntity<SimpleEntity, SimpleModel> {
      * <code>linkId</code>
      * {@link java.lang.String} <p>The <code>linkId</code> field.</p>
      * @see  java.lang.String
-     * @see  io.github.nichetoolkit.rice.column.RestLinkKey
+     * @see  RestLinkKey
      */
     @RestLinkKey
     private String linkId;
@@ -40,7 +40,7 @@ public class SimpleEntity extends RestInfoEntity<SimpleEntity, SimpleModel> {
      * <code>time</code>
      * {@link java.util.Date} <p>The <code>time</code> field.</p>
      * @see  java.util.Date
-     * @see  io.github.nichetoolkit.rice.column.RestForceInsert
+     * @see  RestForceInsert
      */
     @RestForceInsert("now()")
     private Date time;
@@ -48,7 +48,7 @@ public class SimpleEntity extends RestInfoEntity<SimpleEntity, SimpleModel> {
      * <code>status</code>
      * {@link java.lang.Integer} <p>The <code>status</code> field.</p>
      * @see  java.lang.Integer
-     * @see  io.github.nichetoolkit.rice.column.RestAlertKey
+     * @see  RestAlertKey
      */
     @RestAlertKey
     private Integer status;

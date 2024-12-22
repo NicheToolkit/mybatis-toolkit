@@ -1,6 +1,6 @@
 package io.github.nichetoolkit.mybatis.simple;
 
-import io.github.nichetoolkit.rice.table.RestLinkage;
+import io.github.nichetoolkit.mybatis.table.RestLinkage;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,7 +11,9 @@ import java.util.Objects;
  * <code>TemplateLinkage</code>
  * <p>The template linkage class.</p>
  * @see  java.io.Serializable
- * @see  io.github.nichetoolkit.rice.table.RestLinkage
+ * @see  lombok.Setter
+ * @see  lombok.Getter
+ * @see  RestLinkage
  * @author Cyan (snow22314@outlook.com)
  * @since Jdk1.8
  */

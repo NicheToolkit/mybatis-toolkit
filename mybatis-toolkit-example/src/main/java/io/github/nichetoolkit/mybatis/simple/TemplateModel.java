@@ -20,11 +20,13 @@ import java.util.Date;
 /**
  * <code>TemplateModel</code>
  * <p>The template model class.</p>
+ * @see  io.github.nichetoolkit.rice.DefaultInfoModel
+ * @see  io.github.nichetoolkit.rice.RestTablekey
+ * @see  lombok.Setter
+ * @see  lombok.Getter
+ * @see  com.fasterxml.jackson.annotation.JsonInclude
+ * @see  com.fasterxml.jackson.annotation.JsonIgnoreProperties
  * @author Cyan (snow22314@outlook.com)
- * @see io.github.nichetoolkit.rice.DefaultInfoModel
- * @see io.github.nichetoolkit.rice.RestTablekey
- * @see com.fasterxml.jackson.annotation.JsonInclude
- * @see com.fasterxml.jackson.annotation.JsonIgnoreProperties
  * @since Jdk1.8
  */
 @Setter
@@ -35,21 +37,21 @@ public class TemplateModel extends DefaultInfoModel<TemplateModel, TemplateEntit
     /**
      * <code>linkId1</code>
      * {@link java.lang.String} <p>The <code>linkId1</code> field.</p>
-     * @see java.lang.String
+     * @see  java.lang.String
      */
     private String linkId1;
     /**
      * <code>linkId2</code>
      * {@link java.lang.String} <p>The <code>linkId2</code> field.</p>
-     * @see java.lang.String
+     * @see  java.lang.String
      */
     private String linkId2;
     /**
      * <code>time</code>
      * {@link java.util.Date} <p>The <code>time</code> field.</p>
-     * @see java.util.Date
-     * @see org.springframework.format.annotation.DateTimeFormat
-     * @see com.fasterxml.jackson.annotation.JsonFormat
+     * @see  java.util.Date
+     * @see  org.springframework.format.annotation.DateTimeFormat
+     * @see  com.fasterxml.jackson.annotation.JsonFormat
      */
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
@@ -58,14 +60,14 @@ public class TemplateModel extends DefaultInfoModel<TemplateModel, TemplateEntit
     /**
      * <code>status1</code>
      * {@link io.github.nichetoolkit.mybatis.enums.TemplateStatus1} <p>The <code>status1</code> field.</p>
-     * @see io.github.nichetoolkit.mybatis.enums.TemplateStatus1
+     * @see  io.github.nichetoolkit.mybatis.enums.TemplateStatus1
      */
     private TemplateStatus1 status1;
 
     /**
      * <code>status2</code>
      * {@link io.github.nichetoolkit.mybatis.enums.TemplateStatus2} <p>The <code>status2</code> field.</p>
-     * @see io.github.nichetoolkit.mybatis.enums.TemplateStatus2
+     * @see  io.github.nichetoolkit.mybatis.enums.TemplateStatus2
      */
     private TemplateStatus2 status2;
 
@@ -80,7 +82,7 @@ public class TemplateModel extends DefaultInfoModel<TemplateModel, TemplateEntit
      * <code>TemplateModel</code>
      * <p>Instantiates a new template model.</p>
      * @param id {@link io.github.nichetoolkit.mybatis.simple.TemplateIdentity} <p>The id parameter is <code>TemplateIdentity</code> type.</p>
-     * @see io.github.nichetoolkit.mybatis.simple.TemplateIdentity
+     * @see  io.github.nichetoolkit.mybatis.simple.TemplateIdentity
      */
     public TemplateModel(TemplateIdentity id) {
         super(id);
@@ -90,7 +92,7 @@ public class TemplateModel extends DefaultInfoModel<TemplateModel, TemplateEntit
      * <code>TemplateModel</code>
      * <p>Instantiates a new template model.</p>
      * @param builder {@link io.github.nichetoolkit.mybatis.simple.TemplateModel.Builder} <p>The builder parameter is <code>Builder</code> type.</p>
-     * @see io.github.nichetoolkit.mybatis.simple.TemplateModel.Builder
+     * @see  io.github.nichetoolkit.mybatis.simple.TemplateModel.Builder
      */
     public TemplateModel(Builder builder) {
         super(builder);
@@ -115,15 +117,15 @@ public class TemplateModel extends DefaultInfoModel<TemplateModel, TemplateEntit
     /**
      * <code>Builder</code>
      * <p>The builder class.</p>
+     * @see  io.github.nichetoolkit.rice.DefaultInfoModel.Builder
      * @author Cyan (snow22314@outlook.com)
-     * @see io.github.nichetoolkit.rice.DefaultInfoModel.Builder
      * @since Jdk1.8
      */
     public static class Builder extends DefaultInfoModel.Builder<TemplateModel, TemplateEntity, TemplateIdentity> {
         /**
          * <code>time</code>
          * {@link java.util.Date} <p>The <code>time</code> field.</p>
-         * @see java.util.Date
+         * @see  java.util.Date
          */
         protected Date time;
 
@@ -138,8 +140,8 @@ public class TemplateModel extends DefaultInfoModel<TemplateModel, TemplateEntit
          * <code>time</code>
          * <p>The time method.</p>
          * @param time {@link java.lang.Long} <p>The time parameter is <code>Long</code> type.</p>
-         * @return {@link io.github.nichetoolkit.mybatis.simple.TemplateModel.Builder} <p>The time return object is <code>Builder</code> type.</p>
-         * @see java.lang.Long
+         * @see  java.lang.Long
+         * @return  {@link io.github.nichetoolkit.mybatis.simple.TemplateModel.Builder} <p>The time return object is <code>Builder</code> type.</p>
          */
         public Builder time(Long time) {
             this.time = new Date(time);
@@ -150,8 +152,8 @@ public class TemplateModel extends DefaultInfoModel<TemplateModel, TemplateEntit
          * <code>time</code>
          * <p>The time method.</p>
          * @param time {@link java.util.Date} <p>The time parameter is <code>Date</code> type.</p>
-         * @return {@link io.github.nichetoolkit.mybatis.simple.TemplateModel.Builder} <p>The time return object is <code>Builder</code> type.</p>
-         * @see java.util.Date
+         * @see  java.util.Date
+         * @return  {@link io.github.nichetoolkit.mybatis.simple.TemplateModel.Builder} <p>The time return object is <code>Builder</code> type.</p>
          */
         public Builder time(Date time) {
             this.time = time;

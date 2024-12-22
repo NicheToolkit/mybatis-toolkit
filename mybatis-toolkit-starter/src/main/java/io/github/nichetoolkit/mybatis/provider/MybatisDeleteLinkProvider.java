@@ -1,7 +1,7 @@
 package io.github.nichetoolkit.mybatis.provider;
 
 import io.github.nichetoolkit.mybatis.MybatisSqlProvider;
-import io.github.nichetoolkit.rice.enums.DatabaseType;
+import io.github.nichetoolkit.mybatis.enums.DatabaseType;
 import io.github.nichetoolkit.mybatis.error.MybatisParamErrorException;
 import io.github.nichetoolkit.mybatis.error.MybatisTableErrorException;
 import io.github.nichetoolkit.rest.RestException;

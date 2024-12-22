@@ -2,7 +2,7 @@ package io.github.nichetoolkit.mybatis.simple;
 
 import io.github.nichetoolkit.mybatis.enums.TemplateStatus1;
 import io.github.nichetoolkit.mybatis.enums.TemplateStatus2;
-import io.github.nichetoolkit.rice.table.RestAlertness;
+import io.github.nichetoolkit.mybatis.table.RestAlertness;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,7 +14,9 @@ import java.util.Optional;
  * <code>TemplateAlertness</code>
  * <p>The template alertness class.</p>
  * @see  java.io.Serializable
- * @see  io.github.nichetoolkit.rice.table.RestAlertness
+ * @see  lombok.Setter
+ * @see  lombok.Getter
+ * @see  RestAlertness
  * @author Cyan (snow22314@outlook.com)
  * @since Jdk1.8
  */

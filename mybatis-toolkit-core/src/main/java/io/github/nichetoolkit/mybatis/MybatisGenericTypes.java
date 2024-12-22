@@ -22,10 +22,10 @@ public class MybatisGenericTypes {
      * <code>resolveMapperReturnType</code>
      * <p>The resolve mapper return type method.</p>
      * @param mapperMethod {@link java.lang.reflect.Method} <p>The mapper method parameter is <code>Method</code> type.</p>
-     * @param mapperType   {@link java.lang.Class} <p>The mapper type parameter is <code>Class</code> type.</p>
-     * @return {@link java.lang.Class} <p>The resolve mapper return type return object is <code>Class</code> type.</p>
-     * @see java.lang.reflect.Method
-     * @see java.lang.Class
+     * @param mapperType {@link java.lang.Class} <p>The mapper type parameter is <code>Class</code> type.</p>
+     * @see  java.lang.reflect.Method
+     * @see  java.lang.Class
+     * @return  {@link java.lang.Class} <p>The resolve mapper return type return object is <code>Class</code> type.</p>
      */
     public static Class<?> resolveMapperReturnType(Method mapperMethod, Class<?> mapperType) {
         Class<?> returnType = mapperMethod.getReturnType();

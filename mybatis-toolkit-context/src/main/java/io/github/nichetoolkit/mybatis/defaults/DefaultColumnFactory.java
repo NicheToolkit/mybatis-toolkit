@@ -2,9 +2,9 @@ package io.github.nichetoolkit.mybatis.defaults;
 
 import io.github.nichetoolkit.mybatis.*;
 import io.github.nichetoolkit.mybatis.configure.MybatisTableProperties;
-import io.github.nichetoolkit.rice.RestStyle;
-import io.github.nichetoolkit.rice.consts.ScriptConstants;
-import io.github.nichetoolkit.rice.column.*;
+import io.github.nichetoolkit.mybatis.RestStyle;
+import io.github.nichetoolkit.mybatis.consts.ScriptConstants;
+import io.github.nichetoolkit.mybatis.column.*;
 import io.github.nichetoolkit.rest.util.GeneralUtils;
 import org.apache.ibatis.type.JdbcType;
 import org.springframework.lang.NonNull;
@@ -16,7 +16,7 @@ import java.util.Optional;
 /**
  * <code>DefaultColumnFactory</code>
  * <p>The default column factory class.</p>
- * @see  MybatisColumnFactory
+ * @see  io.github.nichetoolkit.mybatis.MybatisColumnFactory
  * @author Cyan (snow22314@outlook.com)
  * @since Jdk1.8
  */
@@ -24,8 +24,8 @@ public class DefaultColumnFactory implements MybatisColumnFactory {
 
     /**
      * <code>tableProperties</code>
-     * {@link MybatisTableProperties} <p>The <code>tableProperties</code> field.</p>
-     * @see  MybatisTableProperties
+     * {@link io.github.nichetoolkit.mybatis.configure.MybatisTableProperties} <p>The <code>tableProperties</code> field.</p>
+     * @see  io.github.nichetoolkit.mybatis.configure.MybatisTableProperties
      */
     private final MybatisTableProperties tableProperties;
 
@@ -40,10 +40,10 @@ public class DefaultColumnFactory implements MybatisColumnFactory {
     /**
      * <code>excludeSupport</code>
      * <p>The exclude support method.</p>
-     * @param table {@link MybatisTable} <p>The table parameter is <code>MybatisTable</code> type.</p>
-     * @param field {@link MybatisField} <p>The field parameter is <code>MybatisField</code> type.</p>
-     * @see  MybatisTable
-     * @see  MybatisField
+     * @param table {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>The table parameter is <code>MybatisTable</code> type.</p>
+     * @param field {@link io.github.nichetoolkit.mybatis.MybatisField} <p>The field parameter is <code>MybatisField</code> type.</p>
+     * @see  io.github.nichetoolkit.mybatis.MybatisTable
+     * @see  io.github.nichetoolkit.mybatis.MybatisField
      * @return boolean <p>The exclude support return object is <code>boolean</code> type.</p>
      */
     private boolean excludeSupport(MybatisTable table, MybatisField field) {
@@ -82,34 +82,186 @@ public class DefaultColumnFactory implements MybatisColumnFactory {
     /**
      * <code>ignoreHandle</code>
      * <p>The ignore handle method.</p>
-     * @param table {@link MybatisTable} <p>The table parameter is <code>MybatisTable</code> type.</p>
-     * @param field {@link MybatisField} <p>The field parameter is <code>MybatisField</code> type.</p>
-     * @see  MybatisTable
-     * @see  MybatisField
+     * @param table {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>The table parameter is <code>MybatisTable</code> type.</p>
+     * @param field {@link io.github.nichetoolkit.mybatis.MybatisField} <p>The field parameter is <code>MybatisField</code> type.</p>
+     * @see  io.github.nichetoolkit.mybatis.MybatisTable
+     * @see  io.github.nichetoolkit.mybatis.MybatisField
      */
     private void ignoreHandle(MybatisTable table, MybatisField field) {
         String fieldName = field.fieldName();
+        /* global field handle */
+        globalHandle(fieldName,field);
+        /* ignore field handle */
+        MybatisIgnored ignored = table.getIgnored();
+        ignoreHandle(ignored,fieldName,field);
+        /* select ignore field handle */
+        MybatisIgnored selectIgnored = table.getSelectIgnored();
+        selectHandle(selectIgnored,fieldName,field);
+        /* insert ignore field handle */
+        MybatisIgnored insertIgnored = table.getInsertIgnored();
+        insertHandle(insertIgnored,fieldName,field);
+        /* update ignore field handle */
+        MybatisIgnored updateIgnored = table.getUpdateIgnored();
+        updateHandle(updateIgnored,fieldName,field);
+    }
+
+    /**
+     * <code>globalHandle</code>
+     * <p>The global handle method.</p>
+     * @param fieldName {@link java.lang.String} <p>The field name parameter is <code>String</code> type.</p>
+     * @param field {@link io.github.nichetoolkit.mybatis.MybatisField} <p>The field parameter is <code>MybatisField</code> type.</p>
+     * @see  java.lang.String
+     * @see  io.github.nichetoolkit.mybatis.MybatisField
+     */
+    private void globalHandle(String fieldName, MybatisField field) {
         List<String> globalIgnores = this.tableProperties.getIgnores();
         if (GeneralUtils.isNotEmpty(globalIgnores) && globalIgnores.contains(fieldName)) {
             /* 当前字段属于 需要排除的字段名称 设置ignored*/
             field.ignored(true);
         }
-        List<String> ignoreFields = table.getIgnoreFields();
-        if (GeneralUtils.isNotEmpty(ignoreFields) && ignoreFields.contains(fieldName)) {
-            /* 当前字段属于 需要排除的字段名称 设置ignored */
-            field.ignored(true);
+        List<String> globalSelectIgnores = this.tableProperties.getSelectIgnores();
+        if (GeneralUtils.isNotEmpty(globalSelectIgnores) && globalSelectIgnores.contains(fieldName)) {
+            /* 当前字段属于 需要排除的字段名称 设置ignored*/
+            field.selectIgnored(true);
         }
-        Class<?> fieldType = field.fieldType();
-        List<Class<?>> ignoreFieldTypes = table.getIgnoreFieldTypes();
-        if (GeneralUtils.isNotEmpty(ignoreFieldTypes) && ignoreFieldTypes.contains(fieldType)) {
-            /* 当前字段属于 需要排除的字段类型 设置ignored */
-            field.ignored(true);
+        List<String> globalInsertIgnores = this.tableProperties.getInsertIgnores();
+        if (GeneralUtils.isNotEmpty(globalInsertIgnores) && globalInsertIgnores.contains(fieldName)) {
+            /* 当前字段属于 需要排除的字段名称 设置ignored*/
+            field.insetIgnored(true);
         }
-        Class<?> declaringClass = field.declaringClass();
-        List<Class<?>> excludeSuperClasses = table.getExcludeSuperClasses();
-        if (GeneralUtils.isNotEmpty(excludeSuperClasses) && excludeSuperClasses.contains(declaringClass)) {
-            /* 当前字段属于 需要排除的父类字段 设置ignored  */
-            field.ignored(true);
+        List<String> globalUpdateIgnores = this.tableProperties.getUpdateIgnores();
+        if (GeneralUtils.isNotEmpty(globalUpdateIgnores) && globalUpdateIgnores.contains(fieldName)) {
+            /* 当前字段属于 需要排除的字段名称 设置ignored*/
+            field.updateIgnored(true);
+        }
+    }
+
+    /**
+     * <code>ignoreHandle</code>
+     * <p>The ignore handle method.</p>
+     * @param ignored {@link io.github.nichetoolkit.mybatis.MybatisIgnored} <p>The ignored parameter is <code>MybatisIgnored</code> type.</p>
+     * @param fieldName {@link java.lang.String} <p>The field name parameter is <code>String</code> type.</p>
+     * @param field {@link io.github.nichetoolkit.mybatis.MybatisField} <p>The field parameter is <code>MybatisField</code> type.</p>
+     * @see  io.github.nichetoolkit.mybatis.MybatisIgnored
+     * @see  java.lang.String
+     * @see  io.github.nichetoolkit.mybatis.MybatisField
+     */
+    private void ignoreHandle(MybatisIgnored ignored, String fieldName, MybatisField field) {
+        if (GeneralUtils.isNotEmpty(ignored)) {
+            List<String> fields = ignored.fields();
+            if (GeneralUtils.isNotEmpty(fields) && fields.contains(fieldName)) {
+                /* 当前字段属于 需要排除的字段名称 设置ignored */
+                field.ignored(true);
+            }
+            Class<?> fieldType = field.fieldType();
+            List<Class<?>> fieldTypes = ignored.fieldTypes();
+            if (GeneralUtils.isNotEmpty(fieldTypes) && fieldTypes.contains(fieldType)) {
+                /* 当前字段属于 需要排除的字段类型 设置ignored */
+                field.ignored(true);
+            }
+            Class<?> declaringClass = field.declaringClass();
+            List<Class<?>> superClasses = ignored.superClasses();
+            if (GeneralUtils.isNotEmpty(superClasses) && superClasses.contains(declaringClass)) {
+                /* 当前字段属于 需要排除的父类字段 设置ignored  */
+                field.ignored(true);
+            }
+        }
+    }
+
+    /**
+     * <code>selectHandle</code>
+     * <p>The select handle method.</p>
+     * @param selectIgnored {@link io.github.nichetoolkit.mybatis.MybatisIgnored} <p>The select ignored parameter is <code>MybatisIgnored</code> type.</p>
+     * @param fieldName {@link java.lang.String} <p>The field name parameter is <code>String</code> type.</p>
+     * @param field {@link io.github.nichetoolkit.mybatis.MybatisField} <p>The field parameter is <code>MybatisField</code> type.</p>
+     * @see  io.github.nichetoolkit.mybatis.MybatisIgnored
+     * @see  java.lang.String
+     * @see  io.github.nichetoolkit.mybatis.MybatisField
+     */
+    private void selectHandle(MybatisIgnored selectIgnored, String fieldName, MybatisField field) {
+        if (GeneralUtils.isNotEmpty(selectIgnored)) {
+            List<String> fields = selectIgnored.fields();
+            if (GeneralUtils.isNotEmpty(fields) && fields.contains(fieldName)) {
+                /* 当前字段属于 需要排除的字段名称 设置ignored */
+                field.selectIgnored(true);
+            }
+            Class<?> fieldType = field.fieldType();
+            List<Class<?>> fieldTypes = selectIgnored.fieldTypes();
+            if (GeneralUtils.isNotEmpty(fieldTypes) && fieldTypes.contains(fieldType)) {
+                /* 当前字段属于 需要排除的字段类型 设置ignored */
+                field.selectIgnored(true);
+            }
+            Class<?> declaringClass = field.declaringClass();
+            List<Class<?>> superClasses = selectIgnored.superClasses();
+            if (GeneralUtils.isNotEmpty(superClasses) && superClasses.contains(declaringClass)) {
+                /* 当前字段属于 需要排除的父类字段 设置ignored  */
+                field.selectIgnored(true);
+            }
+        }
+    }
+
+    /**
+     * <code>insertHandle</code>
+     * <p>The insert handle method.</p>
+     * @param insertIgnored {@link io.github.nichetoolkit.mybatis.MybatisIgnored} <p>The insert ignored parameter is <code>MybatisIgnored</code> type.</p>
+     * @param fieldName {@link java.lang.String} <p>The field name parameter is <code>String</code> type.</p>
+     * @param field {@link io.github.nichetoolkit.mybatis.MybatisField} <p>The field parameter is <code>MybatisField</code> type.</p>
+     * @see  io.github.nichetoolkit.mybatis.MybatisIgnored
+     * @see  java.lang.String
+     * @see  io.github.nichetoolkit.mybatis.MybatisField
+     */
+    private void insertHandle(MybatisIgnored insertIgnored, String fieldName, MybatisField field) {
+        if (GeneralUtils.isNotEmpty(insertIgnored)) {
+            List<String> fields = insertIgnored.fields();
+            if (GeneralUtils.isNotEmpty(fields) && fields.contains(fieldName)) {
+                /* 当前字段属于 需要排除的字段名称 设置ignored */
+                field.insetIgnored(true);
+            }
+            Class<?> fieldType = field.fieldType();
+            List<Class<?>> fieldTypes = insertIgnored.fieldTypes();
+            if (GeneralUtils.isNotEmpty(fieldTypes) && fieldTypes.contains(fieldType)) {
+                /* 当前字段属于 需要排除的字段类型 设置ignored */
+                field.insetIgnored(true);
+            }
+            Class<?> declaringClass = field.declaringClass();
+            List<Class<?>> superClasses = insertIgnored.superClasses();
+            if (GeneralUtils.isNotEmpty(superClasses) && superClasses.contains(declaringClass)) {
+                /* 当前字段属于 需要排除的父类字段 设置ignored  */
+                field.insetIgnored(true);
+            }
+        }
+    }
+
+
+    /**
+     * <code>updateHandle</code>
+     * <p>The update handle method.</p>
+     * @param updateIgnored {@link io.github.nichetoolkit.mybatis.MybatisIgnored} <p>The update ignored parameter is <code>MybatisIgnored</code> type.</p>
+     * @param fieldName {@link java.lang.String} <p>The field name parameter is <code>String</code> type.</p>
+     * @param field {@link io.github.nichetoolkit.mybatis.MybatisField} <p>The field parameter is <code>MybatisField</code> type.</p>
+     * @see  io.github.nichetoolkit.mybatis.MybatisIgnored
+     * @see  java.lang.String
+     * @see  io.github.nichetoolkit.mybatis.MybatisField
+     */
+    private void updateHandle(MybatisIgnored updateIgnored, String fieldName, MybatisField field) {
+        if (GeneralUtils.isNotEmpty(updateIgnored)) {
+            List<String> fields = updateIgnored.fields();
+            if (GeneralUtils.isNotEmpty(fields) && fields.contains(fieldName)) {
+                /* 当前字段属于 需要排除的字段名称 设置ignored */
+                field.updateIgnored(true);
+            }
+            Class<?> fieldType = field.fieldType();
+            List<Class<?>> fieldTypes = updateIgnored.fieldTypes();
+            if (GeneralUtils.isNotEmpty(fieldTypes) && fieldTypes.contains(fieldType)) {
+                /* 当前字段属于 需要排除的字段类型 设置ignored */
+                field.updateIgnored(true);
+            }
+            Class<?> declaringClass = field.declaringClass();
+            List<Class<?>> superClasses = updateIgnored.superClasses();
+            if (GeneralUtils.isNotEmpty(superClasses) && superClasses.contains(declaringClass)) {
+                /* 当前字段属于 需要排除的父类字段 设置ignored  */
+                field.updateIgnored(true);
+            }
         }
     }
 
@@ -226,6 +378,15 @@ public class DefaultColumnFactory implements MybatisColumnFactory {
             mybatisColumn.setJdbcType(JdbcType.UNDEFINED);
         }
         if (field.isIdentity()) {
+            mybatisColumn.setUpdate(false);
+        }
+        if (field.selectIgnored()) {
+            mybatisColumn.setSelect(false);
+        }
+        if (field.insetIgnored()) {
+            mybatisColumn.setInsert(false);
+        }
+        if (field.updateIgnored()) {
             mybatisColumn.setUpdate(false);
         }
         return Optional.of(Collections.singletonList(mybatisColumn));
