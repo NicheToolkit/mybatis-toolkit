@@ -1,9 +1,15 @@
 package io.github.nichetoolkit.mybatis.configure;
 
+import io.github.nichetoolkit.mybatis.MybatisAlertnessHandler;
+import io.github.nichetoolkit.mybatis.MybatisIdentityHandler;
+import io.github.nichetoolkit.rice.DefaultAlertnessHandler;
+import io.github.nichetoolkit.rice.DefaultIdentityHandler;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.ImportBeanDefinitionRegistrar;
@@ -34,6 +40,34 @@ public class MybatisStarterAutoConfigure {
      */
     public MybatisStarterAutoConfigure() {
         log.debug("The auto configuration for [mybatis-starter] initiated");
+    }
+
+    /**
+     * <code>defaultIdentityHandler</code>
+     * <p>The default identity handler method.</p>
+     * @return  {@link io.github.nichetoolkit.rice.DefaultIdentityHandler} <p>The default identity handler return object is <code>DefaultIdentityHandler</code> type.</p>
+     * @see  io.github.nichetoolkit.rice.DefaultIdentityHandler
+     * @see  org.springframework.context.annotation.Bean
+     * @see  org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
+     */
+    @Bean
+    @ConditionalOnMissingBean(DefaultIdentityHandler.class)
+    public DefaultIdentityHandler<?> defaultIdentityHandler() {
+        return MybatisIdentityHandler.DEFAULT_HANDLER;
+    }
+
+    /**
+     * <code>defaultAlertnessHandler</code>
+     * <p>The default alertness handler method.</p>
+     * @return  {@link io.github.nichetoolkit.rice.DefaultAlertnessHandler} <p>The default alertness handler return object is <code>DefaultAlertnessHandler</code> type.</p>
+     * @see  io.github.nichetoolkit.rice.DefaultAlertnessHandler
+     * @see  org.springframework.context.annotation.Bean
+     * @see  org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
+     */
+    @Bean
+    @ConditionalOnMissingBean(DefaultAlertnessHandler.class)
+    public DefaultAlertnessHandler<?> defaultAlertnessHandler() {
+        return MybatisAlertnessHandler.DEFAULT_HANDLER;
     }
 
     /**

@@ -2,7 +2,7 @@ package io.github.nichetoolkit.mybatis.configure;
 
 import io.github.nichetoolkit.mybatis.simple.TemplateIdentity;
 import io.github.nichetoolkit.rest.identity.IdentityUtils;
-import io.github.nichetoolkit.rice.resolver.RestIdentityResolver;
+import io.github.nichetoolkit.rice.resolver.RestIdResolver;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -30,14 +30,14 @@ public class MybatisExampleAutoConfigure {
     }
 
     /**
-     * <code>templateIdentityResolver</code>
-     * <p>The template identity resolver method.</p>
-     * @return  {@link io.github.nichetoolkit.rice.resolver.RestIdentityResolver} <p>The template identity resolver return object is <code>RestIdentityResolver</code> type.</p>
-     * @see  io.github.nichetoolkit.rice.resolver.RestIdentityResolver
+     * <code>templateIdResolver</code>
+     * <p>The template id resolver method.</p>
+     * @return  {@link io.github.nichetoolkit.rice.resolver.RestIdResolver} <p>The template id resolver return object is <code>RestIdResolver</code> type.</p>
+     * @see  io.github.nichetoolkit.rice.resolver.RestIdResolver
      * @see  org.springframework.context.annotation.Bean
      */
     @Bean
-    public RestIdentityResolver<TemplateIdentity> templateIdentityResolver() {
+    public RestIdResolver<TemplateIdentity> templateIdResolver() {
         return () -> new TemplateIdentity(IdentityUtils.valueOfString(),IdentityUtils.valueOfString());
     }
 }

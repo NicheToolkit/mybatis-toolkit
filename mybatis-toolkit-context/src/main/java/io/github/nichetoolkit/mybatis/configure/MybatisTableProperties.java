@@ -47,6 +47,20 @@ public class MybatisTableProperties {
     private Boolean updateLogic = false;
 
     /**
+     * <code>useLogic</code>
+     * {@link java.lang.Boolean} <p>The <code>useLogic</code> field.</p>
+     * @see  java.lang.Boolean
+     */
+    private Boolean useLogic = true;
+
+    /**
+     * <code>useOperate</code>
+     * {@link java.lang.Boolean} <p>The <code>useOperate</code> field.</p>
+     * @see  java.lang.Boolean
+     */
+    private Boolean useOperate = false;
+
+    /**
      * <code>sqlScriptShow</code>
      * {@link java.lang.Boolean} <p>The <code>sqlScriptShow</code> field.</p>
      * @see  java.lang.Boolean

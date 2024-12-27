@@ -2,7 +2,6 @@ package io.github.nichetoolkit.mybatis.defaults;
 
 import io.github.nichetoolkit.mybatis.*;
 import io.github.nichetoolkit.mybatis.configure.MybatisTableProperties;
-import io.github.nichetoolkit.mybatis.RestStyle;
 import io.github.nichetoolkit.mybatis.consts.ScriptConstants;
 import io.github.nichetoolkit.mybatis.column.*;
 import io.github.nichetoolkit.rest.util.GeneralUtils;
@@ -279,7 +278,7 @@ public class DefaultColumnFactory implements MybatisColumnFactory {
         RestName restName = field.getAnnotation(RestName.class);
         String columnName = Optional.ofNullable(restName).map(RestName::name).orElse(null);
         String columnComment = Optional.ofNullable(restName).map(RestName::comment).orElse(null);
-        MybatisTableStyle mybatisStyle = ((MybatisTableStyle) RestStyle.style(mybatisTable.getStyleName()));
+        MybatisTableStyle mybatisStyle = MybatisTableStyle.style(mybatisTable.getStyleName());
         if (GeneralUtils.isNotEmpty(restName)) {
             mybatisColumn.setColumn(GeneralUtils.isEmpty(columnName) ? mybatisStyle.columnName(mybatisTable, field) : restName.name());
             mybatisColumn.setComment(columnComment);

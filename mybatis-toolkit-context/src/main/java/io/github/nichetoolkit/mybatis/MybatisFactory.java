@@ -1,6 +1,5 @@
 package io.github.nichetoolkit.mybatis;
 
-import io.github.nichetoolkit.mybatis.builder.SqlUtils;
 import io.github.nichetoolkit.mybatis.defaults.DefaultColumnFactoryChain;
 import io.github.nichetoolkit.mybatis.defaults.DefaultTableFactoryChain;
 import io.github.nichetoolkit.mybatis.error.MybatisTableLackError;
@@ -93,7 +92,7 @@ public abstract class MybatisFactory {
                     while (declaredClass != null && declaredClass != Object.class) {
                         Field[] declaredFields = declaredClass.getDeclaredFields();
                         if (isSuperclass) {
-                            SqlUtils.reverseArray(declaredFields);
+                            MybatisSqlUtils.reverseArray(declaredFields);
                         }
                         for (Field declaredField : declaredFields) {
                             int modifiers = declaredField.getModifiers();
@@ -150,7 +149,7 @@ public abstract class MybatisFactory {
         boolean isSuperclass = true;
         while (declaredClass != null && declaredClass != Object.class) {
             Field[] declaredFields = declaredClass.getDeclaredFields();
-            SqlUtils.reverseArray(declaredFields);
+            MybatisSqlUtils.reverseArray(declaredFields);
             for (Field declaredField : declaredFields) {
                 int modifiers = declaredField.getModifiers();
                 /* 排除 static 和 transient 修饰的字段 */

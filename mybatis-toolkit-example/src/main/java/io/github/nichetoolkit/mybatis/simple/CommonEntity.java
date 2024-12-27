@@ -1,11 +1,9 @@
 package io.github.nichetoolkit.mybatis.simple;
 
-import io.github.nichetoolkit.mybatis.table.RestUpdateIgnores;
+import io.github.nichetoolkit.mybatis.table.*;
 import io.github.nichetoolkit.rest.util.BeanUtils;
 import io.github.nichetoolkit.rice.RestInfoEntity;
 import io.github.nichetoolkit.mybatis.column.RestUpdate;
-import io.github.nichetoolkit.mybatis.table.RestEntity;
-import io.github.nichetoolkit.mybatis.table.RestIgnores;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -26,6 +24,7 @@ import java.util.Date;
 @Setter
 @Getter
 @RestEntity(name = "ntr_common")
+@RestExcludes({"updateTime","createTime"})
 @RestUpdateIgnores({"name","description","updateTime"})
 public class CommonEntity extends RestInfoEntity<CommonEntity, CommonModel> {
     /**

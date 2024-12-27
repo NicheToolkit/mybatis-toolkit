@@ -2,6 +2,7 @@ package io.github.nichetoolkit.mybatis.simple;
 
 
 import io.github.nichetoolkit.mybatis.enums.SimpleStatus;
+import io.github.nichetoolkit.rest.RestException;
 import io.github.nichetoolkit.rest.util.GeneralUtils;
 import io.github.nichetoolkit.rice.RestFilter;
 import io.github.nichetoolkit.rice.filter.StatusFilter;
@@ -92,12 +93,13 @@ public class SimpleFilter extends RestFilter implements StatusFilter<SimpleStatu
     }
 
     @Override
-    public StatusFilter<SimpleStatus> toStatusSql() {
+    public StatusFilter<SimpleStatus> toStatusSql() throws RestException {
         return toStatusSql("status");
     }
 
     @Override
-    public StatusFilter<SimpleStatus> toStatusSql(@NonNull String alias) {
-        return toStatusSql(SQL_BUILDER,alias);
+    public StatusFilter<SimpleStatus> toStatusSql(@NonNull String alias) throws RestException {
+         toStatusSql(SQL_BUILDER,alias);
+         return this;
     }
 }

@@ -3,11 +3,12 @@ package io.github.nichetoolkit.mybatis;
 import io.github.nichetoolkit.mybatis.configure.MybatisTableProperties;
 import io.github.nichetoolkit.mybatis.enums.DatabaseType;
 import io.github.nichetoolkit.mybatis.enums.ExcludedType;
+import io.github.nichetoolkit.mybatis.enums.StyleType;
 import io.github.nichetoolkit.mybatis.error.MybatisProviderLackError;
 import io.github.nichetoolkit.rest.RestOptional;
 import io.github.nichetoolkit.rest.util.GeneralUtils;
 import io.github.nichetoolkit.rest.util.OptionalUtils;
-import io.github.nichetoolkit.rice.ServiceIntend;
+import io.github.nichetoolkit.rice.RestServiceFitter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.support.SpringFactoriesLoader;
@@ -21,7 +22,7 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * <code>MybatisSqlProviderHolder</code>
  * <p>The mybatis sql provider holder class.</p>
- * @see  io.github.nichetoolkit.rice.ServiceIntend
+ * @see  io.github.nichetoolkit.rice.RestServiceFitter
  * @see  lombok.extern.slf4j.Slf4j
  * @see  lombok.Setter
  * @author Cyan (snow22314@outlook.com)
@@ -29,7 +30,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 @Slf4j
 @Setter
-public class MybatisSqlProviderHolder implements ServiceIntend<MybatisSqlProviderHolder> {
+public class MybatisSqlProviderHolder implements RestServiceFitter<MybatisSqlProviderHolder> {
     /**
      * <code>SQL_PROVIDER_CACHES</code>
      * {@link java.util.Map} <p>The constant <code>SQL_PROVIDER_CACHES</code> field.</p>
@@ -122,7 +123,8 @@ public class MybatisSqlProviderHolder implements ServiceIntend<MybatisSqlProvide
     /**
      * <code>defaultDatabaseType</code>
      * <p>The default database type method.</p>
-     * @return DatabaseType <p>The default database type return object is <code>DatabaseType</code> type.</p>
+     * @return  {@link io.github.nichetoolkit.mybatis.enums.DatabaseType} <p>The default database type return object is <code>DatabaseType</code> type.</p>
+     * @see  io.github.nichetoolkit.mybatis.enums.DatabaseType
      */
     public static DatabaseType defaultDatabaseType() {
         return INSTANCE.tableProperties.getDatabaseType();
@@ -131,10 +133,21 @@ public class MybatisSqlProviderHolder implements ServiceIntend<MybatisSqlProvide
     /**
      * <code>defaultExcludedType</code>
      * <p>The default excluded type method.</p>
-     * @return ExcludedType <p>The default excluded type return object is <code>ExcludedType</code> type.</p>
+     * @return  {@link io.github.nichetoolkit.mybatis.enums.ExcludedType} <p>The default excluded type return object is <code>ExcludedType</code> type.</p>
+     * @see  io.github.nichetoolkit.mybatis.enums.ExcludedType
      */
     public static ExcludedType defaultExcludedType() {
         return INSTANCE.tableProperties.getExcludedType();
+    }
+
+    /**
+     * <code>defaultStyleType</code>
+     * <p>The default style type method.</p>
+     * @return  {@link io.github.nichetoolkit.mybatis.enums.StyleType} <p>The default style type return object is <code>StyleType</code> type.</p>
+     * @see  io.github.nichetoolkit.mybatis.enums.StyleType
+     */
+    public static StyleType defaultStyleType() {
+        return INSTANCE.tableProperties.getStyleType();
     }
 
     /**
@@ -149,9 +162,10 @@ public class MybatisSqlProviderHolder implements ServiceIntend<MybatisSqlProvide
     /**
      * <code>defaultSqlProviders</code>
      * <p>The default sql providers method.</p>
-     * @param databaseType DatabaseType <p>The database type parameter is <code>DatabaseType</code> type.</p>
-     * @return  {@link java.util.List} <p>The default sql providers return object is <code>List</code> type.</p>
+     * @param databaseType {@link io.github.nichetoolkit.mybatis.enums.DatabaseType} <p>The database type parameter is <code>DatabaseType</code> type.</p>
+     * @see  io.github.nichetoolkit.mybatis.enums.DatabaseType
      * @see  java.util.List
+     * @return  {@link java.util.List} <p>The default sql providers return object is <code>List</code> type.</p>
      */
     public static List<MybatisSqlProvider> defaultSqlProviders(DatabaseType databaseType) {
         return SQL_PROVIDER_CACHES.get(databaseType);

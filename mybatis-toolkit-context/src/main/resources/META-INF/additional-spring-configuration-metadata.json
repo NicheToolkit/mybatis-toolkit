@@ -32,6 +32,20 @@
       "defaultValue": "false"
     },
     {
+      "name": "nichetoolkit.mybatis.table.use-logic",
+      "type": "java.lang.Boolean",
+      "sourceType": "java.lang.Boolean",
+      "description": "the switch of use logic on mybatis configuration.",
+      "defaultValue": "true"
+    },
+    {
+      "name": "nichetoolkit.mybatis.table.use-operate",
+      "type": "java.lang.Boolean",
+      "sourceType": "java.lang.Boolean",
+      "description": "the switch of use operate on mybatis configuration.",
+      "defaultValue": "false"
+    },
+    {
       "name": "nichetoolkit.mybatis.table.sql-script-show",
       "type": "java.lang.Boolean",
       "sourceType": "java.lang.Boolean",
@@ -135,6 +149,32 @@
         {
           "value": true,
           "description": "the switch of update logic is opened on mybatis configuration."
+        }
+      ]
+    },
+    {
+      "name": "nichetoolkit.mybatis.table.use-logic",
+      "values": [
+        {
+          "value": false,
+          "description": "the switch of use logic is closed on mybatis configuration."
+        },
+        {
+          "value": true,
+          "description": "the switch of use logic is opened on mybatis configuration."
+        }
+      ]
+    },
+    {
+      "name": "nichetoolkit.mybatis.table.use-operate",
+      "values": [
+        {
+          "value": false,
+          "description": "the switch of use operate is closed on mybatis configuration."
+        },
+        {
+          "value": true,
+          "description": "the switch of use operate is opened on mybatis configuration."
         }
       ]
     },

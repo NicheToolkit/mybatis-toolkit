@@ -163,17 +163,17 @@ public class DefaultTableFactory implements MybatisTableFactory {
             mybatisTable.setCatalog(GeneralUtils.isEmpty(catalog) ? tableProperties.getCatalog() : catalog);
             mybatisTable.setSchema(GeneralUtils.isEmpty(schema) ? tableProperties.getSchema() : schema);
             if (GeneralUtils.isNotEmpty(styleName)) {
-                mybatisStyle = (MybatisTableStyle) RestStyle.style(styleName);
+                mybatisStyle = MybatisTableStyle.style(styleName);
             } else if (GeneralUtils.isNotEmpty(styleType)) {
                 mybatisTable.setStyleName(styleType.getKey());
-                mybatisStyle = (MybatisTableStyle) RestStyle.style(styleType);
+                mybatisStyle = MybatisTableStyle.style(styleType);
             } else {
                 StyleType defaultStyleType = tableProperties.getStyleType();
-                mybatisStyle = (MybatisTableStyle) RestStyle.style(defaultStyleType);
+                mybatisStyle = MybatisTableStyle.style(defaultStyleType);
             }
         } else {
             StyleType defaultStyleType = tableProperties.getStyleType();
-            mybatisStyle = (MybatisTableStyle) RestStyle.style(defaultStyleType);
+            mybatisStyle = MybatisTableStyle.style(defaultStyleType);
         }
         return mybatisStyle;
     }

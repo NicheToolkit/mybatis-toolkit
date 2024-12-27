@@ -1,5 +1,6 @@
 package io.github.nichetoolkit.mybatis.simple;
 
+import io.github.nichetoolkit.rest.RestException;
 import io.github.nichetoolkit.rest.util.GeneralUtils;
 import io.github.nichetoolkit.rice.DefaultFilter;
 import io.github.nichetoolkit.rice.filter.StatusFilter;
@@ -66,6 +67,11 @@ public class TemplateFilter extends DefaultFilter<TemplateIdentity,String> imple
         this.statuses = new HashSet<>(Arrays.asList(statuses));
     }
 
+    @Override
+    public List<TemplateAlertness> toStatuses() {
+        return StatusFilter.super.toStatuses();
+    }
+
     /**
      * <code>addStatuses</code>
      * <p>The add statuses method.</p>
@@ -97,12 +103,14 @@ public class TemplateFilter extends DefaultFilter<TemplateIdentity,String> imple
     }
 
     @Override
-    public StatusFilter<TemplateAlertness> toStatusSql() {
+    public TemplateFilter toStatusSql() throws RestException {
         return toStatusSql("status.");
     }
 
     @Override
-    public StatusFilter<TemplateAlertness> toStatusSql(@NonNull String alias) {
-        return toStatusSql(SQL_BUILDER,alias);
+    public TemplateFilter toStatusSql(@NonNull String alias) throws RestException {
+        toStatusSql(SQL_BUILDER,alias);
+        return this;
     }
+
 }
