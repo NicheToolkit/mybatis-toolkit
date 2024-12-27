@@ -17,6 +17,7 @@ import io.github.nichetoolkit.rest.stream.RestCollectors;
 import io.github.nichetoolkit.rest.stream.RestStream;
 import io.github.nichetoolkit.rest.util.GeneralUtils;
 import io.github.nichetoolkit.rest.util.OptionalUtils;
+import io.github.nichetoolkit.rice.enums.OperateType;
 import org.apache.ibatis.builder.annotation.ProviderContext;
 import org.springframework.lang.Nullable;
 
@@ -390,7 +391,13 @@ public interface MybatisSqlProvider {
             tableOptional.actuate(table);
             String nameSql = Optional.ofNullable(table.fieldColumn(EntityConstants.NAME)).map(MybatisColumn::columnEqualsProperty).orElse(ScriptConstants.NAME_EQUALS_PROPERTY);
             SqlBuilder sqlBuilder = new SqlBuilder(nameSql);
-            Optional.ofNullable(table.getLogicColumn()).ifPresent(column -> sqlBuilder.and().append(column.columnEqualsProperty()));
+            if (table.isUseLogic()) {
+                Optional.ofNullable(table.getLogicColumn()).ifPresent(column -> sqlBuilder.and().append(column.columnEqualsProperty()));
+            }
+            if (table.isUseOperate()) {
+                Optional.ofNullable(table.getOperateColumn()).ifPresent(column -> sqlBuilder.and().append(column.columnEqualsValue(OperateType.REMOVE)));
+                Optional.ofNullable(table.getOperateColumn()).ifPresent(column -> sqlBuilder.and().append(column.columnEqualsValue(OperateType.DELETE)));
+            }
             return sqlSupply.supply(tablename, table, sqlBuilder);
         });
     }
@@ -430,7 +437,13 @@ public interface MybatisSqlProvider {
             }
             String nameSql = Optional.ofNullable(table.fieldColumn(EntityConstants.NAME)).map(MybatisColumn::columnEqualsProperty).orElse(ScriptConstants.NAME_EQUALS_PROPERTY);
             sqlBuilder.and().append(nameSql);
-            Optional.ofNullable(table.getLogicColumn()).ifPresent(column -> sqlBuilder.and().append(column.columnEqualsProperty()));
+            if (table.isUseLogic()) {
+                Optional.ofNullable(table.getLogicColumn()).ifPresent(column -> sqlBuilder.and().append(column.columnEqualsProperty()));
+            }
+            if (table.isUseOperate()) {
+                Optional.ofNullable(table.getOperateColumn()).ifPresent(column -> sqlBuilder.and().append(column.columnEqualsValue(OperateType.REMOVE)));
+                Optional.ofNullable(table.getOperateColumn()).ifPresent(column -> sqlBuilder.and().append(column.columnEqualsValue(OperateType.DELETE)));
+            }
             return sqlSupply.supply(tablename, table, sqlBuilder);
         });
     }
@@ -469,7 +482,13 @@ public interface MybatisSqlProvider {
             } else {
                 sqlBuilder.braceLt().append(entitySql).braceGt();
             }
-            Optional.ofNullable(table.getLogicColumn()).ifPresent(column -> sqlBuilder.and().append(column.columnEqualsProperty()));
+            if (table.isUseLogic()) {
+                Optional.ofNullable(table.getLogicColumn()).ifPresent(column -> sqlBuilder.and().append(column.columnEqualsProperty()));
+            }
+            if (table.isUseOperate()) {
+                Optional.ofNullable(table.getOperateColumn()).ifPresent(column -> sqlBuilder.and().append(column.columnEqualsValue(OperateType.REMOVE)));
+                Optional.ofNullable(table.getOperateColumn()).ifPresent(column -> sqlBuilder.and().append(column.columnEqualsValue(OperateType.DELETE)));
+            }
             return sqlSupply.supply(tablename, table, sqlBuilder);
         });
     }
@@ -517,7 +536,13 @@ public interface MybatisSqlProvider {
             } else {
                 sqlBuilder.and().braceLt().append(entitySql).braceGt();
             }
-            Optional.ofNullable(table.getLogicColumn()).ifPresent(column -> sqlBuilder.and().append(column.columnEqualsProperty()));
+            if (table.isUseLogic()) {
+                Optional.ofNullable(table.getLogicColumn()).ifPresent(column -> sqlBuilder.and().append(column.columnEqualsProperty()));
+            }
+            if (table.isUseOperate()) {
+                Optional.ofNullable(table.getOperateColumn()).ifPresent(column -> sqlBuilder.and().append(column.columnEqualsValue(OperateType.REMOVE)));
+                Optional.ofNullable(table.getOperateColumn()).ifPresent(column -> sqlBuilder.and().append(column.columnEqualsValue(OperateType.DELETE)));
+            }
             return sqlSupply.supply(tablename, table, sqlBuilder);
         });
     }

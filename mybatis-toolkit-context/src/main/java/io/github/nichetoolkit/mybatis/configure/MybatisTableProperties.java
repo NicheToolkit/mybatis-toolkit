@@ -1,5 +1,6 @@
 package io.github.nichetoolkit.mybatis.configure;
 
+import io.github.nichetoolkit.mybatis.consts.EntityConstants;
 import io.github.nichetoolkit.mybatis.consts.ScriptConstants;
 import io.github.nichetoolkit.mybatis.enums.DatabaseType;
 import io.github.nichetoolkit.mybatis.enums.ExcludedType;
@@ -61,6 +62,13 @@ public class MybatisTableProperties {
     private Boolean useOperate = false;
 
     /**
+     * <code>excludeUnused</code>
+     * {@link java.lang.Boolean} <p>The <code>excludeUnused</code> field.</p>
+     * @see  java.lang.Boolean
+     */
+    private Boolean excludeUnused = false;
+
+    /**
      * <code>sqlScriptShow</code>
      * {@link java.lang.Boolean} <p>The <code>sqlScriptShow</code> field.</p>
      * @see  java.lang.Boolean
@@ -117,7 +125,6 @@ public class MybatisTableProperties {
      */
     private String[] ignores;
 
-
     /**
      * <code>selectIgnores</code>
      * {@link java.lang.String} <p>The <code>selectIgnores</code> field.</p>
@@ -150,6 +157,23 @@ public class MybatisTableProperties {
             return new ArrayList<>(Arrays.asList(this.excludes));
         }
         return null;
+    }
+
+    /**
+     * <code>getUnuseds</code>
+     * <p>The get unuseds getter method.</p>
+     * @return  {@link java.util.List} <p>The get unuseds return object is <code>List</code> type.</p>
+     * @see  java.util.List
+     */
+    public List<String> getUnuseds() {
+        List<String> unuseds = new ArrayList<>();
+        if (!useLogic) {
+            unuseds.add(EntityConstants.LOGIC);
+        }
+        if (!useOperate) {
+            unuseds.add(EntityConstants.OPERATE);
+        }
+        return unuseds;
     }
 
     /**

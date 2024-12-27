@@ -47,6 +47,13 @@ public class DefaultColumnFactory implements MybatisColumnFactory {
      */
     private boolean excludeSupport(MybatisTable table, MybatisField field) {
         String fieldName = field.fieldName();
+        if (this.tableProperties.getExcludeUnused()) {
+            List<String> globalUnuseds = this.tableProperties.getUnuseds();
+            if (GeneralUtils.isNotEmpty(globalUnuseds) && globalUnuseds.contains(fieldName)) {
+                /* 当前字段属于 需要排除的字段名称 返回 false */
+                return false;
+            }
+        }
         List<String> globalExcludes = this.tableProperties.getExcludes();
         if (GeneralUtils.isNotEmpty(globalExcludes) && globalExcludes.contains(fieldName)) {
             /* 当前字段属于 需要排除的字段名称 返回 false */

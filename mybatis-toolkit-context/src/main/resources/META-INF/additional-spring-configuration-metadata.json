@@ -46,6 +46,13 @@
       "defaultValue": "false"
     },
     {
+      "name": "nichetoolkit.mybatis.table.exclude-unused",
+      "type": "java.lang.Boolean",
+      "sourceType": "java.lang.Boolean",
+      "description": "the switch of exclude unused on mybatis configuration.",
+      "defaultValue": "false"
+    },
+    {
       "name": "nichetoolkit.mybatis.table.sql-script-show",
       "type": "java.lang.Boolean",
       "sourceType": "java.lang.Boolean",
@@ -175,6 +182,19 @@
         {
           "value": true,
           "description": "the switch of use operate is opened on mybatis configuration."
+        }
+      ]
+    },
+    {
+      "name": "nichetoolkit.mybatis.table.exclude-unused",
+      "values": [
+        {
+          "value": false,
+          "description": "the switch of exclude unused is closed on mybatis configuration."
+        },
+        {
+          "value": true,
+          "description": "the switch of exclude unused is opened on mybatis configuration."
         }
       ]
     },

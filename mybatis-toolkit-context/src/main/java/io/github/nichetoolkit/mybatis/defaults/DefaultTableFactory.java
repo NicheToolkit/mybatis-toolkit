@@ -56,6 +56,8 @@ public class DefaultTableFactory implements MybatisTableFactory {
         } else {
             mybatisTable = MybatisTable.of(entityType, identityType, linkageType, alertnessType, tableProperties.getProperties());
         }
+        mybatisTable.setUseLogic(tableProperties.getUseLogic());
+        mybatisTable.setUseOperate(tableProperties.getUseOperate());
         mybatisTable.setComment(tableComment);
         restUniqueKeys(entityType, mybatisTable);
         restUnionKeys(entityType, mybatisTable);

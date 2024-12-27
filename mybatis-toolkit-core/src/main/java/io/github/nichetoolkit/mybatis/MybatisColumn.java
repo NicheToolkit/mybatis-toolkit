@@ -1,5 +1,6 @@
 package io.github.nichetoolkit.mybatis;
 
+import io.github.nichetoolkit.mybatis.builder.SqlBuilder;
 import io.github.nichetoolkit.mybatis.consts.SQLConstants;
 import io.github.nichetoolkit.mybatis.consts.ScriptConstants;
 import io.github.nichetoolkit.mybatis.enums.ExcludedType;
@@ -695,6 +696,20 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
     }
 
     /**
+     * <code>aliasColumnEqualsValue</code>
+     * <p>The alias column equals value method.</p>
+     * @param alias {@link java.lang.String} <p>The alias parameter is <code>String</code> type.</p>
+     * @param value {@link java.lang.Object} <p>The value parameter is <code>Object</code> type.</p>
+     * @see  java.lang.String
+     * @see  java.lang.Object
+     * @return  {@link java.lang.String} <p>The alias column equals value return object is <code>String</code> type.</p>
+     */
+    public String aliasColumnEqualsValue(String alias, Object value) {
+        return aliasColumn(alias) + SQLConstants.BLANK + SQLConstants.CONTRAST_EQ
+                + SQLConstants.BLANK + SqlBuilder.sqlBuilder().value(value);
+    }
+
+    /**
      * <code>columnNotEqualsDollar</code>
      * <p>The column not equals dollar method.</p>
      * @param variable {@link java.lang.String} <p>The variable parameter is <code>String</code> type.</p>
@@ -702,7 +717,7 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
      * @return  {@link java.lang.String} <p>The column not equals dollar return object is <code>String</code> type.</p>
      */
     public String columnNotEqualsDollar(String variable) {
-        return aliasColumnEqualsVariable(SQLConstants.EMPTY, variable, true);
+        return aliasColumnNotEqualsVariable(SQLConstants.EMPTY, variable, true);
     }
 
     /**
@@ -714,7 +729,7 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
      * @return  {@link java.lang.String} <p>The alias not column equals dollar return object is <code>String</code> type.</p>
      */
     public String aliasNotColumnEqualsDollar(String alias, String variable) {
-        return aliasColumnEqualsVariable(alias, variable, true);
+        return aliasColumnNotEqualsVariable(alias, variable, true);
     }
 
     /**
@@ -725,7 +740,7 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
      * @return  {@link java.lang.String} <p>The column not equals signer return object is <code>String</code> type.</p>
      */
     public String columnNotEqualsSigner(String variable) {
-        return aliasColumnEqualsVariable(SQLConstants.EMPTY, variable, false);
+        return aliasColumnNotEqualsVariable(SQLConstants.EMPTY, variable, false);
     }
 
     /**
@@ -737,7 +752,7 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
      * @return  {@link java.lang.String} <p>The alias column not equals signer return object is <code>String</code> type.</p>
      */
     public String aliasColumnNotEqualsSigner(String alias, String variable) {
-        return aliasColumnEqualsVariable(alias, variable, false);
+        return aliasColumnNotEqualsVariable(alias, variable, false);
     }
 
     /**
@@ -749,7 +764,7 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
      * @return  {@link java.lang.String} <p>The column not equals variable return object is <code>String</code> type.</p>
      */
     public String columnNotEqualsVariable(String variable, boolean isDollarOrSigner) {
-        return aliasColumnEqualsVariable(SQLConstants.EMPTY, variable, isDollarOrSigner);
+        return aliasColumnNotEqualsVariable(SQLConstants.EMPTY, variable, isDollarOrSigner);
     }
 
     /**
@@ -767,6 +782,20 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
     }
 
     /**
+     * <code>aliasColumnNotEqualsValue</code>
+     * <p>The alias column not equals value method.</p>
+     * @param alias {@link java.lang.String} <p>The alias parameter is <code>String</code> type.</p>
+     * @param value {@link java.lang.Object} <p>The value parameter is <code>Object</code> type.</p>
+     * @see  java.lang.String
+     * @see  java.lang.Object
+     * @return  {@link java.lang.String} <p>The alias column not equals value return object is <code>String</code> type.</p>
+     */
+    public String aliasColumnNotEqualsValue(String alias, Object value) {
+        return aliasColumn(alias) + SQLConstants.BLANK + SQLConstants.CONTRAST_NEQ
+                + SQLConstants.BLANK + SqlBuilder.sqlBuilder().value(value);
+    }
+
+    /**
      * <code>columnEqualsProperty</code>
      * <p>The column equals property method.</p>
      * @return  {@link java.lang.String} <p>The column equals property return object is <code>String</code> type.</p>
@@ -774,6 +803,18 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
      */
     public String columnEqualsProperty() {
         return aliasColumnEqualsProperty(SQLConstants.EMPTY);
+    }
+
+    /**
+     * <code>columnEqualsValue</code>
+     * <p>The column equals value method.</p>
+     * @param value {@link java.lang.Object} <p>The value parameter is <code>Object</code> type.</p>
+     * @see  java.lang.Object
+     * @see  java.lang.String
+     * @return  {@link java.lang.String} <p>The column equals value return object is <code>String</code> type.</p>
+     */
+    public String columnEqualsValue(Object value) {
+        return aliasColumnEqualsValue(SQLConstants.EMPTY,value);
     }
 
     /**
@@ -795,6 +836,18 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
      */
     public String columnNotEqualsProperty() {
         return aliasColumnNotEqualsProperty(SQLConstants.EMPTY);
+    }
+
+    /**
+     * <code>columnNotEqualsValue</code>
+     * <p>The column not equals value method.</p>
+     * @param value {@link java.lang.Object} <p>The value parameter is <code>Object</code> type.</p>
+     * @see  java.lang.Object
+     * @see  java.lang.String
+     * @return  {@link java.lang.String} <p>The column not equals value return object is <code>String</code> type.</p>
+     */
+    public String columnNotEqualsValue(Object value) {
+        return aliasColumnNotEqualsValue(SQLConstants.EMPTY,value);
     }
 
     /**

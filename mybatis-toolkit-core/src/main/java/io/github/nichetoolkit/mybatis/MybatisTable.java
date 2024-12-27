@@ -231,6 +231,20 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
     @Setter
     private boolean autoResultMap = true;
     /**
+     * <code>useOperate</code>
+     * <p>The <code>useOperate</code> field.</p>
+     * @see  lombok.Setter
+     */
+    @Setter
+    private boolean useOperate;
+    /**
+     * <code>useLogic</code>
+     * <p>The <code>useLogic</code> field.</p>
+     * @see  lombok.Setter
+     */
+    @Setter
+    private boolean useLogic;
+    /**
      * <code>unionKeys</code>
      * {@link java.util.List} <p>The <code>unionKeys</code> field.</p>
      * @see  java.util.List
