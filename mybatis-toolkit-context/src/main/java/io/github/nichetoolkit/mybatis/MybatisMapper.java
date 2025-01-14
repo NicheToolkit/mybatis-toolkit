@@ -32,7 +32,7 @@ public interface MybatisMapper<E> {
      * @see  io.github.nichetoolkit.mybatis.MybatisTable
      */
     default MybatisTable table() {
-        return MybatisFactory.createTable(mapperType(), null, null, null);
+        return MybatisFactory.createTable(mapperType(), null, null, null, null);
     }
 
     /**

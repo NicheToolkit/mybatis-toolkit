@@ -106,6 +106,28 @@ public interface MybatisClassFinder extends MybatisOrder {
     }
 
     /**
+     * <code>findFicklenessClass</code>
+     * <p>The find fickleness class method.</p>
+     * @param mapperType {@link java.lang.Class} <p>The mapper type parameter is <code>Class</code> type.</p>
+     * @param mapperMethod {@link java.lang.reflect.Method} <p>The mapper method parameter is <code>Method</code> type.</p>
+     * @param entityType {@link java.lang.Class} <p>The entity type parameter is <code>Class</code> type.</p>
+     * @see  java.lang.Class
+     * @see  java.lang.reflect.Method
+     * @return  {@link java.lang.Class} <p>The find fickleness class return object is <code>Class</code> type.</p>
+     */
+    static Class<?> findFicklenessClass(Class<?> mapperType, Method mapperMethod, Class<?> entityType) {
+        Objects.requireNonNull(entityType);
+        List<MybatisClassFinder> instances = ClassFinderInstance.instances();
+        for (MybatisClassFinder instance : ClassFinderInstance.instances()) {
+            Optional<Class<?>> optionalClass = instance.findFickleness(mapperType, mapperMethod, entityType);
+            if (optionalClass.isPresent()) {
+                return optionalClass.get();
+            }
+        }
+        return null;
+    }
+
+    /**
      * <code>findEntity</code>
      * <p>The find entity method.</p>
      * @param mapperType {@link java.lang.Class} <p>The mapper type parameter is <code>Class</code> type.</p>
@@ -164,6 +186,22 @@ public interface MybatisClassFinder extends MybatisOrder {
      */
     Optional<Class<?>> findAlertness(@NonNull Class<?> mapperType, @Nullable Method mapperMethod, @NonNull Class<?> entityType);
 
+
+    /**
+     * <code>findFickleness</code>
+     * <p>The find fickleness method.</p>
+     * @param mapperType {@link java.lang.Class} <p>The mapper type parameter is <code>Class</code> type.</p>
+     * @param mapperMethod {@link java.lang.reflect.Method} <p>The mapper method parameter is <code>Method</code> type.</p>
+     * @param entityType {@link java.lang.Class} <p>The entity type parameter is <code>Class</code> type.</p>
+     * @see  java.lang.Class
+     * @see  org.springframework.lang.NonNull
+     * @see  java.lang.reflect.Method
+     * @see  org.springframework.lang.Nullable
+     * @see  java.util.Optional
+     * @return  {@link java.util.Optional} <p>The find fickleness return object is <code>Optional</code> type.</p>
+     */
+    Optional<Class<?>> findFickleness(@NonNull Class<?> mapperType, @Nullable Method mapperMethod, @NonNull Class<?> entityType);
+
     /**
      * <code>isEntity</code>
      * <p>The is entity method.</p>
@@ -199,6 +237,15 @@ public interface MybatisClassFinder extends MybatisOrder {
      * @return boolean <p>The is alertness return object is <code>boolean</code> type.</p>
      */
     boolean isAlertness(Class<?> clazz);
+
+    /**
+     * <code>isFickleness</code>
+     * <p>The is fickleness method.</p>
+     * @param clazz {@link java.lang.Class} <p>The clazz parameter is <code>Class</code> type.</p>
+     * @see  java.lang.Class
+     * @return boolean <p>The is fickleness return object is <code>boolean</code> type.</p>
+     */
+    boolean isFickleness(Class<?> clazz);
 
     /**
      * <code>ClassFinderInstance</code>

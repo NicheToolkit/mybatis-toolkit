@@ -1,6 +1,5 @@
-package io.github.nichetoolkit.mybatis.defaults;
+package io.github.nichetoolkit.mybatis;
 
-import io.github.nichetoolkit.mybatis.*;
 import io.github.nichetoolkit.mybatis.configure.MybatisTableProperties;
 import io.github.nichetoolkit.mybatis.consts.ScriptConstants;
 import io.github.nichetoolkit.mybatis.column.*;

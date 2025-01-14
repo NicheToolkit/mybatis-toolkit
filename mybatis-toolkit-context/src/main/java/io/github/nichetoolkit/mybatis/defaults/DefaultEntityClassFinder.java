@@ -2,6 +2,7 @@ package io.github.nichetoolkit.mybatis.defaults;
 
 
 import io.github.nichetoolkit.mybatis.MybatisEntityClassFinder;
+import io.github.nichetoolkit.mybatis.table.RestFickleness;
 import io.github.nichetoolkit.mybatis.table.RestAlertness;
 import io.github.nichetoolkit.mybatis.table.RestIdentity;
 import io.github.nichetoolkit.mybatis.RestMapper;
@@ -111,6 +112,28 @@ public class DefaultEntityClassFinder extends MybatisEntityClassFinder {
     }
 
     @Override
+    public Optional<Class<?>> findFickleness(@NonNull Class<?> mapperType,@Nullable Method mapperMethod, @NonNull Class<?> entityType) {
+        /* RestEntity 获取 */
+        if (entityType.isAnnotationPresent(RestEntity.class)) {
+            RestEntity restEntity = entityType.getAnnotation(RestEntity.class);
+            Class<?> ficklenessType = restEntity.ficklenessType();
+            if (GeneralUtils.isNotEmpty(ficklenessType) && !ficklenessType.equals(Object.class)) {
+                return Optional.of(ficklenessType);
+            }
+        }
+        /* RestMapper 获取 */
+        if (mapperType.isAnnotationPresent(RestMapper.class)) {
+            RestMapper restMapper = mapperType.getAnnotation(RestMapper.class);
+            Class<?> ficklenessType = restMapper.ficklenessType();
+            if (GeneralUtils.isNotEmpty(ficklenessType) && !ficklenessType.equals(Object.class)) {
+                return Optional.of(ficklenessType);
+            }
+        }
+        return super.findFickleness(mapperType, mapperMethod, entityType);
+    }
+
+
+    @Override
     public boolean isEntity(Class<?> clazz) {
         return clazz.isAnnotationPresent(RestEntity.class);
     }
@@ -128,5 +151,10 @@ public class DefaultEntityClassFinder extends MybatisEntityClassFinder {
     @Override
     public boolean isAlertness(Class<?> clazz) {
         return clazz.isAnnotationPresent(RestAlertness.class);
+    }
+
+    @Override
+    public boolean isFickleness(Class<?> clazz) {
+        return clazz.isAnnotationPresent(RestFickleness.class);
     }
 }

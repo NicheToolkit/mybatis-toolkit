@@ -1,6 +1,5 @@
-package io.github.nichetoolkit.mybatis.defaults;
+package io.github.nichetoolkit.mybatis;
 
-import io.github.nichetoolkit.mybatis.*;
 import io.github.nichetoolkit.mybatis.configure.MybatisTableProperties;
 import io.github.nichetoolkit.rest.util.GeneralUtils;
 import io.github.nichetoolkit.mybatis.enums.StyleType;
@@ -44,7 +43,7 @@ public class DefaultTableFactory implements MybatisTableFactory {
     }
 
     @Override
-    public MybatisTable createTable(@NonNull Class<?> entityType, @Nullable Class<?> identityType, @Nullable Class<?> linkageType, @Nullable Class<?> alertnessType, Chain chain) {
+    public MybatisTable createTable(@NonNull Class<?> entityType, @Nullable Class<?> identityType, @Nullable Class<?> linkageType, @Nullable Class<?> alertnessType, @Nullable Class<?> ficklenessType, Chain chain) {
         RestEntity restEntity = AnnotationUtils.getAnnotation(entityType, RestEntity.class);
         Class<?> entityClazz = Optional.ofNullable(restEntity).map(RestEntity::entityType).orElse(null);
         String tableName = Optional.ofNullable(restEntity).map(RestEntity::name).orElse(null);
@@ -52,9 +51,9 @@ public class DefaultTableFactory implements MybatisTableFactory {
         String tableAlias = Optional.ofNullable(restEntity).map(RestEntity::alias).orElse(null);
         MybatisTable mybatisTable;
         if (GeneralUtils.isNotEmpty(entityClazz) && entityClazz != Object.class) {
-            mybatisTable = MybatisTable.of(entityClazz, identityType, linkageType, alertnessType, tableProperties.getProperties());
+            mybatisTable = MybatisTable.of(entityClazz, identityType, linkageType, alertnessType, ficklenessType, tableProperties.getProperties());
         } else {
-            mybatisTable = MybatisTable.of(entityType, identityType, linkageType, alertnessType, tableProperties.getProperties());
+            mybatisTable = MybatisTable.of(entityType, identityType, linkageType, alertnessType, ficklenessType, tableProperties.getProperties());
         }
         mybatisTable.setUseLogic(tableProperties.getUseLogic());
         mybatisTable.setUseOperate(tableProperties.getUseOperate());

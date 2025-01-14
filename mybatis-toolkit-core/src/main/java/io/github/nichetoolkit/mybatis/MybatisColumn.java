@@ -183,6 +183,19 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
     protected boolean logicKey;
 
     /**
+     * <code>fickleKey</code>
+     * <p>The <code>fickleKey</code> field.</p>
+     * -- GETTER --
+     *  <code>isFickleKey</code>
+     *  <p>The is fickle key method.</p>
+     *
+     * @return boolean <p>The is fickle key return object is <code>boolean</code> type.</p>
+
+     */
+    @Getter
+    protected boolean fickleKey;
+
+    /**
      * <code>ignored</code>
      * <p>The <code>ignored</code> field.</p>
      */
@@ -248,7 +261,7 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
      */
     public boolean isAnyKey() {
         return this.identityKey | this.primaryKey | this.linkKey | this.unionKey
-                | this.alertKey | this.logicKey | this.operateKey;
+                | this.alertKey | this.logicKey | this.operateKey | this.fickleKey;
     }
 
     /**
@@ -279,12 +292,30 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
     }
 
     /**
+     * <code>isSpecialFickleness</code>
+     * <p>The is special fickleness method.</p>
+     * @return boolean <p>The is special fickleness return object is <code>boolean</code> type.</p>
+     */
+    public boolean isSpecialFickleness() {
+        return this.field.isFickleness();
+    }
+
+    /**
      * <code>isParentNotEmpty</code>
      * <p>The is parent not empty method.</p>
      * @return boolean <p>The is parent not empty return object is <code>boolean</code> type.</p>
      */
     public boolean isParentNotEmpty() {
         return this.field.isParentNotEmpty();
+    }
+
+    /**
+     * <code>isFickleValue</code>
+     * <p>The is fickle value method.</p>
+     * @return boolean <p>The is fickle value return object is <code>boolean</code> type.</p>
+     */
+    public boolean isFickleValue() {
+        return this.fickleKey && !this.field.isParentNotEmpty();
     }
 
     /**

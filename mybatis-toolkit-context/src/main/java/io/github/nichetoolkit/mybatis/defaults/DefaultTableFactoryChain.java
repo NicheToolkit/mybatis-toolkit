@@ -60,11 +60,11 @@ public class DefaultTableFactoryChain implements MybatisTableFactory.Chain {
     }
 
     @Override
-    public MybatisTable createTable(@NonNull Class<?> entityType, @Nullable Class<?> identityType, @Nullable Class<?> linkageType, @Nullable Class<?> alertnessType) {
+    public MybatisTable createTable(@NonNull Class<?> entityType, @Nullable Class<?> identityType, @Nullable Class<?> linkageType, @Nullable Class<?> alertnessType, @Nullable Class<?> ficklenessType) {
         if (index < factories.size()) {
             MybatisTableFactory mybatisTableFactory = factories.get(index);
             if (mybatisTableFactory.supports(entityType)) {
-                return mybatisTableFactory.createTable(entityType, identityType, linkageType, alertnessType, next);
+                return mybatisTableFactory.createTable(entityType, identityType, linkageType, alertnessType,ficklenessType, next);
             }
         }
         return null;

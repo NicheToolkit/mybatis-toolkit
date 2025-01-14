@@ -24,6 +24,7 @@ import org.apache.ibatis.type.TypeHandler;
 import org.apache.ibatis.type.UnknownTypeHandler;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
 import java.util.*;
 import java.util.function.Function;
 import java.util.regex.Matcher;
@@ -78,6 +79,13 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
      * @see  java.lang.Class
      */
     private final Class<?> alertnessType;
+
+    /**
+     * <code>ficklenessType</code>
+     * {@link java.lang.Class} <p>The <code>ficklenessType</code> field.</p>
+     * @see  java.lang.Class
+     */
+    private Class<?> ficklenessType;
     /**
      * <code>isSpecialIdentity</code>
      * <p>The <code>isSpecialIdentity</code> field.</p>
@@ -93,6 +101,11 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
      * <p>The <code>isSpecialAlertness</code> field.</p>
      */
     private final boolean isSpecialAlertness;
+    /**
+     * <code>isSpecialFickleness</code>
+     * <p>The <code>isSpecialFickleness</code> field.</p>
+     */
+    private final boolean isSpecialFickleness;
     /**
      * <code>initiates</code>
      * {@link java.util.Set} <p>The <code>initiates</code> field.</p>
@@ -372,7 +385,6 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
      */
     private MybatisColumn linkColumn;
 
-
     /**
      * <code>MybatisTable</code>
      * <p>Instantiates a new mybatis table.</p>
@@ -380,16 +392,19 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
      * @param identityType {@link java.lang.Class} <p>The identity type parameter is <code>Class</code> type.</p>
      * @param linkageType {@link java.lang.Class} <p>The linkage type parameter is <code>Class</code> type.</p>
      * @param alertnessType {@link java.lang.Class} <p>The alertness type parameter is <code>Class</code> type.</p>
+     * @param ficklenessType {@link java.lang.Class} <p>The fickleness type parameter is <code>Class</code> type.</p>
      * @see  java.lang.Class
      */
-    public MybatisTable(Class<?> entityType, Class<?> identityType, Class<?> linkageType, Class<?> alertnessType) {
+    private MybatisTable(Class<?> entityType, Class<?> identityType, Class<?> linkageType, Class<?> alertnessType, Class<?> ficklenessType) {
         this.entityType = entityType;
         this.identityType = identityType;
         this.linkageType = linkageType;
         this.alertnessType = alertnessType;
+        this.ficklenessType = ficklenessType;
         this.isSpecialIdentity = identityType != null;
         this.isSpecialLinkage = linkageType != null;
         this.isSpecialAlertness = alertnessType != null;
+        this.isSpecialFickleness = ficklenessType != null;
     }
 
     /**
@@ -399,19 +414,22 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
      * @param identityType {@link java.lang.Class} <p>The identity type parameter is <code>Class</code> type.</p>
      * @param linkageType {@link java.lang.Class} <p>The linkage type parameter is <code>Class</code> type.</p>
      * @param alertnessType {@link java.lang.Class} <p>The alertness type parameter is <code>Class</code> type.</p>
+     * @param ficklenessType {@link java.lang.Class} <p>The fickleness type parameter is <code>Class</code> type.</p>
      * @param properties {@link java.util.Map} <p>The properties parameter is <code>Map</code> type.</p>
      * @see  java.lang.Class
      * @see  java.util.Map
      */
-    public MybatisTable(Class<?> entityType, Class<?> identityType, Class<?> linkageType, Class<?> alertnessType, Map<String, String> properties) {
+    private MybatisTable(Class<?> entityType, Class<?> identityType, Class<?> linkageType, Class<?> alertnessType, Class<?> ficklenessType, Map<String, String> properties) {
         super(properties);
         this.entityType = entityType;
         this.identityType = identityType;
         this.linkageType = linkageType;
         this.alertnessType = alertnessType;
+        this.ficklenessType = ficklenessType;
         this.isSpecialIdentity = identityType != null;
         this.isSpecialLinkage = linkageType != null;
         this.isSpecialAlertness = alertnessType != null;
+        this.isSpecialFickleness = ficklenessType != null;
     }
 
     /**
@@ -421,11 +439,12 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
      * @param identityType {@link java.lang.Class} <p>The identity type parameter is <code>Class</code> type.</p>
      * @param linkageType {@link java.lang.Class} <p>The linkage type parameter is <code>Class</code> type.</p>
      * @param alertnessType {@link java.lang.Class} <p>The alertness type parameter is <code>Class</code> type.</p>
+     * @param ficklenessType {@link java.lang.Class} <p>The fickleness type parameter is <code>Class</code> type.</p>
      * @see  java.lang.Class
      * @return  {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>The of return object is <code>MybatisTable</code> type.</p>
      */
-    public static MybatisTable of(Class<?> entityType, Class<?> identityType, Class<?> linkageType, Class<?> alertnessType) {
-        return new MybatisTable(entityType, identityType, linkageType, alertnessType);
+    protected static MybatisTable of(Class<?> entityType, Class<?> identityType, Class<?> linkageType, Class<?> alertnessType, Class<?> ficklenessType) {
+        return new MybatisTable(entityType, identityType, linkageType, alertnessType,ficklenessType);
     }
 
     /**
@@ -435,17 +454,28 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
      * @param identityType {@link java.lang.Class} <p>The identity type parameter is <code>Class</code> type.</p>
      * @param linkageType {@link java.lang.Class} <p>The linkage type parameter is <code>Class</code> type.</p>
      * @param alertnessType {@link java.lang.Class} <p>The alertness type parameter is <code>Class</code> type.</p>
+     * @param ficklenessType {@link java.lang.Class} <p>The fickleness type parameter is <code>Class</code> type.</p>
      * @param properties {@link java.util.Map} <p>The properties parameter is <code>Map</code> type.</p>
      * @see  java.lang.Class
      * @see  java.util.Map
      * @return  {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>The of return object is <code>MybatisTable</code> type.</p>
      */
-    public static MybatisTable of(Class<?> entityType, Class<?> identityType, Class<?> linkageType, Class<?> alertnessType, Map<String, String> properties) {
+    protected static MybatisTable of(Class<?> entityType, Class<?> identityType, Class<?> linkageType, Class<?> alertnessType, Class<?> ficklenessType, Map<String, String> properties) {
         if (GeneralUtils.isNotEmpty(properties)) {
-            return new MybatisTable(entityType, identityType, linkageType, alertnessType, properties);
+            return new MybatisTable(entityType, identityType, linkageType, alertnessType, ficklenessType, properties);
         } else {
-            return new MybatisTable(entityType, identityType, linkageType, alertnessType);
+            return new MybatisTable(entityType, identityType, linkageType, alertnessType, ficklenessType);
         }
+    }
+
+    /**
+     * <code>refreshFicklenessType</code>
+     * <p>The refresh fickleness type method.</p>
+     * @param ficklenessType {@link java.lang.Class} <p>The fickleness type parameter is <code>Class</code> type.</p>
+     * @see  java.lang.Class
+     */
+    protected void refreshFicklenessType(Class<?> ficklenessType) {
+        this.ficklenessType = ficklenessType;
     }
 
     /**
@@ -1415,7 +1445,7 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
      */
     public boolean isExcludeField(MybatisField field) {
         if (this.excludeFieldTypes != null) {
-            Class<?> fieldType = field.fieldType();
+            Class<?> fieldType = field.fieldClass();
             for (Class<?> clazz : this.excludeFieldTypes) {
                 if (clazz == fieldType) {
                     return true;
@@ -1424,6 +1454,33 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
         }
         if (this.excludeFields != null) {
             String fieldName = field.fieldName();
+            for (String excludeField : this.excludeFields) {
+                if (excludeField.equals(fieldName)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * <code>isExcludeField</code>
+     * <p>The is exclude field method.</p>
+     * @param field {@link java.lang.reflect.Field} <p>The field parameter is <code>Field</code> type.</p>
+     * @see  java.lang.reflect.Field
+     * @return boolean <p>The is exclude field return object is <code>boolean</code> type.</p>
+     */
+    public boolean isExcludeField(Field field) {
+        if (this.excludeFieldTypes != null) {
+            Class<?> fieldType = field.getType();
+            for (Class<?> clazz : this.excludeFieldTypes) {
+                if (clazz == fieldType) {
+                    return true;
+                }
+            }
+        }
+        if (this.excludeFields != null) {
+            String fieldName = field.getName();
             for (String excludeField : this.excludeFields) {
                 if (excludeField.equals(fieldName)) {
                     return true;

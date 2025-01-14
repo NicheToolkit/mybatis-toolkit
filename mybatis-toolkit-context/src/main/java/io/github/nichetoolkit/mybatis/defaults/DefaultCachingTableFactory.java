@@ -40,11 +40,11 @@ public class DefaultCachingTableFactory implements MybatisTableFactory {
 
     @Override
     @SuppressWarnings("all")
-    public MybatisTable createTable(@NonNull Class<?> entityType, @Nullable Class<?> identityType, @Nullable Class<?> linkageType, @Nullable Class<?> alertnessType, Chain chain) {
+    public MybatisTable createTable(@NonNull Class<?> entityType, @Nullable Class<?> identityType, @Nullable Class<?> linkageType, @Nullable Class<?> alertnessType, @Nullable Class<?> ficklenessType, Chain chain) {
         if (this.classTables.get(entityType) == null) {
             synchronized (entityType) {
                 if (this.classTables.get(entityType) == null) {
-                    MybatisTable mybatisTable = chain.createTable(entityType, identityType, linkageType, alertnessType);
+                    MybatisTable mybatisTable = chain.createTable(entityType, identityType, linkageType, alertnessType,ficklenessType);
                     if (mybatisTable != null) {
                         this.classTables.put(entityType, mybatisTable);
                     } else {

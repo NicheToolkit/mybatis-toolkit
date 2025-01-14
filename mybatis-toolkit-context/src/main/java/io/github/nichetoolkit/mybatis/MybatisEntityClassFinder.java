@@ -100,6 +100,24 @@ public abstract class MybatisEntityClassFinder implements MybatisClassFinder {
         return alertnessTypeByMapperType(mapperType);
     }
 
+    public Optional<Class<?>> findFickleness(@NonNull Class<?> mapperType, @Nullable Method mapperMethod, @NonNull Class<?> entityType) {
+        /* entityType 泛型寻找 */
+        Optional<Class<?>> optionalClass;
+        if (mapperMethod != null) {
+            /* 判断参数 */
+            optionalClass = ficklenessTypeByParamTypes(mapperType, mapperMethod);
+            if (optionalClass.isPresent()) {
+                return optionalClass;
+            }
+        }
+        optionalClass = ficklenessTypeByEntityType(entityType);
+        if (optionalClass.isPresent()) {
+            return optionalClass;
+        }
+        /* mapperType 泛型寻找 */
+        return ficklenessTypeByMapperType(mapperType);
+    }
+
     /**
      * <code>entityTypeByReturnType</code>
      * <p>The entity type by return type method.</p>
@@ -208,6 +226,18 @@ public abstract class MybatisEntityClassFinder implements MybatisClassFinder {
     }
 
     /**
+     * <code>ficklenessTypeByEntityType</code>
+     * <p>The fickleness type by entity type method.</p>
+     * @param entityType {@link java.lang.Class} <p>The entity type parameter is <code>Class</code> type.</p>
+     * @see  java.lang.Class
+     * @see  java.util.Optional
+     * @return  {@link java.util.Optional} <p>The fickleness type by entity type return object is <code>Optional</code> type.</p>
+     */
+    protected Optional<Class<?>> ficklenessTypeByEntityType(Class<?> entityType) {
+        return classOfByTypes(RestGenericTypes.resolveSuperclassTypes(entityType), this::isFickleness);
+    }
+
+    /**
      * <code>alertnessTypeByParamTypes</code>
      * <p>The alertness type by param types method.</p>
      * @param mapperType {@link java.lang.Class} <p>The mapper type parameter is <code>Class</code> type.</p>
@@ -219,6 +249,20 @@ public abstract class MybatisEntityClassFinder implements MybatisClassFinder {
      */
     protected Optional<Class<?>> alertnessTypeByParamTypes(Class<?> mapperType, Method mapperMethod) {
         return classOfByTypes(RestGenericTypes.resolveParamTypes(mapperMethod, mapperType), this::isAlertness);
+    }
+
+    /**
+     * <code>ficklenessTypeByParamTypes</code>
+     * <p>The fickleness type by param types method.</p>
+     * @param mapperType {@link java.lang.Class} <p>The mapper type parameter is <code>Class</code> type.</p>
+     * @param mapperMethod {@link java.lang.reflect.Method} <p>The mapper method parameter is <code>Method</code> type.</p>
+     * @see  java.lang.Class
+     * @see  java.lang.reflect.Method
+     * @see  java.util.Optional
+     * @return  {@link java.util.Optional} <p>The fickleness type by param types return object is <code>Optional</code> type.</p>
+     */
+    protected Optional<Class<?>> ficklenessTypeByParamTypes(Class<?> mapperType, Method mapperMethod) {
+        return classOfByTypes(RestGenericTypes.resolveParamTypes(mapperMethod, mapperType), this::isFickleness);
     }
 
     /**
@@ -267,6 +311,18 @@ public abstract class MybatisEntityClassFinder implements MybatisClassFinder {
      */
     protected Optional<Class<?>> alertnessTypeByMapperType(Class<?> mapperType) {
         return classOfByTypes(RestGenericTypes.resolveInterfaceTypes(mapperType), this::isAlertness);
+    }
+
+    /**
+     * <code>ficklenessTypeByMapperType</code>
+     * <p>The fickleness type by mapper type method.</p>
+     * @param mapperType {@link java.lang.Class} <p>The mapper type parameter is <code>Class</code> type.</p>
+     * @see  java.lang.Class
+     * @see  java.util.Optional
+     * @return  {@link java.util.Optional} <p>The fickleness type by mapper type return object is <code>Optional</code> type.</p>
+     */
+    protected Optional<Class<?>> ficklenessTypeByMapperType(Class<?> mapperType) {
+        return classOfByTypes(RestGenericTypes.resolveInterfaceTypes(mapperType), this::isFickleness);
     }
 
 

@@ -36,7 +36,7 @@ public interface MybatisTableFactory extends MybatisOrder {
      * @see  io.github.nichetoolkit.mybatis.MybatisTableFactory.Chain
      * @return  {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>The create table return object is <code>MybatisTable</code> type.</p>
      */
-    MybatisTable createTable(@NonNull Class<?> entityType, @Nullable Class<?> identityType, @Nullable Class<?> linkageType, @Nullable Class<?> alertnessType, Chain chain);
+    MybatisTable createTable(@NonNull Class<?> entityType, @Nullable Class<?> identityType, @Nullable Class<?> linkageType, @Nullable Class<?> alertnessType, @Nullable Class<?> ficklenessType, Chain chain);
 
     /**
      * <code>Chain</code>
@@ -57,6 +57,6 @@ public interface MybatisTableFactory extends MybatisOrder {
          * @see  org.springframework.lang.Nullable
          * @return  {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>The create table return object is <code>MybatisTable</code> type.</p>
          */
-        MybatisTable createTable(@NonNull Class<?> entityType, @Nullable Class<?> identityType, @Nullable Class<?> linkageType, @Nullable Class<?> alertnessType);
+        MybatisTable createTable(@NonNull Class<?> entityType, @Nullable Class<?> identityType, @Nullable Class<?> linkageType, @Nullable Class<?> alertnessType, @Nullable Class<?> ficklenessType);
     }
 }

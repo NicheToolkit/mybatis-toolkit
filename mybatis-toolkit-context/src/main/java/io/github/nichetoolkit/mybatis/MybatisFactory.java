@@ -1,26 +1,28 @@
 package io.github.nichetoolkit.mybatis;
 
+import io.github.nichetoolkit.mybatis.column.*;
 import io.github.nichetoolkit.mybatis.defaults.DefaultColumnFactoryChain;
 import io.github.nichetoolkit.mybatis.defaults.DefaultTableFactoryChain;
 import io.github.nichetoolkit.mybatis.error.MybatisTableLackError;
-import io.github.nichetoolkit.mybatis.column.RestAlertKey;
-import io.github.nichetoolkit.mybatis.column.RestIdentityKey;
-import io.github.nichetoolkit.mybatis.column.RestLinkKey;
+import io.github.nichetoolkit.mybatis.fickle.FickleField;
+import io.github.nichetoolkit.mybatis.table.RestFickleness;
 import io.github.nichetoolkit.rest.RestException;
 import io.github.nichetoolkit.rest.error.lack.InterfaceLackError;
 import io.github.nichetoolkit.rest.util.GeneralUtils;
 import io.github.nichetoolkit.rest.util.OptionalUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.core.io.support.SpringFactoriesLoader;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
+import java.lang.reflect.*;
+import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
+import java.util.function.Predicate;
 
 /**
  * <code>MybatisFactory</code>
@@ -55,7 +57,8 @@ public abstract class MybatisFactory {
         Class<?> identityClass = MybatisClassFinder.findIdentityClass(mapperType, mapperMethod, entityClass);
         Class<?> linkageClass = MybatisClassFinder.findLinkageClass(mapperType, mapperMethod, entityClass);
         Class<?> alertnessClass = MybatisClassFinder.findAlertnessClass(mapperType, mapperMethod, entityClass);
-        return createTable(entityClass, identityClass, linkageClass, alertnessClass);
+        Class<?> ficklenessClass = MybatisClassFinder.findFicklenessClass(mapperType, mapperMethod, entityClass);
+        return createTable(entityClass, identityClass, linkageClass, alertnessClass,ficklenessClass);
     }
 
     /**
@@ -73,11 +76,11 @@ public abstract class MybatisFactory {
      * @return  {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>The create table return object is <code>MybatisTable</code> type.</p>
      */
     @SuppressWarnings("all")
-    public static MybatisTable createTable(@NonNull Class<?> entityType, @Nullable Class<?> identityType, @Nullable Class<?> linkageType, @Nullable Class<?> alertnessType) {
+    public static MybatisTable createTable(@NonNull Class<?> entityType, @Nullable Class<?> identityType, @Nullable Class<?> linkageType, @Nullable Class<?> alertnessType, @Nullable Class<?> ficklenessType) {
         /* 处理MybatisTable */
         MybatisTableFactory.Chain tableFactoryChain = Instance.tableFactoryChain();
         /* 创建 MybatisTable，不处理列（字段），此时返回的 MybatisTable 已经经过了所有处理链的加工 */
-        MybatisTable table = tableFactoryChain.createTable(entityType, identityType, linkageType, alertnessType);
+        MybatisTable table = tableFactoryChain.createTable(entityType, identityType, linkageType, alertnessType, ficklenessType);
         String message = "Unable to get " + entityType.getName() + " mybatis class information";
         OptionalUtils.ofNullError(table, message, log, MybatisTableLackError::new);
         /* 如果实体表已经处理好，直接返回 */
@@ -98,21 +101,39 @@ public abstract class MybatisFactory {
                             int modifiers = declaredField.getModifiers();
                             /* 排除 static 和 transient 修饰的字段 */
                             if (!Modifier.isStatic(modifiers) && !Modifier.isTransient(modifiers)) {
-                                MybatisField mybatisField = new MybatisField(entityType, declaredField);
+                                MybatisField mybatisField = MybatisField.of(entityType, declaredField);
                                 /* 是否需要排除字段 */
                                 if (table.isExcludeField(mybatisField)) {
                                     continue;
                                 }
                                 /* 使用了自定义联合主键字 */
-                                if (GeneralUtils.isNotEmpty(identityType) && GeneralUtils.isNotEmpty(mybatisField.getAnnotation(RestIdentityKey.class))) {
-                                    handleOfFields(table, identityType, columnFactoryChain, identityField -> new MybatisField(entityType, mybatisField, identityField, true, false,false));
-                                } else if (GeneralUtils.isNotEmpty(linkageType) && GeneralUtils.isNotEmpty(mybatisField.getAnnotation(RestLinkKey.class))) {
-                                    handleOfFields(table, linkageType, columnFactoryChain, linkField -> new MybatisField(entityType, mybatisField, linkField, false, true,false));
-                                } else if (GeneralUtils.isNotEmpty(alertnessType) && GeneralUtils.isNotEmpty(mybatisField.getAnnotation(RestAlertKey.class))) {
-                                    handleOfFields(table, alertnessType, columnFactoryChain, alertField -> new MybatisField(entityType, mybatisField, alertField, false, false,true));
+                                if (GeneralUtils.isNotEmpty(identityType) && mybatisField.isAnnotationPresent(RestIdentityKey.class)) {
+                                    handleOfFields(table, identityType, columnFactoryChain, identityField -> MybatisField.ofIdentity(entityType, mybatisField, identityField));
+                                } else if (GeneralUtils.isNotEmpty(linkageType) && mybatisField.isAnnotationPresent(RestLinkKey.class)) {
+                                    handleOfFields(table, linkageType, columnFactoryChain, linkField -> MybatisField.ofLinkage(entityType, mybatisField, linkField));
+                                } else if (GeneralUtils.isNotEmpty(alertnessType) && mybatisField.isAnnotationPresent(RestAlertKey.class)) {
+                                    handleOfFields(table, alertnessType, columnFactoryChain, alertField -> MybatisField.ofAlertness(entityType, mybatisField, alertField));
                                 } else {
-                                    Optional<List<MybatisColumn>> optionalColumns = columnFactoryChain.createColumn(table, mybatisField);
-                                    optionalColumns.ifPresent(columns -> columns.forEach(table::addColumn));
+                                    boolean isPresentFickleKey = mybatisField.isAnnotationPresent(RestFickleKey.class);
+                                    boolean isPresentFickleEntry = mybatisField.isAnnotationPresent(RestFickleEntry.class);
+                                    boolean isPresentFickleValue = mybatisField.isAnnotationPresent(RestFickleValue.class);
+                                    // 使用了RestFickleEntry注解 或者 RestFickleValue注解
+                                    if (isPresentFickleEntry | isPresentFickleValue) {
+                                        handleOfFickleFields(table, declaredField, columnFactoryChain, fickleField -> MybatisField.ofFickleness(entityType, fickleField));
+                                    } else if (isPresentFickleKey) {
+                                        Class<?> fieldType = declaredField.getType();
+                                        // 使用了RestFickleKey注解，且ficklenessType为空时
+                                        if (GeneralUtils.isEmpty(ficklenessType) && fieldType.isAnnotationPresent(RestFickleness.class)) {
+                                            ficklenessType = fieldType;
+                                            table.refreshFicklenessType(fieldType);
+                                        }
+                                        if (GeneralUtils.isNotEmpty(ficklenessType)) {
+                                            handleOfFickleness(table, ficklenessType, columnFactoryChain, fickleField -> MybatisField.ofFickleness(entityType, mybatisField, fickleField));
+                                        }
+                                    } else {
+                                        Optional<List<MybatisColumn>> optionalColumns = columnFactoryChain.createColumn(table, mybatisField);
+                                        optionalColumns.ifPresent(columns -> columns.forEach(table::addColumn));
+                                    }
                                 }
                             }
                         }
@@ -129,6 +150,73 @@ public abstract class MybatisFactory {
             }
         }
         return table;
+    }
+
+    protected static void handleOfFickleFields(MybatisTable table, Field declaredField, MybatisColumnFactory.Chain columnFactoryChain, Function<Field, MybatisField> fieldFunction) {
+        handleOfFickleFields(table, declaredField, columnFactoryChain, fickleField -> true, fieldFunction);
+    }
+
+    protected static void handleOfFickleFields(MybatisTable table, Field declaredField, MybatisColumnFactory.Chain columnFactoryChain, Predicate<Field> fieldPredicate, Function<Field, MybatisField> fieldFunction) {
+        Class<?> fieldType = declaredField.getType();
+        Type genericType = declaredField.getGenericType();
+        if (genericType instanceof ParameterizedType) {
+            ParameterizedType parameterizedType = (ParameterizedType) genericType;
+            Type rawType = parameterizedType.getRawType();
+            if (!(rawType instanceof Class)) {
+                return;
+            }
+            Class<?> rawClass = (Class<?>) rawType;
+            boolean isPresentFickleType = false;
+            if (Collection.class.isAssignableFrom(rawClass)) {
+                Type[] typeArguments = parameterizedType.getActualTypeArguments();
+                Type actualType = typeArguments[0];
+                if (actualType instanceof Class && FickleField.class.isAssignableFrom((Class<?>) actualType)) {
+                    isPresentFickleType = true;
+                }
+            } else if (Map.class.isAssignableFrom(rawClass)) {
+                Type[] typeArguments = parameterizedType.getActualTypeArguments();
+                Type keyOfActualType = typeArguments[0];
+                Type valueOfActualType = typeArguments[1];
+                if (keyOfActualType instanceof Class
+                        && String.class.isAssignableFrom((Class<?>) keyOfActualType)
+                        && valueOfActualType instanceof Class
+                        && FickleField.class.isAssignableFrom((Class<?>) valueOfActualType)) {
+                    isPresentFickleType = true;
+                }
+            }
+            if (isPresentFickleType) {
+                MybatisField field = fieldFunction.apply(declaredField);
+                Optional<List<MybatisColumn>> optionalColumns = columnFactoryChain.createColumn(table, field);
+                optionalColumns.ifPresent(columns -> columns.forEach(table::addColumn));
+            }
+        }
+    }
+
+    protected static void handleOfFickleness(MybatisTable table, Class<?> declaredType, MybatisColumnFactory.Chain columnFactoryChain, Function<Field, MybatisField> fieldFunction) {
+        /* 未处理的需要获取字段 */
+        Class<?> declaredClass = declaredType;
+        boolean isSuperclass = true;
+        while (declaredClass != null && declaredClass != Object.class) {
+            Field[] declaredFields = declaredClass.getDeclaredFields();
+            MybatisSqlUtils.reverseArray(declaredFields);
+            for (Field declaredField : declaredFields) {
+                int modifiers = declaredField.getModifiers();
+                /* 排除 static 和 transient 修饰的字段 */
+                if (!Modifier.isStatic(modifiers) && !Modifier.isTransient(modifiers)) {
+                    /* 是否需要排除字段 */
+                    if (table.isExcludeField(declaredField)) {
+                        continue;
+                    }
+                    handleOfFickleFields(table, declaredField, columnFactoryChain,
+                            field -> GeneralUtils.isNotEmpty(AnnotationUtils.getAnnotation(field,RestFickleKey.class)),
+                            fieldFunction);
+                }
+            }
+            /* 排除父类,迭代获取父类 */
+            do {
+                declaredClass = declaredClass.getSuperclass();
+            } while (table.isExcludeSuperClass(declaredClass) && declaredClass != Object.class);
+        }
     }
 
     /**
