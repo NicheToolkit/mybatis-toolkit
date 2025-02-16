@@ -1,5 +1,7 @@
 package io.github.nichetoolkit.mybatis;
 
+import io.github.nichetoolkit.mybatis.builder.SqlBuilder;
+import io.github.nichetoolkit.mybatis.fickle.FickleField;
 import io.github.nichetoolkit.rest.error.lack.AccessibleLackError;
 import io.github.nichetoolkit.rest.reflect.RestGenericTypes;
 import io.github.nichetoolkit.rest.util.GeneralUtils;
@@ -41,6 +43,13 @@ public class MybatisField {
      * @see  java.lang.reflect.Field
      */
     protected Field field;
+
+    /**
+     * <code>fickleField</code>
+     * {@link io.github.nichetoolkit.mybatis.fickle.FickleField} <p>The <code>fickleField</code> field.</p>
+     * @see  io.github.nichetoolkit.mybatis.fickle.FickleField
+     */
+    protected FickleField<?> fickleField;
     /**
      * <code>isIdentity</code>
      * <p>The <code>isIdentity</code> field.</p>
@@ -62,6 +71,12 @@ public class MybatisField {
      * <p>The <code>isFickleness</code> field.</p>
      */
     protected boolean isFickleness = false;
+
+    /**
+     * <code>isFickleField</code>
+     * <p>The <code>isFickleField</code> field.</p>
+     */
+    protected boolean isFickleField = false;
     /**
      * <code>ignored</code>
      * <p>The <code>ignored</code> field.</p>
@@ -98,6 +113,23 @@ public class MybatisField {
         this.entityType = entityType;
         this.field = field;
         this.field.setAccessible(true);
+    }
+
+    /**
+     * <code>MybatisField</code>
+     * <p>Instantiates a new mybatis field.</p>
+     * @param entityType {@link java.lang.Class} <p>The entity type parameter is <code>Class</code> type.</p>
+     * @param parentField {@link io.github.nichetoolkit.mybatis.MybatisField} <p>The parent field parameter is <code>MybatisField</code> type.</p>
+     * @param fickleField {@link io.github.nichetoolkit.mybatis.fickle.FickleField} <p>The fickle field parameter is <code>FickleField</code> type.</p>
+     * @param isFickleField boolean <p>The is fickle field parameter is <code>boolean</code> type.</p>
+     * @see  java.lang.Class
+     * @see  io.github.nichetoolkit.mybatis.fickle.FickleField
+     */
+    private MybatisField(Class<?> entityType, MybatisField parentField, FickleField<?> fickleField, boolean isFickleField) {
+        this.entityType = entityType;
+        this.parentField = parentField;
+        this.fickleField = fickleField;
+        this.isFickleField = isFickleField;
     }
 
     /**
@@ -152,7 +184,7 @@ public class MybatisField {
      * @return  {@link io.github.nichetoolkit.mybatis.MybatisField} <p>The of return object is <code>MybatisField</code> type.</p>
      */
     protected static MybatisField of(Class<?> entityType, MybatisField parentField, Field field, boolean isIdentity, boolean isLinkage, boolean isAlertness, boolean isFickleness) {
-        return new MybatisField(entityType, parentField, field, isIdentity,isLinkage,isAlertness,isFickleness);
+        return new MybatisField(entityType, parentField, field, isIdentity, isLinkage, isAlertness, isFickleness);
     }
 
     /**
@@ -166,7 +198,7 @@ public class MybatisField {
      * @return  {@link io.github.nichetoolkit.mybatis.MybatisField} <p>The of identity return object is <code>MybatisField</code> type.</p>
      */
     protected static MybatisField ofIdentity(Class<?> entityType, MybatisField parentField, Field field) {
-        return new MybatisField(entityType, parentField, field, true,false,false,false);
+        return new MybatisField(entityType, parentField, field, true, false, false, false);
     }
 
     /**
@@ -180,7 +212,7 @@ public class MybatisField {
      * @return  {@link io.github.nichetoolkit.mybatis.MybatisField} <p>The of linkage return object is <code>MybatisField</code> type.</p>
      */
     protected static MybatisField ofLinkage(Class<?> entityType, MybatisField parentField, Field field) {
-        return new MybatisField(entityType, parentField, field,false,true,false,false);
+        return new MybatisField(entityType, parentField, field, false, true, false, false);
     }
 
     /**
@@ -194,7 +226,7 @@ public class MybatisField {
      * @return  {@link io.github.nichetoolkit.mybatis.MybatisField} <p>The of alertness return object is <code>MybatisField</code> type.</p>
      */
     protected static MybatisField ofAlertness(Class<?> entityType, MybatisField parentField, Field field) {
-        return new MybatisField(entityType, parentField, field, false,false,true,false);
+        return new MybatisField(entityType, parentField, field, false, false, true, false);
     }
 
     /**
@@ -207,7 +239,21 @@ public class MybatisField {
      * @return  {@link io.github.nichetoolkit.mybatis.MybatisField} <p>The of fickleness return object is <code>MybatisField</code> type.</p>
      */
     protected static MybatisField ofFickleness(Class<?> entityType, Field field) {
-        return new MybatisField(entityType, null, field, false,false,false,true);
+        return new MybatisField(entityType, null, field, false, false, false, true);
+    }
+
+    /**
+     * <code>ofFickleField</code>
+     * <p>The of fickle field method.</p>
+     * @param entityType {@link java.lang.Class} <p>The entity type parameter is <code>Class</code> type.</p>
+     * @param parentField {@link io.github.nichetoolkit.mybatis.MybatisField} <p>The parent field parameter is <code>MybatisField</code> type.</p>
+     * @param fickleField {@link io.github.nichetoolkit.mybatis.fickle.FickleField} <p>The fickle field parameter is <code>FickleField</code> type.</p>
+     * @see  java.lang.Class
+     * @see  io.github.nichetoolkit.mybatis.fickle.FickleField
+     * @return  {@link io.github.nichetoolkit.mybatis.MybatisField} <p>The of fickle field return object is <code>MybatisField</code> type.</p>
+     */
+    protected static MybatisField ofFickleField(Class<?> entityType, MybatisField parentField, FickleField<?> fickleField) {
+        return new MybatisField(entityType, parentField, fickleField, true);
     }
 
     /**
@@ -221,7 +267,7 @@ public class MybatisField {
      * @return  {@link io.github.nichetoolkit.mybatis.MybatisField} <p>The of fickleness return object is <code>MybatisField</code> type.</p>
      */
     protected static MybatisField ofFickleness(Class<?> entityType, MybatisField parentField, Field field) {
-        return new MybatisField(entityType, parentField, field, false,false,false,true);
+        return new MybatisField(entityType, parentField, field, false, false, false, true);
     }
 
     /**
@@ -240,10 +286,25 @@ public class MybatisField {
      * @see  java.lang.String
      */
     public String prefixOfParent() {
+        return prefixOfParent(false);
+    }
+
+    /**
+     * <code>prefixOfParent</code>
+     * <p>The prefix of parent method.</p>
+     * @param isParent boolean <p>The is parent parameter is <code>boolean</code> type.</p>
+     * @return  {@link java.lang.String} <p>The prefix of parent return object is <code>String</code> type.</p>
+     * @see  java.lang.String
+     */
+    public String prefixOfParent(boolean isParent) {
+        SqlBuilder sqlBuilder = SqlBuilder.sqlBuilder();
         if (this.parentField != null) {
-            return this.parentField.prefixOfParent();
+            sqlBuilder.append(this.parentField.prefixOfParent(true));
         }
-        return null;
+        if (isParent) {
+            sqlBuilder.append(this.fieldName()).period();
+        }
+        return sqlBuilder.toString();
     }
 
     /**
@@ -263,7 +324,7 @@ public class MybatisField {
      * @see  java.lang.String
      */
     public String fieldName() {
-        return this.field.getName();
+        return this.isFickleField ? GeneralUtils.isNotEmpty(this.fickleField.getName()) ? this.fickleField.getName() : this.fickleField.getKey() : this.field.getName();
     }
 
     /**

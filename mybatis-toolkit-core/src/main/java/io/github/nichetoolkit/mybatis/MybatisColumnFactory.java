@@ -1,5 +1,6 @@
 package io.github.nichetoolkit.mybatis;
 
+import com.fasterxml.jackson.databind.JavaType;
 import org.springframework.lang.NonNull;
 
 import java.util.List;
@@ -41,6 +42,26 @@ public interface MybatisColumnFactory extends MybatisOrder {
      */
     Optional<List<MybatisColumn>> createColumn(@NonNull MybatisTable table, @NonNull MybatisField field, Chain chain);
 
+
+    /**
+     * <code>createColumn</code>
+     * <p>The create column method.</p>
+     * @param table {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>The table parameter is <code>MybatisTable</code> type.</p>
+     * @param field {@link io.github.nichetoolkit.mybatis.MybatisField} <p>The field parameter is <code>MybatisField</code> type.</p>
+     * @param chain {@link io.github.nichetoolkit.mybatis.MybatisColumnFactory.Chain} <p>The chain parameter is <code>Chain</code> type.</p>
+     * @param fickleType {@link com.fasterxml.jackson.databind.JavaType} <p>The fickle type parameter is <code>JavaType</code> type.</p>
+     * @param isFickleKey boolean <p>The is fickle key parameter is <code>boolean</code> type.</p>
+     * @param isFickleValue boolean <p>The is fickle value parameter is <code>boolean</code> type.</p>
+     * @see  io.github.nichetoolkit.mybatis.MybatisTable
+     * @see  org.springframework.lang.NonNull
+     * @see  io.github.nichetoolkit.mybatis.MybatisField
+     * @see  io.github.nichetoolkit.mybatis.MybatisColumnFactory.Chain
+     * @see  com.fasterxml.jackson.databind.JavaType
+     * @see  java.util.Optional
+     * @return  {@link java.util.Optional} <p>The create column return object is <code>Optional</code> type.</p>
+     */
+    Optional<List<MybatisColumn>> createColumn(@NonNull MybatisTable table, @NonNull MybatisField field, Chain chain, JavaType fickleType, boolean isFickleKey, boolean isFickleValue);
+
     /**
      * <code>Chain</code>
      * <p>The chain interface.</p>
@@ -60,5 +81,23 @@ public interface MybatisColumnFactory extends MybatisOrder {
          * @return  {@link java.util.Optional} <p>The create column return object is <code>Optional</code> type.</p>
          */
         Optional<List<MybatisColumn>> createColumn(@NonNull MybatisTable table, @NonNull MybatisField field);
+
+
+        /**
+         * <code>createColumn</code>
+         * <p>The create column method.</p>
+         * @param table {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>The table parameter is <code>MybatisTable</code> type.</p>
+         * @param field {@link io.github.nichetoolkit.mybatis.MybatisField} <p>The field parameter is <code>MybatisField</code> type.</p>
+         * @param fickleType {@link com.fasterxml.jackson.databind.JavaType} <p>The fickle type parameter is <code>JavaType</code> type.</p>
+         * @param isFickleKey boolean <p>The is fickle key parameter is <code>boolean</code> type.</p>
+         * @param isFickleValue boolean <p>The is fickle value parameter is <code>boolean</code> type.</p>
+         * @see  io.github.nichetoolkit.mybatis.MybatisTable
+         * @see  org.springframework.lang.NonNull
+         * @see  io.github.nichetoolkit.mybatis.MybatisField
+         * @see  com.fasterxml.jackson.databind.JavaType
+         * @see  java.util.Optional
+         * @return  {@link java.util.Optional} <p>The create column return object is <code>Optional</code> type.</p>
+         */
+        Optional<List<MybatisColumn>> createColumn(@NonNull MybatisTable table, @NonNull MybatisField field, JavaType fickleType, boolean isFickleKey, boolean isFickleValue);
     }
 }

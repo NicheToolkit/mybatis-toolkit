@@ -1,5 +1,6 @@
 package io.github.nichetoolkit.mybatis;
 
+import com.fasterxml.jackson.databind.JavaType;
 import io.github.nichetoolkit.mybatis.configure.MybatisTableProperties;
 import io.github.nichetoolkit.mybatis.consts.ScriptConstants;
 import io.github.nichetoolkit.mybatis.column.*;
@@ -95,19 +96,19 @@ public class DefaultColumnFactory implements MybatisColumnFactory {
     private void ignoreHandle(MybatisTable table, MybatisField field) {
         String fieldName = field.fieldName();
         /* global field handle */
-        globalHandle(fieldName,field);
+        globalHandle(fieldName, field);
         /* ignore field handle */
         MybatisIgnored ignored = table.getIgnored();
-        ignoreHandle(ignored,fieldName,field);
+        ignoreHandle(ignored, fieldName, field);
         /* select ignore field handle */
         MybatisIgnored selectIgnored = table.getSelectIgnored();
-        selectHandle(selectIgnored,fieldName,field);
+        selectHandle(selectIgnored, fieldName, field);
         /* insert ignore field handle */
         MybatisIgnored insertIgnored = table.getInsertIgnored();
-        insertHandle(insertIgnored,fieldName,field);
+        insertHandle(insertIgnored, fieldName, field);
         /* update ignore field handle */
         MybatisIgnored updateIgnored = table.getUpdateIgnored();
-        updateHandle(updateIgnored,fieldName,field);
+        updateHandle(updateIgnored, fieldName, field);
     }
 
     /**
@@ -278,6 +279,11 @@ public class DefaultColumnFactory implements MybatisColumnFactory {
 
     @Override
     public Optional<List<MybatisColumn>> createColumn(@NonNull MybatisTable mybatisTable, @NonNull MybatisField field, Chain chain) {
+        return createColumn(mybatisTable, field, chain, null,false, false);
+    }
+
+    @Override
+    public Optional<List<MybatisColumn>> createColumn(@NonNull MybatisTable mybatisTable, @NonNull MybatisField field, Chain chain, JavaType fickleType, boolean isFickleKey, boolean isFickleValue) {
         /* 默认针对 entity 实体中的所有字段构建 column 数据 */
         MybatisColumn mybatisColumn = MybatisColumn.of(field, this.tableProperties.getProperties());
         boolean fieldIgnored = field.ignored();
@@ -286,10 +292,10 @@ public class DefaultColumnFactory implements MybatisColumnFactory {
         String columnComment = Optional.ofNullable(restName).map(RestName::comment).orElse(null);
         MybatisTableStyle mybatisStyle = MybatisTableStyle.style(mybatisTable.getStyleName());
         if (GeneralUtils.isNotEmpty(restName)) {
-            mybatisColumn.setColumn(GeneralUtils.isEmpty(columnName) ? mybatisStyle.columnName(mybatisTable, field) : restName.name());
+            mybatisColumn.setColumn(GeneralUtils.isEmpty(columnName) ? mybatisStyle.columnName(field) : restName.name());
             mybatisColumn.setComment(columnComment);
         } else {
-            mybatisColumn.setColumn(mybatisStyle.columnName(mybatisTable, field));
+            mybatisColumn.setColumn(mybatisStyle.columnName(field));
         }
         RestOrder restOrder = field.getAnnotation(RestOrder.class);
         if (GeneralUtils.isNotEmpty(restOrder) && !fieldIgnored) {
@@ -392,6 +398,14 @@ public class DefaultColumnFactory implements MybatisColumnFactory {
             mybatisColumn.setInsert(false);
         }
         if (field.updateIgnored()) {
+            mybatisColumn.setUpdate(false);
+        }
+        if (GeneralUtils.isNotEmpty(fickleType) && !fieldIgnored) {
+            mybatisColumn.setFickleType(fickleType);
+            mybatisColumn.setFickleKey(isFickleKey);
+            mybatisColumn.setFickleValue(isFickleValue);
+            mybatisColumn.setSelect(false);
+            mybatisColumn.setInsert(false);
             mybatisColumn.setUpdate(false);
         }
         return Optional.of(Collections.singletonList(mybatisColumn));

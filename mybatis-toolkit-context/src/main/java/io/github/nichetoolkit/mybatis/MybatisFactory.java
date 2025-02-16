@@ -1,5 +1,7 @@
 package io.github.nichetoolkit.mybatis;
 
+import com.fasterxml.jackson.databind.JavaType;
+import com.fasterxml.jackson.databind.type.TypeFactory;
 import io.github.nichetoolkit.mybatis.column.*;
 import io.github.nichetoolkit.mybatis.defaults.DefaultColumnFactoryChain;
 import io.github.nichetoolkit.mybatis.defaults.DefaultTableFactoryChain;
@@ -11,18 +13,13 @@ import io.github.nichetoolkit.rest.error.lack.InterfaceLackError;
 import io.github.nichetoolkit.rest.util.GeneralUtils;
 import io.github.nichetoolkit.rest.util.OptionalUtils;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.core.io.support.SpringFactoriesLoader;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 
 import java.lang.reflect.*;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.function.Function;
-import java.util.function.Predicate;
 
 /**
  * <code>MybatisFactory</code>
@@ -58,7 +55,7 @@ public abstract class MybatisFactory {
         Class<?> linkageClass = MybatisClassFinder.findLinkageClass(mapperType, mapperMethod, entityClass);
         Class<?> alertnessClass = MybatisClassFinder.findAlertnessClass(mapperType, mapperMethod, entityClass);
         Class<?> ficklenessClass = MybatisClassFinder.findFicklenessClass(mapperType, mapperMethod, entityClass);
-        return createTable(entityClass, identityClass, linkageClass, alertnessClass,ficklenessClass);
+        return createTable(entityClass, identityClass, linkageClass, alertnessClass, ficklenessClass);
     }
 
     /**
@@ -68,6 +65,7 @@ public abstract class MybatisFactory {
      * @param identityType {@link java.lang.Class} <p>The identity type parameter is <code>Class</code> type.</p>
      * @param linkageType {@link java.lang.Class} <p>The linkage type parameter is <code>Class</code> type.</p>
      * @param alertnessType {@link java.lang.Class} <p>The alertness type parameter is <code>Class</code> type.</p>
+     * @param ficklenessType {@link java.lang.Class} <p>The fickleness type parameter is <code>Class</code> type.</p>
      * @see  java.lang.Class
      * @see  org.springframework.lang.NonNull
      * @see  org.springframework.lang.Nullable
@@ -119,7 +117,7 @@ public abstract class MybatisFactory {
                                     boolean isPresentFickleValue = mybatisField.isAnnotationPresent(RestFickleValue.class);
                                     // 使用了RestFickleEntry注解 或者 RestFickleValue注解
                                     if (isPresentFickleEntry | isPresentFickleValue) {
-                                        handleOfFickleFields(table, declaredField, columnFactoryChain, fickleField -> MybatisField.ofFickleness(entityType, fickleField));
+                                        handleOfFickleValueFields(table, declaredField, columnFactoryChain, fickleField -> MybatisField.ofFickleness(entityType, fickleField), isPresentFickleEntry);
                                     } else if (isPresentFickleKey) {
                                         Class<?> fieldType = declaredField.getType();
                                         // 使用了RestFickleKey注解，且ficklenessType为空时
@@ -152,13 +150,57 @@ public abstract class MybatisFactory {
         return table;
     }
 
-    protected static void handleOfFickleFields(MybatisTable table, Field declaredField, MybatisColumnFactory.Chain columnFactoryChain, Function<Field, MybatisField> fieldFunction) {
-        handleOfFickleFields(table, declaredField, columnFactoryChain, fickleField -> true, fieldFunction);
+    /**
+     * <code>handleOfFickleValueFields</code>
+     * <p>The handle of fickle value fields method.</p>
+     * @param table {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>The table parameter is <code>MybatisTable</code> type.</p>
+     * @param declaredField {@link java.lang.reflect.Field} <p>The declared field parameter is <code>Field</code> type.</p>
+     * @param columnFactoryChain {@link io.github.nichetoolkit.mybatis.MybatisColumnFactory.Chain} <p>The column factory chain parameter is <code>Chain</code> type.</p>
+     * @param fieldFunction {@link java.util.function.Function} <p>The field function parameter is <code>Function</code> type.</p>
+     * @param isFickleEntry boolean <p>The is fickle entry parameter is <code>boolean</code> type.</p>
+     * @see  io.github.nichetoolkit.mybatis.MybatisTable
+     * @see  java.lang.reflect.Field
+     * @see  io.github.nichetoolkit.mybatis.MybatisColumnFactory.Chain
+     * @see  java.util.function.Function
+     */
+    protected static void handleOfFickleValueFields(MybatisTable table, Field declaredField, MybatisColumnFactory.Chain columnFactoryChain, Function<Field, MybatisField> fieldFunction, boolean isFickleEntry) {
+        handleOfFickleFields(table, declaredField, columnFactoryChain, fieldFunction, isFickleEntry, true);
     }
 
-    protected static void handleOfFickleFields(MybatisTable table, Field declaredField, MybatisColumnFactory.Chain columnFactoryChain, Predicate<Field> fieldPredicate, Function<Field, MybatisField> fieldFunction) {
+    /**
+     * <code>handleOfFickleKeyFields</code>
+     * <p>The handle of fickle key fields method.</p>
+     * @param table {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>The table parameter is <code>MybatisTable</code> type.</p>
+     * @param declaredField {@link java.lang.reflect.Field} <p>The declared field parameter is <code>Field</code> type.</p>
+     * @param columnFactoryChain {@link io.github.nichetoolkit.mybatis.MybatisColumnFactory.Chain} <p>The column factory chain parameter is <code>Chain</code> type.</p>
+     * @param fieldFunction {@link java.util.function.Function} <p>The field function parameter is <code>Function</code> type.</p>
+     * @see  io.github.nichetoolkit.mybatis.MybatisTable
+     * @see  java.lang.reflect.Field
+     * @see  io.github.nichetoolkit.mybatis.MybatisColumnFactory.Chain
+     * @see  java.util.function.Function
+     */
+    protected static void handleOfFickleKeyFields(MybatisTable table, Field declaredField, MybatisColumnFactory.Chain columnFactoryChain, Function<Field, MybatisField> fieldFunction) {
+        handleOfFickleFields(table, declaredField, columnFactoryChain, fieldFunction, true, false);
+    }
+
+    /**
+     * <code>handleOfFickleFields</code>
+     * <p>The handle of fickle fields method.</p>
+     * @param table {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>The table parameter is <code>MybatisTable</code> type.</p>
+     * @param declaredField {@link java.lang.reflect.Field} <p>The declared field parameter is <code>Field</code> type.</p>
+     * @param columnFactoryChain {@link io.github.nichetoolkit.mybatis.MybatisColumnFactory.Chain} <p>The column factory chain parameter is <code>Chain</code> type.</p>
+     * @param fieldFunction {@link java.util.function.Function} <p>The field function parameter is <code>Function</code> type.</p>
+     * @param isFickleKey boolean <p>The is fickle key parameter is <code>boolean</code> type.</p>
+     * @param isFickleValue boolean <p>The is fickle value parameter is <code>boolean</code> type.</p>
+     * @see  io.github.nichetoolkit.mybatis.MybatisTable
+     * @see  java.lang.reflect.Field
+     * @see  io.github.nichetoolkit.mybatis.MybatisColumnFactory.Chain
+     * @see  java.util.function.Function
+     */
+    private static void handleOfFickleFields(MybatisTable table, Field declaredField, MybatisColumnFactory.Chain columnFactoryChain, Function<Field, MybatisField> fieldFunction, boolean isFickleKey, boolean isFickleValue) {
         Class<?> fieldType = declaredField.getType();
         Type genericType = declaredField.getGenericType();
+
         if (genericType instanceof ParameterizedType) {
             ParameterizedType parameterizedType = (ParameterizedType) genericType;
             Type rawType = parameterizedType.getRawType();
@@ -167,32 +209,63 @@ public abstract class MybatisFactory {
             }
             Class<?> rawClass = (Class<?>) rawType;
             boolean isPresentFickleType = false;
+            JavaType fickleType = null;
             if (Collection.class.isAssignableFrom(rawClass)) {
                 Type[] typeArguments = parameterizedType.getActualTypeArguments();
                 Type actualType = typeArguments[0];
-                if (actualType instanceof Class && FickleField.class.isAssignableFrom((Class<?>) actualType)) {
-                    isPresentFickleType = true;
+                if (actualType instanceof ParameterizedType) {
+                    ParameterizedType actualParameterizedType = (ParameterizedType) actualType;
+                    Type actualRawType = actualParameterizedType.getRawType();
+                    if (!(actualRawType instanceof Class)) {
+                        return;
+                    }
+                    if (FickleField.class.isAssignableFrom((Class<?>) actualRawType)) {
+                        isPresentFickleType = true;
+                        fickleType = TypeFactory.defaultInstance().constructCollectionType(List.class, FickleField.class);
+                    }
                 }
+
             } else if (Map.class.isAssignableFrom(rawClass)) {
                 Type[] typeArguments = parameterizedType.getActualTypeArguments();
                 Type keyOfActualType = typeArguments[0];
                 Type valueOfActualType = typeArguments[1];
-                if (keyOfActualType instanceof Class
-                        && String.class.isAssignableFrom((Class<?>) keyOfActualType)
-                        && valueOfActualType instanceof Class
-                        && FickleField.class.isAssignableFrom((Class<?>) valueOfActualType)) {
-                    isPresentFickleType = true;
+                if (!(keyOfActualType instanceof Class)) {
+                    return;
                 }
+                if (valueOfActualType instanceof ParameterizedType) {
+                    ParameterizedType actualParameterizedType = (ParameterizedType) valueOfActualType;
+                    Type valueActualRawType = actualParameterizedType.getRawType();
+                    if (!(valueActualRawType instanceof Class)) {
+                        return;
+                    }
+                    if (String.class.isAssignableFrom((Class<?>) keyOfActualType) && FickleField.class.isAssignableFrom((Class<?>) valueActualRawType)) {
+                        isPresentFickleType = true;
+                        fickleType = TypeFactory.defaultInstance().constructMapType(Map.class, String.class, FickleField.class);
+                    }
+                }
+
             }
-            if (isPresentFickleType) {
+            if (isPresentFickleType && GeneralUtils.isNotEmpty(fickleType)) {
                 MybatisField field = fieldFunction.apply(declaredField);
-                Optional<List<MybatisColumn>> optionalColumns = columnFactoryChain.createColumn(table, field);
+                Optional<List<MybatisColumn>> optionalColumns = columnFactoryChain.createColumn(table, field, fickleType, isFickleKey, isFickleValue);
                 optionalColumns.ifPresent(columns -> columns.forEach(table::addColumn));
             }
         }
     }
 
-    protected static void handleOfFickleness(MybatisTable table, Class<?> declaredType, MybatisColumnFactory.Chain columnFactoryChain, Function<Field, MybatisField> fieldFunction) {
+    /**
+     * <code>handleOfFickleness</code>
+     * <p>The handle of fickleness method.</p>
+     * @param table {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>The table parameter is <code>MybatisTable</code> type.</p>
+     * @param declaredType {@link java.lang.Class} <p>The declared type parameter is <code>Class</code> type.</p>
+     * @param columnFactoryChain {@link io.github.nichetoolkit.mybatis.MybatisColumnFactory.Chain} <p>The column factory chain parameter is <code>Chain</code> type.</p>
+     * @param fieldFunction {@link java.util.function.Function} <p>The field function parameter is <code>Function</code> type.</p>
+     * @see  io.github.nichetoolkit.mybatis.MybatisTable
+     * @see  java.lang.Class
+     * @see  io.github.nichetoolkit.mybatis.MybatisColumnFactory.Chain
+     * @see  java.util.function.Function
+     */
+    private static void handleOfFickleness(MybatisTable table, Class<?> declaredType, MybatisColumnFactory.Chain columnFactoryChain, Function<Field, MybatisField> fieldFunction) {
         /* 未处理的需要获取字段 */
         Class<?> declaredClass = declaredType;
         boolean isSuperclass = true;
@@ -207,9 +280,11 @@ public abstract class MybatisFactory {
                     if (table.isExcludeField(declaredField)) {
                         continue;
                     }
-                    handleOfFickleFields(table, declaredField, columnFactoryChain,
-                            field -> GeneralUtils.isNotEmpty(AnnotationUtils.getAnnotation(field,RestFickleKey.class)),
-                            fieldFunction);
+                    boolean isPresentFickleKey = declaredField.isAnnotationPresent(RestFickleKey.class);
+                    boolean isPresentFickleEntry = declaredField.isAnnotationPresent(RestFickleEntry.class);
+                    if (isPresentFickleKey || isPresentFickleEntry) {
+                        handleOfFickleKeyFields(table, declaredField, columnFactoryChain, fieldFunction);
+                    }
                 }
             }
             /* 排除父类,迭代获取父类 */

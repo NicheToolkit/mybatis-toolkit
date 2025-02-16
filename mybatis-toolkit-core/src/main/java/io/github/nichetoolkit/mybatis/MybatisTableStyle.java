@@ -2,6 +2,7 @@ package io.github.nichetoolkit.mybatis;
 
 import io.github.nichetoolkit.mybatis.consts.StyleConstants;
 import io.github.nichetoolkit.mybatis.enums.StyleType;
+import io.github.nichetoolkit.mybatis.fickle.FickleField;
 import io.github.nichetoolkit.rest.error.lack.InterfaceLackError;
 import org.springframework.core.io.support.SpringFactoriesLoader;
 import org.springframework.lang.NonNull;
@@ -162,11 +163,38 @@ public interface MybatisTableStyle {
     /**
      * <code>columnName</code>
      * <p>The column name method.</p>
+     * @param field {@link io.github.nichetoolkit.mybatis.fickle.FickleField} <p>The field parameter is <code>FickleField</code> type.</p>
+     * @see  io.github.nichetoolkit.mybatis.fickle.FickleField
+     * @see  java.lang.String
+     * @return  {@link java.lang.String} <p>The column name return object is <code>String</code> type.</p>
+     */
+    String columnName(FickleField<?> field);
+
+    /**
+     * <code>columnName</code>
+     * <p>The column name method.</p>
      * @param table {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>The table parameter is <code>MybatisTable</code> type.</p>
      * @param field {@link io.github.nichetoolkit.mybatis.MybatisField} <p>The field parameter is <code>MybatisField</code> type.</p>
      * @see  io.github.nichetoolkit.mybatis.MybatisField
      * @see  java.lang.String
      * @return  {@link java.lang.String} <p>The column name return object is <code>String</code> type.</p>
      */
-    String columnName(MybatisTable table, MybatisField field);
+    static String columnName(MybatisTable table, MybatisField field) {
+        MybatisTableStyle mybatisStyle = MybatisTableStyle.style(table.getStyleName());
+        return mybatisStyle.columnName(field);
+    }
+
+    /**
+     * <code>columnName</code>
+     * <p>The column name method.</p>
+     * @param table {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>The table parameter is <code>MybatisTable</code> type.</p>
+     * @param field {@link io.github.nichetoolkit.mybatis.fickle.FickleField} <p>The field parameter is <code>FickleField</code> type.</p>
+     * @see  io.github.nichetoolkit.mybatis.fickle.FickleField
+     * @see  java.lang.String
+     * @return  {@link java.lang.String} <p>The column name return object is <code>String</code> type.</p>
+     */
+    static String columnName(MybatisTable table, FickleField<?> field) {
+        MybatisTableStyle mybatisStyle = MybatisTableStyle.style(table.getStyleName());
+        return mybatisStyle.columnName(field);
+    }
 }

@@ -29,6 +29,7 @@ public interface MybatisTableFactory extends MybatisOrder {
      * @param identityType {@link java.lang.Class} <p>The identity type parameter is <code>Class</code> type.</p>
      * @param linkageType {@link java.lang.Class} <p>The linkage type parameter is <code>Class</code> type.</p>
      * @param alertnessType {@link java.lang.Class} <p>The alertness type parameter is <code>Class</code> type.</p>
+     * @param ficklenessType {@link java.lang.Class} <p>The fickleness type parameter is <code>Class</code> type.</p>
      * @param chain {@link io.github.nichetoolkit.mybatis.MybatisTableFactory.Chain} <p>The chain parameter is <code>Chain</code> type.</p>
      * @see  java.lang.Class
      * @see  org.springframework.lang.NonNull
@@ -52,6 +53,7 @@ public interface MybatisTableFactory extends MybatisOrder {
          * @param identityType {@link java.lang.Class} <p>The identity type parameter is <code>Class</code> type.</p>
          * @param linkageType {@link java.lang.Class} <p>The linkage type parameter is <code>Class</code> type.</p>
          * @param alertnessType {@link java.lang.Class} <p>The alertness type parameter is <code>Class</code> type.</p>
+         * @param ficklenessType {@link java.lang.Class} <p>The fickleness type parameter is <code>Class</code> type.</p>
          * @see  java.lang.Class
          * @see  org.springframework.lang.NonNull
          * @see  org.springframework.lang.Nullable

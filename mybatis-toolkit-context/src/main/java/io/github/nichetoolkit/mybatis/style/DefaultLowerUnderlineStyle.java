@@ -4,6 +4,7 @@ import io.github.nichetoolkit.mybatis.MybatisField;
 import io.github.nichetoolkit.mybatis.MybatisTableStyle;
 import io.github.nichetoolkit.mybatis.MybatisTable;
 import io.github.nichetoolkit.mybatis.enums.StyleType;
+import io.github.nichetoolkit.mybatis.fickle.FickleField;
 import io.github.nichetoolkit.rest.util.GeneralUtils;
 
 import java.lang.reflect.Field;
@@ -43,7 +44,8 @@ public class DefaultLowerUnderlineStyle implements MybatisTableStyle {
     }
 
     @Override
-    public String columnName(MybatisTable table, MybatisField field) {
-        return columnName(field);
+    public String columnName(FickleField<?> field) {
+        return GeneralUtils.underline(field.getName());
     }
+
 }

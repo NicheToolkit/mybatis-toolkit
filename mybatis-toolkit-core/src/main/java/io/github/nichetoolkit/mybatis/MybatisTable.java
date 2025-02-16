@@ -7,6 +7,7 @@ import io.github.nichetoolkit.mybatis.enums.StyleType;
 import io.github.nichetoolkit.mybatis.error.MybatisIdentityLackError;
 import io.github.nichetoolkit.mybatis.error.MybatisLinkageLackError;
 import io.github.nichetoolkit.rest.error.lack.ConfigureLackError;
+import io.github.nichetoolkit.rest.holder.ApplicationContextHolder;
 import io.github.nichetoolkit.rest.util.GeneralUtils;
 import lombok.Getter;
 import lombok.Setter;
@@ -160,6 +161,20 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
      * @see  java.util.List
      */
     private List<MybatisColumn> alertnessColumns = new ArrayList<>();
+
+    /**
+     * <code>fickleKeyColumn</code>
+     * {@link io.github.nichetoolkit.mybatis.MybatisColumn} <p>The <code>fickleKeyColumn</code> field.</p>
+     * @see  io.github.nichetoolkit.mybatis.MybatisColumn
+     */
+    private MybatisColumn fickleKeyColumn;
+
+    /**
+     * <code>fickleValueColumn</code>
+     * {@link io.github.nichetoolkit.mybatis.MybatisColumn} <p>The <code>fickleValueColumn</code> field.</p>
+     * @see  io.github.nichetoolkit.mybatis.MybatisColumn
+     */
+    private MybatisColumn fickleValueColumn;
     /**
      * <code>identityIndex</code>
      * <p>The <code>identityIndex</code> field.</p>
@@ -444,7 +459,7 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
      * @return  {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>The of return object is <code>MybatisTable</code> type.</p>
      */
     protected static MybatisTable of(Class<?> entityType, Class<?> identityType, Class<?> linkageType, Class<?> alertnessType, Class<?> ficklenessType) {
-        return new MybatisTable(entityType, identityType, linkageType, alertnessType,ficklenessType);
+        return new MybatisTable(entityType, identityType, linkageType, alertnessType, ficklenessType);
     }
 
     /**
@@ -524,10 +539,25 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
         List<MybatisColumn> linkKeyColumns = new ArrayList<>();
         List<MybatisColumn> logicKeyColumns = new ArrayList<>();
         List<MybatisColumn> operateKeyColumns = new ArrayList<>();
+        List<MybatisColumn> fickleKeyColumns = new ArrayList<>();
+        List<MybatisColumn> fickleValueColumns = new ArrayList<>();
         this.tableColumns.forEach(column -> {
             if (column.isForceUpdate()) {
                 this.forceUpdateColumns.remove(column);
                 refreshColumn(this.forceUpdateColumns, column);
+            }
+            if (column.isSpecialFickleness()) {
+                /* 自定义 动态字段实现 */
+                if (column.isFickleKey() && !column.isFickleValue()) {
+                    refreshColumn(fickleKeyColumns, column);
+                }
+            } else {
+               if (column.isFickleKey()) {
+                   refreshColumn(fickleKeyColumns, column);
+               }
+            }
+            if (column.isFickleValue()) {
+                refreshColumn(fickleValueColumns, column);
             }
             if (column.isSpecialIdentity()) {
                 /* special Identity */
@@ -606,6 +636,10 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
         firstLogic.ifPresent(logicKeyColumn -> this.logicColumn = logicKeyColumn);
         Optional<MybatisColumn> firstOperate = operateKeyColumns.stream().findFirst();
         firstOperate.ifPresent(operateKeyColumn -> this.operateColumn = operateKeyColumn);
+        Optional<MybatisColumn> firstFickleKey = fickleKeyColumns.stream().findFirst();
+        firstFickleKey.ifPresent(fickleKeyColumn -> this.fickleKeyColumn = fickleKeyColumn);
+        Optional<MybatisColumn> firstFickleValue = fickleValueColumns.stream().findFirst();
+        firstFickleValue.ifPresent(fickleValueColumn -> this.fickleValueColumn = fickleValueColumn);
         /*
          * 优先级别: RestIdentity > RestPrimaryKey > RestIdentityKey > RestUnionKey > RestUniqueKey
          */
@@ -1023,6 +1057,29 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
      */
     public List<MybatisColumn> alertnessColumns() {
         return this.alertnessColumns;
+    }
+
+    /**
+     * <code>fickleKeyColumn</code>
+     * <p>The fickle key column method.</p>
+     * @return  {@link io.github.nichetoolkit.mybatis.MybatisColumn} <p>The fickle key column return object is <code>MybatisColumn</code> type.</p>
+     * @see  io.github.nichetoolkit.mybatis.MybatisColumn
+     */
+    public MybatisColumn fickleKeyColumn() {
+       if (GeneralUtils.isEmpty(this.fickleKeyColumn)) {
+           return this.fickleValueColumn;
+       }
+       return this.fickleKeyColumn;
+    }
+
+    /**
+     * <code>fickleValueColumn</code>
+     * <p>The fickle value column method.</p>
+     * @return  {@link io.github.nichetoolkit.mybatis.MybatisColumn} <p>The fickle value column return object is <code>MybatisColumn</code> type.</p>
+     * @see  io.github.nichetoolkit.mybatis.MybatisColumn
+     */
+    public MybatisColumn fickleValueColumn() {
+        return this.fickleValueColumn;
     }
 
     /**

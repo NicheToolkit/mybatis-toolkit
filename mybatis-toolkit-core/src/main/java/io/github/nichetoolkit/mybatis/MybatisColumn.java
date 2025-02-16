@@ -1,10 +1,13 @@
 package io.github.nichetoolkit.mybatis;
 
+import com.fasterxml.jackson.databind.JavaType;
 import io.github.nichetoolkit.mybatis.builder.SqlBuilder;
+import io.github.nichetoolkit.mybatis.consts.EntityConstants;
 import io.github.nichetoolkit.mybatis.consts.SQLConstants;
 import io.github.nichetoolkit.mybatis.consts.ScriptConstants;
 import io.github.nichetoolkit.mybatis.enums.ExcludedType;
 import io.github.nichetoolkit.mybatis.enums.SortType;
+import io.github.nichetoolkit.mybatis.fickle.FickleField;
 import io.github.nichetoolkit.rest.util.GeneralUtils;
 import lombok.Getter;
 import lombok.Setter;
@@ -183,17 +186,23 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
     protected boolean logicKey;
 
     /**
+     * <code>fickleType</code>
+     * {@link com.fasterxml.jackson.databind.JavaType} <p>The <code>fickleType</code> field.</p>
+     * @see  com.fasterxml.jackson.databind.JavaType
+     */
+    protected JavaType fickleType;
+
+    /**
      * <code>fickleKey</code>
      * <p>The <code>fickleKey</code> field.</p>
-     * -- GETTER --
-     *  <code>isFickleKey</code>
-     *  <p>The is fickle key method.</p>
-     *
-     * @return boolean <p>The is fickle key return object is <code>boolean</code> type.</p>
-
      */
-    @Getter
     protected boolean fickleKey;
+
+    /**
+     * <code>fickleValue</code>
+     * <p>The <code>fickleValue</code> field.</p>
+     */
+    protected boolean fickleValue;
 
     /**
      * <code>ignored</code>
@@ -210,6 +219,34 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
     protected MybatisColumn(MybatisField field) {
         this.field = field;
         this.ignored = field.ignored();
+    }
+
+    /**
+     * <code>MybatisColumn</code>
+     * <p>Instantiates a new mybatis column.</p>
+     * @param table {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>The table parameter is <code>MybatisTable</code> type.</p>
+     * @param column {@link io.github.nichetoolkit.mybatis.MybatisColumn} <p>The column parameter is <code>MybatisColumn</code> type.</p>
+     * @param field {@link io.github.nichetoolkit.mybatis.fickle.FickleField} <p>The field parameter is <code>FickleField</code> type.</p>
+     * @see  io.github.nichetoolkit.mybatis.MybatisTable
+     * @see  io.github.nichetoolkit.mybatis.fickle.FickleField
+     * @see  java.lang.SuppressWarnings
+     */
+    @SuppressWarnings("unchecked")
+    protected MybatisColumn(MybatisTable table, MybatisColumn column, FickleField<?> field) {
+        MybatisTableStyle mybatisStyle = MybatisTableStyle.style(table.getStyleName());
+        MybatisField fickleField = column.getField();
+        this.field = MybatisField.ofFickleField(fickleField.entityType(), fickleField, field);
+        this.table = table;
+        this.column = GeneralUtils.isNotEmpty(field.getName()) ? mybatisStyle.columnName(field) : field.getKey();
+        this.comment = field.getDescription();
+        this.jdbcType = field.getJdbcType() == JdbcType.JAVA_OBJECT ? null : field.getJdbcType();
+        this.select = false;
+        this.insert = false;
+        this.update = false;
+        TypeHandler<?> jdbcTypeHandler = field.getJdbcTypeHandler();
+        if (GeneralUtils.isNotEmpty(jdbcTypeHandler)) {
+            this.typeHandler = (Class<? extends TypeHandler<?>>) jdbcTypeHandler.getClass();
+        }
     }
 
     /**
@@ -255,13 +292,37 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
     }
 
     /**
+     * <code>of</code>
+     * <p>The of method.</p>
+     * @param table {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>The table parameter is <code>MybatisTable</code> type.</p>
+     * @param column {@link io.github.nichetoolkit.mybatis.MybatisColumn} <p>The column parameter is <code>MybatisColumn</code> type.</p>
+     * @param field {@link io.github.nichetoolkit.mybatis.fickle.FickleField} <p>The field parameter is <code>FickleField</code> type.</p>
+     * @see  io.github.nichetoolkit.mybatis.MybatisTable
+     * @see  io.github.nichetoolkit.mybatis.fickle.FickleField
+     * @return  {@link io.github.nichetoolkit.mybatis.MybatisColumn} <p>The of return object is <code>MybatisColumn</code> type.</p>
+     */
+    public static MybatisColumn of(MybatisTable table, MybatisColumn column, FickleField<?> field) {
+        return new MybatisColumn(table, column, field);
+    }
+
+    /**
+     * <code>getFickleField</code>
+     * <p>The get fickle field getter method.</p>
+     * @return  {@link io.github.nichetoolkit.mybatis.fickle.FickleField} <p>The get fickle field return object is <code>FickleField</code> type.</p>
+     * @see  io.github.nichetoolkit.mybatis.fickle.FickleField
+     */
+    public FickleField<?> getFickleField() {
+        return this.field.fickleField();
+    }
+
+    /**
      * <code>isAnyKey</code>
      * <p>The is any key method.</p>
      * @return boolean <p>The is any key return object is <code>boolean</code> type.</p>
      */
     public boolean isAnyKey() {
         return this.identityKey | this.primaryKey | this.linkKey | this.unionKey
-                | this.alertKey | this.logicKey | this.operateKey | this.fickleKey;
+                | this.alertKey | this.logicKey | this.operateKey | this.fickleKey | this.fickleValue;
     }
 
     /**
@@ -307,15 +368,6 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
      */
     public boolean isParentNotEmpty() {
         return this.field.isParentNotEmpty();
-    }
-
-    /**
-     * <code>isFickleValue</code>
-     * <p>The is fickle value method.</p>
-     * @return boolean <p>The is fickle value return object is <code>boolean</code> type.</p>
-     */
-    public boolean isFickleValue() {
-        return this.fickleKey && !this.field.isParentNotEmpty();
     }
 
     /**
@@ -396,6 +448,19 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
     }
 
     /**
+     * <code>property</code>
+     * <p>The property method.</p>
+     * @param prefix {@link java.lang.String} <p>The prefix parameter is <code>String</code> type.</p>
+     * @param index {@link java.lang.Integer} <p>The index parameter is <code>Integer</code> type.</p>
+     * @see  java.lang.String
+     * @see  java.lang.Integer
+     * @return  {@link java.lang.String} <p>The property return object is <code>String</code> type.</p>
+     */
+    public String property(String prefix, Integer index) {
+        return prefix + SQLConstants.SQUARE_LT + index + SQLConstants.SQUARE_GT+ SQLConstants.PERIOD+ EntityConstants.VALUE;
+    }
+
+    /**
      * <code>variable</code>
      * <p>The variable method.</p>
      * @return  {@link java.lang.String} <p>The variable return object is <code>String</code> type.</p>
@@ -417,9 +482,28 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
             return this.forceInsertValue;
         } else {
             if ((isSpecialIdentity() || isSpecialLinkage() || isSpecialAlertness()) && this.field.isParentNotEmpty()) {
-                prefix = prefix + this.field.prefixOfParent() + SQLConstants.PERIOD;
+                prefix = prefix + this.field.prefixOfParent();
             }
             return signerVariable(prefix);
+        }
+    }
+
+    /**
+     * <code>variable</code>
+     * <p>The variable method.</p>
+     * @param prefix {@link java.lang.String} <p>The prefix parameter is <code>String</code> type.</p>
+     * @param index {@link java.lang.Integer} <p>The index parameter is <code>Integer</code> type.</p>
+     * @see  java.lang.String
+     * @see  java.lang.Integer
+     * @return  {@link java.lang.String} <p>The variable return object is <code>String</code> type.</p>
+     */
+    public String variable(String prefix, Integer index) {
+        if (this.field.isFickleField) {
+            prefix = prefix + this.field.prefixOfParent();
+            SqlBuilder sqlBuilder = SqlBuilder.sqlBuilder(prefix).deleteLastChar();
+            return signerVariable(sqlBuilder.toString(), index);
+        } else {
+            return variable(prefix);
         }
     }
 
@@ -440,6 +524,24 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
     }
 
     /**
+     * <code>signerVariable</code>
+     * <p>The signer variable method.</p>
+     * @param prefix {@link java.lang.String} <p>The prefix parameter is <code>String</code> type.</p>
+     * @param index {@link java.lang.Integer} <p>The index parameter is <code>Integer</code> type.</p>
+     * @see  java.lang.String
+     * @see  java.lang.Integer
+     * @return  {@link java.lang.String} <p>The signer variable return object is <code>String</code> type.</p>
+     */
+    public String signerVariable(String prefix, Integer index) {
+        return SQLConstants.SIGNER + SQLConstants.CURLY_LT
+                + property(prefix, index)
+                + jdbcTypeVariable().orElse(SQLConstants.EMPTY)
+                + typeHandlerVariable().orElse(SQLConstants.EMPTY)
+                + numericScaleVariable().orElse(SQLConstants.EMPTY)
+                + SQLConstants.CURLY_GT;
+    }
+
+    /**
      * <code>dollarVariable</code>
      * <p>The dollar variable method.</p>
      * @param prefix {@link java.lang.String} <p>The prefix parameter is <code>String</code> type.</p>
@@ -449,6 +551,24 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
     public String dollarVariable(String prefix) {
         return SQLConstants.DOLLAR + SQLConstants.CURLY_LT
                 + property(prefix)
+                + jdbcTypeVariable().orElse(SQLConstants.EMPTY)
+                + typeHandlerVariable().orElse(SQLConstants.EMPTY)
+                + numericScaleVariable().orElse(SQLConstants.EMPTY)
+                + SQLConstants.CURLY_GT;
+    }
+
+    /**
+     * <code>dollarVariable</code>
+     * <p>The dollar variable method.</p>
+     * @param prefix {@link java.lang.String} <p>The prefix parameter is <code>String</code> type.</p>
+     * @param index {@link java.lang.Integer} <p>The index parameter is <code>Integer</code> type.</p>
+     * @see  java.lang.String
+     * @see  java.lang.Integer
+     * @return  {@link java.lang.String} <p>The dollar variable return object is <code>String</code> type.</p>
+     */
+    public String dollarVariable(String prefix, Integer index) {
+        return SQLConstants.DOLLAR + SQLConstants.CURLY_LT
+                + (GeneralUtils.isNotEmpty(index) ? property(prefix, index) : property(prefix))
                 + jdbcTypeVariable().orElse(SQLConstants.EMPTY)
                 + typeHandlerVariable().orElse(SQLConstants.EMPTY)
                 + numericScaleVariable().orElse(SQLConstants.EMPTY)
@@ -845,7 +965,7 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
      * @return  {@link java.lang.String} <p>The column equals value return object is <code>String</code> type.</p>
      */
     public String columnEqualsValue(Object value) {
-        return aliasColumnEqualsValue(SQLConstants.EMPTY,value);
+        return aliasColumnEqualsValue(SQLConstants.EMPTY, value);
     }
 
     /**
@@ -878,7 +998,7 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
      * @return  {@link java.lang.String} <p>The column not equals value return object is <code>String</code> type.</p>
      */
     public String columnNotEqualsValue(Object value) {
-        return aliasColumnNotEqualsValue(SQLConstants.EMPTY,value);
+        return aliasColumnNotEqualsValue(SQLConstants.EMPTY, value);
     }
 
     /**
@@ -1003,6 +1123,6 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
 
     @Override
     public String toString() {
-        return columnEqualsProperty();
+        return this.column;
     }
 }

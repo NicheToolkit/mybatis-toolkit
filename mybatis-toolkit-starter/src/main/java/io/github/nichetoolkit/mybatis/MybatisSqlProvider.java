@@ -1,5 +1,8 @@
 package io.github.nichetoolkit.mybatis;
 
+import com.fasterxml.jackson.databind.JavaType;
+import com.fasterxml.jackson.databind.type.CollectionType;
+import com.fasterxml.jackson.databind.type.MapType;
 import io.github.nichetoolkit.mybatis.builder.SqlBuilder;
 import io.github.nichetoolkit.mybatis.consts.EntityConstants;
 import io.github.nichetoolkit.mybatis.consts.SQLConstants;
@@ -8,24 +11,28 @@ import io.github.nichetoolkit.mybatis.enums.DatabaseType;
 import io.github.nichetoolkit.mybatis.enums.ExcludedType;
 import io.github.nichetoolkit.mybatis.error.MybatisParamErrorException;
 import io.github.nichetoolkit.mybatis.error.MybatisUnsupportedErrorException;
+import io.github.nichetoolkit.mybatis.fickle.FickleField;
+import io.github.nichetoolkit.mybatis.fickle.defaults.FickleEmptyField;
 import io.github.nichetoolkit.rest.RestException;
 import io.github.nichetoolkit.rest.RestKey;
 import io.github.nichetoolkit.rest.RestOptional;
 import io.github.nichetoolkit.rest.RestReckon;
 import io.github.nichetoolkit.rest.actuator.ConsumerActuator;
+import io.github.nichetoolkit.rest.holder.ApplicationContextHolder;
 import io.github.nichetoolkit.rest.stream.RestCollectors;
 import io.github.nichetoolkit.rest.stream.RestStream;
 import io.github.nichetoolkit.rest.util.GeneralUtils;
+import io.github.nichetoolkit.rest.util.JsonUtils;
 import io.github.nichetoolkit.rest.util.OptionalUtils;
 import io.github.nichetoolkit.rice.enums.OperateType;
 import org.apache.ibatis.builder.annotation.ProviderContext;
+import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 /**
  * <code>MybatisSqlProvider</code>
@@ -56,10 +63,10 @@ public interface MybatisSqlProvider {
 
     /**
      * <code>SAVE_SQL_SUPPLY</code>
-     * {@link io.github.nichetoolkit.mybatis.MybatisSqlSupply.SimpleSqlSupply} <p>The constant <code>SAVE_SQL_SUPPLY</code> field.</p>
-     * @see  io.github.nichetoolkit.mybatis.MybatisSqlSupply.SimpleSqlSupply
+     * {@link io.github.nichetoolkit.mybatis.MybatisSqlSupply.EntrySqlSupply} <p>The constant <code>SAVE_SQL_SUPPLY</code> field.</p>
+     * @see  io.github.nichetoolkit.mybatis.MybatisSqlSupply.EntrySqlSupply
      */
-    MybatisSqlSupply.SimpleSqlSupply SAVE_SQL_SUPPLY = (tablename, table, sqlBuilder) -> {
+    MybatisSqlSupply.EntrySqlSupply SAVE_SQL_SUPPLY = (tablename, table, keySqlBuilder, valueSqlBuilder) -> {
         boolean mysqlIgnoreInsert = MybatisSqlProviderHolder.mysqlIgnoreInsert();
         SqlBuilder savesSqlBuilder = SqlBuilder.sqlBuilder();
         if (mysqlIgnoreInsert) {
@@ -68,10 +75,9 @@ public interface MybatisSqlProvider {
             savesSqlBuilder.insert();
         }
         return savesSqlBuilder.append(table.tablename(tablename))
-                .braceLt().append(table.sqlOfInsertColumns()).braceGt()
-                .values().append(sqlBuilder).toString();
+                .braceLt().append(keySqlBuilder).braceGt()
+                .values().append(valueSqlBuilder).toString();
     };
-
 
     /**
      * <code>REMOVE_SQL_SUPPLY</code>
@@ -169,6 +175,54 @@ public interface MybatisSqlProvider {
                 }
             });
         }
+        return sqlBuilder.toString();
+    }
+
+    /**
+     * <code>databaseTypeOfColumnsSql</code>
+     * <p>The database type of columns sql method.</p>
+     * @param tablename {@link java.lang.String} <p>The tablename parameter is <code>String</code> type.</p>
+     * @param sqlBuilder {@link io.github.nichetoolkit.mybatis.builder.SqlBuilder} <p>The sql builder parameter is <code>SqlBuilder</code> type.</p>
+     * @param databaseType {@link io.github.nichetoolkit.mybatis.enums.DatabaseType} <p>The database type parameter is <code>DatabaseType</code> type.</p>
+     * @see  java.lang.String
+     * @see  io.github.nichetoolkit.mybatis.builder.SqlBuilder
+     * @see  io.github.nichetoolkit.mybatis.enums.DatabaseType
+     * @see  io.github.nichetoolkit.rest.RestException
+     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
+     */
+    static void databaseTypeOfColumnsSql(String tablename, SqlBuilder sqlBuilder, DatabaseType databaseType) throws RestException {
+        switch (databaseType) {
+            case SQLITE:
+            case GAUSSDB:
+            case POSTGRESQL:
+            case MYSQL:
+                /* SELECT column_name FROM information_schema.columns WHERE table_name = '表名'; */
+                sqlBuilder.select().append("column_name")
+                        .from().append("information_schema.columns")
+                        .where().append("table_name").eq().value(tablename);
+                break;
+            default:
+                String message = "it is unsupported currently of the " + databaseType.getKey() + "database type.";
+                throw new MybatisUnsupportedErrorException(databaseType.getKey(), "tableColumns", message);
+        }
+    }
+
+    /**
+     * <code>providingOfTablename</code>
+     * <p>The providing of tablename method.</p>
+     * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>The provider context parameter is <code>ProviderContext</code> type.</p>
+     * @param tablename {@link java.lang.String} <p>The tablename parameter is <code>String</code> type.</p>
+     * @see  org.apache.ibatis.builder.annotation.ProviderContext
+     * @see  java.lang.String
+     * @see  org.springframework.lang.NonNull
+     * @see  io.github.nichetoolkit.rest.RestException
+     * @return  {@link java.lang.String} <p>The providing of tablename return object is <code>String</code> type.</p>
+     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
+     */
+    static String providingOfTablename(ProviderContext providerContext, @NonNull String tablename) throws RestException {
+        DatabaseType databaseType = MybatisSqlProviderHolder.defaultDatabaseType();
+        SqlBuilder sqlBuilder = SqlBuilder.sqlBuilder();
+        databaseTypeOfColumnsSql(tablename, sqlBuilder, databaseType);
         return sqlBuilder.toString();
     }
 
@@ -555,30 +609,35 @@ public interface MybatisSqlProvider {
      * @param tablename {@link java.lang.String} <p>The tablename parameter is <code>String</code> type.</p>
      * @param entityParameter E <p>The entity parameter parameter is <code>E</code> type.</p>
      * @param tableOptional {@link io.github.nichetoolkit.rest.actuator.ConsumerActuator} <p>The table optional parameter is <code>ConsumerActuator</code> type.</p>
-     * @param sqlSupply {@link io.github.nichetoolkit.mybatis.MybatisSqlSupply.SimpleSqlSupply} <p>The sql supply parameter is <code>SimpleSqlSupply</code> type.</p>
+     * @param sqlSupply {@link io.github.nichetoolkit.mybatis.MybatisSqlSupply.EntrySqlSupply} <p>The sql supply parameter is <code>EntrySqlSupply</code> type.</p>
      * @see  org.apache.ibatis.builder.annotation.ProviderContext
      * @see  java.lang.String
      * @see  org.springframework.lang.Nullable
      * @see  io.github.nichetoolkit.rest.actuator.ConsumerActuator
-     * @see  io.github.nichetoolkit.mybatis.MybatisSqlSupply.SimpleSqlSupply
+     * @see  io.github.nichetoolkit.mybatis.MybatisSqlSupply.EntrySqlSupply
      * @see  java.lang.SuppressWarnings
      * @see  io.github.nichetoolkit.rest.RestException
      * @return  {@link java.lang.String} <p>The providing of save return object is <code>String</code> type.</p>
      * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
      */
     @SuppressWarnings("Duplicates")
-    static <E> String providingOfSave(ProviderContext providerContext, @Nullable String tablename, E entityParameter, ConsumerActuator<MybatisTable> tableOptional, MybatisSqlSupply.SimpleSqlSupply sqlSupply) throws RestException {
+    static <E> String providingOfSave(ProviderContext providerContext, @Nullable String tablename, E entityParameter, ConsumerActuator<MybatisTable> tableOptional, MybatisSqlSupply.EntrySqlSupply sqlSupply) throws RestException {
         DatabaseType databaseType = MybatisSqlProviderHolder.defaultDatabaseType();
         return MybatisSqlScript.caching(providerContext, (table, sqlScript) -> {
             tableOptional.actuate(table);
-            String sqlOfInsert = table.insertColumns().stream()
-                    .map(column -> column.variable(EntityConstants.ENTITY_PREFIX))
-                    .collect(Collectors.joining(SQLConstants.COMMA + SQLConstants.BLANK));
-            SqlBuilder sqlBuilder = SqlBuilder.sqlBuilder().braceLt().append(sqlOfInsert).braceGt();
-            databaseTypeOfSql(tablename, table, sqlBuilder, databaseType);
-            return sqlSupply.supply(tablename, table, sqlBuilder);
+            String tableName = table.tablename(tablename);
+            List<MybatisColumn> insertColumns = table.insertColumns();
+            List<MybatisColumn> fickleKeyColumns = fickleOfEntityColumns(tableName, table, entityParameter);
+            insertColumns.addAll(fickleKeyColumns);
+            String sqlOfKeyInsert = insertColumns.stream().map(MybatisColumn::columnName).distinct().collect(Collectors.joining(SQLConstants.COMMA + SQLConstants.BLANK));
+            SqlBuilder keySqlBuilder = SqlBuilder.sqlBuilder(sqlOfKeyInsert);
+            String sqlOfInsert = sqlOfInsert(table, fickleKeyColumns);
+            SqlBuilder valueSqlBuilder = SqlBuilder.sqlBuilder(sqlOfInsert);
+            databaseTypeOfSql(tablename, table, valueSqlBuilder, fickleKeyColumns, databaseType);
+            return sqlSupply.supply(tablename, table, keySqlBuilder, valueSqlBuilder);
         });
     }
+
 
     /**
      * <code>providingOfAllSave</code>
@@ -588,27 +647,31 @@ public interface MybatisSqlProvider {
      * @param tablename {@link java.lang.String} <p>The tablename parameter is <code>String</code> type.</p>
      * @param entityList {@link java.util.Collection} <p>The entity list parameter is <code>Collection</code> type.</p>
      * @param tableOptional {@link io.github.nichetoolkit.rest.actuator.ConsumerActuator} <p>The table optional parameter is <code>ConsumerActuator</code> type.</p>
-     * @param sqlSupply {@link io.github.nichetoolkit.mybatis.MybatisSqlSupply.SimpleSqlSupply} <p>The sql supply parameter is <code>SimpleSqlSupply</code> type.</p>
+     * @param sqlSupply {@link io.github.nichetoolkit.mybatis.MybatisSqlSupply.EntrySqlSupply} <p>The sql supply parameter is <code>EntrySqlSupply</code> type.</p>
      * @see  org.apache.ibatis.builder.annotation.ProviderContext
      * @see  java.lang.String
      * @see  org.springframework.lang.Nullable
      * @see  java.util.Collection
      * @see  io.github.nichetoolkit.rest.actuator.ConsumerActuator
-     * @see  io.github.nichetoolkit.mybatis.MybatisSqlSupply.SimpleSqlSupply
+     * @see  io.github.nichetoolkit.mybatis.MybatisSqlSupply.EntrySqlSupply
      * @see  io.github.nichetoolkit.rest.RestException
      * @return  {@link java.lang.String} <p>The providing of all save return object is <code>String</code> type.</p>
      * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
      */
-    static <E> String providingOfAllSave(ProviderContext providerContext, @Nullable String tablename, Collection<E> entityList, ConsumerActuator<MybatisTable> tableOptional, MybatisSqlSupply.SimpleSqlSupply sqlSupply) throws RestException {
+    static <E> String providingOfAllSave(ProviderContext providerContext, @Nullable String tablename, Collection<E> entityList, ConsumerActuator<MybatisTable> tableOptional, MybatisSqlSupply.EntrySqlSupply sqlSupply) throws RestException {
         DatabaseType databaseType = MybatisSqlProviderHolder.defaultDatabaseType();
         return MybatisSqlScript.caching(providerContext, (table, sqlScript) -> {
             tableOptional.actuate(table);
-            String sqlOfInsert = sqlScript.foreach(EntityConstants.ENTITY_LIST, EntityConstants.ENTITY, SQLConstants.COMMA + SQLConstants.BLANK, () ->
-                    SQLConstants.BRACE_LT + table.insertColumns().stream().map(column -> column.variable(EntityConstants.ENTITY_PREFIX))
-                            .collect(Collectors.joining(SQLConstants.COMMA + SQLConstants.BLANK)) + SQLConstants.BRACE_GT);
-            SqlBuilder sqlBuilder = SqlBuilder.sqlBuilder(sqlOfInsert);
-            databaseTypeOfSql(tablename, table, sqlBuilder, databaseType);
-            return sqlSupply.supply(tablename, table, sqlBuilder);
+            String tableName = table.tablename(tablename);
+            List<MybatisColumn> insertColumns = table.insertColumns();
+            List<MybatisColumn> fickleKeyColumns = fickleOfEntitiesColumns(tableName, table, entityList);
+            insertColumns.addAll(fickleKeyColumns);
+            String sqlOfKeyInsert = insertColumns.stream().map(MybatisColumn::columnName).distinct().collect(Collectors.joining(SQLConstants.COMMA + SQLConstants.BLANK));
+            SqlBuilder keySqlBuilder = SqlBuilder.sqlBuilder(sqlOfKeyInsert);
+            String valueSqlOfInsert = sqlScript.foreach(EntityConstants.ENTITY_LIST, EntityConstants.ENTITY, SQLConstants.COMMA + SQLConstants.BLANK, () -> sqlOfInsert(table, fickleKeyColumns));
+            SqlBuilder valueSqlBuilder = SqlBuilder.sqlBuilder(valueSqlOfInsert);
+            databaseTypeOfSql(tableName, table, valueSqlBuilder, fickleKeyColumns, databaseType);
+            return sqlSupply.supply(tablename, table, keySqlBuilder, valueSqlBuilder);
         });
     }
 
@@ -618,23 +681,25 @@ public interface MybatisSqlProvider {
      * @param tablename {@link java.lang.String} <p>The tablename parameter is <code>String</code> type.</p>
      * @param table {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>The table parameter is <code>MybatisTable</code> type.</p>
      * @param sqlBuilder {@link io.github.nichetoolkit.mybatis.builder.SqlBuilder} <p>The sql builder parameter is <code>SqlBuilder</code> type.</p>
+     * @param fickleColumns {@link java.util.List} <p>The fickle columns parameter is <code>List</code> type.</p>
      * @param databaseType {@link io.github.nichetoolkit.mybatis.enums.DatabaseType} <p>The database type parameter is <code>DatabaseType</code> type.</p>
      * @see  java.lang.String
      * @see  io.github.nichetoolkit.mybatis.MybatisTable
      * @see  io.github.nichetoolkit.mybatis.builder.SqlBuilder
+     * @see  java.util.List
      * @see  io.github.nichetoolkit.mybatis.enums.DatabaseType
      * @see  io.github.nichetoolkit.rest.RestException
      * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
      */
-    static void databaseTypeOfSql(String tablename, MybatisTable table, SqlBuilder sqlBuilder, DatabaseType databaseType) throws RestException {
+    static void databaseTypeOfSql(String tablename, MybatisTable table, SqlBuilder sqlBuilder, List<MybatisColumn> fickleColumns, DatabaseType databaseType) throws RestException {
         switch (databaseType) {
             case SQLITE:
             case GAUSSDB:
             case POSTGRESQL:
-                sqlBuilder.append(insertOfSaveSql(tablename, table, true));
+                sqlBuilder.append(insertOfSaveSql(tablename, table, fickleColumns, true));
                 break;
             case MYSQL:
-                sqlBuilder.append(insertOfSaveSql(tablename, table, false));
+                sqlBuilder.append(insertOfSaveSql(tablename, table, fickleColumns, false));
                 break;
             default:
                 String message = "it is unsupported currently of the " + databaseType.getKey() + "database type.";
@@ -933,17 +998,21 @@ public interface MybatisSqlProvider {
      * <p>The insert of save sql method.</p>
      * @param tablename {@link java.lang.String} <p>The tablename parameter is <code>String</code> type.</p>
      * @param table {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>The table parameter is <code>MybatisTable</code> type.</p>
+     * @param fickleColumns {@link java.util.List} <p>The fickle columns parameter is <code>List</code> type.</p>
      * @param conflictOrDuplicate boolean <p>The conflict or duplicate parameter is <code>boolean</code> type.</p>
      * @see  java.lang.String
      * @see  org.springframework.lang.Nullable
      * @see  io.github.nichetoolkit.mybatis.MybatisTable
+     * @see  java.util.List
      * @see  io.github.nichetoolkit.rest.RestException
      * @return  {@link java.lang.String} <p>The insert of save sql return object is <code>String</code> type.</p>
      * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
      */
-    static String insertOfSaveSql(@Nullable String tablename, MybatisTable table, boolean conflictOrDuplicate) throws RestException {
+    static String insertOfSaveSql(@Nullable String tablename, MybatisTable table, List<MybatisColumn> fickleColumns, boolean conflictOrDuplicate) throws RestException {
         SqlBuilder sqlBuilder = SqlBuilder.sqlBuilder();
-        RestOptional<List<MybatisColumn>> optionalUpdate = RestOptional.ofEmptyable(table.updateColumns());
+        List<MybatisColumn> updatedColumns = table.updateColumns();
+        updatedColumns.addAll(fickleColumns);
+        RestOptional<List<MybatisColumn>> optionalUpdate = RestOptional.ofEmptyable(updatedColumns);
         boolean mysqlIgnoreInsert = MybatisSqlProviderHolder.mysqlIgnoreInsert();
         if (conflictOrDuplicate) {
             sqlBuilder.onConflict().braceLt();
@@ -971,6 +1040,221 @@ public interface MybatisSqlProvider {
             sqlBuilder.append(collect);
         });
         return sqlBuilder.toString();
+    }
+
+    /**
+     * <code>fickleOfEntityColumns</code>
+     * <p>The fickle of entity columns method.</p>
+     * @param <E>  {@link java.lang.Object} <p>The parameter can be of any type.</p>
+     * @param tablename {@link java.lang.String} <p>The tablename parameter is <code>String</code> type.</p>
+     * @param table {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>The table parameter is <code>MybatisTable</code> type.</p>
+     * @param entityParameter E <p>The entity parameter parameter is <code>E</code> type.</p>
+     * @see  java.lang.String
+     * @see  io.github.nichetoolkit.mybatis.MybatisTable
+     * @see  java.util.List
+     * @see  io.github.nichetoolkit.rest.RestException
+     * @return  {@link java.util.List} <p>The fickle of entity columns return object is <code>List</code> type.</p>
+     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
+     */
+    static <E> List<MybatisColumn> fickleOfEntityColumns(String tablename, MybatisTable table, E entityParameter) throws RestException {
+        List<MybatisColumn> fickleKeyColumns = new ArrayList<>();
+        if (GeneralUtils.isNotEmpty(table.fickleValueColumn())) {
+            MybatisTableMapper tableMapper = ApplicationContextHolder.beanOfType(MybatisTableMapper.class);
+            List<String> tableColumns = Collections.emptyList();
+            if (GeneralUtils.isNotEmpty(tableMapper)) {
+                tableColumns = tableMapper.tableColumns(tablename);
+            }
+            List<MybatisColumn> fickleKeyColumnsList = fickleOfEntityKeyColumns(table, tableColumns, entityParameter);
+            fickleOfEntityValueColumns(table, fickleKeyColumnsList, entityParameter);
+            fickleKeyColumns.addAll(fickleKeyColumnsList);
+        }
+        return fickleKeyColumns;
+    }
+
+    /**
+     * <code>fickleOfEntitiesColumns</code>
+     * <p>The fickle of entities columns method.</p>
+     * @param <E>  {@link java.lang.Object} <p>The parameter can be of any type.</p>
+     * @param tablename {@link java.lang.String} <p>The tablename parameter is <code>String</code> type.</p>
+     * @param table {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>The table parameter is <code>MybatisTable</code> type.</p>
+     * @param entityList {@link java.util.Collection} <p>The entity list parameter is <code>Collection</code> type.</p>
+     * @see  java.lang.String
+     * @see  io.github.nichetoolkit.mybatis.MybatisTable
+     * @see  java.util.Collection
+     * @see  java.util.List
+     * @see  io.github.nichetoolkit.rest.RestException
+     * @return  {@link java.util.List} <p>The fickle of entities columns return object is <code>List</code> type.</p>
+     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
+     */
+    static <E> List<MybatisColumn> fickleOfEntitiesColumns(String tablename, MybatisTable table, Collection<E> entityList) throws RestException {
+        List<MybatisColumn> fickleKeyColumns = new ArrayList<>();
+        if (GeneralUtils.isNotEmpty(table.fickleValueColumn())) {
+            MybatisTableMapper tableMapper = ApplicationContextHolder.beanOfType(MybatisTableMapper.class);
+            List<String> tableColumns = Collections.emptyList();
+            if (GeneralUtils.isNotEmpty(tableMapper)) {
+                tableColumns = tableMapper.tableColumns(tablename);
+            }
+            Optional<E> entityFirst = entityList.stream().findFirst();
+            if (entityFirst.isPresent()) {
+                List<MybatisColumn> fickleKeyColumnsList = fickleOfEntityKeyColumns(table, tableColumns, entityFirst.get());
+                for (E entity : entityList) {
+                    fickleOfEntityValueColumns(table, fickleKeyColumnsList, entity);
+                }
+                fickleKeyColumns.addAll(fickleKeyColumnsList);
+            }
+        }
+        return fickleKeyColumns;
+    }
+
+    /**
+     * <code>fickleOfEntityKeyColumns</code>
+     * <p>The fickle of entity key columns method.</p>
+     * @param <E>  {@link java.lang.Object} <p>The parameter can be of any type.</p>
+     * @param table {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>The table parameter is <code>MybatisTable</code> type.</p>
+     * @param tableColumns {@link java.util.List} <p>The table columns parameter is <code>List</code> type.</p>
+     * @param entityParameter E <p>The entity parameter parameter is <code>E</code> type.</p>
+     * @see  io.github.nichetoolkit.mybatis.MybatisTable
+     * @see  java.util.List
+     * @see  java.lang.SuppressWarnings
+     * @see  io.github.nichetoolkit.rest.RestException
+     * @return  {@link java.util.List} <p>The fickle of entity key columns return object is <code>List</code> type.</p>
+     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
+     */
+    @SuppressWarnings({"rawtypes","unchecked"})
+    static <E> List<MybatisColumn> fickleOfEntityKeyColumns(MybatisTable table, List<String> tableColumns, E entityParameter) throws RestException {
+        if (GeneralUtils.isNotEmpty(table.fickleValueColumn()) && GeneralUtils.isNotEmpty(tableColumns)) {
+            Object entity = reviseParameter(entityParameter);
+            MybatisColumn fickleKeyColumn = table.fickleKeyColumn();
+            MybatisField fickleKeyField = fickleKeyColumn.getField();
+            Object fickleKeyObject = fickleKeyField.get(entity);
+            JavaType fickleType = fickleKeyColumn.getFickleType();
+            Collection<MybatisColumn> fickleColumnsList = Collections.emptyList();
+            if (fickleType instanceof CollectionType && fickleKeyObject instanceof Collection) {
+                Collection<FickleField> fickleCollection = (Collection<FickleField>) fickleKeyObject;
+                List<FickleField> fickleFieldsList = new ArrayList<>(fickleCollection);
+                if (GeneralUtils.isNotEmpty(fickleFieldsList)) {
+                    return fickleFieldsList.stream()
+                            .filter(fickleField -> tableColumns.contains(fickleField.getName()))
+                            .map(fickleField -> MybatisColumn.of(table, fickleKeyColumn, fickleField))
+                            .collect(Collectors.toList());
+                }
+            } else if (fickleType instanceof MapType && fickleKeyObject instanceof Map) {
+                Map<String,FickleField> fickleMap = (Map<String,FickleField>) fickleKeyObject;
+                Map<String, FickleField> fickleFieldsMap = new HashMap<>(fickleMap);
+                if (GeneralUtils.isNotEmpty(fickleFieldsMap)) {
+                    return fickleFieldsMap.values().stream()
+                            .filter(fickleField -> tableColumns.contains(fickleField.getName()))
+                            .map(fickleField -> MybatisColumn.of(table, fickleKeyColumn, fickleField))
+                            .collect(Collectors.toList());
+                }
+            }
+        }
+        return Collections.emptyList();
+    }
+
+    /**
+     * <code>fickleOfEntityValueColumns</code>
+     * <p>The fickle of entity value columns method.</p>
+     * @param <E>  {@link java.lang.Object} <p>The parameter can be of any type.</p>
+     * @param table {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>The table parameter is <code>MybatisTable</code> type.</p>
+     * @param fickleKeyColumns {@link java.util.List} <p>The fickle key columns parameter is <code>List</code> type.</p>
+     * @param entityParameter E <p>The entity parameter parameter is <code>E</code> type.</p>
+     * @see  io.github.nichetoolkit.mybatis.MybatisTable
+     * @see  java.util.List
+     * @see  java.lang.SuppressWarnings
+     * @see  io.github.nichetoolkit.rest.RestException
+     * @return  {@link java.util.List} <p>The fickle of entity value columns return object is <code>List</code> type.</p>
+     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
+     */
+    @SuppressWarnings({"rawtypes","unchecked"})
+    static <E> List<MybatisColumn> fickleOfEntityValueColumns(MybatisTable table, List<MybatisColumn> fickleKeyColumns, E entityParameter) throws RestException {
+        if (GeneralUtils.isNotEmpty(table.fickleValueColumn()) && GeneralUtils.isNotEmpty(fickleKeyColumns)) {
+            Object entity = reviseParameter(entityParameter);
+            MybatisColumn fickleValueColumn = table.fickleValueColumn();
+            MybatisField fickleKeyField = fickleValueColumn.getField();
+            Object fickleKeyObject = fickleKeyField.get(entity);
+            JavaType fickleType = fickleValueColumn.getFickleType();
+            Collection<MybatisColumn> fickleColumnsList = Collections.emptyList();
+            if (fickleType instanceof CollectionType && fickleKeyObject instanceof Collection) {
+                Collection<FickleField> fickleCollection = (Collection<FickleField>) fickleKeyObject;
+                List<FickleField> fickleFieldsList = new ArrayList<>(fickleCollection);
+                if (GeneralUtils.isNotEmpty(fickleFieldsList)) {
+                    Map<String, FickleField> fickleValueFields = fickleFieldsList.stream().collect(Collectors.toMap(fickleField -> {
+                        if (GeneralUtils.isNotEmpty(fickleField.getKey())) {
+                            return fickleField.getKey();
+                        } else {
+                            return MybatisTableStyle.columnName(table, fickleField);
+                        }
+                    }, Function.identity(), (oldValue, newValue) -> newValue));
+                    List<FickleField> fickleFields = new ArrayList<>(fickleKeyColumns.size());
+                    fickleKeyColumns.forEach(fickleKeyColumn -> {
+                        String column = fickleKeyColumn.getColumn();
+                        FickleField fickleValueField = fickleValueFields.get(column);
+                        if (GeneralUtils.isNotEmpty(fickleValueField)) {
+                            fickleFields.add(fickleValueField);
+                        } else {
+                            fickleFields.add(new FickleEmptyField(column));
+                        }
+                    });
+                    fickleKeyField.set(entity, fickleFields);
+                    return fickleFieldsList.stream()
+                            .map(fickleField -> MybatisColumn.of(table, fickleValueColumn, fickleField))
+                            .collect(Collectors.toList());
+                }
+            } else if (fickleType instanceof MapType && fickleKeyObject instanceof Map) {
+                Map<String,FickleField> fickleMap = (Map<String,FickleField>) fickleKeyObject;
+                Map<String, FickleField> fickleFieldsMap = new HashMap<>(fickleMap);
+                if (GeneralUtils.isNotEmpty(fickleFieldsMap)) {
+                    Map<String, FickleField> fickleFields = new HashMap<>(fickleKeyColumns.size());
+                    fickleKeyColumns.forEach(fickleKeyColumn -> {
+                        String column = fickleKeyColumn.getColumn();
+                        FickleField fickleValueField = fickleFieldsMap.get(column);
+                        if (GeneralUtils.isNotEmpty(fickleValueField)) {
+                            fickleFields.put(column, fickleValueField);
+                        } else {
+                            fickleFields.put(column, new FickleEmptyField(column));
+                        }
+                    });
+                    fickleKeyField.set(entity, fickleFields);
+                    return fickleFieldsMap.values().stream()
+                            .map(fickleField -> MybatisColumn.of(table, fickleValueColumn, fickleField))
+                            .collect(Collectors.toList());
+                }
+            }
+        }
+        return Collections.emptyList();
+    }
+
+    /**
+     * <code>sqlOfInsert</code>
+     * <p>The sql of insert method.</p>
+     * @param table {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>The table parameter is <code>MybatisTable</code> type.</p>
+     * @param fickleKeyColumns {@link java.util.List} <p>The fickle key columns parameter is <code>List</code> type.</p>
+     * @see  io.github.nichetoolkit.mybatis.MybatisTable
+     * @see  java.util.List
+     * @see  java.lang.String
+     * @see  io.github.nichetoolkit.rest.RestException
+     * @return  {@link java.lang.String} <p>The sql of insert return object is <code>String</code> type.</p>
+     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
+     */
+    static String sqlOfInsert(MybatisTable table, List<MybatisColumn> fickleKeyColumns) throws RestException {
+        SqlBuilder sqlBuilder = SqlBuilder.sqlBuilder().braceLt();
+        String sqlOfInsert = table.insertColumns().stream().map(column -> column.variable(EntityConstants.ENTITY_PREFIX))
+                .collect(Collectors.joining(SQLConstants.COMMA + SQLConstants.BLANK));
+        if (GeneralUtils.isNotEmpty(sqlOfInsert)) {
+            sqlBuilder.append(sqlOfInsert);
+        }
+        if (GeneralUtils.isNotEmpty(fickleKeyColumns)) {
+            String sqlOfFickle = IntStream.range(0, fickleKeyColumns.size())
+                    .mapToObj(index -> {
+                        MybatisColumn mybatisColumn = fickleKeyColumns.get(index);
+                        return mybatisColumn.variable(EntityConstants.ENTITY_PREFIX, index);
+                    }).collect(Collectors.joining(SQLConstants.COMMA + SQLConstants.BLANK));
+            if (GeneralUtils.isNotEmpty(sqlOfFickle)) {
+                sqlBuilder.comma().blank().append(sqlOfFickle);
+            }
+        }
+        return sqlBuilder.braceGt().toString();
     }
 
 }

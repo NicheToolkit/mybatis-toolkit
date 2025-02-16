@@ -1,6 +1,7 @@
 package io.github.nichetoolkit.mybatis.defaults;
 
 
+import com.fasterxml.jackson.databind.JavaType;
 import io.github.nichetoolkit.mybatis.MybatisColumn;
 import io.github.nichetoolkit.mybatis.MybatisColumnFactory;
 import io.github.nichetoolkit.mybatis.MybatisField;
@@ -63,11 +64,22 @@ public class DefaultColumnFactoryChain implements MybatisColumnFactory.Chain {
     }
 
     @Override
-    public Optional<List<MybatisColumn>> createColumn(@NonNull MybatisTable mybatisTable,@NonNull MybatisField mybatisField) {
+    public Optional<List<MybatisColumn>> createColumn(@NonNull MybatisTable mybatisTable, @NonNull MybatisField mybatisField) {
         if (index < factories.size()) {
             MybatisColumnFactory mybatisColumnFactory = factories.get(index);
-            if (mybatisColumnFactory.supports(mybatisTable,mybatisField)) {
+            if (mybatisColumnFactory.supports(mybatisTable, mybatisField)) {
                 return mybatisColumnFactory.createColumn(mybatisTable, mybatisField, next);
+            }
+        }
+        return Optional.empty();
+    }
+
+    @Override
+    public Optional<List<MybatisColumn>> createColumn(@NonNull MybatisTable mybatisTable, @NonNull MybatisField mybatisField, JavaType fickleType, boolean isFickleKey, boolean isFickleValue) {
+        if (index < factories.size()) {
+            MybatisColumnFactory mybatisColumnFactory = factories.get(index);
+            if (mybatisColumnFactory.supports(mybatisTable, mybatisField)) {
+                return mybatisColumnFactory.createColumn(mybatisTable, mybatisField, next, fickleType, isFickleKey, isFickleValue);
             }
         }
         return Optional.empty();
