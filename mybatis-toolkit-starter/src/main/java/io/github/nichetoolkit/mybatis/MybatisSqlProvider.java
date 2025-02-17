@@ -22,7 +22,6 @@ import io.github.nichetoolkit.rest.holder.ApplicationContextHolder;
 import io.github.nichetoolkit.rest.stream.RestCollectors;
 import io.github.nichetoolkit.rest.stream.RestStream;
 import io.github.nichetoolkit.rest.util.GeneralUtils;
-import io.github.nichetoolkit.rest.util.JsonUtils;
 import io.github.nichetoolkit.rest.util.OptionalUtils;
 import io.github.nichetoolkit.rice.enums.OperateType;
 import org.apache.ibatis.builder.annotation.ProviderContext;
@@ -1064,9 +1063,8 @@ public interface MybatisSqlProvider {
             if (GeneralUtils.isNotEmpty(tableMapper)) {
                 tableColumns = tableMapper.tableColumns(tablename);
             }
-            List<MybatisColumn> fickleKeyColumnsList = fickleOfEntityKeyColumns(table, tableColumns, entityParameter);
-            fickleOfEntityValueColumns(table, fickleKeyColumnsList, entityParameter);
-            fickleKeyColumns.addAll(fickleKeyColumnsList);
+            fickleOfEntityKeyColumns(table, tableColumns, entityParameter, fickleKeyColumns);
+            fickleOfEntityValueColumns(table, fickleKeyColumns, entityParameter);
         }
         return fickleKeyColumns;
     }
@@ -1090,17 +1088,14 @@ public interface MybatisSqlProvider {
         List<MybatisColumn> fickleKeyColumns = new ArrayList<>();
         if (GeneralUtils.isNotEmpty(table.fickleValueColumn())) {
             MybatisTableMapper tableMapper = ApplicationContextHolder.beanOfType(MybatisTableMapper.class);
-            List<String> tableColumns = Collections.emptyList();
+            List<String> tableColumns = new ArrayList<>();
             if (GeneralUtils.isNotEmpty(tableMapper)) {
-                tableColumns = tableMapper.tableColumns(tablename);
+                List<String> tableColumnsList = tableMapper.tableColumns(tablename);
+                tableColumns.addAll(tableColumnsList);
             }
-            Optional<E> entityFirst = entityList.stream().findFirst();
-            if (entityFirst.isPresent()) {
-                List<MybatisColumn> fickleKeyColumnsList = fickleOfEntityKeyColumns(table, tableColumns, entityFirst.get());
-                for (E entity : entityList) {
-                    fickleOfEntityValueColumns(table, fickleKeyColumnsList, entity);
-                }
-                fickleKeyColumns.addAll(fickleKeyColumnsList);
+            if (GeneralUtils.isNotEmpty(entityList)) {
+                RestStream.stream(entityList).forEach(entity -> fickleOfEntityKeyColumns(table, tableColumns, entity, fickleKeyColumns));
+                RestStream.stream(entityList).forEach(entity -> fickleOfEntityValueColumns(table, fickleKeyColumns, entity));
             }
         }
         return fickleKeyColumns;
@@ -1113,15 +1108,15 @@ public interface MybatisSqlProvider {
      * @param table {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>The table parameter is <code>MybatisTable</code> type.</p>
      * @param tableColumns {@link java.util.List} <p>The table columns parameter is <code>List</code> type.</p>
      * @param entityParameter E <p>The entity parameter parameter is <code>E</code> type.</p>
+     * @param fickleKeyColumns {@link java.util.List} <p>The fickle key columns parameter is <code>List</code> type.</p>
      * @see  io.github.nichetoolkit.mybatis.MybatisTable
      * @see  java.util.List
      * @see  java.lang.SuppressWarnings
      * @see  io.github.nichetoolkit.rest.RestException
-     * @return  {@link java.util.List} <p>The fickle of entity key columns return object is <code>List</code> type.</p>
      * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
      */
-    @SuppressWarnings({"rawtypes","unchecked"})
-    static <E> List<MybatisColumn> fickleOfEntityKeyColumns(MybatisTable table, List<String> tableColumns, E entityParameter) throws RestException {
+    @SuppressWarnings({"rawtypes", "unchecked"})
+    static <E> void fickleOfEntityKeyColumns(MybatisTable table, List<String> tableColumns, E entityParameter, List<MybatisColumn> fickleKeyColumns) throws RestException {
         if (GeneralUtils.isNotEmpty(table.fickleValueColumn()) && GeneralUtils.isNotEmpty(tableColumns)) {
             Object entity = reviseParameter(entityParameter);
             MybatisColumn fickleKeyColumn = table.fickleKeyColumn();
@@ -1133,23 +1128,31 @@ public interface MybatisSqlProvider {
                 Collection<FickleField> fickleCollection = (Collection<FickleField>) fickleKeyObject;
                 List<FickleField> fickleFieldsList = new ArrayList<>(fickleCollection);
                 if (GeneralUtils.isNotEmpty(fickleFieldsList)) {
-                    return fickleFieldsList.stream()
+                    fickleFieldsList.stream()
                             .filter(fickleField -> tableColumns.contains(fickleField.getName()))
-                            .map(fickleField -> MybatisColumn.of(table, fickleKeyColumn, fickleField))
-                            .collect(Collectors.toList());
+                            .forEach(fickleField -> {
+                                MybatisColumn fickleColumn = MybatisColumn.of(table, fickleKeyColumn, fickleField);
+                                if (!fickleKeyColumns.contains(fickleColumn)) {
+                                    fickleKeyColumns.add(fickleColumn);
+                                }
+                            });
+
                 }
             } else if (fickleType instanceof MapType && fickleKeyObject instanceof Map) {
-                Map<String,FickleField> fickleMap = (Map<String,FickleField>) fickleKeyObject;
+                Map<String, FickleField> fickleMap = (Map<String, FickleField>) fickleKeyObject;
                 Map<String, FickleField> fickleFieldsMap = new HashMap<>(fickleMap);
                 if (GeneralUtils.isNotEmpty(fickleFieldsMap)) {
-                    return fickleFieldsMap.values().stream()
+                    fickleFieldsMap.values().stream()
                             .filter(fickleField -> tableColumns.contains(fickleField.getName()))
-                            .map(fickleField -> MybatisColumn.of(table, fickleKeyColumn, fickleField))
-                            .collect(Collectors.toList());
+                            .forEach(fickleField -> {
+                                MybatisColumn fickleColumn = MybatisColumn.of(table, fickleKeyColumn, fickleField);
+                                if (!fickleKeyColumns.contains(fickleColumn)) {
+                                    fickleKeyColumns.add(fickleColumn);
+                                }
+                            });
                 }
             }
         }
-        return Collections.emptyList();
     }
 
     /**
@@ -1166,7 +1169,7 @@ public interface MybatisSqlProvider {
      * @return  {@link java.util.List} <p>The fickle of entity value columns return object is <code>List</code> type.</p>
      * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
      */
-    @SuppressWarnings({"rawtypes","unchecked"})
+    @SuppressWarnings({"rawtypes", "unchecked"})
     static <E> List<MybatisColumn> fickleOfEntityValueColumns(MybatisTable table, List<MybatisColumn> fickleKeyColumns, E entityParameter) throws RestException {
         if (GeneralUtils.isNotEmpty(table.fickleValueColumn()) && GeneralUtils.isNotEmpty(fickleKeyColumns)) {
             Object entity = reviseParameter(entityParameter);
@@ -1202,7 +1205,7 @@ public interface MybatisSqlProvider {
                             .collect(Collectors.toList());
                 }
             } else if (fickleType instanceof MapType && fickleKeyObject instanceof Map) {
-                Map<String,FickleField> fickleMap = (Map<String,FickleField>) fickleKeyObject;
+                Map<String, FickleField> fickleMap = (Map<String, FickleField>) fickleKeyObject;
                 Map<String, FickleField> fickleFieldsMap = new HashMap<>(fickleMap);
                 if (GeneralUtils.isNotEmpty(fickleFieldsMap)) {
                     Map<String, FickleField> fickleFields = new HashMap<>(fickleKeyColumns.size());

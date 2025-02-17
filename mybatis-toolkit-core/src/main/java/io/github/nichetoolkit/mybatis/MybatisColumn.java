@@ -1123,6 +1123,6 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
 
     @Override
     public String toString() {
-        return this.column;
+        return this.columnName();
     }
 }

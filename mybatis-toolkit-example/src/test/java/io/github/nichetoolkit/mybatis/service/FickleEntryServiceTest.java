@@ -82,7 +82,7 @@ class FickleEntryServiceTest extends MybatisExampleApplicationTests {
 
         fickleEntryModel2.setFields(new ArrayList<>(fields2));
 
-        List<FickleEntryModel> fickleEntryModels = fickleEntryService.saveAll(Arrays.asList(fickleEntryModel1, fickleEntryModel2));
+        List<FickleEntryModel> fickleEntryModels = fickleEntryService.saveAll(Arrays.asList(fickleEntryModel2,fickleEntryModel1));
         System.out.println(JsonUtils.parseJson(fickleEntryModels));
     }
 
