@@ -10,7 +10,7 @@
     <property name="MAX_HISTORY" value="30" />
 
     <!--默认环境:打印控制台-->
-    <springProfile name="default">
+    <springProfile name="mysql-fickle-field">
         <logger name="io.github.nichetoolkit" level="debug"/>
         <root level="info" >
             <appender-ref ref="CONSOLE" />

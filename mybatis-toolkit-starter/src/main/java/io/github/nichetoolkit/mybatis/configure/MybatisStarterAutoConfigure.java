@@ -2,9 +2,11 @@ package io.github.nichetoolkit.mybatis.configure;
 
 import io.github.nichetoolkit.mybatis.MybatisAlertnessHandler;
 import io.github.nichetoolkit.mybatis.MybatisIdentityHandler;
+import io.github.nichetoolkit.mybatis.interceptor.MybatisResultInterceptor;
 import io.github.nichetoolkit.rice.DefaultAlertnessHandler;
 import io.github.nichetoolkit.rice.DefaultIdentityHandler;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
@@ -86,4 +88,13 @@ public class MybatisStarterAutoConfigure {
             scanner.doScan("io.github.nichetoolkit.mybatis");
         }
     }
+
+    @Bean
+    @ConditionalOnMissingBean(MybatisResultInterceptor.class)
+    public MybatisResultInterceptor mybatisResultInterceptor(SqlSessionFactory sqlSessionFactory) {
+        MybatisResultInterceptor resultInterceptor = new MybatisResultInterceptor();
+        sqlSessionFactory.getConfiguration().addInterceptor(resultInterceptor);
+        return resultInterceptor;
+    }
+
 }

@@ -105,9 +105,6 @@ class FickleEntryServiceTest extends MybatisExampleApplicationTests {
     public void queryAllWithFilter() throws RestException {
         FickleEntryFilter fickleEntryFilter = new FickleEntryFilter();
         fickleEntryFilter.setPageSize(10);
-        Date nowDate = new Date();
-        fickleEntryFilter.setStartTime(DateUtils.addMinutes(nowDate, -5));
-        fickleEntryFilter.setEndTime(DateUtils.addMinutes(nowDate, 5));
         RestPage<FickleEntryModel> restPage = fickleEntryService.queryAllWithFilter(fickleEntryFilter);
         System.out.println(JsonUtils.parseJson(restPage));
     }

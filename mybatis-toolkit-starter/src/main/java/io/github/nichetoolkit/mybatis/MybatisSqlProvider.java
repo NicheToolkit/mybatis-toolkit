@@ -61,6 +61,17 @@ public interface MybatisSqlProvider {
                     .where().append(sqlBuilder).toString();
 
     /**
+     * <code>WHERE_SQL_SUPPLY</code>
+     * {@link io.github.nichetoolkit.mybatis.MybatisSqlSupply.SimpleSqlSupply} <p>The constant <code>WHERE_SQL_SUPPLY</code> field.</p>
+     * @see  io.github.nichetoolkit.mybatis.MybatisSqlSupply.SimpleSqlSupply
+     */
+    MybatisSqlSupply.SimpleSqlSupply WHERE_SQL_SUPPLY = (tablename, table, sqlBuilder) ->
+            SqlBuilder.sqlBuilder()
+                    .select().append(table.sqlOfSelectColumns())
+                    .from().append(table.tablename(tablename))
+                    .append(sqlBuilder).toString();
+
+    /**
      * <code>SAVE_SQL_SUPPLY</code>
      * {@link io.github.nichetoolkit.mybatis.MybatisSqlSupply.EntrySqlSupply} <p>The constant <code>SAVE_SQL_SUPPLY</code> field.</p>
      * @see  io.github.nichetoolkit.mybatis.MybatisSqlSupply.EntrySqlSupply
@@ -799,9 +810,12 @@ public interface MybatisSqlProvider {
     static <I> String providingOfWhere(ProviderContext providerContext, @Nullable String tablename, String whereSqlParameter, ConsumerActuator<MybatisTable> tableOptional, MybatisSqlSupply.SimpleSqlSupply sqlSupply) throws RestException {
         return MybatisSqlScript.caching(providerContext, (table, sqlScript) -> {
             tableOptional.actuate(table);
-            String whereSql = whereSqlParameter;
-            if (whereSql.startsWith(SQLConstants.AND_MATCH)) {
-                whereSql = whereSql.substring(SQLConstants.AND_MATCH.length());
+            String whereSql = whereSqlParameter.trim();
+            if (whereSql.startsWith(SQLConstants.AND)) {
+                whereSql = whereSql.substring(SQLConstants.AND.length());
+            }
+            if (!whereSql.startsWith(SQLConstants.ORDER_BY) && !whereSql.startsWith(SQLConstants.LIMIT)) {
+                whereSql = SqlBuilder.sqlBuilder().where().append(whereSql).toString();
             }
             SqlBuilder sqlBuilder = SqlBuilder.sqlBuilder();
             sqlBuilder.cdataLt().append(whereSql).cdataGt();

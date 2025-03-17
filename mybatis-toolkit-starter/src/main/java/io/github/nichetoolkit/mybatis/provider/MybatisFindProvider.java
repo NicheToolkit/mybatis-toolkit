@@ -138,7 +138,7 @@ public class MybatisFindProvider implements MybatisSqlProvider {
     public static String findDynamicAllByWhere(ProviderContext providerContext, String tablename, String whereSql) throws RestException {
         OptionalUtils.ofEmpty(whereSql, "The where sql param of 'findAllByWhere' method cannot be empty!", log, message -> new MybatisParamErrorException("findAllByWhere", "whereSql", message));
         ConsumerActuator<MybatisTable> tableOptional = table -> OptionalUtils.ofEmpty(table.selectColumns(), "The select columns of table with 'findAllByWhere' method cannot be empty!", log, message -> new MybatisTableErrorException("findAllByWhere", "selectColumns", message));
-        return MybatisSqlProvider.providingOfWhere(providerContext, tablename, whereSql, tableOptional, SELECT_SQL_SUPPLY);
+        return MybatisSqlProvider.providingOfWhere(providerContext, tablename, whereSql, tableOptional, WHERE_SQL_SUPPLY);
     }
 
 
