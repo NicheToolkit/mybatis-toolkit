@@ -132,21 +132,40 @@ public interface MybatisSqlProvider {
         }
     }
 
-    static void databaseTypeOfIndexColumnSql(String tablename, SqlBuilder sqlBuilder, RestField<?> field) throws RestException {
+    static void databaseTypeOfCreateIndexSql(String tablename, SqlBuilder sqlBuilder, RestField<?> field) throws RestException {
         DatabaseType databaseType = MybatisSqlProviderHolder.defaultDatabaseType();
         switch (databaseType) {
             case GAUSSDB:
             case POSTGRESQL:
-                /* CREATE INDEX "IDX_NTR_FICKLE_ENTRY_TIME" ON "public"."ntr_fickle_entry" USING btree (
-                      "time" "pg_catalog"."timestamptz_ops" ASC NULLS LAST
-                   ); */
-//                break;
+                /* CREATE INDEX IF NOT EXISTS IDX_NTR_FICKLE_ENTRY_TIME ON ntr_fickle_entry (time); */
+                sqlBuilder.createIndex().ifNotExists().append("IDX_").append(tablename.toUpperCase()).append("_").append(field.getKey().toUpperCase())
+                        .on().append(tablename).braceLt().append(field.getKey()).braceGt();
+                break;
             case SQLITE:
             case MYSQL:
-                /* CREATE INDEX `IDX_NTR_FICKLE_ENTRY_TIME` ON `表名` (`time`); */
-                sqlBuilder.select().append("column_name")
-                        .from().append("information_schema.columns")
-                        .where().append("table_name").eq().value(tablename);
+                /* CREATE INDEX IDX_NTR_FICKLE_ENTRY_TIME ON ntr_fickle_entry (time); */
+                sqlBuilder.createIndex().append("IDX_").append(tablename.toUpperCase()).append("_").append(field.getKey().toUpperCase())
+                        .on().append(tablename).braceLt().append(field.getKey()).braceGt();
+                break;
+            default:
+                String message = "it is unsupported currently of the " + databaseType.getKey() + "database type.";
+                throw new MybatisUnsupportedErrorException(databaseType.getKey(), "indexColumn", message);
+        }
+    }
+
+    static void databaseTypeOfDropIndexSql(String tablename, SqlBuilder sqlBuilder, RestField<?> field) throws RestException {
+        DatabaseType databaseType = MybatisSqlProviderHolder.defaultDatabaseType();
+        switch (databaseType) {
+            case GAUSSDB:
+            case POSTGRESQL:
+                /* DROP INDEX IF EXISTS IDX_NTR_FICKLE_ENTRY_TIME; */
+                sqlBuilder.dropIndex().ifExists().append("IDX_").append(tablename.toUpperCase()).append("_").append(field.getKey().toUpperCase());
+                break;
+            case SQLITE:
+            case MYSQL:
+                /* DROP INDEX IDX_NTR_FICKLE_ENTRY_TIME ON ntr_fickle_entry; */
+                sqlBuilder.dropIndex().append("IDX_").append(tablename.toUpperCase()).append("_").append(field.getKey().toUpperCase())
+                        .on().append(tablename);
                 break;
             default:
                 String message = "it is unsupported currently of the " + databaseType.getKey() + "database type.";
@@ -159,17 +178,56 @@ public interface MybatisSqlProvider {
         switch (databaseType) {
             case GAUSSDB:
             case POSTGRESQL:
-                /* CREATE INDEX "IDX_NTR_FICKLE_ENTRY_TIME" ON "public"."ntr_fickle_entry" USING btree (
-                      "time" "pg_catalog"."timestamptz_ops" ASC NULLS LAST
-                   ); */
-//                break;
+                /* ALTER TABLE IF EXISTS ntr_fickle_entry ALTER COLUMN time TYPE TIMESTAMP;
+                    ALTER TABLE IF EXISTS ntr_fickle_entry ALTER COLUMN time SET NOT NULL;
+                    ALTER TABLE IF EXISTS ntr_fickle_entry ALTER COLUMN time SET DEFAULT now();
+                    COMMENT ON COLUMN  ntr_fickle_entry.time IS '时间';
+                    ALTER TABLE IF EXISTS ntr_fickle_entry ALTER COLUMN time DROP NOT NULL;
+                    ALTER TABLE IF EXISTS ntr_fickle_entry ALTER COLUMN time DROP DEFAULT;
+                    COMMENT ON COLUMN  ntr_fickle_entry.time IS NULL; */
+                sqlBuilder.alterTable().ifExists().append(tablename).alterColumn().append(field.getKey())
+                        .type().append(field.getType().getValue().toUpperCase()).semicolon();
+                if (field.notNull()) {
+                    sqlBuilder.alterTable().ifExists().append(tablename).alterColumn().append(field.getKey())
+                            .set().notNull().semicolon();
+                } else {
+                    sqlBuilder.alterTable().ifExists().append(tablename).alterColumn().append(field.getKey())
+                            .drop().notNull().semicolon();
+                }
+                if (GeneralUtils.isNotEmpty(field.defaultValue())) {
+                    sqlBuilder.alterTable().ifExists().append(tablename).alterColumn().append(field.getKey())
+                            .set().deft().append(field.defaultValue().toString()).semicolon();
+                } else {
+                    sqlBuilder.alterTable().ifExists().append(tablename).alterColumn().append(field.getKey())
+                            .drop().deft().semicolon();
+                }
+                if (GeneralUtils.isNotEmpty(field.getComment())) {
+                    sqlBuilder.linefeed().comment().on().column().append(tablename).period().append(field.getKey())
+                            .is().append(field.getComment()).semicolon();
+                } else {
+                    sqlBuilder.linefeed().comment().on().column().append(tablename).period().append(field.getKey())
+                            .isNull().semicolon();
+                }
+                sqlBuilder.semicolon();
+                databaseTypeOfColumnsSql(tablename,sqlBuilder);
+                break;
             case SQLITE:
             case MYSQL:
-                /* CREATE INDEX `IDX_NTR_FICKLE_ENTRY_TIME` ON `表名` (`time`); */
-//                sqlBuilder.select().append("column_name")
-//                        .from().append("information_schema.columns")
-//                        .where().append("table_name").eq().value(tablename);
-//                break;
+                /* ALTER TABLE ntr_fickle_entry MODIFY COLUMN time TIMESTAMP NOT NULL DEFAULT now() COMMENT '时间'; */
+                sqlBuilder.alterTable().append(tablename).modifyColumn().append(field.getKey())
+                        .blank().append(field.getType().getValue().toUpperCase());
+                if (field.notNull()) {
+                    sqlBuilder.notNull();
+                }
+                if (GeneralUtils.isNotEmpty(field.defaultValue())) {
+                    sqlBuilder.deft().append(field.defaultValue().toString());
+                }
+                if (GeneralUtils.isNotEmpty(field.getComment())) {
+                    sqlBuilder.comment().append(field.getComment());
+                }
+                sqlBuilder.semicolon();
+                databaseTypeOfColumnsSql(tablename,sqlBuilder);
+                break;
             default:
                 String message = "it is unsupported currently of the " + databaseType.getKey() + "database type.";
                 throw new MybatisUnsupportedErrorException(databaseType.getKey(), "indexColumn", message);
@@ -182,17 +240,40 @@ public interface MybatisSqlProvider {
         switch (databaseType) {
             case GAUSSDB:
             case POSTGRESQL:
-                /* CREATE INDEX "IDX_NTR_FICKLE_ENTRY_TIME" ON "public"."ntr_fickle_entry" USING btree (
-                      "time" "pg_catalog"."timestamptz_ops" ASC NULLS LAST
-                   ); */
-//                break;
+                /* ALTER TABLE ntr_fickle_entry ADD COLUMN time1 TIMESTAMP NOT NULL DEFAULT now();
+                   COMMENT ON COLUMN  ntr_fickle_entry.time IS '时间';
+                   COMMENT ON COLUMN  ntr_fickle_entry.time IS NULL; */
+                sqlBuilder.alterTable().append(tablename).addColumn().append(field.getKey())
+                        .blank().append(field.getType().getValue().toUpperCase());
+                if (field.notNull()) {
+                    sqlBuilder.notNull();
+                }
+                if (GeneralUtils.isNotEmpty(field.defaultValue())) {
+                    sqlBuilder.deft().append(field.defaultValue().toString()).semicolon();
+                }
+                if (GeneralUtils.isNotEmpty(field.getComment())) {
+                    sqlBuilder.linefeed().comment().on().column().append(tablename).period().append(field.getKey())
+                            .is().append(field.getComment()).semicolon();
+                }
+                sqlBuilder.semicolon();
+                databaseTypeOfColumnsSql(tablename,sqlBuilder);
+                break;
             case SQLITE:
             case MYSQL:
-                /* CREATE INDEX `IDX_NTR_FICKLE_ENTRY_TIME` ON `表名` (`time`); */
-//                sqlBuilder.select().append("column_name")
-//                        .from().append("information_schema.columns")
-//                        .where().append("table_name").eq().value(tablename);
-//                break;
+                /* ALTER TABLE ntr_fickle_entry ADD COLUMN time1 TIMESTAMP NOT NULL DEFAULT now() COMMENT '时间'; */
+                sqlBuilder.alterTable().append(tablename).addColumn().append(field.getKey())
+                        .blank().append(field.getType().getValue().toUpperCase());
+                if (field.notNull()) {
+                    sqlBuilder.notNull();
+                }
+                if (GeneralUtils.isNotEmpty(field.defaultValue())) {
+                    sqlBuilder.deft().append(field.defaultValue().toString());
+                }
+                if (GeneralUtils.isNotEmpty(field.getComment())) {
+                    sqlBuilder.comment().append(field.getComment());
+                }
+                sqlBuilder.semicolon();
+                databaseTypeOfColumnsSql(tablename,sqlBuilder);
             default:
                 String message = "it is unsupported currently of the " + databaseType.getKey() + "database type.";
                 throw new MybatisUnsupportedErrorException(databaseType.getKey(), "indexColumn", message);
@@ -204,17 +285,14 @@ public interface MybatisSqlProvider {
         switch (databaseType) {
             case GAUSSDB:
             case POSTGRESQL:
-                /* CREATE INDEX "IDX_NTR_FICKLE_ENTRY_TIME" ON "public"."ntr_fickle_entry" USING btree (
-                      "time" "pg_catalog"."timestamptz_ops" ASC NULLS LAST
-                   ); */
-//                break;
             case SQLITE:
             case MYSQL:
-                /* CREATE INDEX `IDX_NTR_FICKLE_ENTRY_TIME` ON `表名` (`time`); */
-//                sqlBuilder.select().append("column_name")
-//                        .from().append("information_schema.columns")
-//                        .where().append("table_name").eq().value(tablename);
-//                break;
+                databaseTypeOfDropColumnSql(tablename, sqlBuilder, field);
+                sqlBuilder.semicolon();
+                databaseTypeOfAddColumnSql(tablename, sqlBuilder, field);
+                sqlBuilder.semicolon();
+                databaseTypeOfColumnsSql(tablename,sqlBuilder);
+                break;
             default:
                 String message = "it is unsupported currently of the " + databaseType.getKey() + "database type.";
                 throw new MybatisUnsupportedErrorException(databaseType.getKey(), "indexColumn", message);
@@ -226,17 +304,13 @@ public interface MybatisSqlProvider {
         switch (databaseType) {
             case GAUSSDB:
             case POSTGRESQL:
-                /* CREATE INDEX "IDX_NTR_FICKLE_ENTRY_TIME" ON "public"."ntr_fickle_entry" USING btree (
-                      "time" "pg_catalog"."timestamptz_ops" ASC NULLS LAST
-                   ); */
-//                break;
             case SQLITE:
             case MYSQL:
-                /* CREATE INDEX `IDX_NTR_FICKLE_ENTRY_TIME` ON `表名` (`time`); */
-//                sqlBuilder.select().append("column_name")
-//                        .from().append("information_schema.columns")
-//                        .where().append("table_name").eq().value(tablename);
-//                break;
+                /* ALTER TABLE ntr_fickle_entry DROP COLUMN time1; */
+                sqlBuilder.alterTable().append(tablename).dropColumn().append(field.getKey());
+                sqlBuilder.semicolon();
+                databaseTypeOfColumnsSql(tablename,sqlBuilder);
+                break;
             default:
                 String message = "it is unsupported currently of the " + databaseType.getKey() + "database type.";
                 throw new MybatisUnsupportedErrorException(databaseType.getKey(), "indexColumn", message);
@@ -249,9 +323,15 @@ public interface MybatisSqlProvider {
         return sqlBuilder.toString();
     }
 
-    static String providingOfIndexColumn(ProviderContext providerContext, @NonNull String tablename, RestField<?> field) throws RestException {
+    static String providingOfCreateIndex(ProviderContext providerContext, @NonNull String tablename, RestField<?> field) throws RestException {
         SqlBuilder sqlBuilder = SqlBuilder.sqlBuilder();
-        databaseTypeOfIndexColumnSql(tablename, sqlBuilder,field);
+        databaseTypeOfCreateIndexSql(tablename, sqlBuilder,field);
+        return sqlBuilder.toString();
+    }
+
+    static String providingOfDropIndex(ProviderContext providerContext, @NonNull String tablename, RestField<?> field) throws RestException {
+        SqlBuilder sqlBuilder = SqlBuilder.sqlBuilder();
+        databaseTypeOfDropIndexSql(tablename, sqlBuilder,field);
         return sqlBuilder.toString();
     }
 

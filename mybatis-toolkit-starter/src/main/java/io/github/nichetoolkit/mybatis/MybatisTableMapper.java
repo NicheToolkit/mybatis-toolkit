@@ -20,7 +20,12 @@ public interface MybatisTableMapper extends MybatisMapper<String>, TableMapper {
     @Override
     @Lang(MybatisSqlSourceCaching.class)
     @SelectProvider(MybatisSqlProviderResolver.class)
-    void indexColumn(@Param("tablename") String tablename, @Param("field") RestField<?> field);
+    void createIndex(@Param("tablename") String tablename, @Param("field") RestField<?> field);
+
+    @Override
+    @Lang(MybatisSqlSourceCaching.class)
+    @SelectProvider(MybatisSqlProviderResolver.class)
+    void dropIndex(@Param("tablename") String tablename, @Param("field") RestField<?> field);
 
     @Override
     @Lang(MybatisSqlSourceCaching.class)

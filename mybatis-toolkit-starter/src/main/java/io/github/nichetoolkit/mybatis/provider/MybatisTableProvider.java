@@ -11,7 +11,6 @@ import org.apache.ibatis.builder.annotation.ProviderContext;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -49,8 +48,8 @@ public class MybatisTableProvider implements MybatisSqlProvider {
     }
 
     /**
-     * <code>indexColumn</code>
-     * <p>The index column method.</p>
+     * <code>createIndex</code>
+     * <p>The create index method.</p>
      * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>The provider context parameter is <code>ProviderContext</code> type.</p>
      * @param tablename {@link java.lang.String} <p>The tablename parameter is <code>String</code> type.</p>
      * @param field {@link io.github.nichetoolkit.rest.RestField} <p>The field parameter is <code>RestField</code> type.</p>
@@ -58,14 +57,34 @@ public class MybatisTableProvider implements MybatisSqlProvider {
      * @see  java.lang.String
      * @see  io.github.nichetoolkit.rest.RestField
      * @see  io.github.nichetoolkit.rest.RestException
-     * @return  {@link java.lang.String} <p>The index column return object is <code>String</code> type.</p>
+     * @return  {@link java.lang.String} <p>The create index return object is <code>String</code> type.</p>
      * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
      */
-    public static String indexColumn(ProviderContext providerContext, String tablename, RestField<?> field) throws RestException {
-        OptionalUtils.ofEmpty(tablename, "The tablename param of 'indexColumn' method cannot be empty!", message -> new MybatisParamErrorException("indexColumn", "tablename", message));
-        OptionalUtils.ofEmpty(field, "The field param of 'indexColumn' method cannot be empty!", message -> new MybatisParamErrorException("indexColumn", "field", message));
-        OptionalUtils.ofEmpty(field.getType(), "The field type param of 'indexColumn' method cannot be empty!", message -> new MybatisParamErrorException("indexColumn", "field type", message));
-        return MybatisSqlProvider.providingOfIndexColumn(providerContext, tablename, field);
+    public static String createIndex(ProviderContext providerContext, String tablename, RestField<?> field) throws RestException {
+        OptionalUtils.ofEmpty(tablename, "The tablename param of 'createIndex' method cannot be empty!", message -> new MybatisParamErrorException("createIndex", "tablename", message));
+        OptionalUtils.ofEmpty(field, "The field param of 'createIndex' method cannot be empty!", message -> new MybatisParamErrorException("createIndex", "field", message));
+        OptionalUtils.ofEmpty(field.getKey(), "The field key param of 'createIndex' method cannot be empty!", message -> new MybatisParamErrorException("createIndex", "field key", message));
+        return MybatisSqlProvider.providingOfCreateIndex(providerContext, tablename, field);
+    }
+
+    /**
+     * <code>dropIndex</code>
+     * <p>The drop index method.</p>
+     * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>The provider context parameter is <code>ProviderContext</code> type.</p>
+     * @param tablename {@link java.lang.String} <p>The tablename parameter is <code>String</code> type.</p>
+     * @param field {@link io.github.nichetoolkit.rest.RestField} <p>The field parameter is <code>RestField</code> type.</p>
+     * @see  org.apache.ibatis.builder.annotation.ProviderContext
+     * @see  java.lang.String
+     * @see  io.github.nichetoolkit.rest.RestField
+     * @see  io.github.nichetoolkit.rest.RestException
+     * @return  {@link java.lang.String} <p>The drop index return object is <code>String</code> type.</p>
+     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
+     */
+    public static String dropIndex(ProviderContext providerContext, String tablename, RestField<?> field) throws RestException {
+        OptionalUtils.ofEmpty(tablename, "The tablename param of 'dropIndex' method cannot be empty!", message -> new MybatisParamErrorException("dropIndex", "tablename", message));
+        OptionalUtils.ofEmpty(field, "The field param of 'dropIndex' method cannot be empty!", message -> new MybatisParamErrorException("dropIndex", "field", message));
+        OptionalUtils.ofEmpty(field.getKey(), "The field key param of 'dropIndex' method cannot be empty!", message -> new MybatisParamErrorException("dropIndex", "field key", message));
+        return MybatisSqlProvider.providingOfDropIndex(providerContext, tablename, field);
     }
 
     /**
@@ -83,6 +102,9 @@ public class MybatisTableProvider implements MybatisSqlProvider {
      */
     public static String modifyColumn(ProviderContext providerContext, String tablename, RestField<?> field) throws RestException {
         OptionalUtils.ofEmpty(tablename, "The tablename param of 'modifyColumn' method cannot be empty!", message -> new MybatisParamErrorException("modifyColumn", "tablename", message));
+        OptionalUtils.ofEmpty(field, "The field param of 'modifyColumn' method cannot be empty!", message -> new MybatisParamErrorException("modifyColumn", "field", message));
+        OptionalUtils.ofEmpty(field.getKey(), "The field key param of 'modifyColumn' method cannot be empty!", message -> new MybatisParamErrorException("modifyColumn", "field key", message));
+        OptionalUtils.ofEmpty(field.getType(), "The field type param of 'modifyColumn' method cannot be empty!", message -> new MybatisParamErrorException("modifyColumn", "field type", message));
         return MybatisSqlProvider.providingOfModifyColumn(providerContext, tablename, field);
     }
 
@@ -101,6 +123,9 @@ public class MybatisTableProvider implements MybatisSqlProvider {
      */
     public static String addColumn(ProviderContext providerContext, String tablename, RestField<?> field) throws RestException {
         OptionalUtils.ofEmpty(tablename, "The tablename param of 'addColumn' method cannot be empty!", message -> new MybatisParamErrorException("addColumn", "tablename", message));
+        OptionalUtils.ofEmpty(field, "The field param of 'addColumn' method cannot be empty!", message -> new MybatisParamErrorException("addColumn", "field", message));
+        OptionalUtils.ofEmpty(field.getKey(), "The field key param of 'addColumn' method cannot be empty!", message -> new MybatisParamErrorException("addColumn", "field key", message));
+        OptionalUtils.ofEmpty(field.getType(), "The field type param of 'addColumn' method cannot be empty!", message -> new MybatisParamErrorException("addColumn", "field type", message));
         return MybatisSqlProvider.providingOfAddColumn(providerContext, tablename, field);
     }
 
@@ -119,6 +144,9 @@ public class MybatisTableProvider implements MybatisSqlProvider {
      */
     public static String refreshColumn(ProviderContext providerContext, String tablename, RestField<?> field) throws RestException {
         OptionalUtils.ofEmpty(tablename, "The tablename param of 'refreshColumn' method cannot be empty!", message -> new MybatisParamErrorException("refreshColumn", "tablename", message));
+        OptionalUtils.ofEmpty(field, "The field param of 'refreshColumn' method cannot be empty!", message -> new MybatisParamErrorException("refreshColumn", "field", message));
+        OptionalUtils.ofEmpty(field.getKey(), "The field key param of 'refreshColumn' method cannot be empty!", message -> new MybatisParamErrorException("refreshColumn", "field key", message));
+        OptionalUtils.ofEmpty(field.getType(), "The field type param of 'refreshColumn' method cannot be empty!", message -> new MybatisParamErrorException("refreshColumn", "field type", message));
         return MybatisSqlProvider.providingOfRefreshColumn(providerContext, tablename, field);
     }
 
@@ -137,6 +165,8 @@ public class MybatisTableProvider implements MybatisSqlProvider {
      */
     public static String dropColumn(ProviderContext providerContext, String tablename, RestField<?> field) throws RestException {
         OptionalUtils.ofEmpty(tablename, "The tablename param of 'dropColumn' method cannot be empty!", message -> new MybatisParamErrorException("dropColumn", "tablename", message));
+        OptionalUtils.ofEmpty(field, "The field param of 'dropColumn' method cannot be empty!", message -> new MybatisParamErrorException("dropColumn", "field", message));
+        OptionalUtils.ofEmpty(field.getKey(), "The field key param of 'dropColumn' method cannot be empty!", message -> new MybatisParamErrorException("dropColumn", "field key", message));
         return MybatisSqlProvider.providingOfDropColumn(providerContext, tablename, field);
     }
 
