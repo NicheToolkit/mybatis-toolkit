@@ -12,7 +12,6 @@ import io.github.nichetoolkit.mybatis.enums.ExcludedType;
 import io.github.nichetoolkit.mybatis.error.MybatisParamErrorException;
 import io.github.nichetoolkit.mybatis.error.MybatisUnsupportedErrorException;
 import io.github.nichetoolkit.mybatis.fickle.FickleField;
-import io.github.nichetoolkit.mybatis.fickle.defaults.FickleEmptyField;
 import io.github.nichetoolkit.rest.*;
 import io.github.nichetoolkit.rest.actuator.ConsumerActuator;
 import io.github.nichetoolkit.rest.holder.ApplicationContextHolder;
@@ -810,7 +809,7 @@ public interface MybatisSqlProvider {
                         if (GeneralUtils.isNotEmpty(fickleValueField)) {
                             fickleFields.add(fickleValueField);
                         } else {
-                            fickleFields.add(new FickleEmptyField(column));
+                            fickleFields.add(new MybatisFickle(column));
                         }
                     });
                     fickleKeyField.set(entity, fickleFields);
@@ -829,7 +828,7 @@ public interface MybatisSqlProvider {
                         if (GeneralUtils.isNotEmpty(fickleValueField)) {
                             fickleFields.put(column, fickleValueField);
                         } else {
-                            fickleFields.put(column, new FickleEmptyField(column));
+                            fickleFields.put(column, new MybatisFickle(column));
                         }
                     });
                     fickleKeyField.set(entity, fickleFields);
