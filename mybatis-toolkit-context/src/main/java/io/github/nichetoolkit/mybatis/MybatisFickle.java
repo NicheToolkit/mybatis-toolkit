@@ -2,6 +2,7 @@ package io.github.nichetoolkit.mybatis;
 
 import io.github.nichetoolkit.mybatis.fickle.FickleField;
 import io.github.nichetoolkit.mybatis.fickle.FickleType;
+import lombok.Setter;
 import org.springframework.lang.NonNull;
 
 import java.util.Objects;
@@ -21,6 +22,14 @@ public class MybatisFickle implements FickleField<Object> {
      * @see  java.lang.String
      */
     private String key;
+    /**
+     * <code>type</code>
+     * {@link io.github.nichetoolkit.mybatis.MybatisType} <p>The <code>type</code> field.</p>
+     * @see  io.github.nichetoolkit.mybatis.MybatisType
+     * @see  lombok.Setter
+     */
+    @Setter
+    private FickleType type = MybatisType.OBJECT;
 
     /**
      * <code>MybatisFickle</code>
@@ -63,7 +72,7 @@ public class MybatisFickle implements FickleField<Object> {
     @NonNull
     @Override
     public FickleType getType() {
-        return MybatisType.OBJECT;
+        return this.type;
     }
 
     @Override

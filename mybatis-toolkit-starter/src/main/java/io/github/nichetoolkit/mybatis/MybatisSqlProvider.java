@@ -118,6 +118,9 @@ public interface MybatisSqlProvider {
         DatabaseType databaseType = MybatisSqlProviderHolder.defaultDatabaseType();
         switch (databaseType) {
             case SQLITE:
+                /* SELECT name FROM pragma_table_info('表名') */
+                sqlBuilder.select().append("name").from().append("pragma_table_info").braceLt().value(tablename).braceGt();
+                break;
             case GAUSSDB:
             case POSTGRESQL:
             case MYSQL:
@@ -127,7 +130,7 @@ public interface MybatisSqlProvider {
                         .where().append("table_name").eq().value(tablename);
                 break;
             default:
-                String message = "it is unsupported currently of the " + databaseType.getKey() + "database type.";
+                String message = "it is unsupported currently of the " + databaseType.getKey() + " database type.";
                 throw new MybatisUnsupportedErrorException(databaseType.getKey(), "tableColumns", message);
         }
     }
@@ -137,18 +140,18 @@ public interface MybatisSqlProvider {
         switch (databaseType) {
             case GAUSSDB:
             case POSTGRESQL:
-                /* CREATE INDEX IF NOT EXISTS IDX_NTR_FICKLE_ENTRY_TIME ON ntr_fickle_entry (time); */
+                /* CREATE INDEX IF NOT EXISTS IDX_NTR_FICKLE_ENTRY_TIME ON 表名 (字段); */
                 sqlBuilder.createIndex().ifNotExists().append("IDX_").append(tablename.toUpperCase()).append("_").append(field.getKey().toUpperCase())
                         .on().append(tablename).braceLt().append(field.getKey()).braceGt();
                 break;
             case SQLITE:
             case MYSQL:
-                /* CREATE INDEX IDX_NTR_FICKLE_ENTRY_TIME ON ntr_fickle_entry (time); */
+                /* CREATE INDEX IDX_NTR_FICKLE_ENTRY_TIME ON 表名 (字段); */
                 sqlBuilder.createIndex().append("IDX_").append(tablename.toUpperCase()).append("_").append(field.getKey().toUpperCase())
                         .on().append(tablename).braceLt().append(field.getKey()).braceGt();
                 break;
             default:
-                String message = "it is unsupported currently of the " + databaseType.getKey() + "database type.";
+                String message = "it is unsupported currently of the " + databaseType.getKey() + " database type.";
                 throw new MybatisUnsupportedErrorException(databaseType.getKey(), "indexColumn", message);
         }
     }
@@ -156,35 +159,35 @@ public interface MybatisSqlProvider {
     static void databaseTypeOfDropIndexSql(String tablename, SqlBuilder sqlBuilder, RestField<?> field) throws RestException {
         DatabaseType databaseType = MybatisSqlProviderHolder.defaultDatabaseType();
         switch (databaseType) {
+            case SQLITE:
             case GAUSSDB:
             case POSTGRESQL:
                 /* DROP INDEX IF EXISTS IDX_NTR_FICKLE_ENTRY_TIME; */
                 sqlBuilder.dropIndex().ifExists().append("IDX_").append(tablename.toUpperCase()).append("_").append(field.getKey().toUpperCase());
                 break;
-            case SQLITE:
             case MYSQL:
-                /* DROP INDEX IDX_NTR_FICKLE_ENTRY_TIME ON ntr_fickle_entry; */
+                /* DROP INDEX IDX_NTR_FICKLE_ENTRY_TIME ON 表名; */
                 sqlBuilder.dropIndex().append("IDX_").append(tablename.toUpperCase()).append("_").append(field.getKey().toUpperCase())
                         .on().append(tablename);
                 break;
             default:
-                String message = "it is unsupported currently of the " + databaseType.getKey() + "database type.";
+                String message = "it is unsupported currently of the " + databaseType.getKey() + " database type.";
                 throw new MybatisUnsupportedErrorException(databaseType.getKey(), "indexColumn", message);
         }
     }
 
-    static void databaseTypeOfModifyColumnSql(String tablename, SqlBuilder sqlBuilder, RestField<?> field) throws RestException {
+    static void databaseTypeOfModifyColumnSql(String tablename, SqlBuilder sqlBuilder, RestField<?> field, boolean returnColumns) throws RestException {
         DatabaseType databaseType = MybatisSqlProviderHolder.defaultDatabaseType();
         switch (databaseType) {
             case GAUSSDB:
             case POSTGRESQL:
-                /* ALTER TABLE IF EXISTS ntr_fickle_entry ALTER COLUMN time TYPE TIMESTAMP;
-                    ALTER TABLE IF EXISTS ntr_fickle_entry ALTER COLUMN time SET NOT NULL;
-                    ALTER TABLE IF EXISTS ntr_fickle_entry ALTER COLUMN time SET DEFAULT now();
-                    COMMENT ON COLUMN  ntr_fickle_entry.time IS '时间';
-                    ALTER TABLE IF EXISTS ntr_fickle_entry ALTER COLUMN time DROP NOT NULL;
-                    ALTER TABLE IF EXISTS ntr_fickle_entry ALTER COLUMN time DROP DEFAULT;
-                    COMMENT ON COLUMN  ntr_fickle_entry.time IS NULL; */
+                /* ALTER TABLE IF EXISTS 表名 ALTER COLUMN time TYPE TIMESTAMP;
+                    ALTER TABLE IF EXISTS 表名 ALTER COLUMN time SET NOT NULL;
+                    ALTER TABLE IF EXISTS 表名 ALTER COLUMN time SET DEFAULT now();
+                    COMMENT ON COLUMN  表名.time IS '时间';
+                    ALTER TABLE IF EXISTS 表名 ALTER COLUMN time DROP NOT NULL;
+                    ALTER TABLE IF EXISTS 表名 ALTER COLUMN time DROP DEFAULT;
+                    COMMENT ON COLUMN  表名.time IS NULL; */
                 sqlBuilder.alterTable().ifExists().append(tablename).alterColumn().append(field.getKey())
                         .type().append(field.getType().getValue().toUpperCase()).semicolon();
                 if (field.notNull()) {
@@ -203,17 +206,18 @@ public interface MybatisSqlProvider {
                 }
                 if (GeneralUtils.isNotEmpty(field.getComment())) {
                     sqlBuilder.linefeed().comment().on().column().append(tablename).period().append(field.getKey())
-                            .is().append(field.getComment()).semicolon();
+                            .is().append(field.getComment());
                 } else {
                     sqlBuilder.linefeed().comment().on().column().append(tablename).period().append(field.getKey())
-                            .isNull().semicolon();
+                            .isNull();
                 }
-                sqlBuilder.semicolon();
-                databaseTypeOfColumnsSql(tablename,sqlBuilder);
+                if (returnColumns) {
+                    sqlBuilder.semicolon();
+                    databaseTypeOfColumnsSql(tablename,sqlBuilder);
+                }
                 break;
-            case SQLITE:
             case MYSQL:
-                /* ALTER TABLE ntr_fickle_entry MODIFY COLUMN time TIMESTAMP NOT NULL DEFAULT now() COMMENT '时间'; */
+                /* ALTER TABLE 表名 MODIFY COLUMN time TIMESTAMP NOT NULL DEFAULT now() COMMENT '时间'; */
                 sqlBuilder.alterTable().append(tablename).modifyColumn().append(field.getKey())
                         .blank().append(field.getType().getValue().toUpperCase());
                 if (field.notNull()) {
@@ -225,42 +229,46 @@ public interface MybatisSqlProvider {
                 if (GeneralUtils.isNotEmpty(field.getComment())) {
                     sqlBuilder.comment().append(field.getComment());
                 }
-                sqlBuilder.semicolon();
-                databaseTypeOfColumnsSql(tablename,sqlBuilder);
+                if (returnColumns) {
+                    sqlBuilder.semicolon();
+                    databaseTypeOfColumnsSql(tablename,sqlBuilder);
+                }
                 break;
+            case SQLITE:
             default:
-                String message = "it is unsupported currently of the " + databaseType.getKey() + "database type.";
+                String message = "it is unsupported currently of the " + databaseType.getKey() + " database type.";
                 throw new MybatisUnsupportedErrorException(databaseType.getKey(), "indexColumn", message);
         }
     }
 
 
-    static void databaseTypeOfAddColumnSql(String tablename, SqlBuilder sqlBuilder, RestField<?> field) throws RestException {
+    static void databaseTypeOfAddColumnSql(String tablename, SqlBuilder sqlBuilder, RestField<?> field, boolean returnColumns) throws RestException {
         DatabaseType databaseType = MybatisSqlProviderHolder.defaultDatabaseType();
         switch (databaseType) {
             case GAUSSDB:
             case POSTGRESQL:
-                /* ALTER TABLE ntr_fickle_entry ADD COLUMN time1 TIMESTAMP NOT NULL DEFAULT now();
-                   COMMENT ON COLUMN  ntr_fickle_entry.time IS '时间';
-                   COMMENT ON COLUMN  ntr_fickle_entry.time IS NULL; */
+                /* ALTER TABLE 表名 ADD COLUMN time1 TIMESTAMP NOT NULL DEFAULT now();
+                   COMMENT ON COLUMN  表名.time IS '时间';
+                   COMMENT ON COLUMN  表名.time IS NULL; */
                 sqlBuilder.alterTable().append(tablename).addColumn().append(field.getKey())
                         .blank().append(field.getType().getValue().toUpperCase());
                 if (field.notNull()) {
                     sqlBuilder.notNull();
                 }
                 if (GeneralUtils.isNotEmpty(field.defaultValue())) {
-                    sqlBuilder.deft().append(field.defaultValue().toString()).semicolon();
+                    sqlBuilder.deft().append(field.defaultValue().toString());
                 }
                 if (GeneralUtils.isNotEmpty(field.getComment())) {
-                    sqlBuilder.linefeed().comment().on().column().append(tablename).period().append(field.getKey())
-                            .is().append(field.getComment()).semicolon();
+                    sqlBuilder.semicolon().linefeed().comment().on().column().append(tablename).period().append(field.getKey())
+                            .is().append(field.getComment());
                 }
-                sqlBuilder.semicolon();
-                databaseTypeOfColumnsSql(tablename,sqlBuilder);
+                if (returnColumns) {
+                    sqlBuilder.semicolon();
+                    databaseTypeOfColumnsSql(tablename,sqlBuilder);
+                }
                 break;
-            case SQLITE:
             case MYSQL:
-                /* ALTER TABLE ntr_fickle_entry ADD COLUMN time1 TIMESTAMP NOT NULL DEFAULT now() COMMENT '时间'; */
+                /* ALTER TABLE 表名 ADD COLUMN time1 TIMESTAMP NOT NULL DEFAULT now() COMMENT '时间'; */
                 sqlBuilder.alterTable().append(tablename).addColumn().append(field.getKey())
                         .blank().append(field.getType().getValue().toUpperCase());
                 if (field.notNull()) {
@@ -272,44 +280,52 @@ public interface MybatisSqlProvider {
                 if (GeneralUtils.isNotEmpty(field.getComment())) {
                     sqlBuilder.comment().append(field.getComment());
                 }
-                sqlBuilder.semicolon();
-                databaseTypeOfColumnsSql(tablename,sqlBuilder);
-            default:
-                String message = "it is unsupported currently of the " + databaseType.getKey() + "database type.";
-                throw new MybatisUnsupportedErrorException(databaseType.getKey(), "indexColumn", message);
-        }
-    }
-
-    static void databaseTypeOfRefreshColumnSql(String tablename, SqlBuilder sqlBuilder, RestField<?> field) throws RestException {
-        DatabaseType databaseType = MybatisSqlProviderHolder.defaultDatabaseType();
-        switch (databaseType) {
-            case GAUSSDB:
-            case POSTGRESQL:
-            case SQLITE:
-            case MYSQL:
-                databaseTypeOfDropColumnSql(tablename, sqlBuilder, field);
-                sqlBuilder.semicolon();
-                databaseTypeOfAddColumnSql(tablename, sqlBuilder, field);
-                sqlBuilder.semicolon();
-                databaseTypeOfColumnsSql(tablename,sqlBuilder);
+                if (returnColumns) {
+                    sqlBuilder.semicolon();
+                    databaseTypeOfColumnsSql(tablename,sqlBuilder);
+                }
                 break;
+            case SQLITE:
+            default:
+                String message = "it is unsupported currently of the " + databaseType.getKey() + " database type.";
+                throw new MybatisUnsupportedErrorException(databaseType.getKey(), "indexColumn", message);
+        }
+    }
+
+    static void databaseTypeOfRefreshColumnSql(String tablename, SqlBuilder sqlBuilder, RestField<?> field, boolean returnColumns) throws RestException {
+        DatabaseType databaseType = MybatisSqlProviderHolder.defaultDatabaseType();
+        switch (databaseType) {
+            case GAUSSDB:
+            case POSTGRESQL:
+            case MYSQL:
+                databaseTypeOfDropColumnSql(tablename, sqlBuilder, field,false);
+                sqlBuilder.semicolon();
+                databaseTypeOfAddColumnSql(tablename, sqlBuilder, field,false);
+                if (returnColumns) {
+                    sqlBuilder.semicolon();
+                    databaseTypeOfColumnsSql(tablename,sqlBuilder);
+                }
+                break;
+            case SQLITE:
             default:
                 String message = "it is unsupported currently of the " + databaseType.getKey() + "database type.";
                 throw new MybatisUnsupportedErrorException(databaseType.getKey(), "indexColumn", message);
         }
     }
 
-    static void databaseTypeOfDropColumnSql(String tablename, SqlBuilder sqlBuilder, RestField<?> field) throws RestException {
+    static void databaseTypeOfDropColumnSql(String tablename, SqlBuilder sqlBuilder, RestField<?> field, boolean returnColumns) throws RestException {
         DatabaseType databaseType = MybatisSqlProviderHolder.defaultDatabaseType();
         switch (databaseType) {
             case GAUSSDB:
             case POSTGRESQL:
             case SQLITE:
             case MYSQL:
-                /* ALTER TABLE ntr_fickle_entry DROP COLUMN time1; */
+                /* ALTER TABLE 表名 DROP COLUMN time1; */
                 sqlBuilder.alterTable().append(tablename).dropColumn().append(field.getKey());
-                sqlBuilder.semicolon();
-                databaseTypeOfColumnsSql(tablename,sqlBuilder);
+                if (returnColumns) {
+                    sqlBuilder.semicolon();
+                    databaseTypeOfColumnsSql(tablename,sqlBuilder);
+                }
                 break;
             default:
                 String message = "it is unsupported currently of the " + databaseType.getKey() + "database type.";
@@ -337,25 +353,25 @@ public interface MybatisSqlProvider {
 
     static String providingOfModifyColumn(ProviderContext providerContext, @NonNull String tablename, RestField<?> field) throws RestException {
         SqlBuilder sqlBuilder = SqlBuilder.sqlBuilder();
-        databaseTypeOfModifyColumnSql(tablename, sqlBuilder, field);
+        databaseTypeOfModifyColumnSql(tablename, sqlBuilder, field,true);
         return sqlBuilder.toString();
     }
 
     static String providingOfAddColumn(ProviderContext providerContext, @NonNull String tablename, RestField<?> field) throws RestException {
         SqlBuilder sqlBuilder = SqlBuilder.sqlBuilder();
-        databaseTypeOfAddColumnSql(tablename, sqlBuilder, field);
+        databaseTypeOfAddColumnSql(tablename, sqlBuilder, field,true);
         return sqlBuilder.toString();
     }
 
     static String providingOfRefreshColumn(ProviderContext providerContext, @NonNull String tablename, RestField<?> field) throws RestException {
         SqlBuilder sqlBuilder = SqlBuilder.sqlBuilder();
-        databaseTypeOfRefreshColumnSql(tablename, sqlBuilder, field);
+        databaseTypeOfRefreshColumnSql(tablename, sqlBuilder, field,true);
         return sqlBuilder.toString();
     }
 
     static String providingOfDropColumn(ProviderContext providerContext, @NonNull String tablename, RestField<?> field) throws RestException {
         SqlBuilder sqlBuilder = SqlBuilder.sqlBuilder();
-        databaseTypeOfDropColumnSql(tablename, sqlBuilder, field);
+        databaseTypeOfDropColumnSql(tablename, sqlBuilder, field,true);
         return sqlBuilder.toString();
     }
 

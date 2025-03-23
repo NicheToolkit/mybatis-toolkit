@@ -29,7 +29,7 @@ public enum MybatisType implements FickleType {
     DECIMAL(4, JdbcType.DECIMAL, "decimal", BigDecimal.class),
     INTEGER(5, JdbcType.INTEGER, "integer", Integer.class),
     SMALLINT(6, JdbcType.SMALLINT, "short", Short.class),
-    FLOAT(7, JdbcType.FLOAT, "float", Float.class),
+    FLOAT(7, JdbcType.FLOAT, "float",  Float.class),
     REAL(8, JdbcType.REAL, "bigdecimal", BigDecimal.class),
     DOUBLE(9, JdbcType.DOUBLE, "double", Double.class),
     VARCHAR(10, JdbcType.VARCHAR, "string", String.class),
@@ -224,5 +224,6 @@ public enum MybatisType implements FickleType {
         }
         return Optional.ofNullable(typeEnum).orElse(MybatisType.OBJECT);
     }
+
 
 }
