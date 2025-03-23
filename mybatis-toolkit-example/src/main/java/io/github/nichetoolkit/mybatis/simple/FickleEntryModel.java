@@ -3,8 +3,6 @@ package io.github.nichetoolkit.mybatis.simple;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import io.github.nichetoolkit.mybatis.column.RestFickleEntry;
-import io.github.nichetoolkit.mybatis.fickle.FickleArrayList;
 import io.github.nichetoolkit.mybatis.fickle.FickleField;
 import io.github.nichetoolkit.rest.util.BeanUtils;
 import io.github.nichetoolkit.rice.RestInfoModel;

@@ -5,7 +5,6 @@ import io.github.nichetoolkit.mybatis.column.RestUpdate;
 import io.github.nichetoolkit.mybatis.fickle.FickleField;
 import io.github.nichetoolkit.mybatis.table.RestEntity;
 import io.github.nichetoolkit.mybatis.table.RestExcludes;
-import io.github.nichetoolkit.mybatis.table.RestUpdateIgnores;
 import io.github.nichetoolkit.rest.util.BeanUtils;
 import io.github.nichetoolkit.rice.RestInfoEntity;
 import lombok.Getter;
@@ -13,7 +12,6 @@ import lombok.Setter;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 
 /**

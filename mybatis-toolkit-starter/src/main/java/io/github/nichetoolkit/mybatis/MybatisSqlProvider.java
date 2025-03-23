@@ -145,10 +145,10 @@ public interface MybatisSqlProvider {
             case SQLITE:
             case MYSQL:
                 /* CREATE INDEX `IDX_NTR_FICKLE_ENTRY_TIME` ON `表名` (`time`); */
-//                sqlBuilder.select().append("column_name")
-//                        .from().append("information_schema.columns")
-//                        .where().append("table_name").eq().value(tablename);
-//                break;
+                sqlBuilder.select().append("column_name")
+                        .from().append("information_schema.columns")
+                        .where().append("table_name").eq().value(tablename);
+                break;
             default:
                 String message = "it is unsupported currently of the " + databaseType.getKey() + "database type.";
                 throw new MybatisUnsupportedErrorException(databaseType.getKey(), "indexColumn", message);

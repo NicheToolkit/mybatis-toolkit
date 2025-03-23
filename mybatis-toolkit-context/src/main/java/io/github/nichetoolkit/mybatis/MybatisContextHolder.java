@@ -7,6 +7,9 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.mapping.SqlSource;
 import org.apache.ibatis.session.Configuration;
+import org.apache.ibatis.session.SqlSessionFactory;
+import org.apache.ibatis.type.TypeAliasRegistry;
+import org.apache.ibatis.type.TypeHandlerRegistry;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
@@ -41,6 +44,15 @@ public class MybatisContextHolder implements RestServiceFitter<MybatisContextHol
      */
     @Resource
     private MybatisCacheProperties cacheProperties;
+
+    /**
+     * <code>sqlSessionFactory</code>
+     * {@link org.apache.ibatis.session.SqlSessionFactory} <p>The <code>sqlSessionFactory</code> field.</p>
+     * @see  org.apache.ibatis.session.SqlSessionFactory
+     * @see  javax.annotation.Resource
+     */
+    @Resource
+    private SqlSessionFactory sqlSessionFactory;
 
     /**
      * <code>IS_USE_ONCE</code>
@@ -122,6 +134,47 @@ public class MybatisContextHolder implements RestServiceFitter<MybatisContextHol
      */
     public static MybatisCacheProperties cacheProperties() {
         return INSTANCE.cacheProperties;
+    }
+
+
+    /**
+     * <code>sqlSessionFactory</code>
+     * <p>The sql session factory method.</p>
+     * @return  {@link org.apache.ibatis.session.SqlSessionFactory} <p>The sql session factory return object is <code>SqlSessionFactory</code> type.</p>
+     * @see  org.apache.ibatis.session.SqlSessionFactory
+     */
+    public static SqlSessionFactory sqlSessionFactory() {
+        return INSTANCE.sqlSessionFactory;
+    }
+
+    /**
+     * <code>configuration</code>
+     * <p>The configuration method.</p>
+     * @return  {@link org.apache.ibatis.session.Configuration} <p>The configuration return object is <code>Configuration</code> type.</p>
+     * @see  org.apache.ibatis.session.Configuration
+     */
+    public static Configuration configuration() {
+        return INSTANCE.sqlSessionFactory.getConfiguration();
+    }
+
+    /**
+     * <code>typeAliasRegistry</code>
+     * <p>The type alias registry method.</p>
+     * @return  {@link org.apache.ibatis.type.TypeAliasRegistry} <p>The type alias registry return object is <code>TypeAliasRegistry</code> type.</p>
+     * @see  org.apache.ibatis.type.TypeAliasRegistry
+     */
+    public static TypeAliasRegistry typeAliasRegistry() {
+        return INSTANCE.sqlSessionFactory.getConfiguration().getTypeAliasRegistry();
+    }
+
+    /**
+     * <code>typeHandlerRegistry</code>
+     * <p>The type handler registry method.</p>
+     * @return  {@link org.apache.ibatis.type.TypeHandlerRegistry} <p>The type handler registry return object is <code>TypeHandlerRegistry</code> type.</p>
+     * @see  org.apache.ibatis.type.TypeHandlerRegistry
+     */
+    public static TypeHandlerRegistry typeHandlerRegistry() {
+        return INSTANCE.sqlSessionFactory.getConfiguration().getTypeHandlerRegistry();
     }
 
     /**

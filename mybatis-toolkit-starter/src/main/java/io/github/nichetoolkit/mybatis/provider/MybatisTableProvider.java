@@ -63,6 +63,8 @@ public class MybatisTableProvider implements MybatisSqlProvider {
      */
     public static String indexColumn(ProviderContext providerContext, String tablename, RestField<?> field) throws RestException {
         OptionalUtils.ofEmpty(tablename, "The tablename param of 'indexColumn' method cannot be empty!", message -> new MybatisParamErrorException("indexColumn", "tablename", message));
+        OptionalUtils.ofEmpty(field, "The field param of 'indexColumn' method cannot be empty!", message -> new MybatisParamErrorException("indexColumn", "field", message));
+        OptionalUtils.ofEmpty(field.getType(), "The field type param of 'indexColumn' method cannot be empty!", message -> new MybatisParamErrorException("indexColumn", "field type", message));
         return MybatisSqlProvider.providingOfIndexColumn(providerContext, tablename, field);
     }
 
