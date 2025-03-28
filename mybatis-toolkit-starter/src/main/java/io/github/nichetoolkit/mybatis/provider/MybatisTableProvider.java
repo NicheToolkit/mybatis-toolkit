@@ -130,27 +130,6 @@ public class MybatisTableProvider implements MybatisSqlProvider {
     }
 
     /**
-     * <code>refreshColumn</code>
-     * <p>The refresh column method.</p>
-     * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>The provider context parameter is <code>ProviderContext</code> type.</p>
-     * @param tablename {@link java.lang.String} <p>The tablename parameter is <code>String</code> type.</p>
-     * @param field {@link io.github.nichetoolkit.rest.RestField} <p>The field parameter is <code>RestField</code> type.</p>
-     * @see  org.apache.ibatis.builder.annotation.ProviderContext
-     * @see  java.lang.String
-     * @see  io.github.nichetoolkit.rest.RestField
-     * @see  io.github.nichetoolkit.rest.RestException
-     * @return  {@link java.lang.String} <p>The refresh column return object is <code>String</code> type.</p>
-     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
-     */
-    public static String refreshColumn(ProviderContext providerContext, String tablename, RestField<?> field) throws RestException {
-        OptionalUtils.ofEmpty(tablename, "The tablename param of 'refreshColumn' method cannot be empty!", message -> new MybatisParamErrorException("refreshColumn", "tablename", message));
-        OptionalUtils.ofEmpty(field, "The field param of 'refreshColumn' method cannot be empty!", message -> new MybatisParamErrorException("refreshColumn", "field", message));
-        OptionalUtils.ofEmpty(field.getKey(), "The field key param of 'refreshColumn' method cannot be empty!", message -> new MybatisParamErrorException("refreshColumn", "field key", message));
-        OptionalUtils.ofEmpty(field.getType(), "The field type param of 'refreshColumn' method cannot be empty!", message -> new MybatisParamErrorException("refreshColumn", "field type", message));
-        return MybatisSqlProvider.providingOfRefreshColumn(providerContext, tablename, field);
-    }
-
-    /**
      * <code>dropColumn</code>
      * <p>The drop column method.</p>
      * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>The provider context parameter is <code>ProviderContext</code> type.</p>

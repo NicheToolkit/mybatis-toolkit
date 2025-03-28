@@ -30,8 +30,7 @@ class MybatisTableMapperTest extends MybatisExampleApplicationTests {
     public void addColumn() throws RestException {
         MybatisFickle fickle = new MybatisFickle("time1");
         fickle.setType(RestFieldType.build(MybatisType.TIMESTAMP,"TIMESTAMP"));
-        List<String> tableColumns = tableMapper.addColumn(tablename,fickle);
-        System.out.println(JsonUtils.parseJson(tableColumns));
+        tableMapper.addColumn(tablename,fickle);
     }
 
     @Test
@@ -55,27 +54,16 @@ class MybatisTableMapperTest extends MybatisExampleApplicationTests {
     public void modifyColumn() throws RestException {
         MybatisFickle fickle = new MybatisFickle("time1");
         fickle.setType(RestFieldType.build(MybatisType.TIMESTAMP,"TIMESTAMP"));
-        List<String> tableColumns = tableMapper.modifyColumn(tablename,fickle);
-        System.out.println(JsonUtils.parseJson(tableColumns));
+        tableMapper.modifyColumn(tablename,fickle);
     }
+
 
     @Test
     @Order(6)
-    public void refreshColumn() throws RestException {
-        MybatisFickle fickle = new MybatisFickle("time1");
-        fickle.setType(RestFieldType.build(MybatisType.TIMESTAMP,"TIMESTAMP"));
-        List<String> tableColumns = tableMapper.refreshColumn(tablename,fickle);
-        System.out.println(JsonUtils.parseJson(tableColumns));
-    }
-
-
-    @Test
-    @Order(7)
     public void dropColumn() throws RestException {
         MybatisFickle fickle = new MybatisFickle("time1");
         fickle.setType(RestFieldType.build(MybatisType.TIMESTAMP,"TIMESTAMP"));
-        List<String> tableColumns = tableMapper.dropColumn(tablename,fickle);
-        System.out.println(JsonUtils.parseJson(tableColumns));
+        tableMapper.dropColumn(tablename,fickle);
     }
 
 }

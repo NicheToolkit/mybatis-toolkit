@@ -176,7 +176,7 @@ public interface MybatisSqlProvider {
         }
     }
 
-    static void databaseTypeOfModifyColumnSql(String tablename, SqlBuilder sqlBuilder, RestField<?> field, boolean returnColumns) throws RestException {
+    static void databaseTypeOfModifyColumnSql(String tablename, SqlBuilder sqlBuilder, RestField<?> field) throws RestException {
         DatabaseType databaseType = MybatisSqlProviderHolder.defaultDatabaseType();
         switch (databaseType) {
             case GAUSSDB:
@@ -211,10 +211,6 @@ public interface MybatisSqlProvider {
                     sqlBuilder.linefeed().comment().on().column().append(tablename).period().append(field.getKey())
                             .isNull();
                 }
-                if (returnColumns) {
-                    sqlBuilder.semicolon();
-                    databaseTypeOfColumnsSql(tablename,sqlBuilder);
-                }
                 break;
             case MYSQL:
                 /* ALTER TABLE 表名 MODIFY COLUMN time TIMESTAMP NOT NULL DEFAULT now() COMMENT '时间'; */
@@ -229,10 +225,6 @@ public interface MybatisSqlProvider {
                 if (GeneralUtils.isNotEmpty(field.getComment())) {
                     sqlBuilder.comment().append(field.getComment());
                 }
-                if (returnColumns) {
-                    sqlBuilder.semicolon();
-                    databaseTypeOfColumnsSql(tablename,sqlBuilder);
-                }
                 break;
             case SQLITE:
             default:
@@ -242,7 +234,7 @@ public interface MybatisSqlProvider {
     }
 
 
-    static void databaseTypeOfAddColumnSql(String tablename, SqlBuilder sqlBuilder, RestField<?> field, boolean returnColumns) throws RestException {
+    static void databaseTypeOfAddColumnSql(String tablename, SqlBuilder sqlBuilder, RestField<?> field) throws RestException {
         DatabaseType databaseType = MybatisSqlProviderHolder.defaultDatabaseType();
         switch (databaseType) {
             case GAUSSDB:
@@ -262,10 +254,6 @@ public interface MybatisSqlProvider {
                     sqlBuilder.semicolon().linefeed().comment().on().column().append(tablename).period().append(field.getKey())
                             .is().append(field.getComment());
                 }
-                if (returnColumns) {
-                    sqlBuilder.semicolon();
-                    databaseTypeOfColumnsSql(tablename,sqlBuilder);
-                }
                 break;
             case MYSQL:
                 /* ALTER TABLE 表名 ADD COLUMN time1 TIMESTAMP NOT NULL DEFAULT now() COMMENT '时间'; */
@@ -280,10 +268,6 @@ public interface MybatisSqlProvider {
                 if (GeneralUtils.isNotEmpty(field.getComment())) {
                     sqlBuilder.comment().append(field.getComment());
                 }
-                if (returnColumns) {
-                    sqlBuilder.semicolon();
-                    databaseTypeOfColumnsSql(tablename,sqlBuilder);
-                }
                 break;
             case SQLITE:
             default:
@@ -292,28 +276,7 @@ public interface MybatisSqlProvider {
         }
     }
 
-    static void databaseTypeOfRefreshColumnSql(String tablename, SqlBuilder sqlBuilder, RestField<?> field, boolean returnColumns) throws RestException {
-        DatabaseType databaseType = MybatisSqlProviderHolder.defaultDatabaseType();
-        switch (databaseType) {
-            case GAUSSDB:
-            case POSTGRESQL:
-            case MYSQL:
-                databaseTypeOfDropColumnSql(tablename, sqlBuilder, field,false);
-                sqlBuilder.semicolon();
-                databaseTypeOfAddColumnSql(tablename, sqlBuilder, field,false);
-                if (returnColumns) {
-                    sqlBuilder.semicolon();
-                    databaseTypeOfColumnsSql(tablename,sqlBuilder);
-                }
-                break;
-            case SQLITE:
-            default:
-                String message = "it is unsupported currently of the " + databaseType.getKey() + "database type.";
-                throw new MybatisUnsupportedErrorException(databaseType.getKey(), "indexColumn", message);
-        }
-    }
-
-    static void databaseTypeOfDropColumnSql(String tablename, SqlBuilder sqlBuilder, RestField<?> field, boolean returnColumns) throws RestException {
+    static void databaseTypeOfDropColumnSql(String tablename, SqlBuilder sqlBuilder, RestField<?> field) throws RestException {
         DatabaseType databaseType = MybatisSqlProviderHolder.defaultDatabaseType();
         switch (databaseType) {
             case GAUSSDB:
@@ -322,10 +285,6 @@ public interface MybatisSqlProvider {
             case MYSQL:
                 /* ALTER TABLE 表名 DROP COLUMN time1; */
                 sqlBuilder.alterTable().append(tablename).dropColumn().append(field.getKey());
-                if (returnColumns) {
-                    sqlBuilder.semicolon();
-                    databaseTypeOfColumnsSql(tablename,sqlBuilder);
-                }
                 break;
             default:
                 String message = "it is unsupported currently of the " + databaseType.getKey() + "database type.";
@@ -353,25 +312,19 @@ public interface MybatisSqlProvider {
 
     static String providingOfModifyColumn(ProviderContext providerContext, @NonNull String tablename, RestField<?> field) throws RestException {
         SqlBuilder sqlBuilder = SqlBuilder.sqlBuilder();
-        databaseTypeOfModifyColumnSql(tablename, sqlBuilder, field,true);
+        databaseTypeOfModifyColumnSql(tablename, sqlBuilder, field);
         return sqlBuilder.toString();
     }
 
     static String providingOfAddColumn(ProviderContext providerContext, @NonNull String tablename, RestField<?> field) throws RestException {
         SqlBuilder sqlBuilder = SqlBuilder.sqlBuilder();
-        databaseTypeOfAddColumnSql(tablename, sqlBuilder, field,true);
-        return sqlBuilder.toString();
-    }
-
-    static String providingOfRefreshColumn(ProviderContext providerContext, @NonNull String tablename, RestField<?> field) throws RestException {
-        SqlBuilder sqlBuilder = SqlBuilder.sqlBuilder();
-        databaseTypeOfRefreshColumnSql(tablename, sqlBuilder, field,true);
+        databaseTypeOfAddColumnSql(tablename, sqlBuilder, field);
         return sqlBuilder.toString();
     }
 
     static String providingOfDropColumn(ProviderContext providerContext, @NonNull String tablename, RestField<?> field) throws RestException {
         SqlBuilder sqlBuilder = SqlBuilder.sqlBuilder();
-        databaseTypeOfDropColumnSql(tablename, sqlBuilder, field,true);
+        databaseTypeOfDropColumnSql(tablename, sqlBuilder, field);
         return sqlBuilder.toString();
     }
 
