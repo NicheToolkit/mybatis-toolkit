@@ -37,13 +37,13 @@ public interface MybatisSqlProvider {
             SqlBuilder.sqlBuilder()
                     .select().append(table.sqlOfSelectColumns())
                     .from().append(table.tablename(tablename))
-                    .where().append(sqlBuilder).toString();
+                    .where(sqlBuilder).toString();
 
     MybatisSqlSupply.SimpleSqlSupply WHERE_SQL_SUPPLY = (tablename, table, sqlBuilder) ->
             SqlBuilder.sqlBuilder()
                     .select().append(table.sqlOfSelectColumns())
                     .from().append(table.tablename(tablename))
-                    .append(sqlBuilder).toString();
+                    .where(sqlBuilder).toString();
 
     MybatisSqlSupply.EntrySqlSupply SAVE_SQL_SUPPLY = (tablename, table, keySqlBuilder, valueSqlBuilder) -> {
         boolean mysqlIgnoreInsert = MybatisSqlProviderHolder.mysqlIgnoreInsert();
@@ -63,26 +63,26 @@ public interface MybatisSqlProvider {
                     .update().append(table.tablename(tablename))
                     .set().append(table.getLogicColumn().columnEqualsProperty())
                     .comma().append(table.sqlOfForceUpdateColumns())
-                    .where().append(sqlBuilder).toString();
+                    .where(sqlBuilder).toString();
 
     MybatisSqlSupply.SimpleSqlSupply OPERATE_SQL_SUPPLY = (tablename, table, sqlBuilder) ->
             SqlBuilder.sqlBuilder()
                     .update().append(table.tablename(tablename))
                     .set().append(table.getOperateColumn().columnEqualsProperty())
                     .comma().append(table.sqlOfForceUpdateColumns())
-                    .where().append(sqlBuilder).toString();
+                    .where(sqlBuilder).toString();
 
     MybatisSqlSupply.SimpleSqlSupply DELETE_SQL_SUPPLY = (tablename, table, sqlBuilder) ->
             SqlBuilder.sqlBuilder()
                     .delete().from().append(table.tablename(tablename))
-                    .where().append(sqlBuilder).toString();
+                    .where(sqlBuilder).toString();
 
     MybatisSqlSupply.AlertSqlSupply ALERT_SQL_SUPPLY = (tablename, table, sqlBuilder, status) ->
             SqlBuilder.sqlBuilder()
                     .update().append(table.tablename(tablename))
                     .set().append(sqlOfStatus(table, status))
                     .comma().append(table.sqlOfForceUpdateColumns())
-                    .where().append(sqlBuilder).toString();
+                    .where(sqlBuilder).toString();
 
     @SuppressWarnings("unchecked")
     static <P> Object reviseParameter(P parameter) throws RestException {
@@ -346,13 +346,13 @@ public interface MybatisSqlProvider {
         }, (tablenameValue, tableValue, sqlBuilder) -> sqlSupply.supply(tablenameValue, tableValue, sqlBuilder, status));
     }
 
-    static <L, S> String providingOfLinkId(ProviderContext providerContext, @Nullable String tablename, L linkIdParameter, S statusParameter, MybatisSqlSupply.AlertSqlSupply sqlSupply) throws RestException {
+    static <L, S> String providingOfStatusLinkId(ProviderContext providerContext, @Nullable String tablename, L linkIdParameter, S statusParameter, MybatisSqlSupply.AlertSqlSupply sqlSupply) throws RestException {
         Object status = reviseParameter(statusParameter);
         return providingOfLinkId(providerContext, tablename, linkIdParameter, table -> {
         }, (tablenameValue, tableValue, sqlBuilder) -> sqlSupply.supply(tablenameValue, tableValue, sqlBuilder, status));
     }
 
-    static <L, S> String providingOfLinkIdAll(ProviderContext providerContext, @Nullable String tablename, Collection<L> linkIdList, S statusParameter, MybatisSqlSupply.AlertSqlSupply sqlSupply) throws RestException {
+    static <L, S> String providingOfStatusLinkIdAll(ProviderContext providerContext, @Nullable String tablename, Collection<L> linkIdList, S statusParameter, MybatisSqlSupply.AlertSqlSupply sqlSupply) throws RestException {
         Object status = reviseParameter(statusParameter);
         return providingOfLinkIdAll(providerContext, tablename, linkIdList, table -> {
         }, (tablenameValue, tableValue, sqlBuilder) -> sqlSupply.supply(tablenameValue, tableValue, sqlBuilder, status));
@@ -584,16 +584,7 @@ public interface MybatisSqlProvider {
     static <I> String providingOfWhere(ProviderContext providerContext, @Nullable String tablename, String whereSqlParameter, ConsumerActuator<MybatisTable> tableOptional, MybatisSqlSupply.SimpleSqlSupply sqlSupply) throws RestException {
         return MybatisSqlScript.caching(providerContext, (table, sqlScript) -> {
             tableOptional.actuate(table);
-            String whereSql = whereSqlParameter.trim();
-            if (whereSql.startsWith(SQLConstants.AND)) {
-                whereSql = whereSql.substring(SQLConstants.AND.length());
-            }
-            if (!whereSql.startsWith(SQLConstants.ORDER_BY) && !whereSql.startsWith(SQLConstants.LIMIT)) {
-                whereSql = SqlBuilder.sqlBuilder().where().append(whereSql).toString();
-            }
-            SqlBuilder sqlBuilder = SqlBuilder.sqlBuilder();
-            sqlBuilder.cdataLt().append(whereSql).cdataGt();
-            return sqlSupply.supply(tablename, table, sqlBuilder);
+            return sqlSupply.supply(tablename, table, SqlBuilder.sqlBuilder(whereSqlParameter));
         });
     }
 

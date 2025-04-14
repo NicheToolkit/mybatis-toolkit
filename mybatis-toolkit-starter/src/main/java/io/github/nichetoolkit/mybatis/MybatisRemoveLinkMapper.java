@@ -8,34 +8,45 @@ import org.apache.ibatis.annotations.UpdateProvider;
 
 import java.util.Collection;
 
-/**
- * <code>MybatisRemoveLinkMapper</code>
- * <p>The mybatis remove link mapper interface.</p>
- * @param <E>  {@link io.github.nichetoolkit.rice.RestId} <p>The generic parameter is <code>RestId</code> type.</p>
- * @param <L>  {@link java.lang.Object} <p>The parameter can be of any type.</p>
- * @param <I>  {@link java.lang.Object} <p>The parameter can be of any type.</p>
- * @see  io.github.nichetoolkit.rice.RestId
- * @see  io.github.nichetoolkit.mybatis.MybatisMapper
- * @see  io.github.nichetoolkit.rice.mapper.RemoveLinkMapper
- * @see  io.github.nichetoolkit.mybatis.MybatisRemoveMapper
- * @author Cyan (snow22314@outlook.com)
- * @since Jdk1.8
- */
-public interface MybatisRemoveLinkMapper<E extends RestId<I>,L,I> extends MybatisMapper<E>, RemoveLinkMapper<L,I>, MybatisRemoveMapper<E,I> {
+public interface MybatisRemoveLinkMapper<E extends RestId<I>, L, I> extends MybatisMapper<E>, MybatisRemoveMapper<E, I>, RemoveLinkMapper<L, I> {
 
+    @Override
+    default Integer removeByLinkId(@Param("linkId") L linkId, @Param("logic") Object logic) {
+        return removeByLinkId(linkId, null, logic);
+    }
+
+    @Override
+    default Integer removeDynamicByLinkId(@Param("tablename") String tablename, @Param("linkId") L linkId, @Param("logic") Object logic) {
+        return removeDynamicByLinkId(tablename, linkId, null, logic);
+    }
+
+    @Override
+    default Integer removeAllByLinkIds(@Param("linkIdList") Collection<L> linkIdList, @Param("logic") Object logic) {
+        return removeAllByLinkIds(linkIdList, null, logic);
+    }
+
+    @Override
+    default Integer removeDynamicAllByLinkIds(@Param("tablename") String tablename, @Param("linkIdList") Collection<L> linkIdList, @Param("logic") Object logic) {
+        return removeDynamicAllByLinkIds(tablename, linkIdList, null, logic);
+    }
+
+    @Override
     @Lang(MybatisSqlSourceCaching.class)
     @UpdateProvider(MybatisSqlProviderResolver.class)
-    Integer removeByLinkId(@Param("linkId") L linkId, @Param("logic") Object logic);
+    Integer removeByLinkId(L linkId, String linkName, Object logic);
 
+    @Override
     @Lang(MybatisSqlSourceCaching.class)
     @UpdateProvider(MybatisSqlProviderResolver.class)
-    Integer removeDynamicByLinkId(@Param("tablename") String tablename, @Param("linkId") L linkId, @Param("logic") Object logic);
+    Integer removeDynamicByLinkId(String tablename, L linkId, String linkName, Object logic);
 
+    @Override
     @Lang(MybatisSqlSourceCaching.class)
     @UpdateProvider(MybatisSqlProviderResolver.class)
-    Integer removeAllByLinkIds(@Param("linkIdList") Collection<L> linkIdList, @Param("logic") Object logic);
+    Integer removeAllByLinkIds(Collection<L> linkIdList, String linkName, Object logic);
 
+    @Override
     @Lang(MybatisSqlSourceCaching.class)
     @UpdateProvider(MybatisSqlProviderResolver.class)
-    Integer removeDynamicAllByLinkIds(@Param("tablename") String tablename, @Param("linkIdList") Collection<L> linkIdList, @Param("logic") Object logic);
+    Integer removeDynamicAllByLinkIds(String tablename, Collection<L> linkIdList, String linkName, Object logic);
 }

@@ -36,4 +36,5 @@ public class SimpleServiceImpl extends RestInfoService<SimpleModel, SimpleEntity
     public String queryWhereSql(SimpleFilter filter) throws RestException {
         return filter.toTimeSql("time").toIdSql("id").addSorts("id").toSql();
     }
+
 }

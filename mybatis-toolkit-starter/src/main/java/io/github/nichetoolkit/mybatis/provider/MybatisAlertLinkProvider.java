@@ -67,7 +67,7 @@ public class MybatisAlertLinkProvider implements MybatisSqlProvider {
     public static <L, S> String alertDynamicByLinkId(ProviderContext providerContext, String tablename, L linkId, S status) throws RestException {
         OptionalUtils.ofEmpty(linkId, "The link id param of 'alertByLinkId' method cannot be empty!", message -> new MybatisParamErrorException("alertByLinkId", "linkId", message));
         OptionalUtils.ofEmpty(status, "The status param of 'alertByLinkId' method cannot be empty!", message -> new MybatisParamErrorException("alertByLinkId", "status", message));
-        return MybatisSqlProvider.providingOfLinkId(providerContext, tablename, linkId, status, ALERT_SQL_SUPPLY);
+        return MybatisSqlProvider.providingOfStatusLinkId(providerContext, tablename, linkId, status, ALERT_SQL_SUPPLY);
     }
 
     /**
@@ -108,7 +108,7 @@ public class MybatisAlertLinkProvider implements MybatisSqlProvider {
     public static <L, S> String alertDynamicAllByLinkIds(ProviderContext providerContext, String tablename, Collection<L> linkIdList, S status) throws RestException {
         OptionalUtils.ofEmpty(linkIdList, "The link id list param of 'alertAllByLinkIds' method cannot be empty!", message -> new MybatisParamErrorException("alertAllByLinkIds", "linkIdList", message));
         OptionalUtils.ofEmpty(status, "The status param of 'alertAllByLinkIds' method cannot be empty!", message -> new MybatisParamErrorException("alertAllByLinkIds", "status", message));
-        return MybatisSqlProvider.providingOfLinkIdAll(providerContext, tablename, linkIdList, status, ALERT_SQL_SUPPLY);
+        return MybatisSqlProvider.providingOfStatusLinkIdAll(providerContext, tablename, linkIdList, status, ALERT_SQL_SUPPLY);
     }
 
 }

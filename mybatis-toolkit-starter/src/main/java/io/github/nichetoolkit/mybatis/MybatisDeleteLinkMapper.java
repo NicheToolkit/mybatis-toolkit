@@ -23,19 +23,43 @@ import java.util.Collection;
  */
 public interface MybatisDeleteLinkMapper<E extends RestId<I>, L, I> extends MybatisMapper<E>, MybatisDeleteMapper<E, I>, DeleteLinkMapper<L, I> {
 
-    @Lang(MybatisSqlSourceCaching.class)
-    @DeleteProvider(MybatisSqlProviderResolver.class)
-    Integer deleteByLinkId(@Param("linkId") L linkId);
+    @Override
+    default Integer deleteByLinkId(@Param("linkId") L linkId) {
+        return deleteByLinkId(linkId, null);
+    }
 
-    @Lang(MybatisSqlSourceCaching.class)
-    @DeleteProvider(MybatisSqlProviderResolver.class)
-    Integer deleteDynamicByLinkId(@Param("tablename") String tablename, @Param("linkId") L linkId);
+    @Override
+    default Integer deleteDynamicByLinkId(@Param("tablename") String tablename, @Param("linkId") L linkId) {
+        return deleteDynamicByLinkId(tablename, linkId, null);
+    }
 
-    @Lang(MybatisSqlSourceCaching.class)
-    @DeleteProvider(MybatisSqlProviderResolver.class)
-    Integer deleteAllByLinkIds(@Param("linkIdList") Collection<L> linkIdList);
+    @Override
+    default Integer deleteAllByLinkIds(@Param("linkIdList") Collection<L> linkIdList) {
+        return deleteAllByLinkIds(linkIdList, null);
+    }
 
+    @Override
+    default Integer deleteDynamicAllByLinkIds(@Param("tablename") String tablename, @Param("linkIdList") Collection<L> linkIdList) {
+        return deleteDynamicAllByLinkIds(tablename, linkIdList, null);
+    }
+
+    @Override
     @Lang(MybatisSqlSourceCaching.class)
     @DeleteProvider(MybatisSqlProviderResolver.class)
-    Integer deleteDynamicAllByLinkIds(@Param("tablename") String tablename, @Param("linkIdList") Collection<L> linkIdList);
+    Integer deleteByLinkId(L linkId, String linkName);
+
+    @Override
+    @Lang(MybatisSqlSourceCaching.class)
+    @DeleteProvider(MybatisSqlProviderResolver.class)
+    Integer deleteDynamicByLinkId(String tablename, L linkId, String linkName);
+
+    @Override
+    @Lang(MybatisSqlSourceCaching.class)
+    @DeleteProvider(MybatisSqlProviderResolver.class)
+    Integer deleteAllByLinkIds(Collection<L> linkIdList, String linkName);
+
+    @Override
+    @Lang(MybatisSqlSourceCaching.class)
+    @DeleteProvider(MybatisSqlProviderResolver.class)
+    Integer deleteDynamicAllByLinkIds(String tablename, Collection<L> linkIdList, String linkName);
 }
