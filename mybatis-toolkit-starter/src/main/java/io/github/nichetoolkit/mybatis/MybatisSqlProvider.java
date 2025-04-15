@@ -906,7 +906,7 @@ public interface MybatisSqlProvider {
             String sqlOfFickle = IntStream.range(0, fickleKeyColumns.size())
                     .mapToObj(index -> {
                         MybatisColumn mybatisColumn = fickleKeyColumns.get(index);
-                        return mybatisColumn.variable(EntityConstants.ENTITY_PREFIX, index);
+                        return mybatisColumn.parentOfVariable(EntityConstants.ENTITY_PREFIX, index);
                     }).collect(Collectors.joining(SQLConstants.COMMA + SQLConstants.BLANK));
             if (GeneralUtils.isNotEmpty(sqlOfFickle)) {
                 sqlBuilder.comma().blank().append(sqlOfFickle);

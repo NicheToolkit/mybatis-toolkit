@@ -521,6 +521,15 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
         }
     }
 
+    public String parentOfVariable(String prefix, Integer index) {
+        if (this.field.isFickleField) {
+            prefix = prefix + this.field.prefixOfFickle();
+            return signerVariable(prefix, index);
+        } else {
+            return parentOfVariable(prefix);
+        }
+    }
+
     /**
      * <code>signerVariable</code>
      * <p>The signer variable method.</p>

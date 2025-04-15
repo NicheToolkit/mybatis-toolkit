@@ -331,8 +331,10 @@ public class MybatisField {
         }
         if (isParent) {
             sqlBuilder.append(this.fieldName()).period();
+        } else {
+            sqlBuilder.deleteLastChar();
         }
-        return sqlBuilder.deleteLastChar().toString();
+        return sqlBuilder.toString();
     }
 
     /**
