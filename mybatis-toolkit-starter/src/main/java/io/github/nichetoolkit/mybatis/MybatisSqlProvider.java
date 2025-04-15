@@ -385,7 +385,7 @@ public interface MybatisSqlProvider {
                 Map<Integer, List<L>> sliceOfColumnsMap = sliceOfColumns(table.linkageColumns(), linkIdList);
                 sqlBuilder.append(sqlOfColumns(sliceOfColumnsMap, table.linkageColumns(), sqlScript));
             } else {
-                sqlBuilder.append(table.getIdentityColumn().columnName()).in().braceLt();
+                sqlBuilder.append(table.getLinkColumn().columnName()).in().braceLt();
                 linkIdList.forEach(linkId -> sqlBuilder.value(linkId).comma());
                 sqlBuilder.delete(sqlBuilder.length() - 2).braceGt();
             }

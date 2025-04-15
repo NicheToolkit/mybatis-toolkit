@@ -30,7 +30,7 @@ public class MybatisFindLinkProvider implements MybatisSqlProvider {
     }
 
     public static <L> String findDynamicByLinkId(ProviderContext providerContext, String tablename, L linkId, String linkName) throws RestException {
-        OptionalUtils.ofEmpty(linkId, "The id param of 'findByLinkId' method cannot be empty!", log, message -> new MybatisParamErrorException("findByLinkId", "linkId", message));
+        OptionalUtils.ofEmpty(linkId, "The link id param of 'findByLinkId' method cannot be empty!", log, message -> new MybatisParamErrorException("findByLinkId", "linkId", message));
         String selectColumns = "The select columns of table with 'findByLinkId' method cannot be empty!";
         ConsumerActuator<MybatisTable> tableOptional = table -> OptionalUtils.ofEmpty(table.selectColumns(), selectColumns, log,
                 message -> new MybatisTableErrorException("findByLinkId", "selectColumns", message));
@@ -42,7 +42,7 @@ public class MybatisFindLinkProvider implements MybatisSqlProvider {
     }
 
     public static <L> String findDynamicAllByLinkIds(ProviderContext providerContext, String tablename, Collection<L> linkIdList, String linkName) throws RestException {
-        OptionalUtils.ofEmpty(linkIdList, "The id list param of 'findAllByLinkIds' method cannot be empty!", log, message -> new MybatisParamErrorException("findAllByLinkIds", "linkIdList", message));
+        OptionalUtils.ofEmpty(linkIdList, "The link id list param of 'findAllByLinkIds' method cannot be empty!", log, message -> new MybatisParamErrorException("findAllByLinkIds", "linkIdList", message));
         ConsumerActuator<MybatisTable> tableOptional = table -> OptionalUtils.ofEmpty(table.selectColumns(), "The select columns of table with 'findAllByLinkIds' method cannot be empty!", message -> new MybatisTableErrorException("findAllByLinkIds", "selectColumns", message));
         return MybatisSqlProvider.providingOfLinkIdAll(providerContext, tablename, linkIdList, tableOptional, SELECT_SQL_SUPPLY);
     }

@@ -16,6 +16,6 @@ import io.github.nichetoolkit.rice.service.*;
  * @author Cyan (snow22314@outlook.com)
  * @since Jdk1.8
  */
-public interface SimpleService extends FilterService<SimpleModel, SimpleFilter, String, String>, SingleService<SimpleModel, String, String>,
+public interface SimpleService extends FilterService<SimpleModel, SimpleFilter, String, String>, SingleService<SimpleModel, String, String>, QueryLinkService<SimpleModel,String,String>,
         AlertLinkService<String, String>, DeleteLinkService<String, String>, RemoveLinkService<String, String>, OperateLinkService<String, String> {
 }

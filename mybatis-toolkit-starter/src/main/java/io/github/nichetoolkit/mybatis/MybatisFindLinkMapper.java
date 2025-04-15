@@ -5,6 +5,7 @@ import io.github.nichetoolkit.rice.mapper.FindLinkMapper;
 import org.apache.ibatis.annotations.DeleteProvider;
 import org.apache.ibatis.annotations.Lang;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.SelectProvider;
 
 import java.util.Collection;
 import java.util.List;
@@ -32,21 +33,21 @@ public interface MybatisFindLinkMapper<E extends RestId<I>, L, I> extends Mybati
 
     @Override
     @Lang(MybatisSqlSourceCaching.class)
-    @DeleteProvider(MybatisSqlProviderResolver.class)
+    @SelectProvider(MybatisSqlProviderResolver.class)
     List<E> findByLinkId(@Param("linkId") L linkId, @Param("linkName") String linkName);
 
     @Override
     @Lang(MybatisSqlSourceCaching.class)
-    @DeleteProvider(MybatisSqlProviderResolver.class)
+    @SelectProvider(MybatisSqlProviderResolver.class)
     List<E> findDynamicByLinkId(@Param("tablename") String tablename, @Param("linkId") L linkId, @Param("linkName") String linkName);
 
     @Override
     @Lang(MybatisSqlSourceCaching.class)
-    @DeleteProvider(MybatisSqlProviderResolver.class)
+    @SelectProvider(MybatisSqlProviderResolver.class)
     List<E> findAllByLinkIds(@Param("linkIdList") Collection<L> linkIdList, @Param("linkName") String linkName);
 
     @Override
     @Lang(MybatisSqlSourceCaching.class)
-    @DeleteProvider(MybatisSqlProviderResolver.class)
+    @SelectProvider(MybatisSqlProviderResolver.class)
     List<E> findDynamicAllByLinkIds(@Param("tablename") String tablename, @Param("linkIdList") Collection<L> linkIdList, @Param("linkName") String linkName);
 }

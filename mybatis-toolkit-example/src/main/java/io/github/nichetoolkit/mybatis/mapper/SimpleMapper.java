@@ -2,6 +2,7 @@ package io.github.nichetoolkit.mybatis.mapper;
 
 import io.github.nichetoolkit.mybatis.*;
 import io.github.nichetoolkit.mybatis.simple.SimpleEntity;
+import io.github.nichetoolkit.rice.mapper.FindLinkMapper;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
@@ -18,6 +19,7 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface SimpleMapper extends MybatisInfoMapper<SimpleEntity, String>,
+        MybatisFindLinkMapper<SimpleEntity, String, String>,
         MybatisAlertLinkMapper<SimpleEntity, String, Integer, String>,
         MybatisDeleteLinkMapper<SimpleEntity, String, String>,
         MybatisRemoveLinkMapper<SimpleEntity, String, String>,

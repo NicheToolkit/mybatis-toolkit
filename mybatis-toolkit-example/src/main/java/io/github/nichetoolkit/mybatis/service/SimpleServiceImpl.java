@@ -4,12 +4,12 @@ import io.github.nichetoolkit.mybatis.simple.SimpleEntity;
 import io.github.nichetoolkit.mybatis.simple.SimpleFilter;
 import io.github.nichetoolkit.mybatis.simple.SimpleModel;
 import io.github.nichetoolkit.rest.RestException;
+import io.github.nichetoolkit.rest.RestKey;
 import io.github.nichetoolkit.rice.RestInfoService;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * <code>SimpleServiceImpl</code>
@@ -36,5 +36,4 @@ public class SimpleServiceImpl extends RestInfoService<SimpleModel, SimpleEntity
     public String queryWhereSql(SimpleFilter filter) throws RestException {
         return filter.toTimeSql("time").toIdSql("id").addSorts("id").toSql();
     }
-
 }
