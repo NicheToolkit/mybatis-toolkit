@@ -5,6 +5,7 @@ import io.github.nichetoolkit.mybatis.enums.TemplateStatus1;
 import io.github.nichetoolkit.mybatis.enums.TemplateStatus2;
 import io.github.nichetoolkit.mybatis.simple.*;
 import io.github.nichetoolkit.rest.RestException;
+import io.github.nichetoolkit.rest.RestKey;
 import io.github.nichetoolkit.rest.util.DateUtils;
 import io.github.nichetoolkit.rest.util.GeneralUtils;
 import io.github.nichetoolkit.rest.util.JsonUtils;
@@ -20,115 +21,29 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
-/**
- * <code>TemplateServiceTest</code>
- * <p>The template service test class.</p>
- * @see  io.github.nichetoolkit.mybatis.MybatisExampleApplicationTests
- * @see  org.junit.jupiter.api.TestMethodOrder
- * @author Cyan (snow22314@outlook.com)
- * @since Jdk1.8
- */
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class TemplateServiceTest extends MybatisExampleApplicationTests {
-    /**
-     * <code>templateService</code>
-     * {@link io.github.nichetoolkit.mybatis.service.TemplateService} <p>The <code>templateService</code> field.</p>
-     * @see  org.springframework.beans.factory.annotation.Autowired
-     */
     @Autowired
     private TemplateService templateService;
 
-    /**
-     * <code>testTemplatePk1</code>
-     * {@link java.lang.String} <p>The <code>testTemplatePk1</code> field.</p>
-     * @see  java.lang.String
-     */
     private final String testTemplatePk1 = "1656549566276964310";
-    /**
-     * <code>testTemplatePk1_1</code>
-     * {@link java.lang.String} <p>The <code>testTemplatePk1_1</code> field.</p>
-     * @see  java.lang.String
-     */
     private final String testTemplatePk1_1 = "1656549566276964311";
-    /**
-     * <code>testTemplatePk1_2</code>
-     * {@link java.lang.String} <p>The <code>testTemplatePk1_2</code> field.</p>
-     * @see  java.lang.String
-     */
     private final String testTemplatePk1_2 = "1656549566276964312";
 
-    /**
-     * <code>testTemplatePk2</code>
-     * {@link java.lang.String} <p>The <code>testTemplatePk2</code> field.</p>
-     * @see  java.lang.String
-     */
     private final String testTemplatePk2 = "1656549566276964320";
-    /**
-     * <code>testTemplatePk2_1</code>
-     * {@link java.lang.String} <p>The <code>testTemplatePk2_1</code> field.</p>
-     * @see  java.lang.String
-     */
     private final String testTemplatePk2_1 = "1656549566276964321";
-    /**
-     * <code>testTemplatePk2_2</code>
-     * {@link java.lang.String} <p>The <code>testTemplatePk2_2</code> field.</p>
-     * @see  java.lang.String
-     */
     private final String testTemplatePk2_2 = "1656549566276964322";
 
-    /**
-     * <code>testLinkId1</code>
-     * {@link java.lang.String} <p>The <code>testLinkId1</code> field.</p>
-     * @see  java.lang.String
-     */
     private final String testLinkId1 = "1656551617199345610";
-    /**
-     * <code>testLinkId1_1</code>
-     * {@link java.lang.String} <p>The <code>testLinkId1_1</code> field.</p>
-     * @see  java.lang.String
-     */
     private final String testLinkId1_1 = "1656551617199345611";
-    /**
-     * <code>testLinkId1_2</code>
-     * {@link java.lang.String} <p>The <code>testLinkId1_2</code> field.</p>
-     * @see  java.lang.String
-     */
     private final String testLinkId1_2 = "1656551617199345612";
 
-    /**
-     * <code>testLinkId2</code>
-     * {@link java.lang.String} <p>The <code>testLinkId2</code> field.</p>
-     * @see  java.lang.String
-     */
     private final String testLinkId2 = "1656551617199345620";
-    /**
-     * <code>testLinkId2_1</code>
-     * {@link java.lang.String} <p>The <code>testLinkId2_1</code> field.</p>
-     * @see  java.lang.String
-     */
     private final String testLinkId2_1 = "1656551617199345621";
-    /**
-     * <code>testLinkId2_2</code>
-     * {@link java.lang.String} <p>The <code>testLinkId2_2</code> field.</p>
-     * @see  java.lang.String
-     */
     private final String testLinkId2_2 = "1656551617199345622";
 
-    /**
-     * <code>tablekey</code>
-     * {@link java.lang.String} <p>The <code>tablekey</code> field.</p>
-     * @see  java.lang.String
-     */
     private final String tablekey = "_dynamic";
 
-    /**
-     * <code>save</code>
-     * <p>The save method.</p>
-     * @see  org.junit.jupiter.api.Order
-     * @see  org.junit.jupiter.api.Test
-     * @see  io.github.nichetoolkit.rest.RestException
-     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
-     */
     @Order(1)
     @Test
     public void save() throws RestException {
@@ -143,14 +58,6 @@ class TemplateServiceTest extends MybatisExampleApplicationTests {
         System.out.println(JsonUtils.parseJson(save));
     }
 
-    /**
-     * <code>saveAll</code>
-     * <p>The save all method.</p>
-     * @see  org.junit.jupiter.api.Order
-     * @see  org.junit.jupiter.api.Test
-     * @see  io.github.nichetoolkit.rest.RestException
-     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
-     */
     @Order(2)
     @Test
     public void saveAll() throws RestException {
@@ -174,14 +81,6 @@ class TemplateServiceTest extends MybatisExampleApplicationTests {
         System.out.println(JsonUtils.parseJson(templateModels));
     }
 
-    /**
-     * <code>queryById</code>
-     * <p>The query by id method.</p>
-     * @see  org.junit.jupiter.api.Order
-     * @see  org.junit.jupiter.api.Test
-     * @see  io.github.nichetoolkit.rest.RestException
-     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
-     */
     @Order(3)
     @Test
     public void queryById() throws RestException {
@@ -190,14 +89,6 @@ class TemplateServiceTest extends MybatisExampleApplicationTests {
         System.out.println(JsonUtils.parseJson(templateModel));
     }
 
-    /**
-     * <code>queryAll</code>
-     * <p>The query all method.</p>
-     * @see  org.junit.jupiter.api.Order
-     * @see  org.junit.jupiter.api.Test
-     * @see  io.github.nichetoolkit.rest.RestException
-     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
-     */
     @Order(4)
     @Test
     public void queryAll() throws RestException {
@@ -208,14 +99,6 @@ class TemplateServiceTest extends MybatisExampleApplicationTests {
         System.out.println(JsonUtils.parseJson(templateModels));
     }
 
-    /**
-     * <code>queryAllWithFilter</code>
-     * <p>The query all with filter method.</p>
-     * @see  org.junit.jupiter.api.Order
-     * @see  org.junit.jupiter.api.Test
-     * @see  io.github.nichetoolkit.rest.RestException
-     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
-     */
     @Order(5)
     @Test
     public void queryAllWithFilter() throws RestException {
@@ -229,30 +112,28 @@ class TemplateServiceTest extends MybatisExampleApplicationTests {
         System.out.println(JsonUtils.parseJson(restPage));
     }
 
-    /**
-     * <code>removeById</code>
-     * <p>The remove by id method.</p>
-     * @see  org.junit.jupiter.api.Order
-     * @see  org.junit.jupiter.api.Test
-     * @see  io.github.nichetoolkit.rest.RestException
-     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
-     */
     @Order(6)
+    @Test
+    public void queryByLinkId() throws RestException {
+        List<TemplateModel> templateModels = templateService.queryByLinkId(tablekey, testLinkId1,RestKey.of("linkId1"));
+        System.out.println(JsonUtils.parseJson(templateModels));
+    }
+
+    @Order(7)
+    @Test
+    public void queryAllByLinkIds() throws RestException {
+        List<TemplateModel> templateModels = templateService.queryAllByLinkIds(tablekey, Arrays.asList(testLinkId1, testLinkId2),RestKey.of("linkId1"));
+        System.out.println(JsonUtils.parseJson(templateModels));
+    }
+
+    @Order(8)
     @Test
     public void removeById() throws RestException {
         TemplateIdentity identity = new TemplateIdentity(testTemplatePk1, testTemplatePk2);
         templateService.removeById(tablekey, identity);
     }
 
-    /**
-     * <code>removeAll</code>
-     * <p>The remove all method.</p>
-     * @see  org.junit.jupiter.api.Order
-     * @see  org.junit.jupiter.api.Test
-     * @see  io.github.nichetoolkit.rest.RestException
-     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
-     */
-    @Order(7)
+    @Order(9)
     @Test
     public void removeAll() throws RestException {
         TemplateIdentity identity1 = new TemplateIdentity(null, testTemplatePk2_1);
@@ -260,15 +141,7 @@ class TemplateServiceTest extends MybatisExampleApplicationTests {
         templateService.removeAll(tablekey, Arrays.asList(identity1, identity2));
     }
 
-    /**
-     * <code>removeAllWithFilter</code>
-     * <p>The remove all with filter method.</p>
-     * @see  org.junit.jupiter.api.Order
-     * @see  org.junit.jupiter.api.Test
-     * @see  io.github.nichetoolkit.rest.RestException
-     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
-     */
-    @Order(8)
+    @Order(10)
     @Test
     public void removeAllWithFilter() throws RestException {
         TemplateFilter templateFilter = new TemplateFilter();
@@ -280,30 +153,14 @@ class TemplateServiceTest extends MybatisExampleApplicationTests {
         templateService.removeAllWithFilter(templateFilter);
     }
 
-    /**
-     * <code>removeByLinkId</code>
-     * <p>The remove by link id method.</p>
-     * @see  org.junit.jupiter.api.Order
-     * @see  org.junit.jupiter.api.Test
-     * @see  io.github.nichetoolkit.rest.RestException
-     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
-     */
-    @Order(9)
+    @Order(11)
     @Test
     public void removeByLinkId() throws RestException {
         TemplateLinkage linkage = new TemplateLinkage(testLinkId1, testLinkId2);
         templateService.removeByLinkId(tablekey, linkage);
     }
 
-    /**
-     * <code>removeAllByLinkIds</code>
-     * <p>The remove all by link ids method.</p>
-     * @see  org.junit.jupiter.api.Order
-     * @see  org.junit.jupiter.api.Test
-     * @see  io.github.nichetoolkit.rest.RestException
-     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
-     */
-    @Order(10)
+    @Order(12)
     @Test
     public void removeAllByLinkIds() throws RestException {
         TemplateLinkage linkage1 = new TemplateLinkage(testLinkId1_1, null);
@@ -311,30 +168,14 @@ class TemplateServiceTest extends MybatisExampleApplicationTests {
         templateService.removeAllByLinkIds(tablekey, Arrays.asList(linkage1, linkage2));
     }
 
-    /**
-     * <code>operateById</code>
-     * <p>The operate by id method.</p>
-     * @see  org.junit.jupiter.api.Order
-     * @see  org.junit.jupiter.api.Test
-     * @see  io.github.nichetoolkit.rest.RestException
-     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
-     */
-    @Order(11)
+    @Order(13)
     @Test
     public void operateById() throws RestException {
         TemplateIdentity identity = new TemplateIdentity(testTemplatePk1, testTemplatePk2);
         templateService.operateById(tablekey, identity, OperateType.NONE);
     }
 
-    /**
-     * <code>operateAll</code>
-     * <p>The operate all method.</p>
-     * @see  org.junit.jupiter.api.Order
-     * @see  org.junit.jupiter.api.Test
-     * @see  io.github.nichetoolkit.rest.RestException
-     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
-     */
-    @Order(12)
+    @Order(14)
     @Test
     public void operateAll() throws RestException {
         TemplateIdentity identity1 = new TemplateIdentity(null, testTemplatePk2_1);
@@ -342,15 +183,7 @@ class TemplateServiceTest extends MybatisExampleApplicationTests {
         templateService.operateAll(tablekey, Arrays.asList(identity1, identity2), OperateType.NONE);
     }
 
-    /**
-     * <code>operateAllWithFilter</code>
-     * <p>The operate all with filter method.</p>
-     * @see  org.junit.jupiter.api.Order
-     * @see  org.junit.jupiter.api.Test
-     * @see  io.github.nichetoolkit.rest.RestException
-     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
-     */
-    @Order(13)
+    @Order(15)
     @Test
     public void operateAllWithFilter() throws RestException {
         TemplateFilter templateFilter = new TemplateFilter();
@@ -362,30 +195,14 @@ class TemplateServiceTest extends MybatisExampleApplicationTests {
         templateService.operateAllWithFilter(templateFilter);
     }
 
-    /**
-     * <code>operateByLinkId</code>
-     * <p>The operate by link id method.</p>
-     * @see  org.junit.jupiter.api.Order
-     * @see  org.junit.jupiter.api.Test
-     * @see  io.github.nichetoolkit.rest.RestException
-     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
-     */
-    @Order(14)
+    @Order(16)
     @Test
     public void operateByLinkId() throws RestException {
         TemplateLinkage linkage = new TemplateLinkage(testLinkId1, testLinkId2);
         templateService.operateByLinkId(tablekey, linkage, OperateType.NONE);
     }
 
-    /**
-     * <code>operateAllByLinkIds</code>
-     * <p>The operate all by link ids method.</p>
-     * @see  org.junit.jupiter.api.Order
-     * @see  org.junit.jupiter.api.Test
-     * @see  io.github.nichetoolkit.rest.RestException
-     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
-     */
-    @Order(15)
+    @Order(17)
     @Test
     public void operateAllByLinkIds() throws RestException {
         TemplateLinkage linkage1 = new TemplateLinkage(null, testLinkId1_2);
@@ -393,15 +210,7 @@ class TemplateServiceTest extends MybatisExampleApplicationTests {
         templateService.operateAllByLinkIds(tablekey, Arrays.asList(linkage1, linkage2), OperateType.NONE);
     }
 
-    /**
-     * <code>alertById</code>
-     * <p>The alert by id method.</p>
-     * @see  org.junit.jupiter.api.Order
-     * @see  org.junit.jupiter.api.Test
-     * @see  io.github.nichetoolkit.rest.RestException
-     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
-     */
-    @Order(16)
+    @Order(18)
     @Test
     public void alertById() throws RestException {
         TemplateIdentity identity = new TemplateIdentity(testTemplatePk1, testTemplatePk2);
@@ -409,15 +218,7 @@ class TemplateServiceTest extends MybatisExampleApplicationTests {
         templateService.alertById(tablekey, identity, alertness);
     }
 
-    /**
-     * <code>alertAll</code>
-     * <p>The alert all method.</p>
-     * @see  org.junit.jupiter.api.Order
-     * @see  org.junit.jupiter.api.Test
-     * @see  io.github.nichetoolkit.rest.RestException
-     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
-     */
-    @Order(17)
+    @Order(19)
     @Test
     public void alertAll() throws RestException {
         TemplateIdentity identity1 = new TemplateIdentity(null, testTemplatePk2_1);
@@ -426,15 +227,7 @@ class TemplateServiceTest extends MybatisExampleApplicationTests {
         templateService.alertAll(tablekey, Arrays.asList(identity1, identity2), alertness);
     }
 
-    /**
-     * <code>alertAllWithFilter</code>
-     * <p>The alert all with filter method.</p>
-     * @see  org.junit.jupiter.api.Order
-     * @see  org.junit.jupiter.api.Test
-     * @see  io.github.nichetoolkit.rest.RestException
-     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
-     */
-    @Order(18)
+    @Order(20)
     @Test
     public void alertAllWithFilter() throws RestException {
         TemplateFilter templateFilter = new TemplateFilter();
@@ -447,15 +240,7 @@ class TemplateServiceTest extends MybatisExampleApplicationTests {
         templateService.alertAllWithFilter(templateFilter);
     }
 
-    /**
-     * <code>alertByLinkId</code>
-     * <p>The alert by link id method.</p>
-     * @see  org.junit.jupiter.api.Order
-     * @see  org.junit.jupiter.api.Test
-     * @see  io.github.nichetoolkit.rest.RestException
-     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
-     */
-    @Order(19)
+    @Order(21)
     @Test
     public void alertByLinkId() throws RestException {
         TemplateLinkage linkage = new TemplateLinkage(testLinkId1, testLinkId2);
@@ -463,15 +248,7 @@ class TemplateServiceTest extends MybatisExampleApplicationTests {
         templateService.alertByLinkId(tablekey, linkage, alertness);
     }
 
-    /**
-     * <code>alertAllByLinkIds</code>
-     * <p>The alert all by link ids method.</p>
-     * @see  org.junit.jupiter.api.Order
-     * @see  org.junit.jupiter.api.Test
-     * @see  io.github.nichetoolkit.rest.RestException
-     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
-     */
-    @Order(20)
+    @Order(22)
     @Test
     public void alertAllByLinkIds() throws RestException {
         TemplateLinkage linkage1 = new TemplateLinkage(testLinkId1_1, null);
@@ -480,30 +257,14 @@ class TemplateServiceTest extends MybatisExampleApplicationTests {
         templateService.alertAllByLinkIds(tablekey, Arrays.asList(linkage1, linkage2), alertness);
     }
 
-    /**
-     * <code>deleteById</code>
-     * <p>The delete by id method.</p>
-     * @see  org.junit.jupiter.api.Order
-     * @see  org.junit.jupiter.api.Test
-     * @see  io.github.nichetoolkit.rest.RestException
-     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
-     */
-    @Order(21)
+    @Order(23)
     @Test
     public void deleteById() throws RestException {
         TemplateIdentity identity = new TemplateIdentity(testTemplatePk1, testTemplatePk2);
         templateService.deleteById(tablekey, identity);
     }
 
-    /**
-     * <code>deleteAll</code>
-     * <p>The delete all method.</p>
-     * @see  org.junit.jupiter.api.Order
-     * @see  org.junit.jupiter.api.Test
-     * @see  io.github.nichetoolkit.rest.RestException
-     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
-     */
-    @Order(22)
+    @Order(24)
     @Test
     public void deleteAll() throws RestException {
         TemplateIdentity identity1 = new TemplateIdentity(null, testTemplatePk2_1);
@@ -511,15 +272,7 @@ class TemplateServiceTest extends MybatisExampleApplicationTests {
         templateService.deleteAll(tablekey, Arrays.asList(identity1, identity2));
     }
 
-    /**
-     * <code>deleteAllWithFilter</code>
-     * <p>The delete all with filter method.</p>
-     * @see  org.junit.jupiter.api.Order
-     * @see  org.junit.jupiter.api.Test
-     * @see  io.github.nichetoolkit.rest.RestException
-     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
-     */
-    @Order(23)
+    @Order(25)
     @Test
     public void deleteAllWithFilter() throws RestException {
         TemplateFilter templateFilter = new TemplateFilter();
@@ -531,30 +284,14 @@ class TemplateServiceTest extends MybatisExampleApplicationTests {
         templateService.deleteAllWithFilter(templateFilter);
     }
 
-    /**
-     * <code>deleteByLinkId</code>
-     * <p>The delete by link id method.</p>
-     * @see  org.junit.jupiter.api.Order
-     * @see  org.junit.jupiter.api.Test
-     * @see  io.github.nichetoolkit.rest.RestException
-     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
-     */
-    @Order(24)
+    @Order(26)
     @Test
     public void deleteByLinkId() throws RestException {
         TemplateLinkage linkage = new TemplateLinkage(testLinkId1, testLinkId2);
         templateService.deleteByLinkId(tablekey, linkage);
     }
 
-    /**
-     * <code>deleteAllByLinkIds</code>
-     * <p>The delete all by link ids method.</p>
-     * @see  org.junit.jupiter.api.Order
-     * @see  org.junit.jupiter.api.Test
-     * @see  io.github.nichetoolkit.rest.RestException
-     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
-     */
-    @Order(25)
+    @Order(27)
     @Test
     public void deleteAllByLinkIds() throws RestException {
         TemplateLinkage linkage1 = new TemplateLinkage(null, testLinkId1_2);

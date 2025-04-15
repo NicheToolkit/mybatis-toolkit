@@ -56,7 +56,7 @@ public interface MybatisOperateLinkMapper<E extends RestId<I>, L, I> extends Myb
     @Override
     @Lang(MybatisSqlSourceCaching.class)
     @UpdateProvider(MybatisSqlProviderResolver.class)
-    Integer operateAllByLinkIds(@Param("linkId") Collection<L> linkIdList, @Param("linkName") String linkName, @Param("operate") Integer operate);
+    Integer operateAllByLinkIds(@Param("linkIdList") Collection<L> linkIdList, @Param("linkName") String linkName, @Param("operate") Integer operate);
 
     @Override
     @Lang(MybatisSqlSourceCaching.class)

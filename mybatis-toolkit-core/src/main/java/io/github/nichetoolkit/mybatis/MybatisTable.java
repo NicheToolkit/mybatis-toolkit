@@ -972,7 +972,7 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
             }
             String property = column.property();
             if ((column.isSpecialIdentity() || column.isSpecialLinkage() || column.isSpecialAlertness()) && column.isParentNotEmpty()) {
-                property = column.property(column.prefixOfParent() + SQLConstants.PERIOD);
+                property = column.property(column.prefixOfParent());
             }
             ResultMapping.Builder builder = new ResultMapping.Builder(configuration, property, columnName, column.javaType());
             if (column.getJdbcType() != null && column.getJdbcType() != JdbcType.UNDEFINED) {

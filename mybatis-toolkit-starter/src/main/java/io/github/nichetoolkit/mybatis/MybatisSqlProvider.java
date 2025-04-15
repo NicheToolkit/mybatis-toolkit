@@ -364,13 +364,13 @@ public interface MybatisSqlProvider {
         return MybatisSqlScript.caching(providerContext, (table, sqlScript) -> {
             tableOptional.actuate(table);
             SqlBuilder sqlBuilder = SqlBuilder.sqlBuilder();
-            if (table.isSpecialLinkage()) {
-                valueOfParameter(table.linkageColumns(), linkId, table.getLinkageType());
-                String linkageSql = sqlOfColumns(linkId, table.getLinkageColumns(), true, true);
-                sqlBuilder.append(linkageSql);
+            if (GeneralUtils.isNotEmpty(linkName)) {
+                Optional.ofNullable(table.linkColumn(linkName)).ifPresent(column -> sqlBuilder.append(column.columnName()).eq().value(linkId));
             } else {
-                if (GeneralUtils.isNotEmpty(linkName)) {
-                    Optional.ofNullable(table.linkColumn(linkName)).ifPresent(column -> sqlBuilder.append(column.columnEqualsProperty()));
+                if (table.isSpecialLinkage()) {
+                    valueOfParameter(table.linkageColumns(), linkId, table.getLinkageType());
+                    String linkageSql = sqlOfColumns(linkId, table.getLinkageColumns(), true, true);
+                    sqlBuilder.append(linkageSql);
                 } else {
                     Optional.ofNullable(table.getLinkColumn()).ifPresent(column -> sqlBuilder.append(column.columnEqualsProperty()));
                 }
@@ -384,14 +384,24 @@ public interface MybatisSqlProvider {
         return MybatisSqlScript.caching(providerContext, (table, sqlScript) -> {
             tableOptional.actuate(table);
             SqlBuilder sqlBuilder = SqlBuilder.sqlBuilder();
-            if (table.isSpecialLinkage()) {
-                RestStream.stream(linkIdList).forEach(linkId -> valueOfParameter(table.linkageColumns(), linkId, table.getLinkageType()));
-                Map<Integer, List<L>> sliceOfColumnsMap = sliceOfColumns(table.linkageColumns(), linkIdList);
-                sqlBuilder.append(sqlOfColumns(sliceOfColumnsMap, table.linkageColumns(), sqlScript));
+            if (GeneralUtils.isNotEmpty(linkName)) {
+                Optional.ofNullable(table.linkColumn(linkName)).ifPresent(column -> {
+                    sqlBuilder.append(column.columnName()).in().braceLt();
+                    linkIdList.forEach(linkId -> sqlBuilder.value(linkId).comma());
+                    sqlBuilder.delete(sqlBuilder.length() - 2).braceGt();
+                });
             } else {
-                sqlBuilder.append(table.getLinkColumn().columnName()).in().braceLt();
-                linkIdList.forEach(linkId -> sqlBuilder.value(linkId).comma());
-                sqlBuilder.delete(sqlBuilder.length() - 2).braceGt();
+                if (table.isSpecialLinkage()) {
+                    RestStream.stream(linkIdList).forEach(linkId -> valueOfParameter(table.linkageColumns(), linkId, table.getLinkageType()));
+                    Map<Integer, List<L>> sliceOfColumnsMap = sliceOfColumns(table.linkageColumns(), linkIdList);
+                    sqlBuilder.append(sqlOfColumns(sliceOfColumnsMap, table.linkageColumns(), sqlScript));
+                } else {
+                    Optional.ofNullable(table.getLinkColumn()).ifPresent(column -> {
+                        sqlBuilder.append(column.columnName()).in().braceLt();
+                        linkIdList.forEach(linkId -> sqlBuilder.value(linkId).comma());
+                        sqlBuilder.delete(sqlBuilder.length() - 2).braceGt();
+                    });
+                }
             }
             return sqlSupply.supply(tablename, table, sqlBuilder);
         });
@@ -887,7 +897,7 @@ public interface MybatisSqlProvider {
 
     static String sqlOfInsert(MybatisTable table, List<MybatisColumn> fickleKeyColumns) throws RestException {
         SqlBuilder sqlBuilder = SqlBuilder.sqlBuilder().braceLt();
-        String sqlOfInsert = table.insertColumns().stream().map(column -> column.variable(EntityConstants.ENTITY_PREFIX))
+        String sqlOfInsert = table.insertColumns().stream().map(column -> column.parentOfVariable(EntityConstants.ENTITY_PREFIX))
                 .collect(Collectors.joining(SQLConstants.COMMA + SQLConstants.BLANK));
         if (GeneralUtils.isNotEmpty(sqlOfInsert)) {
             sqlBuilder.append(sqlOfInsert);

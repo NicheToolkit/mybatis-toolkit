@@ -1,5 +1,6 @@
 package io.github.nichetoolkit.mybatis.service;
 
+import io.github.nichetoolkit.mybatis.simple.SimpleModel;
 import io.github.nichetoolkit.mybatis.simple.TemplateFilter;
 import io.github.nichetoolkit.mybatis.simple.TemplateIdentity;
 import io.github.nichetoolkit.mybatis.simple.TemplateModel;
@@ -17,6 +18,6 @@ import io.github.nichetoolkit.rice.service.*;
  * @author Cyan (snow22314@outlook.com)
  * @since Jdk1.8
  */
-public interface TemplateService extends FilterService<TemplateModel, TemplateFilter, TemplateIdentity, String>, SingleService<TemplateModel, TemplateIdentity, String>,
+public interface TemplateService extends FilterService<TemplateModel, TemplateFilter, TemplateIdentity, String>, SingleService<TemplateModel, TemplateIdentity, String>, QueryLinkService<TemplateModel,TemplateIdentity,String>,
         AlertLinkService<TemplateIdentity, String>, DeleteLinkService<TemplateIdentity, String>, RemoveLinkService<TemplateIdentity, String>, OperateLinkService<TemplateIdentity, String> {
 }

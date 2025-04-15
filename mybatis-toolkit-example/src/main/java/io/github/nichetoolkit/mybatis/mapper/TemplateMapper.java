@@ -18,6 +18,7 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface TemplateMapper extends MybatisInfoMapper<TemplateEntity, TemplateIdentity>,
+        MybatisFindLinkMapper<TemplateEntity, TemplateLinkage, TemplateIdentity>,
         MybatisAlertLinkMapper<TemplateEntity, TemplateLinkage, TemplateAlertness, TemplateIdentity>,
         MybatisDeleteLinkMapper<TemplateEntity, TemplateLinkage, TemplateIdentity>,
         MybatisRemoveLinkMapper<TemplateEntity, TemplateLinkage, TemplateIdentity>,

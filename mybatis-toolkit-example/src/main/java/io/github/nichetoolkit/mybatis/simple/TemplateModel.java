@@ -7,6 +7,7 @@ import io.github.nichetoolkit.mybatis.enums.TemplateStatus1;
 import io.github.nichetoolkit.mybatis.enums.TemplateStatus2;
 import io.github.nichetoolkit.rest.util.BeanUtils;
 import io.github.nichetoolkit.rice.DefaultInfoModel;
+import io.github.nichetoolkit.rice.RestId;
 import io.github.nichetoolkit.rice.RestTablekey;
 import io.github.nichetoolkit.rice.enums.OperateType;
 import io.github.nichetoolkit.rice.enums.SaveType;

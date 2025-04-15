@@ -488,6 +488,14 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
         if (this.forceInsert) {
             return this.forceInsertValue;
         } else {
+            return signerVariable(prefix);
+        }
+    }
+
+    public String parentOfVariable(String prefix) {
+        if (this.forceInsert) {
+            return this.forceInsertValue;
+        } else {
             if ((isSpecialIdentity() || isSpecialLinkage() || isSpecialAlertness()) && this.field.isParentNotEmpty()) {
                 prefix = prefix + this.field.prefixOfParent();
             }
@@ -506,9 +514,8 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
      */
     public String variable(String prefix, Integer index) {
         if (this.field.isFickleField) {
-            prefix = prefix + this.field.prefixOfParent();
-            SqlBuilder sqlBuilder = SqlBuilder.sqlBuilder(prefix).deleteLastChar();
-            return signerVariable(sqlBuilder.toString(), index);
+            prefix = prefix + this.field.prefixOfFickle();
+            return signerVariable(prefix, index);
         } else {
             return variable(prefix);
         }
