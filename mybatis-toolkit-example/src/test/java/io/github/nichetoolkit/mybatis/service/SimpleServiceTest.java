@@ -18,6 +18,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -53,19 +54,34 @@ class SimpleServiceTest extends MybatisExampleApplicationTests {
     @Order(2)
     @Test
     public void saveAll() throws RestException {
-        SimpleModel simpleModel1 = new SimpleModel(testId1);
-        simpleModel1.setName("name1_" + GeneralUtils.uuid());
-        simpleModel1.setDescription("description1_" + GeneralUtils.uuid());
-        simpleModel1.setLinkId(testLinkId1);
-        simpleModel1.setStatus(SimpleStatus.NONE);
+//        SimpleModel simpleModel1 = new SimpleModel(testId1);
+//        simpleModel1.setName("name1_" + GeneralUtils.uuid());
+//        simpleModel1.setDescription("description1_" + GeneralUtils.uuid());
+//        simpleModel1.setLinkId(testLinkId1);
+//        simpleModel1.setStatus(SimpleStatus.NONE);
+//
+//        SimpleModel simpleModel2 = new SimpleModel(testId2);
+//        simpleModel2.setName("name2_" + GeneralUtils.uuid());
+//        simpleModel2.setDescription("description2_" + GeneralUtils.uuid());
+//        simpleModel2.setLinkId(testLinkId2);
+//        simpleModel2.setStatus(SimpleStatus.NONE);
+//
+//        List<SimpleModel> simpleModels = simpleService.saveAll(Arrays.asList(simpleModel1, simpleModel2));
+//        System.out.println(JsonUtils.parseJson(simpleModels));
 
-        SimpleModel simpleModel2 = new SimpleModel(testId2);
-        simpleModel2.setName("name2_" + GeneralUtils.uuid());
-        simpleModel2.setDescription("description2_" + GeneralUtils.uuid());
-        simpleModel2.setLinkId(testLinkId2);
-        simpleModel2.setStatus(SimpleStatus.NONE);
-
-        List<SimpleModel> simpleModels = simpleService.saveAll(Arrays.asList(simpleModel1, simpleModel2));
+        List<SimpleModel> simpleModelList = new ArrayList<>(100);
+        for (int i = 0; i < 100; i++) {
+            SimpleModel simpleModel = new SimpleModel();
+            simpleModel.setName("name" + i + "_" + GeneralUtils.uuid());
+            simpleModel.setDescription("description" + i + "_" + GeneralUtils.uuid());
+            simpleModel.setLinkId(i / 2 == 0 ? testLinkId1 : testLinkId2);
+            simpleModel.setStatus(SimpleStatus.NONE);
+            simpleModelList.add(simpleModel);
+        }
+        long currentTimeMillis1 = System.currentTimeMillis();
+        List<SimpleModel> simpleModels = simpleService.saveAll(simpleModelList);
+        long currentTimeMillis2 = System.currentTimeMillis();
+        System.out.println(currentTimeMillis2 - currentTimeMillis1);
         System.out.println(JsonUtils.parseJson(simpleModels));
     }
 

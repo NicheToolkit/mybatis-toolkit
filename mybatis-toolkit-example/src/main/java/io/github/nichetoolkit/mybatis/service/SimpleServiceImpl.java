@@ -23,6 +23,16 @@ import java.util.*;
 public class SimpleServiceImpl extends RestInfoService<SimpleModel, SimpleEntity, SimpleFilter> implements SimpleService {
 
     @Override
+    protected boolean isNameOfNonnull() {
+        return false;
+    }
+
+    @Override
+    protected boolean isNameOfUnique() {
+        return false;
+    }
+
+    @Override
     protected void optionalInit(@NonNull SimpleModel model) throws RestException {
         model.setTime(Optional.ofNullable(model.getTime()).orElse(new Date()));
     }
