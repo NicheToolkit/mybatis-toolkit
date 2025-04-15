@@ -346,13 +346,13 @@ public interface MybatisSqlProvider {
         }, (tablenameValue, tableValue, sqlBuilder) -> sqlSupply.supply(tablenameValue, tableValue, sqlBuilder, status));
     }
 
-    static <L, S> String providingOfStatusLinkId(ProviderContext providerContext, @Nullable String tablename, L linkIdParameter, String linkName, S statusParameter, MybatisSqlSupply.AlertSqlSupply sqlSupply) throws RestException {
+    static <L, S> String providingOfLinkId(ProviderContext providerContext, @Nullable String tablename, L linkIdParameter, String linkName, S statusParameter, MybatisSqlSupply.AlertSqlSupply sqlSupply) throws RestException {
         Object status = reviseParameter(statusParameter);
         return providingOfLinkId(providerContext, tablename, linkIdParameter, linkName, table -> {
         }, (tablenameValue, tableValue, sqlBuilder) -> sqlSupply.supply(tablenameValue, tableValue, sqlBuilder, status));
     }
 
-    static <L, S> String providingOfStatusLinkIdAll(ProviderContext providerContext, @Nullable String tablename, Collection<L> linkIdList, String linkName, S statusParameter, MybatisSqlSupply.AlertSqlSupply sqlSupply) throws RestException {
+    static <L, S> String providingOfLinkIdAll(ProviderContext providerContext, @Nullable String tablename, Collection<L> linkIdList, String linkName, S statusParameter, MybatisSqlSupply.AlertSqlSupply sqlSupply) throws RestException {
         Object status = reviseParameter(statusParameter);
         return providingOfLinkIdAll(providerContext, tablename, linkIdList, linkName, table -> {
         }, (tablenameValue, tableValue, sqlBuilder) -> sqlSupply.supply(tablenameValue, tableValue, sqlBuilder, status));
