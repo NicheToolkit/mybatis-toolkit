@@ -300,13 +300,13 @@ public interface MybatisSqlProvider {
 
     static String providingOfCreateIndex(ProviderContext providerContext, @NonNull String tablename, RestField<?> field) throws RestException {
         SqlBuilder sqlBuilder = SqlBuilder.sqlBuilder();
-        databaseTypeOfCreateIndexSql(tablename, sqlBuilder,field);
+        databaseTypeOfCreateIndexSql(tablename, sqlBuilder, field);
         return sqlBuilder.toString();
     }
 
     static String providingOfDropIndex(ProviderContext providerContext, @NonNull String tablename, RestField<?> field) throws RestException {
         SqlBuilder sqlBuilder = SqlBuilder.sqlBuilder();
-        databaseTypeOfDropIndexSql(tablename, sqlBuilder,field);
+        databaseTypeOfDropIndexSql(tablename, sqlBuilder, field);
         return sqlBuilder.toString();
     }
 
@@ -346,20 +346,20 @@ public interface MybatisSqlProvider {
         }, (tablenameValue, tableValue, sqlBuilder) -> sqlSupply.supply(tablenameValue, tableValue, sqlBuilder, status));
     }
 
-    static <L, S> String providingOfStatusLinkId(ProviderContext providerContext, @Nullable String tablename, L linkIdParameter, S statusParameter, MybatisSqlSupply.AlertSqlSupply sqlSupply) throws RestException {
+    static <L, S> String providingOfStatusLinkId(ProviderContext providerContext, @Nullable String tablename, L linkIdParameter, String linkName, S statusParameter, MybatisSqlSupply.AlertSqlSupply sqlSupply) throws RestException {
         Object status = reviseParameter(statusParameter);
-        return providingOfLinkId(providerContext, tablename, linkIdParameter, table -> {
+        return providingOfLinkId(providerContext, tablename, linkIdParameter, linkName, table -> {
         }, (tablenameValue, tableValue, sqlBuilder) -> sqlSupply.supply(tablenameValue, tableValue, sqlBuilder, status));
     }
 
-    static <L, S> String providingOfStatusLinkIdAll(ProviderContext providerContext, @Nullable String tablename, Collection<L> linkIdList, S statusParameter, MybatisSqlSupply.AlertSqlSupply sqlSupply) throws RestException {
+    static <L, S> String providingOfStatusLinkIdAll(ProviderContext providerContext, @Nullable String tablename, Collection<L> linkIdList, String linkName, S statusParameter, MybatisSqlSupply.AlertSqlSupply sqlSupply) throws RestException {
         Object status = reviseParameter(statusParameter);
-        return providingOfLinkIdAll(providerContext, tablename, linkIdList, table -> {
+        return providingOfLinkIdAll(providerContext, tablename, linkIdList, linkName, table -> {
         }, (tablenameValue, tableValue, sqlBuilder) -> sqlSupply.supply(tablenameValue, tableValue, sqlBuilder, status));
     }
 
     @SuppressWarnings("Duplicates")
-    static <L> String providingOfLinkId(ProviderContext providerContext, @Nullable String tablename, L linkIdParameter, ConsumerActuator<MybatisTable> tableOptional, MybatisSqlSupply.SimpleSqlSupply sqlSupply) throws RestException {
+    static <L> String providingOfLinkId(ProviderContext providerContext, @Nullable String tablename, L linkIdParameter, String linkName, ConsumerActuator<MybatisTable> tableOptional, MybatisSqlSupply.SimpleSqlSupply sqlSupply) throws RestException {
         Object linkId = reviseParameter(linkIdParameter);
         return MybatisSqlScript.caching(providerContext, (table, sqlScript) -> {
             tableOptional.actuate(table);
@@ -369,14 +369,18 @@ public interface MybatisSqlProvider {
                 String linkageSql = sqlOfColumns(linkId, table.getLinkageColumns(), true, true);
                 sqlBuilder.append(linkageSql);
             } else {
-                Optional.ofNullable(table.getLinkColumn()).ifPresent(column -> sqlBuilder.append(column.columnEqualsProperty()));
+                if (GeneralUtils.isNotEmpty(linkName)) {
+                    Optional.ofNullable(table.linkColumn(linkName)).ifPresent(column -> sqlBuilder.append(column.columnEqualsProperty()));
+                } else {
+                    Optional.ofNullable(table.getLinkColumn()).ifPresent(column -> sqlBuilder.append(column.columnEqualsProperty()));
+                }
             }
             return sqlSupply.supply(tablename, table, sqlBuilder);
         });
     }
 
     @SuppressWarnings("Duplicates")
-    static <L> String providingOfLinkIdAll(ProviderContext providerContext, @Nullable String tablename, Collection<L> linkIdList, ConsumerActuator<MybatisTable> tableOptional, MybatisSqlSupply.SimpleSqlSupply sqlSupply) throws RestException {
+    static <L> String providingOfLinkIdAll(ProviderContext providerContext, @Nullable String tablename, Collection<L> linkIdList, String linkName, ConsumerActuator<MybatisTable> tableOptional, MybatisSqlSupply.SimpleSqlSupply sqlSupply) throws RestException {
         return MybatisSqlScript.caching(providerContext, (table, sqlScript) -> {
             tableOptional.actuate(table);
             SqlBuilder sqlBuilder = SqlBuilder.sqlBuilder();

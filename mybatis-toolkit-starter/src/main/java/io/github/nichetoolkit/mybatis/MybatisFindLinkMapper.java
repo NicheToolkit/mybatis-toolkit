@@ -2,7 +2,6 @@ package io.github.nichetoolkit.mybatis;
 
 import io.github.nichetoolkit.rice.RestId;
 import io.github.nichetoolkit.rice.mapper.FindLinkMapper;
-import org.apache.ibatis.annotations.DeleteProvider;
 import org.apache.ibatis.annotations.Lang;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.SelectProvider;

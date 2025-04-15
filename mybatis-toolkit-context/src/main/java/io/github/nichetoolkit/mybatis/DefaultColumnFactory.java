@@ -357,6 +357,9 @@ public class DefaultColumnFactory implements MybatisColumnFactory {
         RestLinkKey restLinkKey = field.getAnnotation(RestLinkKey.class);
         if (GeneralUtils.isNotEmpty(restLinkKey) && !fieldIgnored) {
             mybatisColumn.setLinkKey(true);
+            if (GeneralUtils.isNotEmpty(restLinkKey.value())) {
+                mybatisColumn.setLinkName(restLinkKey.value());
+            }
         }
         RestAlertKey restAlertKey = field.getAnnotation(RestAlertKey.class);
         if (GeneralUtils.isNotEmpty(restAlertKey) && !fieldIgnored) {

@@ -34,7 +34,7 @@ public class SimpleEntity extends RestInfoEntity<SimpleEntity, SimpleModel> {
      * @see  java.lang.String
      * @see  RestLinkKey
      */
-    @RestLinkKey
+    @RestLinkKey("linkId")
     private String linkId;
     /**
      * <code>time</code>

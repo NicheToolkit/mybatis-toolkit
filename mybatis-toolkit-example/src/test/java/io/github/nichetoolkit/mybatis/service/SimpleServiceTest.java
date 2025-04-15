@@ -6,6 +6,7 @@ import io.github.nichetoolkit.mybatis.enums.SimpleStatus;
 import io.github.nichetoolkit.mybatis.simple.SimpleFilter;
 import io.github.nichetoolkit.mybatis.simple.SimpleModel;
 import io.github.nichetoolkit.rest.RestException;
+import io.github.nichetoolkit.rest.RestKey;
 import io.github.nichetoolkit.rest.util.DateUtils;
 import io.github.nichetoolkit.rest.util.GeneralUtils;
 import io.github.nichetoolkit.rest.util.JsonUtils;
@@ -98,7 +99,7 @@ class SimpleServiceTest extends MybatisExampleApplicationTests {
     @Order(6)
     @Test
     public void queryByLinkId() throws RestException {
-        List<SimpleModel> simpleModels = simpleService.queryByLinkId(tablekey, testLinkId);
+        List<SimpleModel> simpleModels = simpleService.queryByLinkId(tablekey, testLinkId, RestKey.of("linkId"));
         System.out.println(JsonUtils.parseJson(simpleModels));
     }
 
