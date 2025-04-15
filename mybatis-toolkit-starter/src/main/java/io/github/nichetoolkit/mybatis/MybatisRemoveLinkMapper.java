@@ -33,20 +33,20 @@ public interface MybatisRemoveLinkMapper<E extends RestId<I>, L, I> extends Myba
     @Override
     @Lang(MybatisSqlSourceCaching.class)
     @UpdateProvider(MybatisSqlProviderResolver.class)
-    Integer removeByLinkId(L linkId, String linkName, Object logic);
+    Integer removeByLinkId(@Param("linkId") L linkId, @Param("linkName") String linkName, @Param("logic") Object logic);
 
     @Override
     @Lang(MybatisSqlSourceCaching.class)
     @UpdateProvider(MybatisSqlProviderResolver.class)
-    Integer removeDynamicByLinkId(String tablename, L linkId, String linkName, Object logic);
+    Integer removeDynamicByLinkId(@Param("tablename") String tablename, @Param("linkId") L linkId, @Param("linkName") String linkName, @Param("logic") Object logic);
 
     @Override
     @Lang(MybatisSqlSourceCaching.class)
     @UpdateProvider(MybatisSqlProviderResolver.class)
-    Integer removeAllByLinkIds(Collection<L> linkIdList, String linkName, Object logic);
+    Integer removeAllByLinkIds(@Param("linkIdList") Collection<L> linkIdList, @Param("linkName") String linkName, @Param("logic") Object logic);
 
     @Override
     @Lang(MybatisSqlSourceCaching.class)
     @UpdateProvider(MybatisSqlProviderResolver.class)
-    Integer removeDynamicAllByLinkIds(String tablename, Collection<L> linkIdList, String linkName, Object logic);
+    Integer removeDynamicAllByLinkIds(@Param("tablename") String tablename, @Param("linkIdList") Collection<L> linkIdList, @Param("linkName") String linkName, @Param("logic") Object logic);
 }

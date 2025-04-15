@@ -46,20 +46,20 @@ public interface MybatisDeleteLinkMapper<E extends RestId<I>, L, I> extends Myba
     @Override
     @Lang(MybatisSqlSourceCaching.class)
     @DeleteProvider(MybatisSqlProviderResolver.class)
-    Integer deleteByLinkId(L linkId, String linkName);
+    Integer deleteByLinkId(@Param("linkId") L linkId, @Param("linkName") String linkName);
 
     @Override
     @Lang(MybatisSqlSourceCaching.class)
     @DeleteProvider(MybatisSqlProviderResolver.class)
-    Integer deleteDynamicByLinkId(String tablename, L linkId, String linkName);
+    Integer deleteDynamicByLinkId(@Param("tablename") String tablename, @Param("linkId") L linkId, @Param("linkName") String linkName);
 
     @Override
     @Lang(MybatisSqlSourceCaching.class)
     @DeleteProvider(MybatisSqlProviderResolver.class)
-    Integer deleteAllByLinkIds(Collection<L> linkIdList, String linkName);
+    Integer deleteAllByLinkIds(@Param("linkIdList") Collection<L> linkIdList, @Param("linkName") String linkName);
 
     @Override
     @Lang(MybatisSqlSourceCaching.class)
     @DeleteProvider(MybatisSqlProviderResolver.class)
-    Integer deleteDynamicAllByLinkIds(String tablename, Collection<L> linkIdList, String linkName);
+    Integer deleteDynamicAllByLinkIds(@Param("tablename") String tablename, @Param("linkIdList") Collection<L> linkIdList, @Param("linkName") String linkName);
 }

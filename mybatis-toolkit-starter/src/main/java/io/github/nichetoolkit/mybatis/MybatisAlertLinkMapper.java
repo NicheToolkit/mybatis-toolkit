@@ -47,21 +47,21 @@ public interface MybatisAlertLinkMapper<E extends RestId<I>, L, S, I> extends My
     @Override
     @Lang(MybatisSqlSourceCaching.class)
     @UpdateProvider(MybatisSqlProviderResolver.class)
-    Integer alertByLinkId(L linkId, String linkName, S status);
+    Integer alertByLinkId(@Param("linkId") L linkId, @Param("linkName") String linkName, @Param("status") S status);
 
     @Override
     @Lang(MybatisSqlSourceCaching.class)
     @UpdateProvider(MybatisSqlProviderResolver.class)
-    Integer alertDynamicByLinkId(String tablename, L linkId, String linkName, S status);
+    Integer alertDynamicByLinkId(@Param("tablename") String tablename, @Param("linkId") L linkId, @Param("linkName") String linkName, @Param("status") S status);
 
     @Override
     @Lang(MybatisSqlSourceCaching.class)
     @UpdateProvider(MybatisSqlProviderResolver.class)
-    Integer alertAllByLinkIds(Collection<L> linkIdList, String linkName, S status);
+    Integer alertAllByLinkIds(@Param("linkIdList") Collection<L> linkIdList, @Param("linkName") String linkName, @Param("status") S status);
 
     @Override
     @Lang(MybatisSqlSourceCaching.class)
     @UpdateProvider(MybatisSqlProviderResolver.class)
-    Integer alertDynamicAllByLinkIds(String tablename, Collection<L> linkIdList, String linkName, S status);
+    Integer alertDynamicAllByLinkIds(@Param("tablename") String tablename, @Param("linkIdList") Collection<L> linkIdList, @Param("linkName") String linkName, @Param("status") S status);
 
 }

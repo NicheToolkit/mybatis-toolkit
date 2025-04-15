@@ -4,48 +4,49 @@ import io.github.nichetoolkit.rice.RestId;
 import io.github.nichetoolkit.rice.mapper.FindLinkMapper;
 import org.apache.ibatis.annotations.DeleteProvider;
 import org.apache.ibatis.annotations.Lang;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.Collection;
 import java.util.List;
 
 public interface MybatisFindLinkMapper<E extends RestId<I>, L, I> extends MybatisMapper<E>, MybatisFindMapper<E, I>, FindLinkMapper<E, L, I> {
     @Override
-    default List<E> findByLinkId(L linkId) {
+    default List<E> findByLinkId(@Param("linkId") L linkId) {
         return findByLinkId(linkId, null);
     }
 
     @Override
-    default List<E> findDynamicByLinkId(String tablename, L linkId) {
+    default List<E> findDynamicByLinkId(@Param("tablename") String tablename, @Param("linkId") L linkId) {
         return findDynamicByLinkId(tablename, linkId, null);
     }
 
     @Override
-    default List<E> findAllByLinkIds(Collection<L> linkIdList) {
+    default List<E> findAllByLinkIds(@Param("linkIdList") Collection<L> linkIdList) {
         return findAllByLinkIds(linkIdList, null);
     }
 
     @Override
-    default List<E> findDynamicAllByLinkIds(String tablename, Collection<L> linkIdList) {
+    default List<E> findDynamicAllByLinkIds(@Param("tablename") String tablename, @Param("linkIdList") Collection<L> linkIdList) {
         return findDynamicAllByLinkIds(tablename, linkIdList, null);
     }
 
     @Override
     @Lang(MybatisSqlSourceCaching.class)
     @DeleteProvider(MybatisSqlProviderResolver.class)
-    List<E> findByLinkId(L linkId, String linkName);
+    List<E> findByLinkId(@Param("linkId") L linkId, @Param("linkName") String linkName);
 
     @Override
     @Lang(MybatisSqlSourceCaching.class)
     @DeleteProvider(MybatisSqlProviderResolver.class)
-    List<E> findDynamicByLinkId(String tablename, L linkId, String linkName);
+    List<E> findDynamicByLinkId(@Param("tablename") String tablename, @Param("linkId") L linkId, @Param("linkName") String linkName);
 
     @Override
     @Lang(MybatisSqlSourceCaching.class)
     @DeleteProvider(MybatisSqlProviderResolver.class)
-    List<E> findAllByLinkIds(Collection<L> linkIdList, String linkName);
+    List<E> findAllByLinkIds(@Param("linkIdList") Collection<L> linkIdList, @Param("linkName") String linkName);
 
     @Override
     @Lang(MybatisSqlSourceCaching.class)
     @DeleteProvider(MybatisSqlProviderResolver.class)
-    List<E> findDynamicAllByLinkIds(String tablename, Collection<L> linkIdList, String linkName);
+    List<E> findDynamicAllByLinkIds(@Param("tablename") String tablename, @Param("linkIdList") Collection<L> linkIdList, @Param("linkName") String linkName);
 }
