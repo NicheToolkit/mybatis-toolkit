@@ -1,7 +1,13 @@
 package io.github.nichetoolkit.mybatis;
 
+import io.github.nichetoolkit.rest.RestField;
 import io.github.nichetoolkit.rice.RestId;
 import io.github.nichetoolkit.rice.mapper.SuperMapper;
+import org.apache.ibatis.annotations.Lang;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.SelectProvider;
+
+import java.util.List;
 
 /**
  * <code>MybatisSuperMapper</code>
@@ -18,5 +24,34 @@ import io.github.nichetoolkit.rice.mapper.SuperMapper;
  * @since Jdk1.8
  */
 public interface MybatisSuperMapper<E extends RestId<I>, I> extends MybatisMapper<E>, MybatisSaveMapper<E, I>, MybatisFindMapper<E, I>, MybatisDeleteMapper<E, I>, SuperMapper<E, I> {
+    @Override
+    @Lang(MybatisSqlSourceCaching.class)
+    @SelectProvider(MybatisSqlProviderResolver.class)
+    List<String> findColumns();
+
+    @Override
+    @Lang(MybatisSqlSourceCaching.class)
+    @SelectProvider(MybatisSqlProviderResolver.class)
+    void createIndex(@Param("field") RestField<?> field);
+
+    @Override
+    @Lang(MybatisSqlSourceCaching.class)
+    @SelectProvider(MybatisSqlProviderResolver.class)
+    void dropIndex(@Param("field") RestField<?> field);
+
+    @Override
+    @Lang(MybatisSqlSourceCaching.class)
+    @SelectProvider(MybatisSqlProviderResolver.class)
+    void modifyColumn(@Param("field") RestField<?> field);
+
+    @Override
+    @Lang(MybatisSqlSourceCaching.class)
+    @SelectProvider(MybatisSqlProviderResolver.class)
+    void addColumn(@Param("field") RestField<?> field);
+
+    @Override
+    @Lang(MybatisSqlSourceCaching.class)
+    @SelectProvider(MybatisSqlProviderResolver.class)
+    void dropColumn(@Param("field") RestField<?> field);
 }
 

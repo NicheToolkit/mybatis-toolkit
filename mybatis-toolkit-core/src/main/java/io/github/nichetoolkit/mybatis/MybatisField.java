@@ -1,7 +1,7 @@
 package io.github.nichetoolkit.mybatis;
 
 import io.github.nichetoolkit.mybatis.builder.SqlBuilder;
-import io.github.nichetoolkit.mybatis.fickle.FickleField;
+import io.github.nichetoolkit.mybatis.fickle.RestFickle;
 import io.github.nichetoolkit.rest.error.lack.AccessibleLackError;
 import io.github.nichetoolkit.rest.reflect.RestGenericTypes;
 import io.github.nichetoolkit.rest.util.GeneralUtils;
@@ -46,10 +46,10 @@ public class MybatisField {
 
     /**
      * <code>fickleField</code>
-     * {@link io.github.nichetoolkit.mybatis.fickle.FickleField} <p>The <code>fickleField</code> field.</p>
-     * @see io.github.nichetoolkit.mybatis.fickle.FickleField
+     * {@link io.github.nichetoolkit.mybatis.fickle.RestFickle} <p>The <code>fickleField</code> field.</p>
+     * @see io.github.nichetoolkit.mybatis.fickle.RestFickle
      */
-    protected FickleField<?> fickleField;
+    protected RestFickle<?> fickleField;
     /**
      * <code>isIdentity</code>
      * <p>The <code>isIdentity</code> field.</p>
@@ -120,12 +120,12 @@ public class MybatisField {
      * <p>Instantiates a new mybatis field.</p>
      * @param entityType    {@link java.lang.Class} <p>The entity type parameter is <code>Class</code> type.</p>
      * @param parentField   {@link io.github.nichetoolkit.mybatis.MybatisField} <p>The parent field parameter is <code>MybatisField</code> type.</p>
-     * @param fickleField   {@link io.github.nichetoolkit.mybatis.fickle.FickleField} <p>The fickle field parameter is <code>FickleField</code> type.</p>
+     * @param fickleField   {@link io.github.nichetoolkit.mybatis.fickle.RestFickle} <p>The fickle field parameter is <code>RestFickle</code> type.</p>
      * @param isFickleField boolean <p>The is fickle field parameter is <code>boolean</code> type.</p>
      * @see java.lang.Class
-     * @see io.github.nichetoolkit.mybatis.fickle.FickleField
+     * @see io.github.nichetoolkit.mybatis.fickle.RestFickle
      */
-    private MybatisField(Class<?> entityType, MybatisField parentField, FickleField<?> fickleField, boolean isFickleField) {
+    private MybatisField(Class<?> entityType, MybatisField parentField, RestFickle<?> fickleField, boolean isFickleField) {
         this.entityType = entityType;
         this.parentField = parentField;
         this.fickleField = fickleField;
@@ -247,12 +247,12 @@ public class MybatisField {
      * <p>The of fickle field method.</p>
      * @param entityType  {@link java.lang.Class} <p>The entity type parameter is <code>Class</code> type.</p>
      * @param parentField {@link io.github.nichetoolkit.mybatis.MybatisField} <p>The parent field parameter is <code>MybatisField</code> type.</p>
-     * @param fickleField {@link io.github.nichetoolkit.mybatis.fickle.FickleField} <p>The fickle field parameter is <code>FickleField</code> type.</p>
+     * @param fickleField {@link io.github.nichetoolkit.mybatis.fickle.RestFickle} <p>The fickle field parameter is <code>RestFickle</code> type.</p>
      * @return {@link io.github.nichetoolkit.mybatis.MybatisField} <p>The of fickle field return object is <code>MybatisField</code> type.</p>
      * @see java.lang.Class
-     * @see io.github.nichetoolkit.mybatis.fickle.FickleField
+     * @see io.github.nichetoolkit.mybatis.fickle.RestFickle
      */
-    protected static MybatisField ofFickleField(Class<?> entityType, MybatisField parentField, FickleField<?> fickleField) {
+    protected static MybatisField ofFickleField(Class<?> entityType, MybatisField parentField, RestFickle<?> fickleField) {
         return new MybatisField(entityType, parentField, fickleField, true);
     }
 
@@ -286,7 +286,7 @@ public class MybatisField {
      * @see java.lang.String
      */
     public String prefixOfParent() {
-        return prefixOfParent(false);
+        return this.isFickleField ? prefixOfFickle(false) : prefixOfParent(false);
     }
 
     /**
@@ -364,7 +364,7 @@ public class MybatisField {
      * @see java.lang.Class
      */
     public Class<?> fieldType() {
-        return field.getType();
+        return this.isFickleField ? this.fickleField.getType().getType() : field.getType();
     }
 
     /**

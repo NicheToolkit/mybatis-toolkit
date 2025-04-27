@@ -2,10 +2,10 @@ package io.github.nichetoolkit.mybatis.style;
 
 import io.github.nichetoolkit.mybatis.MybatisField;
 import io.github.nichetoolkit.mybatis.MybatisTableStyle;
-import io.github.nichetoolkit.mybatis.MybatisTable;
 import io.github.nichetoolkit.mybatis.enums.StyleType;
-import io.github.nichetoolkit.mybatis.fickle.FickleField;
+import io.github.nichetoolkit.mybatis.fickle.RestFickle;
 import io.github.nichetoolkit.rest.util.GeneralUtils;
+import org.springframework.lang.NonNull;
 
 import java.lang.reflect.Field;
 
@@ -34,6 +34,11 @@ public class DefaultLowerStyle implements MybatisTableStyle {
     }
 
     @Override
+    public String columnName(@NonNull String fieldName) {
+        return fieldName.toLowerCase();
+    }
+
+    @Override
     public String columnName(Field field) {
         return field.getName().toLowerCase();
     }
@@ -44,7 +49,7 @@ public class DefaultLowerStyle implements MybatisTableStyle {
     }
 
     @Override
-    public String columnName(FickleField<?> field) {
+    public String columnName(RestFickle<?> field) {
         return field.getName().toLowerCase();
     }
 }

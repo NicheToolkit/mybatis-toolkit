@@ -1,6 +1,7 @@
 package io.github.nichetoolkit.mybatis.mapper;
 
 import io.github.nichetoolkit.mybatis.MybatisInfoMapper;
+import io.github.nichetoolkit.mybatis.natives.MybatisFindFickleMapper;
 import io.github.nichetoolkit.mybatis.simple.FickleEntryEntity;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -13,5 +14,5 @@ import org.apache.ibatis.annotations.Mapper;
  * @since Jdk1.8
  */
 @Mapper
-public interface FickleEntryMapper extends MybatisInfoMapper<FickleEntryEntity, String> {
+public interface FickleEntryMapper extends MybatisInfoMapper<FickleEntryEntity, String>, MybatisFindFickleMapper<FickleEntryEntity,String> {
 }

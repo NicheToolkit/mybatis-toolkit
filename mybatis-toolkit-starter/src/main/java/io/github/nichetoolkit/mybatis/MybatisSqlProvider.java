@@ -11,7 +11,7 @@ import io.github.nichetoolkit.mybatis.enums.DatabaseType;
 import io.github.nichetoolkit.mybatis.enums.ExcludedType;
 import io.github.nichetoolkit.mybatis.error.MybatisParamErrorException;
 import io.github.nichetoolkit.mybatis.error.MybatisUnsupportedErrorException;
-import io.github.nichetoolkit.mybatis.fickle.FickleField;
+import io.github.nichetoolkit.mybatis.fickle.RestFickle;
 import io.github.nichetoolkit.rest.*;
 import io.github.nichetoolkit.rest.actuator.ConsumerActuator;
 import io.github.nichetoolkit.rest.holder.ApplicationContextHolder;
@@ -21,7 +21,6 @@ import io.github.nichetoolkit.rest.util.GeneralUtils;
 import io.github.nichetoolkit.rest.util.OptionalUtils;
 import io.github.nichetoolkit.rice.enums.OperateType;
 import org.apache.ibatis.builder.annotation.ProviderContext;
-import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 
 import java.util.*;
@@ -292,40 +291,82 @@ public interface MybatisSqlProvider {
         }
     }
 
-    static String providingOfTablename(ProviderContext providerContext, @NonNull String tablename) throws RestException {
+    static String providingOfTablename(ProviderContext providerContext, @Nullable String tablename) throws RestException {
         SqlBuilder sqlBuilder = SqlBuilder.sqlBuilder();
-        databaseTypeOfColumnsSql(tablename, sqlBuilder);
-        return sqlBuilder.toString();
+        if (GeneralUtils.isNotEmpty(tablename)) {
+            databaseTypeOfColumnsSql(tablename, sqlBuilder);
+            return sqlBuilder.toString();
+        } else {
+            return MybatisSqlScript.caching(providerContext, (table, sqlScript) -> {
+                databaseTypeOfColumnsSql(table.tablename(), sqlBuilder);
+                return sqlBuilder.toString();
+            });
+        }
     }
 
-    static String providingOfCreateIndex(ProviderContext providerContext, @NonNull String tablename, RestField<?> field) throws RestException {
+    static String providingOfCreateIndex(ProviderContext providerContext, @Nullable String tablename, RestField<?> field) throws RestException {
         SqlBuilder sqlBuilder = SqlBuilder.sqlBuilder();
-        databaseTypeOfCreateIndexSql(tablename, sqlBuilder, field);
-        return sqlBuilder.toString();
+        if (GeneralUtils.isNotEmpty(tablename)) {
+            databaseTypeOfCreateIndexSql(tablename, sqlBuilder, field);
+            return sqlBuilder.toString();
+        } else {
+            return MybatisSqlScript.caching(providerContext, (table, sqlScript) -> {
+                databaseTypeOfCreateIndexSql(table.tablename(), sqlBuilder, field);
+                return sqlBuilder.toString();
+            });
+        }
     }
 
-    static String providingOfDropIndex(ProviderContext providerContext, @NonNull String tablename, RestField<?> field) throws RestException {
+    static String providingOfDropIndex(ProviderContext providerContext, @Nullable String tablename, RestField<?> field) throws RestException {
         SqlBuilder sqlBuilder = SqlBuilder.sqlBuilder();
-        databaseTypeOfDropIndexSql(tablename, sqlBuilder, field);
-        return sqlBuilder.toString();
+        if (GeneralUtils.isNotEmpty(tablename)) {
+            databaseTypeOfDropIndexSql(tablename, sqlBuilder, field);
+            return sqlBuilder.toString();
+        } else {
+            return MybatisSqlScript.caching(providerContext, (table, sqlScript) -> {
+                databaseTypeOfDropIndexSql(table.tablename(), sqlBuilder, field);
+                return sqlBuilder.toString();
+            });
+        }
     }
 
-    static String providingOfModifyColumn(ProviderContext providerContext, @NonNull String tablename, RestField<?> field) throws RestException {
+    static String providingOfModifyColumn(ProviderContext providerContext, @Nullable String tablename, RestField<?> field) throws RestException {
         SqlBuilder sqlBuilder = SqlBuilder.sqlBuilder();
-        databaseTypeOfModifyColumnSql(tablename, sqlBuilder, field);
-        return sqlBuilder.toString();
+        if (GeneralUtils.isNotEmpty(tablename)) {
+            databaseTypeOfModifyColumnSql(tablename, sqlBuilder, field);
+            return sqlBuilder.toString();
+        } else {
+            return MybatisSqlScript.caching(providerContext, (table, sqlScript) -> {
+                databaseTypeOfModifyColumnSql(table.tablename(), sqlBuilder, field);
+                return sqlBuilder.toString();
+            });
+        }
     }
 
-    static String providingOfAddColumn(ProviderContext providerContext, @NonNull String tablename, RestField<?> field) throws RestException {
+    static String providingOfAddColumn(ProviderContext providerContext, @Nullable String tablename, RestField<?> field) throws RestException {
         SqlBuilder sqlBuilder = SqlBuilder.sqlBuilder();
-        databaseTypeOfAddColumnSql(tablename, sqlBuilder, field);
-        return sqlBuilder.toString();
+        if (GeneralUtils.isNotEmpty(tablename)) {
+            databaseTypeOfAddColumnSql(tablename, sqlBuilder, field);
+            return sqlBuilder.toString();
+        } else {
+            return MybatisSqlScript.caching(providerContext, (table, sqlScript) -> {
+                databaseTypeOfAddColumnSql(table.tablename(), sqlBuilder, field);
+                return sqlBuilder.toString();
+            });
+        }
     }
 
-    static String providingOfDropColumn(ProviderContext providerContext, @NonNull String tablename, RestField<?> field) throws RestException {
+    static String providingOfDropColumn(ProviderContext providerContext, @Nullable String tablename, RestField<?> field) throws RestException {
         SqlBuilder sqlBuilder = SqlBuilder.sqlBuilder();
-        databaseTypeOfDropColumnSql(tablename, sqlBuilder, field);
-        return sqlBuilder.toString();
+        if (GeneralUtils.isNotEmpty(tablename)) {
+            databaseTypeOfDropColumnSql(tablename, sqlBuilder, field);
+            return sqlBuilder.toString();
+        } else {
+            return MybatisSqlScript.caching(providerContext, (table, sqlScript) -> {
+                databaseTypeOfDropColumnSql(table.tablename(), sqlBuilder, field);
+                return sqlBuilder.toString();
+            });
+        }
     }
 
     static <I, S> String providingOfId(ProviderContext providerContext, @Nullable String tablename, I idParameter, S statusParameter, MybatisSqlSupply.AlertSqlSupply sqlSupply) throws RestException {
@@ -771,7 +812,7 @@ public interface MybatisSqlProvider {
             MybatisTableMapper tableMapper = ApplicationContextHolder.beanOfType(MybatisTableMapper.class);
             List<String> tableColumns = Collections.emptyList();
             if (GeneralUtils.isNotEmpty(tableMapper)) {
-                tableColumns = tableMapper.tableColumns(tablename);
+                tableColumns = tableMapper.findTableColumns(tablename);
             }
             fickleOfEntityKeyColumns(table, tableColumns, entityParameter, fickleKeyColumns);
             fickleOfEntityValueColumns(table, fickleKeyColumns, entityParameter);
@@ -785,7 +826,7 @@ public interface MybatisSqlProvider {
             MybatisTableMapper tableMapper = ApplicationContextHolder.beanOfType(MybatisTableMapper.class);
             List<String> tableColumns = new ArrayList<>();
             if (GeneralUtils.isNotEmpty(tableMapper)) {
-                List<String> tableColumnsList = tableMapper.tableColumns(tablename);
+                List<String> tableColumnsList = tableMapper.findTableColumns(tablename);
                 tableColumns.addAll(tableColumnsList);
             }
             if (GeneralUtils.isNotEmpty(entityList)) {
@@ -796,7 +837,7 @@ public interface MybatisSqlProvider {
         return fickleKeyColumns;
     }
 
-    @SuppressWarnings({"rawtypes", "unchecked"})
+    @SuppressWarnings("unchecked")
     static <E> void fickleOfEntityKeyColumns(MybatisTable table, List<String> tableColumns, E entityParameter, List<MybatisColumn> fickleKeyColumns) throws RestException {
         if (GeneralUtils.isNotEmpty(table.fickleValueColumn()) && GeneralUtils.isNotEmpty(tableColumns)) {
             Object entity = reviseParameter(entityParameter);
@@ -805,12 +846,21 @@ public interface MybatisSqlProvider {
             Object fickleKeyObject = fickleKeyField.get(entity);
             JavaType fickleType = fickleKeyColumn.getFickleType();
             Collection<MybatisColumn> fickleColumnsList = Collections.emptyList();
+            MybatisTableStyle tableStyle = MybatisTableStyle.style(table.getStyleName());
             if (fickleType instanceof CollectionType && fickleKeyObject instanceof Collection) {
-                Collection<FickleField> fickleCollection = (Collection<FickleField>) fickleKeyObject;
-                List<FickleField> fickleFieldsList = new ArrayList<>(fickleCollection);
+                Collection<RestFickle<?>> fickleCollection = (Collection<RestFickle<?>>) fickleKeyObject;
+                List<RestFickle<?>> fickleFieldsList = new ArrayList<>(fickleCollection);
                 if (GeneralUtils.isNotEmpty(fickleFieldsList)) {
                     fickleFieldsList.stream()
-                            .filter(fickleField -> tableColumns.contains(fickleField.getName()))
+                            .filter(fickleField -> {
+                                if (GeneralUtils.isNotEmpty(fickleField.getKey())) {
+                                    return tableColumns.contains(fickleField.getKey());
+                                } else {
+                                    String fieldName = fickleField.getName();
+                                    String columnName = tableStyle.columnName(fieldName);
+                                    return tableColumns.contains(columnName);
+                                }
+                            })
                             .forEach(fickleField -> {
                                 MybatisColumn fickleColumn = MybatisColumn.of(table, fickleKeyColumn, fickleField);
                                 if (!fickleKeyColumns.contains(fickleColumn)) {
@@ -820,11 +870,19 @@ public interface MybatisSqlProvider {
 
                 }
             } else if (fickleType instanceof MapType && fickleKeyObject instanceof Map) {
-                Map<String, FickleField> fickleMap = (Map<String, FickleField>) fickleKeyObject;
-                Map<String, FickleField> fickleFieldsMap = new HashMap<>(fickleMap);
+                Map<String, RestFickle<?>> fickleMap = (Map<String, RestFickle<?>>) fickleKeyObject;
+                Map<String, RestFickle<?>> fickleFieldsMap = new HashMap<>(fickleMap);
                 if (GeneralUtils.isNotEmpty(fickleFieldsMap)) {
                     fickleFieldsMap.values().stream()
-                            .filter(fickleField -> tableColumns.contains(fickleField.getName()))
+                            .filter(fickleField -> {
+                                if (GeneralUtils.isNotEmpty(fickleField.getKey())) {
+                                    return tableColumns.contains(fickleField.getKey());
+                                } else {
+                                    String fieldName = fickleField.getName();
+                                    String columnName = tableStyle.columnName(fieldName);
+                                    return tableColumns.contains(columnName);
+                                }
+                            })
                             .forEach(fickleField -> {
                                 MybatisColumn fickleColumn = MybatisColumn.of(table, fickleKeyColumn, fickleField);
                                 if (!fickleKeyColumns.contains(fickleColumn)) {
@@ -836,7 +894,7 @@ public interface MybatisSqlProvider {
         }
     }
 
-    @SuppressWarnings({"rawtypes", "unchecked"})
+    @SuppressWarnings("unchecked")
     static <E> List<MybatisColumn> fickleOfEntityValueColumns(MybatisTable table, List<MybatisColumn> fickleKeyColumns, E entityParameter) throws RestException {
         if (GeneralUtils.isNotEmpty(table.fickleValueColumn()) && GeneralUtils.isNotEmpty(fickleKeyColumns)) {
             Object entity = reviseParameter(entityParameter);
@@ -846,24 +904,24 @@ public interface MybatisSqlProvider {
             JavaType fickleType = fickleValueColumn.getFickleType();
             Collection<MybatisColumn> fickleColumnsList = Collections.emptyList();
             if (fickleType instanceof CollectionType && fickleKeyObject instanceof Collection) {
-                Collection<FickleField> fickleCollection = (Collection<FickleField>) fickleKeyObject;
-                List<FickleField> fickleFieldsList = new ArrayList<>(fickleCollection);
+                Collection<RestFickle<?>> fickleCollection = (Collection<RestFickle<?>>) fickleKeyObject;
+                List<RestFickle<?>> fickleFieldsList = new ArrayList<>(fickleCollection);
                 if (GeneralUtils.isNotEmpty(fickleFieldsList)) {
-                    Map<String, FickleField> fickleValueFields = fickleFieldsList.stream().collect(Collectors.toMap(fickleField -> {
+                    Map<String, RestFickle<?>> fickleValueFields = fickleFieldsList.stream().collect(Collectors.toMap(fickleField -> {
                         if (GeneralUtils.isNotEmpty(fickleField.getKey())) {
                             return fickleField.getKey();
                         } else {
                             return MybatisTableStyle.columnName(table, fickleField);
                         }
                     }, Function.identity(), (oldValue, newValue) -> newValue));
-                    List<FickleField> fickleFields = new ArrayList<>(fickleKeyColumns.size());
+                    List<RestFickle<?>> fickleFields = new ArrayList<>(fickleKeyColumns.size());
                     fickleKeyColumns.forEach(fickleKeyColumn -> {
                         String column = fickleKeyColumn.getColumn();
-                        FickleField fickleValueField = fickleValueFields.get(column);
+                        RestFickle<?> fickleValueField = fickleValueFields.get(column);
                         if (GeneralUtils.isNotEmpty(fickleValueField)) {
                             fickleFields.add(fickleValueField);
                         } else {
-                            fickleFields.add(new MybatisFickle(column));
+                            fickleFields.add(RestFickle.of(column));
                         }
                     });
                     fickleKeyField.set(entity, fickleFields);
@@ -872,17 +930,17 @@ public interface MybatisSqlProvider {
                             .collect(Collectors.toList());
                 }
             } else if (fickleType instanceof MapType && fickleKeyObject instanceof Map) {
-                Map<String, FickleField> fickleMap = (Map<String, FickleField>) fickleKeyObject;
-                Map<String, FickleField> fickleFieldsMap = new HashMap<>(fickleMap);
+                Map<String, RestFickle<?>> fickleMap = (Map<String, RestFickle<?>>) fickleKeyObject;
+                Map<String, RestFickle<?>> fickleFieldsMap = new HashMap<>(fickleMap);
                 if (GeneralUtils.isNotEmpty(fickleFieldsMap)) {
-                    Map<String, FickleField> fickleFields = new HashMap<>(fickleKeyColumns.size());
+                    Map<String, RestFickle<?>> fickleFields = new HashMap<>(fickleKeyColumns.size());
                     fickleKeyColumns.forEach(fickleKeyColumn -> {
                         String column = fickleKeyColumn.getColumn();
-                        FickleField fickleValueField = fickleFieldsMap.get(column);
+                        RestFickle<?> fickleValueField = fickleFieldsMap.get(column);
                         if (GeneralUtils.isNotEmpty(fickleValueField)) {
                             fickleFields.put(column, fickleValueField);
                         } else {
-                            fickleFields.put(column, new MybatisFickle(column));
+                            fickleFields.put(column, RestFickle.of(column));
                         }
                     });
                     fickleKeyField.set(entity, fickleFields);

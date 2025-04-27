@@ -2,14 +2,13 @@ package io.github.nichetoolkit.mybatis;
 
 import io.github.nichetoolkit.mybatis.configure.MybatisCacheProperties;
 import io.github.nichetoolkit.mybatis.configure.MybatisTableProperties;
+import io.github.nichetoolkit.mybatis.enums.StyleType;
+import io.github.nichetoolkit.rest.util.JsonUtils;
 import io.github.nichetoolkit.rice.RestServiceFitter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.mapping.SqlSource;
 import org.apache.ibatis.session.Configuration;
-import org.apache.ibatis.session.SqlSessionFactory;
-import org.apache.ibatis.type.TypeAliasRegistry;
-import org.apache.ibatis.type.TypeHandlerRegistry;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
@@ -19,10 +18,10 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * <code>MybatisContextHolder</code>
  * <p>The mybatis context holder class.</p>
- * @see  io.github.nichetoolkit.rice.RestServiceFitter
- * @see  lombok.extern.slf4j.Slf4j
- * @see  lombok.Setter
  * @author Cyan (snow22314@outlook.com)
+ * @see io.github.nichetoolkit.rice.RestServiceFitter
+ * @see lombok.extern.slf4j.Slf4j
+ * @see lombok.Setter
  * @since Jdk1.8
  */
 @Slf4j
@@ -31,28 +30,19 @@ public class MybatisContextHolder implements RestServiceFitter<MybatisContextHol
     /**
      * <code>tableProperties</code>
      * {@link io.github.nichetoolkit.mybatis.configure.MybatisTableProperties} <p>The <code>tableProperties</code> field.</p>
-     * @see  io.github.nichetoolkit.mybatis.configure.MybatisTableProperties
-     * @see  javax.annotation.Resource
+     * @see io.github.nichetoolkit.mybatis.configure.MybatisTableProperties
+     * @see javax.annotation.Resource
      */
     @Resource
     private MybatisTableProperties tableProperties;
     /**
      * <code>cacheProperties</code>
      * {@link io.github.nichetoolkit.mybatis.configure.MybatisCacheProperties} <p>The <code>cacheProperties</code> field.</p>
-     * @see  io.github.nichetoolkit.mybatis.configure.MybatisCacheProperties
-     * @see  javax.annotation.Resource
+     * @see io.github.nichetoolkit.mybatis.configure.MybatisCacheProperties
+     * @see javax.annotation.Resource
      */
     @Resource
     private MybatisCacheProperties cacheProperties;
-
-    /**
-     * <code>sqlSessionFactory</code>
-     * {@link org.apache.ibatis.session.SqlSessionFactory} <p>The <code>sqlSessionFactory</code> field.</p>
-     * @see  org.apache.ibatis.session.SqlSessionFactory
-     * @see  javax.annotation.Resource
-     */
-    @Resource
-    private SqlSessionFactory sqlSessionFactory;
 
     /**
      * <code>IS_USE_ONCE</code>
@@ -62,13 +52,13 @@ public class MybatisContextHolder implements RestServiceFitter<MybatisContextHol
     /**
      * <code>SQL_CACHES</code>
      * {@link java.util.Map} <p>The <code>SQL_CACHES</code> field.</p>
-     * @see  java.util.Map
+     * @see java.util.Map
      */
     private static Map<String, MybatisSqlCache> SQL_CACHES;
     /**
      * <code>SQL_SOURCE_CACHES</code>
      * {@link java.util.Map} <p>The <code>SQL_SOURCE_CACHES</code> field.</p>
-     * @see  java.util.Map
+     * @see java.util.Map
      */
     private static Map<Configuration, Map<String, SqlSource>> SQL_SOURCE_CACHES;
     /**
@@ -80,7 +70,7 @@ public class MybatisContextHolder implements RestServiceFitter<MybatisContextHol
     /**
      * <code>instance</code>
      * <p>The instance method.</p>
-     * @return  {@link io.github.nichetoolkit.mybatis.MybatisContextHolder} <p>The instance return object is <code>MybatisContextHolder</code> type.</p>
+     * @return {@link io.github.nichetoolkit.mybatis.MybatisContextHolder} <p>The instance return object is <code>MybatisContextHolder</code> type.</p>
      */
     public static MybatisContextHolder instance() {
         return INSTANCE;
@@ -93,6 +83,7 @@ public class MybatisContextHolder implements RestServiceFitter<MybatisContextHol
 
     @Override
     public void afterAutowirePropertiesSet() {
+        log.info("[MybatisContextHolder] > afterPropertiesSet: {}", JsonUtils.parseJson(tableProperties));
         SQL_SOURCE_CACHES = new ConcurrentHashMap<>(4);
         SQL_CACHES = new ConcurrentHashMap<>(this.cacheProperties.getInitSize());
         IS_USE_ONCE = this.cacheProperties.isUseOnce();
@@ -119,8 +110,8 @@ public class MybatisContextHolder implements RestServiceFitter<MybatisContextHol
     /**
      * <code>tableProperties</code>
      * <p>The table properties method.</p>
-     * @return  {@link io.github.nichetoolkit.mybatis.configure.MybatisTableProperties} <p>The table properties return object is <code>MybatisTableProperties</code> type.</p>
-     * @see  io.github.nichetoolkit.mybatis.configure.MybatisTableProperties
+     * @return {@link io.github.nichetoolkit.mybatis.configure.MybatisTableProperties} <p>The table properties return object is <code>MybatisTableProperties</code> type.</p>
+     * @see io.github.nichetoolkit.mybatis.configure.MybatisTableProperties
      */
     public static MybatisTableProperties tableProperties() {
         return INSTANCE.tableProperties;
@@ -129,8 +120,8 @@ public class MybatisContextHolder implements RestServiceFitter<MybatisContextHol
     /**
      * <code>cacheProperties</code>
      * <p>The cache properties method.</p>
-     * @return  {@link io.github.nichetoolkit.mybatis.configure.MybatisCacheProperties} <p>The cache properties return object is <code>MybatisCacheProperties</code> type.</p>
-     * @see  io.github.nichetoolkit.mybatis.configure.MybatisCacheProperties
+     * @return {@link io.github.nichetoolkit.mybatis.configure.MybatisCacheProperties} <p>The cache properties return object is <code>MybatisCacheProperties</code> type.</p>
+     * @see io.github.nichetoolkit.mybatis.configure.MybatisCacheProperties
      */
     public static MybatisCacheProperties cacheProperties() {
         return INSTANCE.cacheProperties;
@@ -138,43 +129,23 @@ public class MybatisContextHolder implements RestServiceFitter<MybatisContextHol
 
 
     /**
-     * <code>sqlSessionFactory</code>
-     * <p>The sql session factory method.</p>
-     * @return  {@link org.apache.ibatis.session.SqlSessionFactory} <p>The sql session factory return object is <code>SqlSessionFactory</code> type.</p>
-     * @see  org.apache.ibatis.session.SqlSessionFactory
+     * <code>defaultStyleType</code>
+     * <p>The default style type method.</p>
+     * @return {@link io.github.nichetoolkit.mybatis.enums.StyleType} <p>The default style type return object is <code>StyleType</code> type.</p>
+     * @see io.github.nichetoolkit.mybatis.enums.StyleType
      */
-    public static SqlSessionFactory sqlSessionFactory() {
-        return INSTANCE.sqlSessionFactory;
+    public static StyleType defaultStyleType() {
+        return INSTANCE.tableProperties.getStyleType();
     }
 
     /**
-     * <code>configuration</code>
-     * <p>The configuration method.</p>
-     * @return  {@link org.apache.ibatis.session.Configuration} <p>The configuration return object is <code>Configuration</code> type.</p>
-     * @see  org.apache.ibatis.session.Configuration
+     * <code>defaultTableStyle</code>
+     * <p>The default table style method.</p>
+     * @return {@link io.github.nichetoolkit.mybatis.MybatisTableStyle} <p>The default table style return object is <code>MybatisTableStyle</code> type.</p>
+     * @see io.github.nichetoolkit.mybatis.MybatisTableStyle
      */
-    public static Configuration configuration() {
-        return INSTANCE.sqlSessionFactory.getConfiguration();
-    }
-
-    /**
-     * <code>typeAliasRegistry</code>
-     * <p>The type alias registry method.</p>
-     * @return  {@link org.apache.ibatis.type.TypeAliasRegistry} <p>The type alias registry return object is <code>TypeAliasRegistry</code> type.</p>
-     * @see  org.apache.ibatis.type.TypeAliasRegistry
-     */
-    public static TypeAliasRegistry typeAliasRegistry() {
-        return INSTANCE.sqlSessionFactory.getConfiguration().getTypeAliasRegistry();
-    }
-
-    /**
-     * <code>typeHandlerRegistry</code>
-     * <p>The type handler registry method.</p>
-     * @return  {@link org.apache.ibatis.type.TypeHandlerRegistry} <p>The type handler registry return object is <code>TypeHandlerRegistry</code> type.</p>
-     * @see  org.apache.ibatis.type.TypeHandlerRegistry
-     */
-    public static TypeHandlerRegistry typeHandlerRegistry() {
-        return INSTANCE.sqlSessionFactory.getConfiguration().getTypeHandlerRegistry();
+    public static MybatisTableStyle defaultTableStyle() {
+       return MybatisTableStyle.style(INSTANCE.tableProperties.getStyleType());
     }
 
     /**
@@ -182,9 +153,9 @@ public class MybatisContextHolder implements RestServiceFitter<MybatisContextHol
      * <p>The put sql cache method.</p>
      * @param cacheKey {@link java.lang.String} <p>The cache key parameter is <code>String</code> type.</p>
      * @param sqlCache {@link io.github.nichetoolkit.mybatis.MybatisSqlCache} <p>The sql cache parameter is <code>MybatisSqlCache</code> type.</p>
-     * @see  java.lang.String
-     * @see  io.github.nichetoolkit.mybatis.MybatisSqlCache
-     * @return  {@link io.github.nichetoolkit.mybatis.MybatisSqlCache} <p>The put sql cache return object is <code>MybatisSqlCache</code> type.</p>
+     * @return {@link io.github.nichetoolkit.mybatis.MybatisSqlCache} <p>The put sql cache return object is <code>MybatisSqlCache</code> type.</p>
+     * @see java.lang.String
+     * @see io.github.nichetoolkit.mybatis.MybatisSqlCache
      */
     public static MybatisSqlCache putSqlCache(String cacheKey, MybatisSqlCache sqlCache) {
         return SQL_CACHES.put(cacheKey,sqlCache);
@@ -194,9 +165,9 @@ public class MybatisContextHolder implements RestServiceFitter<MybatisContextHol
      * <code>getSqlCache</code>
      * <p>The get sql cache getter method.</p>
      * @param cacheKey {@link java.lang.String} <p>The cache key parameter is <code>String</code> type.</p>
-     * @see  java.lang.String
-     * @see  io.github.nichetoolkit.mybatis.MybatisSqlCache
-     * @return  {@link io.github.nichetoolkit.mybatis.MybatisSqlCache} <p>The get sql cache return object is <code>MybatisSqlCache</code> type.</p>
+     * @return {@link io.github.nichetoolkit.mybatis.MybatisSqlCache} <p>The get sql cache return object is <code>MybatisSqlCache</code> type.</p>
+     * @see java.lang.String
+     * @see io.github.nichetoolkit.mybatis.MybatisSqlCache
      */
     public static MybatisSqlCache getSqlCache(String cacheKey) {
         return SQL_CACHES.get(cacheKey);
@@ -206,8 +177,8 @@ public class MybatisContextHolder implements RestServiceFitter<MybatisContextHol
      * <code>containsKey</code>
      * <p>The contains key method.</p>
      * @param cacheKey {@link java.lang.String} <p>The cache key parameter is <code>String</code> type.</p>
-     * @see  java.lang.String
      * @return boolean <p>The contains key return object is <code>boolean</code> type.</p>
+     * @see java.lang.String
      */
     public static boolean containsKey(String cacheKey) {
         return SQL_CACHES.containsKey(cacheKey);
@@ -217,8 +188,8 @@ public class MybatisContextHolder implements RestServiceFitter<MybatisContextHol
      * <code>containsKey</code>
      * <p>The contains key method.</p>
      * @param configuration {@link org.apache.ibatis.session.Configuration} <p>The configuration parameter is <code>Configuration</code> type.</p>
-     * @see  org.apache.ibatis.session.Configuration
      * @return boolean <p>The contains key return object is <code>boolean</code> type.</p>
+     * @see org.apache.ibatis.session.Configuration
      */
     public static boolean containsKey(Configuration configuration) {
         return SQL_SOURCE_CACHES.containsKey(configuration);
@@ -228,10 +199,10 @@ public class MybatisContextHolder implements RestServiceFitter<MybatisContextHol
      * <code>containsKey</code>
      * <p>The contains key method.</p>
      * @param configuration {@link org.apache.ibatis.session.Configuration} <p>The configuration parameter is <code>Configuration</code> type.</p>
-     * @param cacheKey {@link java.lang.String} <p>The cache key parameter is <code>String</code> type.</p>
-     * @see  org.apache.ibatis.session.Configuration
-     * @see  java.lang.String
+     * @param cacheKey      {@link java.lang.String} <p>The cache key parameter is <code>String</code> type.</p>
      * @return boolean <p>The contains key return object is <code>boolean</code> type.</p>
+     * @see org.apache.ibatis.session.Configuration
+     * @see java.lang.String
      */
     public static boolean containsKey(Configuration configuration, String cacheKey) {
         return SQL_SOURCE_CACHES.get(configuration).containsKey(cacheKey);
@@ -241,9 +212,9 @@ public class MybatisContextHolder implements RestServiceFitter<MybatisContextHol
      * <code>computeIfAbsent</code>
      * <p>The compute if absent method.</p>
      * @param configuration {@link org.apache.ibatis.session.Configuration} <p>The configuration parameter is <code>Configuration</code> type.</p>
-     * @see  org.apache.ibatis.session.Configuration
-     * @see  java.util.Map
-     * @return  {@link java.util.Map} <p>The compute if absent return object is <code>Map</code> type.</p>
+     * @return {@link java.util.Map} <p>The compute if absent return object is <code>Map</code> type.</p>
+     * @see org.apache.ibatis.session.Configuration
+     * @see java.util.Map
      */
     public static Map<String, SqlSource> computeIfAbsent(Configuration configuration) {
         return SQL_SOURCE_CACHES.computeIfAbsent(configuration, k -> new HashMap<>());
@@ -253,9 +224,9 @@ public class MybatisContextHolder implements RestServiceFitter<MybatisContextHol
      * <code>getSqlSource</code>
      * <p>The get sql source getter method.</p>
      * @param configuration {@link org.apache.ibatis.session.Configuration} <p>The configuration parameter is <code>Configuration</code> type.</p>
-     * @see  org.apache.ibatis.session.Configuration
-     * @see  java.util.Map
-     * @return  {@link java.util.Map} <p>The get sql source return object is <code>Map</code> type.</p>
+     * @return {@link java.util.Map} <p>The get sql source return object is <code>Map</code> type.</p>
+     * @see org.apache.ibatis.session.Configuration
+     * @see java.util.Map
      */
     public static Map<String, SqlSource> getSqlSource(Configuration configuration) {
         return SQL_SOURCE_CACHES.get(configuration);
@@ -265,11 +236,11 @@ public class MybatisContextHolder implements RestServiceFitter<MybatisContextHol
      * <code>getSqlSource</code>
      * <p>The get sql source getter method.</p>
      * @param configuration {@link org.apache.ibatis.session.Configuration} <p>The configuration parameter is <code>Configuration</code> type.</p>
-     * @param cacheKey {@link java.lang.String} <p>The cache key parameter is <code>String</code> type.</p>
-     * @see  org.apache.ibatis.session.Configuration
-     * @see  java.lang.String
-     * @see  org.apache.ibatis.mapping.SqlSource
-     * @return  {@link org.apache.ibatis.mapping.SqlSource} <p>The get sql source return object is <code>SqlSource</code> type.</p>
+     * @param cacheKey      {@link java.lang.String} <p>The cache key parameter is <code>String</code> type.</p>
+     * @return {@link org.apache.ibatis.mapping.SqlSource} <p>The get sql source return object is <code>SqlSource</code> type.</p>
+     * @see org.apache.ibatis.session.Configuration
+     * @see java.lang.String
+     * @see org.apache.ibatis.mapping.SqlSource
      */
     public static SqlSource getSqlSource(Configuration configuration, String cacheKey) {
         return SQL_SOURCE_CACHES.get(configuration).get(cacheKey);
