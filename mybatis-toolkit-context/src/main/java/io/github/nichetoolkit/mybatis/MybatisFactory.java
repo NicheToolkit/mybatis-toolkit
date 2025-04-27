@@ -281,8 +281,6 @@ public abstract class MybatisFactory {
                     }
                 }
 
-            } else if (rawClass == RestFickle[].class) {
-                fickleType = TypeFactory.defaultInstance().constructType(RestFickle[].class);
             }
         } else if (genericType instanceof GenericArrayType) {
             GenericArrayType genericArrayType = (GenericArrayType) genericType;
@@ -295,7 +293,7 @@ public abstract class MybatisFactory {
                 }
                 if (RestFickle.class.isAssignableFrom((Class<?>) arrayRawType)) {
                     isPresentFickleType = true;
-                    fickleType = TypeFactory.defaultInstance().constructType(RestFickle[].class);
+                    fickleType = TypeFactory.defaultInstance().constructArrayType(RestFickle.class);
                 }
             }
 

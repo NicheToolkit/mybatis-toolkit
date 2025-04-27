@@ -6,15 +6,16 @@ import io.github.nichetoolkit.mybatis.fickle.RestFickle;
 import io.github.nichetoolkit.mybatis.table.RestEntity;
 import io.github.nichetoolkit.mybatis.table.RestExcludes;
 import io.github.nichetoolkit.rest.util.BeanUtils;
+import io.github.nichetoolkit.rest.util.GeneralUtils;
 import io.github.nichetoolkit.rice.RestInfoEntity;
 import org.springframework.lang.NonNull;
 import lombok.Getter;
 import lombok.Setter;
 
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 
 @Setter
@@ -27,7 +28,7 @@ public class FickleEntryEntity extends RestInfoEntity<FickleEntryEntity, FickleE
 
     @NonNull
     @RestFickleEntry
-    private RestFickle<?>[] fields = new RestFickle<?>[0];
+    private Map<String, RestFickle<?>> fields = new HashMap<>();
 
     public FickleEntryEntity() {
     }
@@ -40,6 +41,9 @@ public class FickleEntryEntity extends RestInfoEntity<FickleEntryEntity, FickleE
     public FickleEntryModel toModel() {
         FickleEntryModel model = new FickleEntryModel();
         BeanUtils.copyNonnullProperties(this,model);
+        if (GeneralUtils.isNotEmpty(fields)) {
+            model.setFields(new ArrayList<>(fields.values()));
+        }
         return model;
     }
 

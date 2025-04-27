@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.github.nichetoolkit.mybatis.fickle.RestFickle;
 import io.github.nichetoolkit.rest.util.BeanUtils;
+import io.github.nichetoolkit.rest.util.GeneralUtils;
 import io.github.nichetoolkit.rice.RestInfoModel;
 import lombok.Getter;
 import lombok.Setter;
@@ -12,6 +13,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 import java.util.List;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Setter
 @Getter
@@ -35,6 +38,9 @@ public class FickleEntryModel extends RestInfoModel<FickleEntryModel, FickleEntr
     public FickleEntryEntity toEntity() {
         FickleEntryEntity entity = new FickleEntryEntity();
         BeanUtils.copyNonnullProperties(this, entity);
+        if (GeneralUtils.isNotEmpty(fields)) {
+            entity.setFields(fields.stream().collect(Collectors.toMap(RestFickle::getKey, Function.identity())));
+        }
         return entity;
     }
 
