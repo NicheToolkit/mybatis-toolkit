@@ -388,13 +388,24 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
     }
 
     /**
-     * <code>prefixOfParent</code>
-     * <p>The prefix of parent method.</p>
-     * @return {@link java.lang.String} <p>The prefix of parent return object is <code>String</code> type.</p>
+     * <code>ofParentPrefix</code>
+     * <p>The of parent prefix method.</p>
+     * @return {@link java.lang.String} <p>The of parent prefix return object is <code>String</code> type.</p>
      * @see java.lang.String
      */
-    public String prefixOfParent() {
-        return this.field.prefixOfParent();
+    public String ofParentPrefix() {
+        return this.field.ofParentPrefix(true);
+    }
+
+    /**
+     * <code>ofParentPrefix</code>
+     * <p>The of parent prefix method.</p>
+     * @param isPeriod boolean <p>The is period parameter is <code>boolean</code> type.</p>
+     * @return {@link java.lang.String} <p>The of parent prefix return object is <code>String</code> type.</p>
+     * @see java.lang.String
+     */
+    public String ofParentPrefix(boolean isPeriod) {
+        return this.field.ofParentPrefix(isPeriod);
     }
 
     /**
@@ -437,7 +448,6 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
         return property(SQLConstants.EMPTY);
     }
 
-
     /**
      * <code>aliasColumn</code>
      * <p>The alias column method.</p>
@@ -474,7 +484,7 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
      * @see java.lang.Integer
      */
     public String property(String prefix, Integer index) {
-        return prefix + SQLConstants.SQUARE_LT + index + SQLConstants.SQUARE_GT+ SQLConstants.PERIOD+ EntityConstants.VALUE;
+        return prefix + SQLConstants.SQUARE_LT + index + SQLConstants.SQUARE_GT + SQLConstants.PERIOD + EntityConstants.VALUE;
     }
 
     /**
@@ -502,57 +512,49 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
         }
     }
 
-    /**
-     * <code>parentOfVariable</code>
-     * <p>The parent of variable method.</p>
-     * @param prefix {@link java.lang.String} <p>The prefix parameter is <code>String</code> type.</p>
-     * @return {@link java.lang.String} <p>The parent of variable return object is <code>String</code> type.</p>
-     * @see java.lang.String
-     */
-    public String parentOfVariable(String prefix) {
+    public String variable(String prefix, Integer index) {
         if (this.forceInsert) {
             return this.forceInsertValue;
         } else {
-            if ((isSpecialIdentity() || isSpecialLinkage() || isSpecialAlertness()) && this.field.isParentNotEmpty()) {
-                prefix = prefix + this.field.prefixOfParent();
+            return signerVariable(prefix, index);
+        }
+    }
+
+    /**
+     * <code>prefixVariable</code>
+     * <p>The prefix variable method.</p>
+     * @param prefix {@link java.lang.String} <p>The prefix parameter is <code>String</code> type.</p>
+     * @return {@link java.lang.String} <p>The prefix variable return object is <code>String</code> type.</p>
+     * @see java.lang.String
+     */
+    public String prefixVariable(String prefix) {
+        if (this.forceInsert) {
+            return this.forceInsertValue;
+        } else {
+            if (this.field.isParentNotEmpty()) {
+                prefix = prefix + this.field.ofParentPrefix(true);
             }
             return signerVariable(prefix);
         }
     }
 
     /**
-     * <code>variable</code>
-     * <p>The variable method.</p>
+     * <code>prefixVariable</code>
+     * <p>The prefix variable method.</p>
      * @param prefix {@link java.lang.String} <p>The prefix parameter is <code>String</code> type.</p>
      * @param index  {@link java.lang.Integer} <p>The index parameter is <code>Integer</code> type.</p>
-     * @return {@link java.lang.String} <p>The variable return object is <code>String</code> type.</p>
+     * @return {@link java.lang.String} <p>The prefix variable return object is <code>String</code> type.</p>
      * @see java.lang.String
      * @see java.lang.Integer
      */
-    public String variable(String prefix, Integer index) {
-        if (this.field.isFickleField) {
-            prefix = prefix + this.field.prefixOfFickle();
-            return signerVariable(prefix, index);
+    public String prefixVariable(String prefix, Integer index) {
+        if (this.forceInsert) {
+            return this.forceInsertValue;
         } else {
-            return variable(prefix);
-        }
-    }
-
-    /**
-     * <code>parentOfVariable</code>
-     * <p>The parent of variable method.</p>
-     * @param prefix {@link java.lang.String} <p>The prefix parameter is <code>String</code> type.</p>
-     * @param index  {@link java.lang.Integer} <p>The index parameter is <code>Integer</code> type.</p>
-     * @return {@link java.lang.String} <p>The parent of variable return object is <code>String</code> type.</p>
-     * @see java.lang.String
-     * @see java.lang.Integer
-     */
-    public String parentOfVariable(String prefix, Integer index) {
-        if (this.field.isFickleField) {
-            prefix = prefix + this.field.prefixOfFickle();
+            if (this.field.isParentNotEmpty()) {
+                prefix = prefix + this.field.ofParentPrefix(false);
+            }
             return signerVariable(prefix, index);
-        } else {
-            return parentOfVariable(prefix);
         }
     }
 
@@ -617,7 +619,7 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
      */
     public String dollarVariable(String prefix, Integer index) {
         return SQLConstants.DOLLAR + SQLConstants.CURLY_LT
-                + (GeneralUtils.isNotEmpty(index) ? property(prefix, index) : property(prefix))
+                + property(prefix, index)
                 + jdbcTypeVariable().orElse(SQLConstants.EMPTY)
                 + typeHandlerVariable().orElse(SQLConstants.EMPTY)
                 + numericScaleVariable().orElse(SQLConstants.EMPTY)

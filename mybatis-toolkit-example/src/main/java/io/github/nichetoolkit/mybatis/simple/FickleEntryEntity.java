@@ -8,14 +8,11 @@ import io.github.nichetoolkit.mybatis.table.RestExcludes;
 import io.github.nichetoolkit.rest.util.BeanUtils;
 import io.github.nichetoolkit.rest.util.GeneralUtils;
 import io.github.nichetoolkit.rice.RestInfoEntity;
-import org.springframework.lang.NonNull;
 import lombok.Getter;
 import lombok.Setter;
 
 
 import java.util.*;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 
 @Setter
@@ -23,12 +20,12 @@ import java.util.stream.Collectors;
 @RestEntity(name = "ntr_fickle_entry")
 @RestExcludes({"updateTime","createTime"})
 public class FickleEntryEntity extends RestInfoEntity<FickleEntryEntity, FickleEntryModel> {
+
+    @RestFickleEntry
+    private List<RestFickle<?>> fields;
+
     @RestUpdate(false)
     private Date time;
-
-    @NonNull
-    @RestFickleEntry
-    private Map<String, RestFickle<?>> fields = new HashMap<>();
 
     public FickleEntryEntity() {
     }
@@ -41,9 +38,6 @@ public class FickleEntryEntity extends RestInfoEntity<FickleEntryEntity, FickleE
     public FickleEntryModel toModel() {
         FickleEntryModel model = new FickleEntryModel();
         BeanUtils.copyNonnullProperties(this,model);
-        if (GeneralUtils.isNotEmpty(fields)) {
-            model.setFields(new ArrayList<>(fields.values()));
-        }
         return model;
     }
 

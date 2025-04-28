@@ -1,12 +1,17 @@
 package io.github.nichetoolkit.mybatis;
 
+import com.fasterxml.jackson.databind.JavaType;
+import com.fasterxml.jackson.databind.type.MapType;
 import io.github.nichetoolkit.mybatis.consts.SQLConstants;
 import io.github.nichetoolkit.mybatis.consts.ScriptConstants;
 import io.github.nichetoolkit.mybatis.enums.SortType;
 import io.github.nichetoolkit.mybatis.enums.StyleType;
 import io.github.nichetoolkit.mybatis.error.MybatisIdentityLackError;
 import io.github.nichetoolkit.mybatis.error.MybatisLinkageLackError;
-import io.github.nichetoolkit.mybatis.fickle.RestFickle;
+import io.github.nichetoolkit.mybatis.handler.FickleArrayTypeHandler;
+import io.github.nichetoolkit.mybatis.handler.FickleListTypeHandler;
+import io.github.nichetoolkit.mybatis.handler.FickleMapTypeHandler;
+import io.github.nichetoolkit.rest.RestOptional;
 import io.github.nichetoolkit.rest.error.lack.ConfigureLackError;
 import io.github.nichetoolkit.rest.util.GeneralUtils;
 import lombok.Getter;
@@ -182,13 +187,6 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
      * @see io.github.nichetoolkit.mybatis.MybatisColumn
      */
     private MybatisColumn fickleValueColumn;
-
-    /**
-     * <code>fickleColumns</code>
-     * {@link java.util.Set} <p>The <code>fickleColumns</code> field.</p>
-     * @see java.util.Set
-     */
-    private final Set<RestFickle<?>> fickleColumns = new HashSet<>();
 
     /**
      * <code>identityIndex</code>
@@ -540,19 +538,6 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
      */
     public String tablenameAsAlias(String tablename) {
         return Optional.ofNullable(tablename).orElse(tablename()) + SQLConstants.BLANK + SQLConstants.AS + SQLConstants.BLANK + this.alias;
-    }
-
-    /**
-     * <code>fickleColumns</code>
-     * <p>The fickle columns method.</p>
-     * @param fickleColumns {@link io.github.nichetoolkit.mybatis.fickle.RestFickle} <p>The fickle columns parameter is <code>RestFickle</code> type.</p>
-     * @see io.github.nichetoolkit.mybatis.fickle.RestFickle
-     */
-    public void fickleColumns(RestFickle<?>[] fickleColumns) {
-        if (GeneralUtils.isNotEmpty(this.fickleColumns)) {
-            this.fickleColumns.clear();
-        }
-        this.fickleColumns.addAll(Arrays.asList(fickleColumns));
     }
 
     /**
@@ -910,11 +895,6 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
             synchronized (cacheKey) {
                 if (!hasBeenReplaced(configuration, cacheKey)) {
                     MetaObject metaObject = configuration.newMetaObject(configuration.getMappedStatement(cacheKey));
-                    if (GeneralUtils.isNotEmpty(this.fickleValueColumn)) {
-                        this.autoResultMaps = new ArrayList<>();
-                        ResultMap resultMap = autoResultMap(configuration, providerContext, cacheKey);
-                        this.autoResultMaps.add(resultMap);
-                    }
                     metaObject.setValue(ScriptConstants.RESULT_MAPS, Collections.unmodifiableList(this.autoResultMaps));
                 }
             }
@@ -1001,11 +981,7 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
             }
             String property = column.property();
             if ((column.isSpecialIdentity() || column.isSpecialLinkage() || column.isSpecialAlertness()) && column.isParentNotEmpty()) {
-                property = column.property(column.prefixOfParent());
-            }
-            if (column.isFickleColum()) {
-                property = column.property(column.prefixOfParent(),fickleIndex);
-                fickleIndex++;
+                property = column.property(column.ofParentPrefix(true));
             }
             ResultMapping.Builder builder = new ResultMapping.Builder(configuration, property, columnName, column.javaType());
             if (column.getJdbcType() != null && column.getJdbcType() != JdbcType.UNDEFINED) {
@@ -1023,6 +999,21 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
                 flags.add(ResultFlag.ID);
             }
             builder.flags(flags);
+            resultMappings.add(builder.build());
+        }
+        if (GeneralUtils.isNotEmpty(this.fickleValueColumn)) {
+            MybatisColumn column = this.fickleValueColumn;
+            JavaType fickleType = fickleValueColumn.fickleType;
+            String property = column.property();
+            String columnName = column.columnName();
+            ResultMapping.Builder builder = new ResultMapping.Builder(configuration, property, columnName, Object.class);
+            if (fickleType instanceof MapType) {
+                builder.typeHandler(FickleMapTypeHandler.DEFAULT_HANDLER);
+            } else if (fickleType instanceof Collection){
+                builder.typeHandler(FickleListTypeHandler.DEFAULT_HANDLER);
+            } else {
+                builder.typeHandler(FickleArrayTypeHandler.DEFAULT_HANDLER);
+            }
             resultMappings.add(builder.build());
         }
         String resultMapId = resultMapId(providerContext, DEFAULT_RESULT_MAP_NAME);
@@ -1165,14 +1156,7 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
      * @see java.util.List
      */
     public List<MybatisColumn> selectColumns() {
-        List<MybatisColumn> selectColumnList = this.tableColumns.stream().filter(MybatisColumn::isSelect).collect(Collectors.toList());
-        if (GeneralUtils.isNotEmpty(this.fickleColumns) && GeneralUtils.isNotEmpty(this.fickleValueColumn)) {
-            this.fickleColumns.forEach(fickleField -> {
-                MybatisColumn fickleColumn = MybatisColumn.of(this, this.fickleValueColumn, fickleField);
-                selectColumnList.add(fickleColumn);
-            });
-        }
-        return selectColumnList;
+        return this.tableColumns.stream().filter(MybatisColumn::isSelect).collect(Collectors.toList());
     }
 
     /**
@@ -1345,7 +1329,8 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
      * @see java.lang.String
      */
     public String sqlOfSelectColumns() {
-        return selectColumns().stream().map(MybatisColumn::columnName).distinct().collect(Collectors.joining(SQLConstants.COMMA + SQLConstants.BLANK));
+        String sqlOfSelect = selectColumns().stream().map(MybatisColumn::columnName).distinct().collect(Collectors.joining(SQLConstants.COMMA + SQLConstants.BLANK));
+        return RestOptional.ofEmptyable(sqlOfSelect).orElse(SQLConstants.ASTERISK);
     }
 
     /**
@@ -1355,7 +1340,8 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
      * @see java.lang.String
      */
     public String sqlOfSelectAliasColumns() {
-        return selectColumns().stream().map(column -> column.aliasColumn(this.alias)).collect(Collectors.joining(SQLConstants.COMMA + SQLConstants.BLANK));
+        String sqlOfSelect = selectColumns().stream().map(column -> column.aliasColumn(this.alias)).collect(Collectors.joining(SQLConstants.COMMA + SQLConstants.BLANK));
+        return RestOptional.ofEmptyable(sqlOfSelect).orElse(this.alias + SQLConstants.PERIOD + SQLConstants.ASTERISK);
     }
 
     /**

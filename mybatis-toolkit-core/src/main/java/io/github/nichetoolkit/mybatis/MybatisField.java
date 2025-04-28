@@ -280,58 +280,33 @@ public class MybatisField {
     }
 
     /**
-     * <code>prefixOfParent</code>
-     * <p>The prefix of parent method.</p>
-     * @return {@link java.lang.String} <p>The prefix of parent return object is <code>String</code> type.</p>
+     * <code>ofParentPrefix</code>
+     * <p>The of parent prefix method.</p>
+     * @param isPeriod boolean <p>The is period parameter is <code>boolean</code> type.</p>
+     * @return {@link java.lang.String} <p>The of parent prefix return object is <code>String</code> type.</p>
      * @see java.lang.String
      */
-    public String prefixOfParent() {
-        return this.isFickleField ? prefixOfFickle(false) : prefixOfParent(false);
+    public String ofParentPrefix(boolean isPeriod) {
+        return ofParentPrefix(false, isPeriod);
     }
 
     /**
-     * <code>prefixOfFickle</code>
-     * <p>The prefix of fickle method.</p>
-     * @return {@link java.lang.String} <p>The prefix of fickle return object is <code>String</code> type.</p>
-     * @see java.lang.String
-     */
-    public String prefixOfFickle() {
-        return prefixOfFickle(false);
-    }
-
-    /**
-     * <code>prefixOfParent</code>
-     * <p>The prefix of parent method.</p>
+     * <code>ofParentPrefix</code>
+     * <p>The of parent prefix method.</p>
      * @param isParent boolean <p>The is parent parameter is <code>boolean</code> type.</p>
-     * @return {@link java.lang.String} <p>The prefix of parent return object is <code>String</code> type.</p>
+     * @param isPeriod boolean <p>The is period parameter is <code>boolean</code> type.</p>
+     * @return {@link java.lang.String} <p>The of parent prefix return object is <code>String</code> type.</p>
      * @see java.lang.String
      */
-    public String prefixOfParent(boolean isParent) {
+    public String ofParentPrefix(boolean isParent, boolean isPeriod) {
         SqlBuilder sqlBuilder = SqlBuilder.sqlBuilder();
         if (this.parentField != null) {
-            sqlBuilder.append(this.parentField.prefixOfParent(true));
+            sqlBuilder.append(this.parentField.ofParentPrefix(true, true));
         }
         if (isParent) {
             sqlBuilder.append(this.fieldName()).period();
         }
-        return sqlBuilder.toString();
-    }
-
-    /**
-     * <code>prefixOfFickle</code>
-     * <p>The prefix of fickle method.</p>
-     * @param isParent boolean <p>The is parent parameter is <code>boolean</code> type.</p>
-     * @return {@link java.lang.String} <p>The prefix of fickle return object is <code>String</code> type.</p>
-     * @see java.lang.String
-     */
-    public String prefixOfFickle(boolean isParent) {
-        SqlBuilder sqlBuilder = SqlBuilder.sqlBuilder();
-        if (this.parentField != null) {
-            sqlBuilder.append(this.parentField.prefixOfFickle(true));
-        }
-        if (isParent) {
-            sqlBuilder.append(this.fieldName()).period();
-        } else {
+        if (!isPeriod) {
             sqlBuilder.deleteLastChar();
         }
         return sqlBuilder.toString();

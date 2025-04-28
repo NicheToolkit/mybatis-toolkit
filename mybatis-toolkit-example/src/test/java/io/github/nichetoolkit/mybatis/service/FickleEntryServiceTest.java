@@ -2,7 +2,6 @@ package io.github.nichetoolkit.mybatis.service;
 
 
 import io.github.nichetoolkit.mybatis.MybatisExampleApplicationTests;
-import io.github.nichetoolkit.mybatis.fickle.FickleArrayList;
 import io.github.nichetoolkit.mybatis.fickle.RestFickle;
 import io.github.nichetoolkit.mybatis.mapper.FickleEntryMapper;
 import io.github.nichetoolkit.mybatis.simple.FickleEntryFilter;
@@ -17,6 +16,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -41,7 +41,7 @@ class FickleEntryServiceTest extends MybatisExampleApplicationTests {
         fickleEntryModel.setName("name_" + GeneralUtils.uuid());
         fickleEntryModel.setDescription("description_" + GeneralUtils.uuid());
 
-        List<RestFickle<?>> fields = new FickleArrayList<>();
+        List<RestFickle<?>> fields = new ArrayList<>();
         fields.add(RestFickle.of("fickleEntry1", 11));
         fields.add(RestFickle.of("fickleEntry2", 12L));
         fields.add(RestFickle.of("fickleEntry3", 13F));
@@ -62,7 +62,7 @@ class FickleEntryServiceTest extends MybatisExampleApplicationTests {
         fickleEntryModel1.setName("name1_" + GeneralUtils.uuid());
         fickleEntryModel1.setDescription("description1_" + GeneralUtils.uuid());
 
-        List<RestFickle<?>> fields1 = new FickleArrayList<>();
+        List<RestFickle<?>> fields1 = new ArrayList<>();
         fields1.add(RestFickle.of("fickleEntry1", 111));
         fields1.add(RestFickle.of("fickleEntry2", 122L));
         fields1.add(RestFickle.of("fickleEntry3", 133F));
@@ -76,7 +76,7 @@ class FickleEntryServiceTest extends MybatisExampleApplicationTests {
         fickleEntryModel2.setName("name2_" + GeneralUtils.uuid());
         fickleEntryModel2.setDescription("description2_" + GeneralUtils.uuid());
 
-        List<RestFickle<?>> fields2 = new FickleArrayList<>();
+        List<RestFickle<?>> fields2 = new ArrayList<>();
         fields2.add(RestFickle.of("fickleEntry1", 1111));
         fields2.add(RestFickle.of("fickleEntry3", 1333F));
         fields2.add(RestFickle.of("fickleEntry5", GeneralUtils.uuid()));
@@ -84,14 +84,19 @@ class FickleEntryServiceTest extends MybatisExampleApplicationTests {
 
         fickleEntryModel2.setFields(fields2);
 
-        List<FickleEntryModel> fickleEntryModels = fickleEntryService.saveAll(Arrays.asList(fickleEntryModel2,fickleEntryModel1));
+        List<FickleEntryModel> fickleEntryModels = fickleEntryService.saveAll(Arrays.asList(fickleEntryModel2, fickleEntryModel1));
         System.out.println(JsonUtils.parseJson(fickleEntryModels));
     }
 
     @Order(3)
     @Test
     public void queryById() throws RestException {
-        FickleEntryModel fickleEntryModel = fickleEntryService.queryById(testId,Arrays.asList(RestFickle.of("fickleEntry1"),RestFickle.of("fickleEntry2")));
+        RestFickle<Object> fickleEntry1 = RestFickle.of("fickleEntry1");
+        String key = fickleEntry1.getKey();
+        String name = fickleEntry1.getName();
+        Object value = fickleEntry1.getValue();
+        RestFickle<Object> fickleEntry2 = RestFickle.of("fickleEntry2");
+        FickleEntryModel fickleEntryModel = fickleEntryService.queryById(testId, Arrays.asList(fickleEntry1, fickleEntry2));
         System.out.println(JsonUtils.parseJson(fickleEntryModel));
     }
 

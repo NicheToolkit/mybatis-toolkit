@@ -1,11 +1,15 @@
 package io.github.nichetoolkit.mybatis;
 
 import com.fasterxml.jackson.databind.JavaType;
+import com.fasterxml.jackson.databind.type.ArrayType;
+import com.fasterxml.jackson.databind.type.CollectionType;
+import com.fasterxml.jackson.databind.type.MapType;
 import io.github.nichetoolkit.mybatis.configure.MybatisTableProperties;
 import io.github.nichetoolkit.mybatis.consts.ScriptConstants;
 import io.github.nichetoolkit.mybatis.column.*;
 import io.github.nichetoolkit.rest.util.GeneralUtils;
 import org.apache.ibatis.type.JdbcType;
+import org.checkerframework.checker.units.qual.C;
 import org.springframework.lang.NonNull;
 
 import java.util.Collections;
