@@ -92,9 +92,6 @@ class FickleEntryServiceTest extends MybatisExampleApplicationTests {
     @Test
     public void queryById() throws RestException {
         RestFickle<Object> fickleEntry1 = RestFickle.of("fickleEntry1");
-        String key = fickleEntry1.getKey();
-        String name = fickleEntry1.getName();
-        Object value = fickleEntry1.getValue();
         RestFickle<Object> fickleEntry2 = RestFickle.of("fickleEntry2");
         FickleEntryModel fickleEntryModel = fickleEntryService.queryById(testId, Arrays.asList(fickleEntry1, fickleEntry2));
         System.out.println(JsonUtils.parseJson(fickleEntryModel));

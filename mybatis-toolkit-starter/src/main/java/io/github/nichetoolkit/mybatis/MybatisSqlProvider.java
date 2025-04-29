@@ -377,22 +377,15 @@ public interface MybatisSqlProvider {
     }
 
     static <I, S> String providingOfId(ProviderContext providerContext, @Nullable String tablename, I idParameter, ConsumerActuator<MybatisTable> tableOptional, RestFickle<?>[] fickleParams, MybatisSqlSupply.EntrySqlSupply sqlSupply) throws RestException {
-        MybatisTableStyle mybatisTableStyle = MybatisContextHolder.defaultTableStyle();
+        Object identity = reviseParameter(idParameter);
         return MybatisSqlScript.caching(providerContext, (table, sqlScript) -> {
             tableOptional.actuate(table);
             String ofSelectColumns = table.sqlOfSelectColumns();
             SqlBuilder keyBuilder = SqlBuilder.sqlBuilder(ofSelectColumns);
-            RestOptional.ofEmptyable(fickleParams).ifEmptyPresent(params -> {
-                keyBuilder.comma();
-                RestStream.stream(params).map(fickle -> {
-                    String fickleName = fickle.getName();
-                    String columnName = RestOptional.ofEmptyable(fickle.getKey()).orElse(mybatisTableStyle.columnName(fickle));
-                    return "CONCAT('{\"key\":\"" + columnName + "\",\"name\":\"" + fickleName + "\",\"value\":', " + columnName + ",'}')";
-                }).collect(RestCollectors.joining(SQLConstants.COMMA + SQLConstants.BLANK));
-                keyBuilder.as(table.fickleValueColumn().columnName());
-            });
-            return providingOfId(providerContext, tablename, idParameter, tableIgnored -> {
-            }, (tablenameValue, tableValue, valueBuilder) -> sqlSupply.supply(tablenameValue, tableValue, keyBuilder, valueBuilder));
+            keyOfFickle(table, fickleParams, keyBuilder);
+            SqlBuilder valueBuilder = SqlBuilder.sqlBuilder();
+            valueOfIdentity(table, identity, valueBuilder);
+            return sqlSupply.supply(tablename, table, keyBuilder, valueBuilder);
         });
     }
 
@@ -635,13 +628,7 @@ public interface MybatisSqlProvider {
         return MybatisSqlScript.caching(providerContext, (table, sqlScript) -> {
             tableOptional.actuate(table);
             SqlBuilder valueBuilder = SqlBuilder.sqlBuilder();
-            if (table.isSpecialIdentity()) {
-                valueOfParameter(table.identityColumns(), identity, table.getIdentityType());
-                String identitySql = sqlOfColumns(identity, table.identityColumns(), true, true);
-                valueBuilder.append(identitySql);
-            } else {
-                Optional.ofNullable(table.getIdentityColumn()).ifPresent(column -> valueBuilder.append(column.columnEqualsProperty()));
-            }
+            valueOfIdentity(table, identity, valueBuilder);
             return sqlSupply.supply(tablename, table, valueBuilder);
         });
     }
@@ -695,6 +682,29 @@ public interface MybatisSqlProvider {
             }
             return indexValue;
         }));
+    }
+
+    static void keyOfFickle(MybatisTable table, RestFickle<?>[] fickleParams, SqlBuilder keyBuilder) throws RestException {
+        MybatisTableStyle mybatisTableStyle = MybatisContextHolder.defaultTableStyle();
+        RestOptional.ofEmptyable(fickleParams).ifEmptyPresent(params -> {
+            keyBuilder.comma().append("CONCAT").braceLt().append("'[',");
+            String ofFickleParams = RestStream.stream(params).map(fickle -> {
+                String fickleName = fickle.getName();
+                String columnName = RestOptional.ofEmptyable(fickle.getKey()).orElse(mybatisTableStyle.columnName(fickle));
+                return "'{\"key\":\"" + columnName + "\",\"name\":\"" + fickleName + "\",\"value\":', " + columnName + ",'}'";
+            }).collect(RestCollectors.joining(SQLConstants.COMMA +"','" + SQLConstants.COMMA + SQLConstants.BLANK));
+            keyBuilder.append(ofFickleParams).append(",']'").braceGt().as(table.fickleValueColumn().columnName());
+        });
+    }
+
+    static void valueOfIdentity(MybatisTable table, Object identity, SqlBuilder valueBuilder) throws RestException {
+        if (table.isSpecialIdentity()) {
+            valueOfParameter(table.identityColumns(), identity, table.getIdentityType());
+            String identitySql = sqlOfColumns(identity, table.identityColumns(), true, true);
+            valueBuilder.append(identitySql);
+        } else {
+            Optional.ofNullable(table.getIdentityColumn()).ifPresent(column -> valueBuilder.append(column.columnEqualsProperty()));
+        }
     }
 
     static <I> String sqlOfColumns(I parameter, Collection<MybatisColumn> mybatisColumns, boolean andOrComma, boolean isEquals) throws RestException {
@@ -998,7 +1008,7 @@ public interface MybatisSqlProvider {
                         }).collect(Collectors.joining(SQLConstants.COMMA + SQLConstants.BLANK));
             } else if (fickleType instanceof MapType) {
                 sqlOfFickle = fickleKeyColumns.stream().map(fickleColumn ->
-                        fickleColumn.prefixVariable(EntityConstants.ENTITY_PREFIX))
+                                fickleColumn.prefixVariable(EntityConstants.ENTITY_PREFIX) + SQLConstants.PERIOD + EntityConstants.VALUE)
                         .collect(Collectors.joining(SQLConstants.COMMA + SQLConstants.BLANK));
             }
             if (GeneralUtils.isNotEmpty(sqlOfFickle)) {

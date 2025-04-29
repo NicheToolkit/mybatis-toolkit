@@ -1,6 +1,7 @@
 package io.github.nichetoolkit.mybatis;
 
 import com.fasterxml.jackson.databind.JavaType;
+import com.fasterxml.jackson.databind.type.CollectionType;
 import com.fasterxml.jackson.databind.type.MapType;
 import io.github.nichetoolkit.mybatis.consts.SQLConstants;
 import io.github.nichetoolkit.mybatis.consts.ScriptConstants;
@@ -1009,7 +1010,7 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
             ResultMapping.Builder builder = new ResultMapping.Builder(configuration, property, columnName, Object.class);
             if (fickleType instanceof MapType) {
                 builder.typeHandler(FickleMapTypeHandler.DEFAULT_HANDLER);
-            } else if (fickleType instanceof Collection){
+            } else if (fickleType instanceof CollectionType){
                 builder.typeHandler(FickleListTypeHandler.DEFAULT_HANDLER);
             } else {
                 builder.typeHandler(FickleArrayTypeHandler.DEFAULT_HANDLER);
