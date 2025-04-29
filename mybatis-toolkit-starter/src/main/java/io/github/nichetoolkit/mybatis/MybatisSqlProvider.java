@@ -420,6 +420,16 @@ public interface MybatisSqlProvider {
         }, (tablenameValue, tableValue, sqlBuilder) -> sqlSupply.supply(tablenameValue, tableValue, sqlBuilder, status));
     }
 
+    static <S> String providingOfWhere(ProviderContext providerContext, @Nullable String tablename, String whereSqlParameter, ConsumerActuator<MybatisTable> tableOptional, RestFickle<?>[] fickleParams, MybatisSqlSupply.EntrySqlSupply sqlSupply) throws RestException {
+        return MybatisSqlScript.caching(providerContext, (table, sqlScript) -> {
+            tableOptional.actuate(table);
+            String ofSelectColumns = table.sqlOfSelectColumns();
+            SqlBuilder keyBuilder = SqlBuilder.sqlBuilder(ofSelectColumns);
+            keyOfFickle(table, fickleParams, keyBuilder);
+            return sqlSupply.supply(tablename, table, keyBuilder, SqlBuilder.sqlBuilder(whereSqlParameter));
+        });
+    }
+
     static <L, S> String providingOfLinkId(ProviderContext providerContext, @Nullable String tablename, L linkIdParameter, String linkName, S statusParameter, MybatisSqlSupply.AlertSqlSupply sqlSupply) throws RestException {
         Object status = reviseParameter(statusParameter);
         return providingOfLinkId(providerContext, tablename, linkIdParameter, linkName, tableIgnored -> {
@@ -433,23 +443,40 @@ public interface MybatisSqlProvider {
     }
 
     @SuppressWarnings("Duplicates")
+    static <L> String providingOfLinkId(ProviderContext providerContext, @Nullable String tablename, L linkIdParameter, String linkName, ConsumerActuator<MybatisTable> tableOptional, RestFickle<?>[] fickleParams, MybatisSqlSupply.EntrySqlSupply sqlSupply) throws RestException {
+        Object linkId = reviseParameter(linkIdParameter);
+        return MybatisSqlScript.caching(providerContext, (table, sqlScript) -> {
+            tableOptional.actuate(table);
+            String ofSelectColumns = table.sqlOfSelectColumns();
+            SqlBuilder keyBuilder = SqlBuilder.sqlBuilder(ofSelectColumns);
+            keyOfFickle(table, fickleParams, keyBuilder);
+            SqlBuilder valueBuilder = SqlBuilder.sqlBuilder();
+            valueOfLinkId(table,linkId,linkName,valueBuilder);
+            return sqlSupply.supply(tablename, table, keyBuilder, valueBuilder);
+        });
+    }
+
+    @SuppressWarnings("Duplicates")
     static <L> String providingOfLinkId(ProviderContext providerContext, @Nullable String tablename, L linkIdParameter, String linkName, ConsumerActuator<MybatisTable> tableOptional, MybatisSqlSupply.SimpleSqlSupply sqlSupply) throws RestException {
         Object linkId = reviseParameter(linkIdParameter);
         return MybatisSqlScript.caching(providerContext, (table, sqlScript) -> {
             tableOptional.actuate(table);
-            SqlBuilder sqlBuilder = SqlBuilder.sqlBuilder();
-            if (GeneralUtils.isNotEmpty(linkName)) {
-                Optional.ofNullable(table.linkColumn(linkName)).ifPresent(column -> sqlBuilder.append(column.columnName()).eq().value(linkId));
-            } else {
-                if (table.isSpecialLinkage()) {
-                    valueOfParameter(table.linkageColumns(), linkId, table.getLinkageType());
-                    String linkageSql = sqlOfColumns(linkId, table.getLinkageColumns(), true, true);
-                    sqlBuilder.append(linkageSql);
-                } else {
-                    Optional.ofNullable(table.getLinkColumn()).ifPresent(column -> sqlBuilder.append(column.columnEqualsProperty()));
-                }
-            }
-            return sqlSupply.supply(tablename, table, sqlBuilder);
+            SqlBuilder valueBuilder = SqlBuilder.sqlBuilder();
+            valueOfLinkId(table,linkId,linkName,valueBuilder);
+            return sqlSupply.supply(tablename, table, valueBuilder);
+        });
+    }
+
+    @SuppressWarnings("Duplicates")
+    static <L> String providingOfLinkIdAll(ProviderContext providerContext, @Nullable String tablename, Collection<L> linkIdList, String linkName, ConsumerActuator<MybatisTable> tableOptional, RestFickle<?>[] fickleParams, MybatisSqlSupply.EntrySqlSupply sqlSupply) throws RestException {
+        return MybatisSqlScript.caching(providerContext, (table, sqlScript) -> {
+            tableOptional.actuate(table);
+            String ofSelectColumns = table.sqlOfSelectColumns();
+            SqlBuilder keyBuilder = SqlBuilder.sqlBuilder(ofSelectColumns);
+            keyOfFickle(table, fickleParams, keyBuilder);
+            SqlBuilder valueBuilder = SqlBuilder.sqlBuilder();
+            valuesOfLinkId(table,linkIdList,linkName,valueBuilder,sqlScript);
+            return sqlSupply.supply(tablename, table, keyBuilder, valueBuilder);
         });
     }
 
@@ -457,27 +484,9 @@ public interface MybatisSqlProvider {
     static <L> String providingOfLinkIdAll(ProviderContext providerContext, @Nullable String tablename, Collection<L> linkIdList, String linkName, ConsumerActuator<MybatisTable> tableOptional, MybatisSqlSupply.SimpleSqlSupply sqlSupply) throws RestException {
         return MybatisSqlScript.caching(providerContext, (table, sqlScript) -> {
             tableOptional.actuate(table);
-            SqlBuilder sqlBuilder = SqlBuilder.sqlBuilder();
-            if (GeneralUtils.isNotEmpty(linkName)) {
-                Optional.ofNullable(table.linkColumn(linkName)).ifPresent(column -> {
-                    sqlBuilder.append(column.columnName()).in().braceLt();
-                    linkIdList.forEach(linkId -> sqlBuilder.value(linkId).comma());
-                    sqlBuilder.delete(sqlBuilder.length() - 2).braceGt();
-                });
-            } else {
-                if (table.isSpecialLinkage()) {
-                    RestStream.stream(linkIdList).forEach(linkId -> valueOfParameter(table.linkageColumns(), linkId, table.getLinkageType()));
-                    Map<Integer, List<L>> sliceOfColumnsMap = sliceOfColumns(table.linkageColumns(), linkIdList);
-                    sqlBuilder.append(sqlOfColumns(sliceOfColumnsMap, table.linkageColumns(), sqlScript));
-                } else {
-                    Optional.ofNullable(table.getLinkColumn()).ifPresent(column -> {
-                        sqlBuilder.append(column.columnName()).in().braceLt();
-                        linkIdList.forEach(linkId -> sqlBuilder.value(linkId).comma());
-                        sqlBuilder.delete(sqlBuilder.length() - 2).braceGt();
-                    });
-                }
-            }
-            return sqlSupply.supply(tablename, table, sqlBuilder);
+            SqlBuilder valueBuilder = SqlBuilder.sqlBuilder();
+            valuesOfLinkId(table,linkIdList,linkName,valueBuilder,sqlScript);
+            return sqlSupply.supply(tablename, table, valueBuilder);
         });
     }
 
@@ -711,6 +720,44 @@ public interface MybatisSqlProvider {
             keyBuilder.append(ofFickleParams).sQuote(SQLConstants.SQUARE_GT).braceGt().as(table.fickleValueColumn().columnName());
         });
     }
+
+    static void valueOfLinkId(MybatisTable table, Object linkId, String linkName, SqlBuilder valueBuilder) throws RestException {
+        if (GeneralUtils.isNotEmpty(linkName)) {
+            Optional.ofNullable(table.linkColumn(linkName)).ifPresent(column -> valueBuilder.append(column.columnName()).eq().value(linkId));
+        } else {
+            if (table.isSpecialLinkage()) {
+                valueOfParameter(table.linkageColumns(), linkId, table.getLinkageType());
+                String linkageSql = sqlOfColumns(linkId, table.getLinkageColumns(), true, true);
+                valueBuilder.append(linkageSql);
+            } else {
+                Optional.ofNullable(table.getLinkColumn()).ifPresent(column -> valueBuilder.append(column.columnEqualsProperty()));
+            }
+        }
+    }
+
+    static <L> void valuesOfLinkId(MybatisTable table, Collection<L> linkIdList, String linkName,  SqlBuilder valueBuilder, MybatisSqlScript sqlScript) throws RestException {
+        if (GeneralUtils.isNotEmpty(linkName)) {
+            Optional.ofNullable(table.linkColumn(linkName)).ifPresent(column -> {
+                valueBuilder.append(column.columnName()).in().braceLt();
+                linkIdList.forEach(linkId -> valueBuilder.value(linkId).comma());
+                valueBuilder.delete(valueBuilder.length() - 2).braceGt();
+            });
+        } else {
+            if (table.isSpecialLinkage()) {
+                RestStream.stream(linkIdList).forEach(linkId -> valueOfParameter(table.linkageColumns(), linkId, table.getLinkageType()));
+                Map<Integer, List<L>> sliceOfColumnsMap = sliceOfColumns(table.linkageColumns(), linkIdList);
+                valueBuilder.append(sqlOfColumns(sliceOfColumnsMap, table.linkageColumns(), sqlScript));
+            } else {
+                Optional.ofNullable(table.getLinkColumn()).ifPresent(column -> {
+                    valueBuilder.append(column.columnName()).in().braceLt();
+                    linkIdList.forEach(linkId -> valueBuilder.value(linkId).comma());
+                    valueBuilder.delete(valueBuilder.length() - 2).braceGt();
+                });
+            }
+        }
+    }
+
+
 
     static void valueOfIdentity(MybatisTable table, Object identity, SqlBuilder valueBuilder) throws RestException {
         if (table.isSpecialIdentity()) {
