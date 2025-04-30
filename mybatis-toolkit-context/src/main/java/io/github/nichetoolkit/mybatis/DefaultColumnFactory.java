@@ -20,8 +20,8 @@ import java.util.Optional;
 /**
  * <code>DefaultColumnFactory</code>
  * <p>The default column factory class.</p>
- * @see  io.github.nichetoolkit.mybatis.MybatisColumnFactory
  * @author Cyan (snow22314@outlook.com)
+ * @see io.github.nichetoolkit.mybatis.MybatisColumnFactory
  * @since Jdk1.8
  */
 public class DefaultColumnFactory implements MybatisColumnFactory {
@@ -29,7 +29,7 @@ public class DefaultColumnFactory implements MybatisColumnFactory {
     /**
      * <code>tableProperties</code>
      * {@link io.github.nichetoolkit.mybatis.configure.MybatisTableProperties} <p>The <code>tableProperties</code> field.</p>
-     * @see  io.github.nichetoolkit.mybatis.configure.MybatisTableProperties
+     * @see io.github.nichetoolkit.mybatis.configure.MybatisTableProperties
      */
     private final MybatisTableProperties tableProperties;
 
@@ -46,9 +46,9 @@ public class DefaultColumnFactory implements MybatisColumnFactory {
      * <p>The exclude support method.</p>
      * @param table {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>The table parameter is <code>MybatisTable</code> type.</p>
      * @param field {@link io.github.nichetoolkit.mybatis.MybatisField} <p>The field parameter is <code>MybatisField</code> type.</p>
-     * @see  io.github.nichetoolkit.mybatis.MybatisTable
-     * @see  io.github.nichetoolkit.mybatis.MybatisField
      * @return boolean <p>The exclude support return object is <code>boolean</code> type.</p>
+     * @see io.github.nichetoolkit.mybatis.MybatisTable
+     * @see io.github.nichetoolkit.mybatis.MybatisField
      */
     private boolean excludeSupport(MybatisTable table, MybatisField field) {
         String fieldName = field.fieldName();
@@ -95,8 +95,8 @@ public class DefaultColumnFactory implements MybatisColumnFactory {
      * <p>The ignore handle method.</p>
      * @param table {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>The table parameter is <code>MybatisTable</code> type.</p>
      * @param field {@link io.github.nichetoolkit.mybatis.MybatisField} <p>The field parameter is <code>MybatisField</code> type.</p>
-     * @see  io.github.nichetoolkit.mybatis.MybatisTable
-     * @see  io.github.nichetoolkit.mybatis.MybatisField
+     * @see io.github.nichetoolkit.mybatis.MybatisTable
+     * @see io.github.nichetoolkit.mybatis.MybatisField
      */
     private void ignoreHandle(MybatisTable table, MybatisField field) {
         String fieldName = field.fieldName();
@@ -120,9 +120,9 @@ public class DefaultColumnFactory implements MybatisColumnFactory {
      * <code>globalHandle</code>
      * <p>The global handle method.</p>
      * @param fieldName {@link java.lang.String} <p>The field name parameter is <code>String</code> type.</p>
-     * @param field {@link io.github.nichetoolkit.mybatis.MybatisField} <p>The field parameter is <code>MybatisField</code> type.</p>
-     * @see  java.lang.String
-     * @see  io.github.nichetoolkit.mybatis.MybatisField
+     * @param field     {@link io.github.nichetoolkit.mybatis.MybatisField} <p>The field parameter is <code>MybatisField</code> type.</p>
+     * @see java.lang.String
+     * @see io.github.nichetoolkit.mybatis.MybatisField
      */
     private void globalHandle(String fieldName, MybatisField field) {
         List<String> globalIgnores = this.tableProperties.getIgnores();
@@ -150,12 +150,12 @@ public class DefaultColumnFactory implements MybatisColumnFactory {
     /**
      * <code>ignoreHandle</code>
      * <p>The ignore handle method.</p>
-     * @param ignored {@link io.github.nichetoolkit.mybatis.MybatisIgnored} <p>The ignored parameter is <code>MybatisIgnored</code> type.</p>
+     * @param ignored   {@link io.github.nichetoolkit.mybatis.MybatisIgnored} <p>The ignored parameter is <code>MybatisIgnored</code> type.</p>
      * @param fieldName {@link java.lang.String} <p>The field name parameter is <code>String</code> type.</p>
-     * @param field {@link io.github.nichetoolkit.mybatis.MybatisField} <p>The field parameter is <code>MybatisField</code> type.</p>
-     * @see  io.github.nichetoolkit.mybatis.MybatisIgnored
-     * @see  java.lang.String
-     * @see  io.github.nichetoolkit.mybatis.MybatisField
+     * @param field     {@link io.github.nichetoolkit.mybatis.MybatisField} <p>The field parameter is <code>MybatisField</code> type.</p>
+     * @see io.github.nichetoolkit.mybatis.MybatisIgnored
+     * @see java.lang.String
+     * @see io.github.nichetoolkit.mybatis.MybatisField
      */
     private void ignoreHandle(MybatisIgnored ignored, String fieldName, MybatisField field) {
         if (GeneralUtils.isNotEmpty(ignored)) {
@@ -183,11 +183,11 @@ public class DefaultColumnFactory implements MybatisColumnFactory {
      * <code>selectHandle</code>
      * <p>The select handle method.</p>
      * @param selectIgnored {@link io.github.nichetoolkit.mybatis.MybatisIgnored} <p>The select ignored parameter is <code>MybatisIgnored</code> type.</p>
-     * @param fieldName {@link java.lang.String} <p>The field name parameter is <code>String</code> type.</p>
-     * @param field {@link io.github.nichetoolkit.mybatis.MybatisField} <p>The field parameter is <code>MybatisField</code> type.</p>
-     * @see  io.github.nichetoolkit.mybatis.MybatisIgnored
-     * @see  java.lang.String
-     * @see  io.github.nichetoolkit.mybatis.MybatisField
+     * @param fieldName     {@link java.lang.String} <p>The field name parameter is <code>String</code> type.</p>
+     * @param field         {@link io.github.nichetoolkit.mybatis.MybatisField} <p>The field parameter is <code>MybatisField</code> type.</p>
+     * @see io.github.nichetoolkit.mybatis.MybatisIgnored
+     * @see java.lang.String
+     * @see io.github.nichetoolkit.mybatis.MybatisField
      */
     private void selectHandle(MybatisIgnored selectIgnored, String fieldName, MybatisField field) {
         if (GeneralUtils.isNotEmpty(selectIgnored)) {
@@ -215,11 +215,11 @@ public class DefaultColumnFactory implements MybatisColumnFactory {
      * <code>insertHandle</code>
      * <p>The insert handle method.</p>
      * @param insertIgnored {@link io.github.nichetoolkit.mybatis.MybatisIgnored} <p>The insert ignored parameter is <code>MybatisIgnored</code> type.</p>
-     * @param fieldName {@link java.lang.String} <p>The field name parameter is <code>String</code> type.</p>
-     * @param field {@link io.github.nichetoolkit.mybatis.MybatisField} <p>The field parameter is <code>MybatisField</code> type.</p>
-     * @see  io.github.nichetoolkit.mybatis.MybatisIgnored
-     * @see  java.lang.String
-     * @see  io.github.nichetoolkit.mybatis.MybatisField
+     * @param fieldName     {@link java.lang.String} <p>The field name parameter is <code>String</code> type.</p>
+     * @param field         {@link io.github.nichetoolkit.mybatis.MybatisField} <p>The field parameter is <code>MybatisField</code> type.</p>
+     * @see io.github.nichetoolkit.mybatis.MybatisIgnored
+     * @see java.lang.String
+     * @see io.github.nichetoolkit.mybatis.MybatisField
      */
     private void insertHandle(MybatisIgnored insertIgnored, String fieldName, MybatisField field) {
         if (GeneralUtils.isNotEmpty(insertIgnored)) {
@@ -248,11 +248,11 @@ public class DefaultColumnFactory implements MybatisColumnFactory {
      * <code>updateHandle</code>
      * <p>The update handle method.</p>
      * @param updateIgnored {@link io.github.nichetoolkit.mybatis.MybatisIgnored} <p>The update ignored parameter is <code>MybatisIgnored</code> type.</p>
-     * @param fieldName {@link java.lang.String} <p>The field name parameter is <code>String</code> type.</p>
-     * @param field {@link io.github.nichetoolkit.mybatis.MybatisField} <p>The field parameter is <code>MybatisField</code> type.</p>
-     * @see  io.github.nichetoolkit.mybatis.MybatisIgnored
-     * @see  java.lang.String
-     * @see  io.github.nichetoolkit.mybatis.MybatisField
+     * @param fieldName     {@link java.lang.String} <p>The field name parameter is <code>String</code> type.</p>
+     * @param field         {@link io.github.nichetoolkit.mybatis.MybatisField} <p>The field parameter is <code>MybatisField</code> type.</p>
+     * @see io.github.nichetoolkit.mybatis.MybatisIgnored
+     * @see java.lang.String
+     * @see io.github.nichetoolkit.mybatis.MybatisField
      */
     private void updateHandle(MybatisIgnored updateIgnored, String fieldName, MybatisField field) {
         if (GeneralUtils.isNotEmpty(updateIgnored)) {
@@ -284,7 +284,7 @@ public class DefaultColumnFactory implements MybatisColumnFactory {
 
     @Override
     public Optional<List<MybatisColumn>> createColumn(@NonNull MybatisTable mybatisTable, @NonNull MybatisField field, Chain chain) {
-        return createColumn(mybatisTable, field, chain, null,false, false);
+        return createColumn(mybatisTable, field, chain, null, false, false);
     }
 
     @Override
@@ -421,6 +421,9 @@ public class DefaultColumnFactory implements MybatisColumnFactory {
         RestLoadEntity restLoadEntity = field.getAnnotation(RestLoadEntity.class);
         if (GeneralUtils.isNotEmpty(restLoadEntity) && !fieldIgnored) {
             mybatisColumn.setLoadEntity(true);
+            mybatisColumn.setSelect(false);
+            mybatisColumn.setInsert(false);
+            mybatisColumn.setUpdate(false);
             if (GeneralUtils.isNotEmpty(restLoadEntity.index())) {
                 mybatisColumn.setLoadIndex(restLoadEntity.index());
             }

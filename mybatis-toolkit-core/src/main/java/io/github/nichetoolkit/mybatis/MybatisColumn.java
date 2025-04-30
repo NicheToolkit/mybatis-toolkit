@@ -19,8 +19,6 @@ import org.springframework.lang.NonNull;
 import java.util.*;
 import java.util.regex.Matcher;
 
-import static io.github.nichetoolkit.mybatis.MybatisTable.DELIMITER;
-
 /**
  * <code>MybatisColumn</code>
  * <p>The mybatis column class.</p>
@@ -859,7 +857,7 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
      */
     public String aliasColumnAsProperty(String alias, String prefix) {
         String column = this.columnName();
-        Matcher matcher = DELIMITER.matcher(this.columnName());
+        Matcher matcher = MybatisTable.DELIMITER.matcher(this.columnName());
         if (matcher.find()) {
             column = matcher.group(1);
         }

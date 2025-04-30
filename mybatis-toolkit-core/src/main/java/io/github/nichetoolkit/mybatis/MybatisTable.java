@@ -176,6 +176,13 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
     private List<MybatisColumn> alertnessColumns = new ArrayList<>();
 
     /**
+     * <code>loadColumns</code>
+     * {@link java.util.Map} <p>The <code>loadColumns</code> field.</p>
+     * @see java.util.Map
+     */
+    private final Map<Class<?>, MybatisColumn> loadColumns = new HashMap<>();
+
+    /**
      * <code>fickleKeyColumn</code>
      * {@link io.github.nichetoolkit.mybatis.MybatisColumn} <p>The <code>fickleKeyColumn</code> field.</p>
      * @see io.github.nichetoolkit.mybatis.MybatisColumn
@@ -544,7 +551,9 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
     /**
      * <code>readyColumns</code>
      * <p>The ready columns method.</p>
+     * @see java.lang.SuppressWarnings
      */
+    @SuppressWarnings("Duplicates")
     protected void readyColumns() {
         List<MybatisColumn> identityColumns = new ArrayList<>();
         List<MybatisColumn> identityKeyColumns = new ArrayList<>();
@@ -628,6 +637,9 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
                     alertKeyColumns.remove(column);
                     alertKeyColumns.add(0, column);
                 }
+            }
+            if (column.isLoadEntity()) {
+                loadColumns.put(column.getField().fieldType(), column);
             }
             if (column.isPrimaryKey()) {
                 primaryKeyColumns.remove(column);
@@ -971,9 +983,7 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
      */
     private ResultMap autoResultMap(Configuration configuration, ProviderContext providerContext, String cacheKey) {
         List<ResultMapping> resultMappings = new ArrayList<>();
-        List<MybatisColumn> mybatisColumns = selectColumns();
-        int fickleIndex = 0;
-        for (MybatisColumn column : mybatisColumns) {
+        for (MybatisColumn column : selectColumns()) {
             String columnName = column.columnName();
             /* 去掉可能存在的分隔符，例如：`order` */
             Matcher matcher = MybatisTable.DELIMITER.matcher(columnName);
@@ -1085,6 +1095,47 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
      */
     public MybatisColumn linkColumn(String linkName) {
         return this.linkColumns.get(linkName);
+    }
+
+
+    /**
+     * <code>linkColumns</code>
+     * <p>The link columns method.</p>
+     * @return {@link java.util.Map} <p>The link columns return object is <code>Map</code> type.</p>
+     * @see java.util.Map
+     */
+    public Map<String,MybatisColumn> linkColumns() {
+        return this.linkColumns;
+    }
+
+    /**
+     * <code>loadColumns</code>
+     * <p>The load columns method.</p>
+     * @return {@link java.util.Map} <p>The load columns return object is <code>Map</code> type.</p>
+     * @see java.util.Map
+     */
+    public Map<Class<?>,MybatisColumn> loadColumns() {
+        return this.loadColumns;
+    }
+
+    /**
+     * <code>loadKeyColumns</code>
+     * <p>The load key columns method.</p>
+     * @return {@link java.util.List} <p>The load key columns return object is <code>List</code> type.</p>
+     * @see java.util.List
+     */
+    public List<MybatisColumn> loadKeyColumns() {
+        return this.tableColumns.stream().filter(MybatisColumn::isLoadKey).collect(Collectors.toList());
+    }
+
+    /**
+     * <code>loadParamColumns</code>
+     * <p>The load param columns method.</p>
+     * @return {@link java.util.List} <p>The load param columns return object is <code>List</code> type.</p>
+     * @see java.util.List
+     */
+    public List<MybatisColumn> loadParamColumns() {
+        return this.tableColumns.stream().filter(column -> column.isLoadParam() || column.isLoadKey()).collect(Collectors.toList());
     }
 
     /**
