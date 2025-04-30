@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.type.TypeFactory;
 import io.github.nichetoolkit.mybatis.column.*;
 import io.github.nichetoolkit.mybatis.defaults.DefaultColumnFactoryChain;
 import io.github.nichetoolkit.mybatis.defaults.DefaultTableFactoryChain;
-import io.github.nichetoolkit.mybatis.error.MybatisProviderLackError;
 import io.github.nichetoolkit.mybatis.error.MybatisTableLackError;
 import io.github.nichetoolkit.mybatis.fickle.RestFickle;
 import io.github.nichetoolkit.mybatis.table.RestFickleness;
@@ -21,6 +20,7 @@ import org.springframework.lang.Nullable;
 import java.lang.reflect.*;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 
 /**
@@ -34,17 +34,17 @@ import java.util.function.Function;
 public abstract class MybatisFactory {
 
     /**
-     * <code>TABLE_CACHES</code>
-     * {@link java.util.Map} <p>The <code>TABLE_CACHES</code> field.</p>
+     * <code>MYBATIS_TABLE_CACHE</code>
+     * {@link java.util.Map} <p>The constant <code>MYBATIS_TABLE_CACHE</code> field.</p>
      * @see java.util.Map
      */
-    private static final Map<Class<?>,MybatisTable> MYBATIS_TABLE_CACHE = new ConcurrentHashMap<>();
+    private static final Map<Class<?>, MybatisTable> MYBATIS_TABLE_CACHE = new ConcurrentHashMap<>();
 
     /**
      * <code>tableCache</code>
      * <p>The table cache method.</p>
-     * @param mapperType {@link java.lang.Class} <p>The mapper type parameter is <code>Class</code> type.</p>
-     * @param mybatisTable {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>The table cache parameter is <code>MybatisTable</code> type.</p>
+     * @param mapperType   {@link java.lang.Class} <p>The mapper type parameter is <code>Class</code> type.</p>
+     * @param mybatisTable {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>The mybatis table parameter is <code>MybatisTable</code> type.</p>
      * @return {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>The table cache return object is <code>MybatisTable</code> type.</p>
      * @see java.lang.Class
      * @see io.github.nichetoolkit.mybatis.MybatisTable
@@ -53,17 +53,17 @@ public abstract class MybatisFactory {
         if (GeneralUtils.isEmpty(mapperType) || GeneralUtils.isEmpty(mybatisTable)) {
             return mybatisTable;
         }
-        if ( !MYBATIS_TABLE_CACHE.containsKey(mapperType)) {
+        if (!MYBATIS_TABLE_CACHE.containsKey(mapperType)) {
             MYBATIS_TABLE_CACHE.put(mapperType, mybatisTable);
         }
         return mybatisTable;
     }
 
     /**
-     * <code>tableOfCache</code>
-     * <p>The table of cache method.</p>
+     * <code>cacheTable</code>
+     * <p>The cache table method.</p>
      * @param mapperType {@link java.lang.Class} <p>The mapper type parameter is <code>Class</code> type.</p>
-     * @return {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>The table of cache return object is <code>MybatisTable</code> type.</p>
+     * @return {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>The cache table return object is <code>MybatisTable</code> type.</p>
      * @see java.lang.Class
      * @see io.github.nichetoolkit.mybatis.MybatisTable
      */
@@ -155,6 +155,8 @@ public abstract class MybatisFactory {
                                     handleOfFields(table, linkageType, columnFactoryChain, linkField -> MybatisField.ofLinkage(entityType, mybatisField, linkField));
                                 } else if (GeneralUtils.isNotEmpty(alertnessType) && mybatisField.isAnnotationPresent(RestAlertKey.class)) {
                                     handleOfFields(table, alertnessType, columnFactoryChain, alertField -> MybatisField.ofAlertness(entityType, mybatisField, alertField));
+                                } else if (mybatisField.isAnnotationPresent(RestLoadEntity.class)) {
+                                    handleOfLoadEntityField(table, declaredField, columnFactoryChain, (loadField, entityClass) -> MybatisField.ofLoadEntity(entityType, mybatisField, loadField, entityClass));
                                 } else {
                                     boolean isPresentFickleKey = mybatisField.isAnnotationPresent(RestFickleKey.class);
                                     boolean isPresentFickleEntry = mybatisField.isAnnotationPresent(RestFickleEntry.class);
@@ -226,6 +228,57 @@ public abstract class MybatisFactory {
     protected static void handleOfFickleKeyFields(MybatisTable table, Field declaredField, MybatisColumnFactory.Chain columnFactoryChain, Function<Field, MybatisField> fieldFunction) {
         handleOfFickleFields(table, declaredField, columnFactoryChain, fieldFunction, true, false);
     }
+
+    /**
+     * <code>handleOfLoadEntityField</code>
+     * <p>The handle of load entity field method.</p>
+     * @param table              {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>The table parameter is <code>MybatisTable</code> type.</p>
+     * @param declaredField      {@link java.lang.reflect.Field} <p>The declared field parameter is <code>Field</code> type.</p>
+     * @param columnFactoryChain {@link io.github.nichetoolkit.mybatis.MybatisColumnFactory.Chain} <p>The column factory chain parameter is <code>Chain</code> type.</p>
+     * @param fieldFunction      {@link java.util.function.BiFunction} <p>The field function parameter is <code>BiFunction</code> type.</p>
+     * @see io.github.nichetoolkit.mybatis.MybatisTable
+     * @see java.lang.reflect.Field
+     * @see io.github.nichetoolkit.mybatis.MybatisColumnFactory.Chain
+     * @see java.util.function.BiFunction
+     */
+    private static void handleOfLoadEntityField(MybatisTable table, Field declaredField, MybatisColumnFactory.Chain columnFactoryChain, BiFunction<Field, Class<?>, MybatisField> fieldFunction) {
+        Class<?> fieldType = declaredField.getType();
+        Type genericType = declaredField.getGenericType();
+        Class<?> entityType = null;
+        if (genericType instanceof ParameterizedType) {
+            ParameterizedType parameterizedType = (ParameterizedType) genericType;
+            Type rawType = parameterizedType.getRawType();
+            if (!(rawType instanceof Class)) {
+                return;
+            }
+            Class<?> rawClass = (Class<?>) rawType;
+            if (Collection.class.isAssignableFrom(rawClass)) {
+                Type[] typeArguments = parameterizedType.getActualTypeArguments();
+                Type actualType = typeArguments[0];
+                if (!(actualType instanceof Class)) {
+                    return;
+                }
+                entityType = (Class<?>) actualType;
+            } else if (Map.class.isAssignableFrom(rawClass)) {
+                Type[] typeArguments = parameterizedType.getActualTypeArguments();
+                Type valueOfActualType = typeArguments[1];
+                if (!(valueOfActualType instanceof Class)) {
+                    return;
+                }
+                entityType = (Class<?>) valueOfActualType;
+            }
+        } else if (fieldType.isArray()) {
+            entityType = fieldType.getComponentType();
+        } else {
+            entityType = fieldType;
+        }
+        if (GeneralUtils.isNotEmpty(entityType)) {
+            MybatisField field = fieldFunction.apply(declaredField, entityType);
+            Optional<List<MybatisColumn>> optionalColumns = columnFactoryChain.createColumn(table, field);
+            optionalColumns.ifPresent(columns -> columns.forEach(table::addColumn));
+        }
+    }
+
 
     /**
      * <code>handleOfFickleFields</code>

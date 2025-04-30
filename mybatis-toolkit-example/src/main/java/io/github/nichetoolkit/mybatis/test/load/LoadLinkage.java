@@ -14,11 +14,10 @@ import java.util.Objects;
 @RestLinkage
 public class LoadLinkage implements Serializable {
     /* load and type may be anyone use */
-    @RestLoadKey(load = "linkEntity1", type = LoadLinkEntity1.class)
+    @RestLoadKey(key = "linkEntity1", type = LoadLinkEntity1.class)
     private String linkId1;
 
-    /* load and type may be anyone use */
-    @RestLoadKey(load = "linkEntity2", type = LoadLinkEntity2.class)
+    @RestLoadKey(key = "linkEntity2", type = LoadLinkEntity2.class)
     private String linkId2;
 
     public LoadLinkage() {

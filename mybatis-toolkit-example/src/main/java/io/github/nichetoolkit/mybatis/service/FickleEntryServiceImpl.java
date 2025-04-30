@@ -1,5 +1,8 @@
-package io.github.nichetoolkit.mybatis.test.fickle;
+package io.github.nichetoolkit.mybatis.service;
 
+import io.github.nichetoolkit.mybatis.test.fickle.FickleEntryEntity;
+import io.github.nichetoolkit.mybatis.test.fickle.FickleEntryFilter;
+import io.github.nichetoolkit.mybatis.test.fickle.FickleEntryModel;
 import io.github.nichetoolkit.rest.RestException;
 import io.github.nichetoolkit.rice.RestInfoService;
 import org.springframework.lang.NonNull;

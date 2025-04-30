@@ -12,6 +12,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.Date;
+import java.util.List;
 
 @Setter
 @Getter
@@ -20,22 +21,17 @@ public class LoadEntity extends DefaultInfoEntity<LoadEntity, LoadModel, LoadIde
     @RestLinkKey
     private LoadLinkage linkage;
 
-    @RestLoadParam(
-            load = "paramId",
-            type = {LoadLinkEntity1.class, LoadLinkEntity2.class}
-    )
+    @RestLoadParam(param = "paramId", types = LoadLinkEntity2.class)
     private String paramId;
 
     @RestForceInsert("now()")
     private Date time;
 
-    /* load and index may be anyone use */
-    @RestLoadEntity(load = "linkEntity1")
+    @RestLoadEntity(key = "linkEntity1")
     private LoadLinkEntity1 linkEntity1;
 
-    /* load and index may be anyone use */
-    @RestLoadEntity(load = "linkEntity2", index = 1)
-    private LoadLinkEntity2 linkEntity2;
+    @RestLoadEntity(key = "linkEntity2s", index = 1)
+    private List<LoadLinkEntity2> linkEntity2s;
 
     public LoadEntity() {
     }

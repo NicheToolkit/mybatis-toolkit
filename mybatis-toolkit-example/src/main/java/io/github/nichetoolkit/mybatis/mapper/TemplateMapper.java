@@ -1,6 +1,10 @@
-package io.github.nichetoolkit.mybatis.test.template;
+package io.github.nichetoolkit.mybatis.mapper;
 
 import io.github.nichetoolkit.mybatis.*;
+import io.github.nichetoolkit.mybatis.test.template.TemplateAlertness;
+import io.github.nichetoolkit.mybatis.test.template.TemplateEntity;
+import io.github.nichetoolkit.mybatis.test.template.TemplateIdentity;
+import io.github.nichetoolkit.mybatis.test.template.TemplateLinkage;
 import org.apache.ibatis.annotations.Mapper;
 
 /**

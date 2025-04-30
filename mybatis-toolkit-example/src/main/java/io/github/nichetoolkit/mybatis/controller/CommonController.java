@@ -1,6 +1,6 @@
 package io.github.nichetoolkit.mybatis.controller;
 
-import io.github.nichetoolkit.mybatis.test.common.CommonService;
+import io.github.nichetoolkit.mybatis.service.CommonService;
 import io.github.nichetoolkit.mybatis.test.common.CommonFilter;
 import io.github.nichetoolkit.mybatis.test.common.CommonModel;
 import io.github.nichetoolkit.rest.RestException;

@@ -1,7 +1,8 @@
-package io.github.nichetoolkit.mybatis.test.fickle;
+package io.github.nichetoolkit.mybatis.mapper;
 
 import io.github.nichetoolkit.mybatis.MybatisInfoMapper;
 import io.github.nichetoolkit.mybatis.natives.MybatisFindFickleMapper;
+import io.github.nichetoolkit.mybatis.test.fickle.FickleEntryEntity;
 import org.apache.ibatis.annotations.Mapper;
 
 /**

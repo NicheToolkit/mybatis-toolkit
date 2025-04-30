@@ -4,7 +4,6 @@ package io.github.nichetoolkit.mybatis.service;
 import io.github.nichetoolkit.mybatis.MybatisExampleApplicationTests;
 import io.github.nichetoolkit.mybatis.test.common.CommonFilter;
 import io.github.nichetoolkit.mybatis.test.common.CommonModel;
-import io.github.nichetoolkit.mybatis.test.common.CommonService;
 import io.github.nichetoolkit.rest.RestException;
 import io.github.nichetoolkit.rest.util.DateUtils;
 import io.github.nichetoolkit.rest.util.GeneralUtils;

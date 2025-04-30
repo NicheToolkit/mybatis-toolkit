@@ -1,6 +1,7 @@
-package io.github.nichetoolkit.mybatis.test.simple;
+package io.github.nichetoolkit.mybatis.service;
 
 import io.github.nichetoolkit.mybatis.*;
+import io.github.nichetoolkit.mybatis.test.simple.SimpleEntity;
 import org.apache.ibatis.annotations.Mapper;
 
 /**

@@ -1,5 +1,8 @@
-package io.github.nichetoolkit.mybatis.test.template;
+package io.github.nichetoolkit.mybatis.service;
 
+import io.github.nichetoolkit.mybatis.test.template.TemplateFilter;
+import io.github.nichetoolkit.mybatis.test.template.TemplateIdentity;
+import io.github.nichetoolkit.mybatis.test.template.TemplateModel;
 import io.github.nichetoolkit.rice.service.*;
 
 /**

@@ -1,6 +1,9 @@
-package io.github.nichetoolkit.mybatis.test.load;
+package io.github.nichetoolkit.mybatis.mapper;
 
 import io.github.nichetoolkit.mybatis.*;
+import io.github.nichetoolkit.mybatis.test.load.LoadEntity;
+import io.github.nichetoolkit.mybatis.test.load.LoadIdentity;
+import io.github.nichetoolkit.mybatis.test.load.LoadLinkage;
 import org.apache.ibatis.annotations.Mapper;
 
 /**

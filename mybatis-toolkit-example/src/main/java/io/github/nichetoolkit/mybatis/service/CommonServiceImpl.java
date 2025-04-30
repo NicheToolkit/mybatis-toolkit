@@ -1,5 +1,8 @@
-package io.github.nichetoolkit.mybatis.test.common;
+package io.github.nichetoolkit.mybatis.service;
 
+import io.github.nichetoolkit.mybatis.test.common.CommonEntity;
+import io.github.nichetoolkit.mybatis.test.common.CommonFilter;
+import io.github.nichetoolkit.mybatis.test.common.CommonModel;
 import io.github.nichetoolkit.rest.RestException;
 import io.github.nichetoolkit.rice.RestInfoService;
 import org.springframework.lang.NonNull;

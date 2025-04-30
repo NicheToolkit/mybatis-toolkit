@@ -3,10 +3,9 @@ package io.github.nichetoolkit.mybatis.service;
 
 import io.github.nichetoolkit.mybatis.MybatisExampleApplicationTests;
 import io.github.nichetoolkit.mybatis.fickle.RestFickle;
-import io.github.nichetoolkit.mybatis.test.fickle.FickleEntryMapper;
+import io.github.nichetoolkit.mybatis.mapper.FickleEntryMapper;
 import io.github.nichetoolkit.mybatis.test.fickle.FickleEntryFilter;
 import io.github.nichetoolkit.mybatis.test.fickle.FickleEntryModel;
-import io.github.nichetoolkit.mybatis.test.fickle.FickleEntryService;
 import io.github.nichetoolkit.rest.RestException;
 import io.github.nichetoolkit.rest.util.GeneralUtils;
 import io.github.nichetoolkit.rest.util.JsonUtils;

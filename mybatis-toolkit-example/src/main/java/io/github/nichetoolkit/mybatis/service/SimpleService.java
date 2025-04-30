@@ -1,5 +1,7 @@
-package io.github.nichetoolkit.mybatis.test.simple;
+package io.github.nichetoolkit.mybatis.service;
 
+import io.github.nichetoolkit.mybatis.test.simple.SimpleFilter;
+import io.github.nichetoolkit.mybatis.test.simple.SimpleModel;
 import io.github.nichetoolkit.rice.service.*;
 
 /**

@@ -1,7 +1,7 @@
 package io.github.nichetoolkit.mybatis.service;
 
 import io.github.nichetoolkit.mybatis.MybatisExampleApplicationTests;
-import io.github.nichetoolkit.mybatis.test.load.LoadService;
+import io.github.nichetoolkit.mybatis.load.RestLoad;
 import io.github.nichetoolkit.mybatis.test.load.LoadIdentity;
 import io.github.nichetoolkit.mybatis.test.load.LoadModel;
 import io.github.nichetoolkit.mybatis.test.load.*;
@@ -83,7 +83,7 @@ class LoadServiceTest extends MybatisExampleApplicationTests {
     @Test
     public void queryById() throws RestException {
         LoadIdentity identity = new LoadIdentity(testLoadPk1, testLoadPk2);
-        LoadModel loadModel = loadService.queryById(identity);
+        LoadModel loadModel = loadService.queryById(identity, RestLoad.of(0),RestLoad.of("linkEntity2"));
         System.out.println(JsonUtils.parseJson(loadModel));
     }
 

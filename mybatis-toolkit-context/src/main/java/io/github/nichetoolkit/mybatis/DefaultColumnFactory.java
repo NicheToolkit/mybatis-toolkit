@@ -1,15 +1,11 @@
 package io.github.nichetoolkit.mybatis;
 
 import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.type.ArrayType;
-import com.fasterxml.jackson.databind.type.CollectionType;
-import com.fasterxml.jackson.databind.type.MapType;
 import io.github.nichetoolkit.mybatis.configure.MybatisTableProperties;
 import io.github.nichetoolkit.mybatis.consts.ScriptConstants;
 import io.github.nichetoolkit.mybatis.column.*;
 import io.github.nichetoolkit.rest.util.GeneralUtils;
 import org.apache.ibatis.type.JdbcType;
-import org.checkerframework.checker.units.qual.C;
 import org.springframework.lang.NonNull;
 
 import java.util.Arrays;
@@ -287,6 +283,7 @@ public class DefaultColumnFactory implements MybatisColumnFactory {
         return createColumn(mybatisTable, field, chain, null, false, false);
     }
 
+
     @Override
     public Optional<List<MybatisColumn>> createColumn(@NonNull MybatisTable mybatisTable, @NonNull MybatisField field, Chain chain, JavaType fickleType, boolean isFickleKey, boolean isFickleValue) {
         /* 默认针对 entity 实体中的所有字段构建 column 数据 */
@@ -400,19 +397,19 @@ public class DefaultColumnFactory implements MybatisColumnFactory {
         RestLoadParam restLoadParam = field.getAnnotation(RestLoadParam.class);
         if (GeneralUtils.isNotEmpty(restLoadParam) && !fieldIgnored) {
             mybatisColumn.setLoadParam(true);
-            if (GeneralUtils.isNotEmpty(restLoadParam.load())) {
-                mybatisColumn.setLoadValue(restLoadParam.load());
+            if (GeneralUtils.isNotEmpty(restLoadParam.param())) {
+                mybatisColumn.setLoadValue(restLoadParam.param());
             }
-            if (GeneralUtils.isNotEmpty(restLoadParam.type())) {
-                mybatisColumn.getLoadTypes().addAll(Arrays.asList(restLoadParam.type()));
+            if (GeneralUtils.isNotEmpty(restLoadParam.types())) {
+                mybatisColumn.getLoadTypes().addAll(Arrays.asList(restLoadParam.types()));
             }
         }
         RestLoadKey restLoadKey = field.getAnnotation(RestLoadKey.class);
         if (GeneralUtils.isNotEmpty(restLoadKey) && !fieldIgnored) {
             mybatisColumn.setLoadKey(true);
             /* 覆盖 RestLoadParam LoadValue  */
-            if (GeneralUtils.isNotEmpty(restLoadKey.load())) {
-                mybatisColumn.setLoadValue(restLoadKey.load());
+            if (GeneralUtils.isNotEmpty(restLoadKey.key())) {
+                mybatisColumn.setLoadValue(restLoadKey.key());
             }
             if (GeneralUtils.isNotEmpty(restLoadKey.type())) {
                 mybatisColumn.getLoadTypes().add(restLoadKey.type());
@@ -428,8 +425,8 @@ public class DefaultColumnFactory implements MybatisColumnFactory {
                 mybatisColumn.setLoadIndex(restLoadEntity.index());
             }
             /* 覆盖 RestLoadKey LoadValue  */
-            if (GeneralUtils.isNotEmpty(restLoadEntity.load())) {
-                mybatisColumn.setLoadValue(restLoadEntity.load());
+            if (GeneralUtils.isNotEmpty(restLoadEntity.key())) {
+                mybatisColumn.setLoadValue(restLoadEntity.key());
             }
         }
 

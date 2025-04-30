@@ -1,5 +1,7 @@
-package io.github.nichetoolkit.mybatis.test.fickle;
+package io.github.nichetoolkit.mybatis.service;
 
+import io.github.nichetoolkit.mybatis.test.fickle.FickleEntryFilter;
+import io.github.nichetoolkit.mybatis.test.fickle.FickleEntryModel;
 import io.github.nichetoolkit.rice.service.FilterService;
 import io.github.nichetoolkit.rice.service.QueryFickleService;
 import io.github.nichetoolkit.rice.service.SingleService;

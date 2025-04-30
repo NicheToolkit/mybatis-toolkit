@@ -1,5 +1,8 @@
-package io.github.nichetoolkit.mybatis.test.load;
+package io.github.nichetoolkit.mybatis.service;
 
+import io.github.nichetoolkit.mybatis.test.load.LoadFilter;
+import io.github.nichetoolkit.mybatis.test.load.LoadIdentity;
+import io.github.nichetoolkit.mybatis.test.load.LoadModel;
 import io.github.nichetoolkit.rice.service.*;
 
 /**

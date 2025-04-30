@@ -12,8 +12,10 @@ import io.github.nichetoolkit.mybatis.error.MybatisLinkageLackError;
 import io.github.nichetoolkit.mybatis.handler.FickleArrayTypeHandler;
 import io.github.nichetoolkit.mybatis.handler.FickleListTypeHandler;
 import io.github.nichetoolkit.mybatis.handler.FickleMapTypeHandler;
+import io.github.nichetoolkit.rest.RestFitter;
 import io.github.nichetoolkit.rest.RestOptional;
 import io.github.nichetoolkit.rest.error.lack.ConfigureLackError;
+import io.github.nichetoolkit.rest.reflect.RestGenericTypes;
 import io.github.nichetoolkit.rest.util.GeneralUtils;
 import lombok.Getter;
 import lombok.Setter;
@@ -32,6 +34,8 @@ import org.apache.ibatis.type.UnknownTypeHandler;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.*;
 import java.util.function.Function;
 import java.util.regex.Matcher;
@@ -639,7 +643,8 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
                 }
             }
             if (column.isLoadEntity()) {
-                loadColumns.put(column.getField().fieldType(), column);
+                Class<?> loadEntityType = column.getField().loadEntityType();
+                loadColumns.put(loadEntityType, column);
             }
             if (column.isPrimaryKey()) {
                 primaryKeyColumns.remove(column);
@@ -1096,7 +1101,6 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
     public MybatisColumn linkColumn(String linkName) {
         return this.linkColumns.get(linkName);
     }
-
 
     /**
      * <code>linkColumns</code>

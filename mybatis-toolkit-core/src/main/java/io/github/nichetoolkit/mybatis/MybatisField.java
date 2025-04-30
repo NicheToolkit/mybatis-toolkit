@@ -50,6 +50,19 @@ public class MybatisField {
      * @see io.github.nichetoolkit.mybatis.fickle.RestFickle
      */
     protected RestFickle<?> fickleField;
+
+    /**
+     * <code>loadEntityType</code>
+     * {@link java.lang.Class} <p>The <code>loadEntityType</code> field.</p>
+     * @see java.lang.Class
+     */
+    protected Class<?> loadEntityType;
+
+    /**
+     * <code>isLoadEntity</code>
+     * <p>The <code>isLoadEntity</code> field.</p>
+     */
+    protected boolean isLoadEntity = false;
     /**
      * <code>isIdentity</code>
      * <p>The <code>isIdentity</code> field.</p>
@@ -157,6 +170,25 @@ public class MybatisField {
     }
 
     /**
+     * <code>MybatisField</code>
+     * <p>Instantiates a new mybatis field.</p>
+     * @param entityType     {@link java.lang.Class} <p>The entity type parameter is <code>Class</code> type.</p>
+     * @param parentField    {@link io.github.nichetoolkit.mybatis.MybatisField} <p>The parent field parameter is <code>MybatisField</code> type.</p>
+     * @param field          {@link java.lang.reflect.Field} <p>The field parameter is <code>Field</code> type.</p>
+     * @param loadEntityType {@link java.lang.Class} <p>The load entity type parameter is <code>Class</code> type.</p>
+     * @see java.lang.Class
+     * @see java.lang.reflect.Field
+     */
+    private MybatisField(Class<?> entityType, MybatisField parentField, Field field, Class<?> loadEntityType) {
+        this.entityType = entityType;
+        this.parentField = parentField;
+        this.field = field;
+        this.field.setAccessible(true);
+        this.loadEntityType = loadEntityType;
+        this.isLoadEntity = true;
+    }
+
+    /**
      * <code>of</code>
      * <p>The of method.</p>
      * @param entityType {@link java.lang.Class} <p>The entity type parameter is <code>Class</code> type.</p>
@@ -227,6 +259,21 @@ public class MybatisField {
      */
     protected static MybatisField ofAlertness(Class<?> entityType, MybatisField parentField, Field field) {
         return new MybatisField(entityType, parentField, field, false, false, true, false);
+    }
+
+    /**
+     * <code>ofLoadEntity</code>
+     * <p>The of load entity method.</p>
+     * @param entityType     {@link java.lang.Class} <p>The entity type parameter is <code>Class</code> type.</p>
+     * @param parentField    {@link io.github.nichetoolkit.mybatis.MybatisField} <p>The parent field parameter is <code>MybatisField</code> type.</p>
+     * @param field          {@link java.lang.reflect.Field} <p>The field parameter is <code>Field</code> type.</p>
+     * @param loadEntityType {@link java.lang.Class} <p>The load entity type parameter is <code>Class</code> type.</p>
+     * @return {@link io.github.nichetoolkit.mybatis.MybatisField} <p>The of load entity return object is <code>MybatisField</code> type.</p>
+     * @see java.lang.Class
+     * @see java.lang.reflect.Field
+     */
+    protected static MybatisField ofLoadEntity(Class<?> entityType, MybatisField parentField, Field field, Class<?> loadEntityType) {
+        return new MybatisField(entityType, parentField, field, loadEntityType);
     }
 
     /**
@@ -340,6 +387,16 @@ public class MybatisField {
      */
     public Class<?> fieldType() {
         return this.isFickleField ? this.fickleField.getType().getType() : field.getType();
+    }
+
+    /**
+     * <code>loadEntityType</code>
+     * <p>The load entity type method.</p>
+     * @return {@link java.lang.Class} <p>The load entity type return object is <code>Class</code> type.</p>
+     * @see java.lang.Class
+     */
+    public Class<?> loadEntityType() {
+        return this.loadEntityType;
     }
 
     /**

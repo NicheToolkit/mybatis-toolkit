@@ -1,5 +1,9 @@
-package io.github.nichetoolkit.mybatis.test.load;
+package io.github.nichetoolkit.mybatis.service;
 
+import io.github.nichetoolkit.mybatis.test.load.LoadEntity;
+import io.github.nichetoolkit.mybatis.test.load.LoadFilter;
+import io.github.nichetoolkit.mybatis.test.load.LoadIdentity;
+import io.github.nichetoolkit.mybatis.test.load.LoadModel;
 import io.github.nichetoolkit.rest.RestException;
 import io.github.nichetoolkit.rice.DefaultInfoService;
 import org.springframework.lang.NonNull;
