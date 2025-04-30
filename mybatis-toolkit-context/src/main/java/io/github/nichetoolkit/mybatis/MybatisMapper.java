@@ -26,16 +26,6 @@ public interface MybatisMapper<E> {
     }
 
     /**
-     * <code>table</code>
-     * <p>The table method.</p>
-     * @return  {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>The table return object is <code>MybatisTable</code> type.</p>
-     * @see  io.github.nichetoolkit.mybatis.MybatisTable
-     */
-    default MybatisTable table() {
-        return MybatisFactory.createTable(mapperType(), null, null, null, null);
-    }
-
-    /**
      * <code>Instance</code>
      * <p>The instance class.</p>
      * @author Cyan (snow22314@outlook.com)

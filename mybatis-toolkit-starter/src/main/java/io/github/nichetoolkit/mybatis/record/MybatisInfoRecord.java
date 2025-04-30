@@ -18,6 +18,7 @@ package io.github.nichetoolkit.mybatis.record;
 
 import io.github.nichetoolkit.mybatis.MybatisMapper;
 import io.github.nichetoolkit.mybatis.MybatisInfoMapper;
+import io.github.nichetoolkit.mybatis.MybatisMapperFactory;
 import io.github.nichetoolkit.rice.InfoEntity;
 
 /**
@@ -40,7 +41,7 @@ public interface MybatisInfoRecord<M extends MybatisInfoMapper<E, I>, E extends 
      * @return M <p>The info mapper return object is <code>M</code> type.</p>
      */
     default M infoMapper() {
-    return MybatisRecordProvider.<M,E, I>defaultInstance().superMapper(mapperType());
+    return MybatisMapperFactory.<M,E, I>defaultInstance().superMapper(mapperType());
   }
 
 }

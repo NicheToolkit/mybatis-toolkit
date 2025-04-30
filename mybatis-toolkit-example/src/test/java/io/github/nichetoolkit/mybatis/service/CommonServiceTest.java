@@ -2,8 +2,9 @@ package io.github.nichetoolkit.mybatis.service;
 
 
 import io.github.nichetoolkit.mybatis.MybatisExampleApplicationTests;
-import io.github.nichetoolkit.mybatis.simple.CommonFilter;
-import io.github.nichetoolkit.mybatis.simple.CommonModel;
+import io.github.nichetoolkit.mybatis.test.common.CommonFilter;
+import io.github.nichetoolkit.mybatis.test.common.CommonModel;
+import io.github.nichetoolkit.mybatis.test.common.CommonService;
 import io.github.nichetoolkit.rest.RestException;
 import io.github.nichetoolkit.rest.util.DateUtils;
 import io.github.nichetoolkit.rest.util.GeneralUtils;
@@ -32,7 +33,7 @@ class CommonServiceTest extends MybatisExampleApplicationTests {
 
     /**
      * <code>commonService</code>
-     * {@link io.github.nichetoolkit.mybatis.service.CommonService} <p>The <code>commonService</code> field.</p>
+     * {@link CommonService} <p>The <code>commonService</code> field.</p>
      * @see  org.springframework.beans.factory.annotation.Autowired
      */
     @Autowired

@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.type.TypeFactory;
 import io.github.nichetoolkit.mybatis.column.*;
 import io.github.nichetoolkit.mybatis.defaults.DefaultColumnFactoryChain;
 import io.github.nichetoolkit.mybatis.defaults.DefaultTableFactoryChain;
+import io.github.nichetoolkit.mybatis.error.MybatisProviderLackError;
 import io.github.nichetoolkit.mybatis.error.MybatisTableLackError;
 import io.github.nichetoolkit.mybatis.fickle.RestFickle;
 import io.github.nichetoolkit.mybatis.table.RestFickleness;
@@ -19,6 +20,7 @@ import org.springframework.lang.Nullable;
 
 import java.lang.reflect.*;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 
 /**
@@ -36,24 +38,25 @@ public abstract class MybatisFactory {
      * {@link java.util.Map} <p>The <code>TABLE_CACHES</code> field.</p>
      * @see java.util.Map
      */
-    private static Map<Class<?>,MybatisTable> TABLE_CACHES;
-
+    private static final Map<Class<?>,MybatisTable> MYBATIS_TABLE_CACHE = new ConcurrentHashMap<>();
 
     /**
      * <code>tableCache</code>
      * <p>The table cache method.</p>
      * @param mapperType {@link java.lang.Class} <p>The mapper type parameter is <code>Class</code> type.</p>
-     * @param tableCache {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>The table cache parameter is <code>MybatisTable</code> type.</p>
+     * @param mybatisTable {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>The table cache parameter is <code>MybatisTable</code> type.</p>
      * @return {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>The table cache return object is <code>MybatisTable</code> type.</p>
      * @see java.lang.Class
      * @see io.github.nichetoolkit.mybatis.MybatisTable
      */
-    private static MybatisTable tableCache(Class<?> mapperType, MybatisTable tableCache) {
-        if (TABLE_CACHES == null) {
-            TABLE_CACHES = new HashMap<>();
+    private static MybatisTable tableCache(Class<?> mapperType, MybatisTable mybatisTable) {
+        if (GeneralUtils.isEmpty(mapperType) || GeneralUtils.isEmpty(mybatisTable)) {
+            return mybatisTable;
         }
-        TABLE_CACHES.put(mapperType,tableCache);
-        return tableCache;
+        if ( !MYBATIS_TABLE_CACHE.containsKey(mapperType)) {
+            MYBATIS_TABLE_CACHE.put(mapperType, mybatisTable);
+        }
+        return mybatisTable;
     }
 
     /**
@@ -64,8 +67,11 @@ public abstract class MybatisFactory {
      * @see java.lang.Class
      * @see io.github.nichetoolkit.mybatis.MybatisTable
      */
-    public static MybatisTable tableOfCache(Class<?> mapperType) {
-        return TABLE_CACHES.get(mapperType);
+    public static MybatisTable cacheTable(Class<?> mapperType) {
+        if (MYBATIS_TABLE_CACHE.containsKey(mapperType)) {
+            return MYBATIS_TABLE_CACHE.get(mapperType);
+        }
+        throw new MybatisTableLackError(mapperType.getName() + " Table Bean not found");
     }
 
     /**

@@ -1,8 +1,8 @@
 package io.github.nichetoolkit.mybatis.controller;
 
-import io.github.nichetoolkit.mybatis.service.SimpleService;
-import io.github.nichetoolkit.mybatis.simple.SimpleFilter;
-import io.github.nichetoolkit.mybatis.simple.SimpleModel;
+import io.github.nichetoolkit.mybatis.test.simple.SimpleService;
+import io.github.nichetoolkit.mybatis.test.simple.SimpleFilter;
+import io.github.nichetoolkit.mybatis.test.simple.SimpleModel;
 import io.github.nichetoolkit.rest.RestException;
 import io.github.nichetoolkit.rest.RestResult;
 import io.github.nichetoolkit.rest.userlog.stereotype.RestNotelog;
@@ -31,16 +31,16 @@ public class SimpleController {
 
     /**
      * <code>simpleService</code>
-     * {@link io.github.nichetoolkit.mybatis.service.SimpleService} <p>The <code>simpleService</code> field.</p>
-     * @see  io.github.nichetoolkit.mybatis.service.SimpleService
+     * {@link SimpleService} <p>The <code>simpleService</code> field.</p>
+     * @see  SimpleService
      */
     private final SimpleService simpleService;
 
     /**
      * <code>SimpleController</code>
      * <p>Instantiates a new simple controller.</p>
-     * @param simpleService {@link io.github.nichetoolkit.mybatis.service.SimpleService} <p>The simple service parameter is <code>SimpleService</code> type.</p>
-     * @see  io.github.nichetoolkit.mybatis.service.SimpleService
+     * @param simpleService {@link SimpleService} <p>The simple service parameter is <code>SimpleService</code> type.</p>
+     * @see  SimpleService
      * @see  org.springframework.beans.factory.annotation.Autowired
      */
     @Autowired
@@ -51,8 +51,8 @@ public class SimpleController {
     /**
      * <code>create</code>
      * <p>The create method.</p>
-     * @param simpleModel {@link io.github.nichetoolkit.mybatis.simple.SimpleModel} <p>The simple model parameter is <code>SimpleModel</code> type.</p>
-     * @see  io.github.nichetoolkit.mybatis.simple.SimpleModel
+     * @param simpleModel {@link SimpleModel} <p>The simple model parameter is <code>SimpleModel</code> type.</p>
+     * @see  SimpleModel
      * @see  org.springframework.web.bind.annotation.RequestBody
      * @see  io.github.nichetoolkit.rest.RestResult
      * @see  org.springframework.web.bind.annotation.PostMapping
@@ -68,8 +68,8 @@ public class SimpleController {
     /**
      * <code>update</code>
      * <p>The update method.</p>
-     * @param simpleModel {@link io.github.nichetoolkit.mybatis.simple.SimpleModel} <p>The simple model parameter is <code>SimpleModel</code> type.</p>
-     * @see  io.github.nichetoolkit.mybatis.simple.SimpleModel
+     * @param simpleModel {@link SimpleModel} <p>The simple model parameter is <code>SimpleModel</code> type.</p>
+     * @see  SimpleModel
      * @see  org.springframework.web.bind.annotation.RequestBody
      * @see  io.github.nichetoolkit.rest.RestResult
      * @see  org.springframework.web.bind.annotation.PostMapping
@@ -105,8 +105,8 @@ public class SimpleController {
     /**
      * <code>queryByFilter</code>
      * <p>The query by filter method.</p>
-     * @param filter {@link io.github.nichetoolkit.mybatis.simple.SimpleFilter} <p>The filter parameter is <code>SimpleFilter</code> type.</p>
-     * @see  io.github.nichetoolkit.mybatis.simple.SimpleFilter
+     * @param filter {@link SimpleFilter} <p>The filter parameter is <code>SimpleFilter</code> type.</p>
+     * @see  SimpleFilter
      * @see  org.springframework.web.bind.annotation.RequestBody
      * @see  io.github.nichetoolkit.rest.RestResult
      * @see  org.springframework.web.bind.annotation.PostMapping
@@ -143,8 +143,8 @@ public class SimpleController {
     /**
      * <code>deleteByFilter</code>
      * <p>The delete by filter method.</p>
-     * @param filter {@link io.github.nichetoolkit.mybatis.simple.SimpleFilter} <p>The filter parameter is <code>SimpleFilter</code> type.</p>
-     * @see  io.github.nichetoolkit.mybatis.simple.SimpleFilter
+     * @param filter {@link SimpleFilter} <p>The filter parameter is <code>SimpleFilter</code> type.</p>
+     * @see  SimpleFilter
      * @see  org.springframework.web.bind.annotation.RequestBody
      * @see  io.github.nichetoolkit.rest.RestResult
      * @see  org.springframework.web.bind.annotation.PostMapping

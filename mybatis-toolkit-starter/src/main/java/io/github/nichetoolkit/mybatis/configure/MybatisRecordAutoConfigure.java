@@ -1,6 +1,6 @@
 package io.github.nichetoolkit.mybatis.configure;
 
-import io.github.nichetoolkit.mybatis.record.MybatisRecordProvider;
+import io.github.nichetoolkit.mybatis.MybatisMapperFactory;
 import lombok.extern.slf4j.Slf4j;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.InitializingBean;
@@ -43,15 +43,15 @@ public class MybatisRecordAutoConfigure {
      * <p>The record provider method.</p>
      * @param sqlSessionTemplate {@link org.mybatis.spring.SqlSessionTemplate} <p>The sql session template parameter is <code>SqlSessionTemplate</code> type.</p>
      * @see  org.mybatis.spring.SqlSessionTemplate
-     * @see  io.github.nichetoolkit.mybatis.record.MybatisRecordProvider
+     * @see  MybatisMapperFactory
      * @see  org.springframework.context.annotation.Bean
      * @see  org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
-     * @return  {@link io.github.nichetoolkit.mybatis.record.MybatisRecordProvider} <p>The record provider return object is <code>MybatisRecordProvider</code> type.</p>
+     * @return  {@link MybatisMapperFactory} <p>The record provider return object is <code>MybatisRecordProvider</code> type.</p>
      */
     @Bean
-    @ConditionalOnMissingBean(MybatisRecordProvider.class)
-    public MybatisRecordProvider<?,?,?> recordProvider(SqlSessionTemplate sqlSessionTemplate) {
-        return new MybatisRecordProvider<>(sqlSessionTemplate);
+    @ConditionalOnMissingBean(MybatisMapperFactory.class)
+    public MybatisMapperFactory<?,?,?> recordProvider(SqlSessionTemplate sqlSessionTemplate) {
+        return new MybatisMapperFactory<>(sqlSessionTemplate);
     }
 
     /**
@@ -66,20 +66,20 @@ public class MybatisRecordAutoConfigure {
     public static class MybatisRecordAutoRegister implements InitializingBean {
         /**
          * <code>recordProvider</code>
-         * {@link io.github.nichetoolkit.mybatis.record.MybatisRecordProvider} <p>The <code>recordProvider</code> field.</p>
-         * @see  io.github.nichetoolkit.mybatis.record.MybatisRecordProvider
+         * {@link MybatisMapperFactory} <p>The <code>recordProvider</code> field.</p>
+         * @see  MybatisMapperFactory
          */
-        private final MybatisRecordProvider<?,?,?> recordProvider;
+        private final MybatisMapperFactory<?,?,?> recordProvider;
 
         /**
          * <code>MybatisRecordAutoRegister</code>
          * <p>Instantiates a new mybatis record auto register.</p>
-         * @param recordProvider {@link io.github.nichetoolkit.mybatis.record.MybatisRecordProvider} <p>The record provider parameter is <code>MybatisRecordProvider</code> type.</p>
-         * @see  io.github.nichetoolkit.mybatis.record.MybatisRecordProvider
+         * @param recordProvider {@link MybatisMapperFactory} <p>The record provider parameter is <code>MybatisRecordProvider</code> type.</p>
+         * @see  MybatisMapperFactory
          * @see  org.springframework.beans.factory.annotation.Autowired
          */
         @Autowired
-        public MybatisRecordAutoRegister(MybatisRecordProvider<?,?,?> recordProvider) {
+        public MybatisRecordAutoRegister(MybatisMapperFactory<?,?,?> recordProvider) {
             this.recordProvider = recordProvider;
         }
 

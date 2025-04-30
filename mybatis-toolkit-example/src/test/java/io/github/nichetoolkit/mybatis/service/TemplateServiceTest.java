@@ -1,9 +1,9 @@
 package io.github.nichetoolkit.mybatis.service;
 
 import io.github.nichetoolkit.mybatis.MybatisExampleApplicationTests;
-import io.github.nichetoolkit.mybatis.enums.TemplateStatus1;
-import io.github.nichetoolkit.mybatis.enums.TemplateStatus2;
-import io.github.nichetoolkit.mybatis.simple.*;
+import io.github.nichetoolkit.mybatis.test.template.TemplateStatus1;
+import io.github.nichetoolkit.mybatis.test.template.TemplateStatus2;
+import io.github.nichetoolkit.mybatis.test.template.*;
 import io.github.nichetoolkit.rest.RestException;
 import io.github.nichetoolkit.rest.RestKey;
 import io.github.nichetoolkit.rest.util.DateUtils;

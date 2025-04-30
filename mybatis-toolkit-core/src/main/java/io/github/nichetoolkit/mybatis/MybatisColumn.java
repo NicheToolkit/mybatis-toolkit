@@ -16,10 +16,7 @@ import org.apache.ibatis.type.TypeHandler;
 import org.apache.ibatis.type.UnknownTypeHandler;
 import org.springframework.lang.NonNull;
 
-import java.util.Date;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import java.util.regex.Matcher;
 
 import static io.github.nichetoolkit.mybatis.MybatisTable.DELIMITER;
@@ -210,6 +207,45 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
      * <p>The <code>fickleValue</code> field.</p>
      */
     protected boolean fickleValue;
+
+    /**
+     * <code>loadKey</code>
+     * <p>The <code>loadKey</code> field.</p>
+     */
+    protected boolean loadKey;
+
+    /**
+     * <code>loadParam</code>
+     * <p>The <code>loadParam</code> field.</p>
+     */
+    protected boolean loadParam;
+
+    /**
+     * <code>loadValue</code>
+     * {@link java.lang.String} <p>The <code>loadValue</code> field.</p>
+     * @see java.lang.String
+     */
+    protected String loadValue;
+
+    /**
+     * <code>loadType</code>
+     * {@link java.lang.Class} <p>The <code>loadType</code> field.</p>
+     * @see java.lang.Class
+     */
+    protected final List<Class<?>> loadTypes = new ArrayList<>();
+
+    /**
+     * <code>loadEntity</code>
+     * <p>The <code>loadEntity</code> field.</p>
+     */
+    protected boolean loadEntity;
+
+    /**
+     * <code>loadIndex</code>
+     * {@link java.lang.Integer} <p>The <code>loadIndex</code> field.</p>
+     * @see java.lang.Integer
+     */
+    protected Integer loadIndex;
 
     /**
      * <code>ignored</code>
@@ -512,6 +548,15 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
         }
     }
 
+    /**
+     * <code>variable</code>
+     * <p>The variable method.</p>
+     * @param prefix {@link java.lang.String} <p>The prefix parameter is <code>String</code> type.</p>
+     * @param index  {@link java.lang.Integer} <p>The index parameter is <code>Integer</code> type.</p>
+     * @return {@link java.lang.String} <p>The variable return object is <code>String</code> type.</p>
+     * @see java.lang.String
+     * @see java.lang.Integer
+     */
     public String variable(String prefix, Integer index) {
         if (this.forceInsert) {
             return this.forceInsertValue;

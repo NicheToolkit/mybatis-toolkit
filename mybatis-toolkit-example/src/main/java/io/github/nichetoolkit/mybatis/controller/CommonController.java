@@ -1,12 +1,11 @@
 package io.github.nichetoolkit.mybatis.controller;
 
-import io.github.nichetoolkit.mybatis.service.CommonService;
-import io.github.nichetoolkit.mybatis.simple.CommonFilter;
-import io.github.nichetoolkit.mybatis.simple.CommonModel;
+import io.github.nichetoolkit.mybatis.test.common.CommonService;
+import io.github.nichetoolkit.mybatis.test.common.CommonFilter;
+import io.github.nichetoolkit.mybatis.test.common.CommonModel;
 import io.github.nichetoolkit.rest.RestException;
 import io.github.nichetoolkit.rest.RestResult;
 import io.github.nichetoolkit.rest.userlog.stereotype.RestNotelog;
-import io.github.nichetoolkit.rice.RestFilter;
 import io.github.nichetoolkit.rice.RestPage;
 import io.github.nichetoolkit.rice.stereotype.RestSkip;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,16 +31,16 @@ public class CommonController {
 
     /**
      * <code>commonService</code>
-     * {@link io.github.nichetoolkit.mybatis.service.CommonService} <p>The <code>commonService</code> field.</p>
-     * @see  io.github.nichetoolkit.mybatis.service.CommonService
+     * {@link CommonService} <p>The <code>commonService</code> field.</p>
+     * @see  CommonService
      */
     private final CommonService commonService;
 
     /**
      * <code>CommonController</code>
      * <p>Instantiates a new common controller.</p>
-     * @param commonService {@link io.github.nichetoolkit.mybatis.service.CommonService} <p>The common service parameter is <code>CommonService</code> type.</p>
-     * @see  io.github.nichetoolkit.mybatis.service.CommonService
+     * @param commonService {@link CommonService} <p>The common service parameter is <code>CommonService</code> type.</p>
+     * @see  CommonService
      * @see  org.springframework.beans.factory.annotation.Autowired
      */
     @Autowired
@@ -52,8 +51,8 @@ public class CommonController {
     /**
      * <code>create</code>
      * <p>The create method.</p>
-     * @param commonModel {@link io.github.nichetoolkit.mybatis.simple.CommonModel} <p>The common model parameter is <code>CommonModel</code> type.</p>
-     * @see  io.github.nichetoolkit.mybatis.simple.CommonModel
+     * @param commonModel {@link CommonModel} <p>The common model parameter is <code>CommonModel</code> type.</p>
+     * @see  CommonModel
      * @see  org.springframework.web.bind.annotation.RequestBody
      * @see  io.github.nichetoolkit.rest.RestResult
      * @see  org.springframework.web.bind.annotation.PostMapping
@@ -69,8 +68,8 @@ public class CommonController {
     /**
      * <code>update</code>
      * <p>The update method.</p>
-     * @param commonModel {@link io.github.nichetoolkit.mybatis.simple.CommonModel} <p>The common model parameter is <code>CommonModel</code> type.</p>
-     * @see  io.github.nichetoolkit.mybatis.simple.CommonModel
+     * @param commonModel {@link CommonModel} <p>The common model parameter is <code>CommonModel</code> type.</p>
+     * @see  CommonModel
      * @see  org.springframework.web.bind.annotation.RequestBody
      * @see  io.github.nichetoolkit.rest.RestResult
      * @see  org.springframework.web.bind.annotation.PostMapping
@@ -104,8 +103,8 @@ public class CommonController {
     /**
      * <code>queryByFilter</code>
      * <p>The query by filter method.</p>
-     * @param filter {@link io.github.nichetoolkit.mybatis.simple.CommonFilter} <p>The filter parameter is <code>CommonFilter</code> type.</p>
-     * @see  io.github.nichetoolkit.mybatis.simple.CommonFilter
+     * @param filter {@link CommonFilter} <p>The filter parameter is <code>CommonFilter</code> type.</p>
+     * @see  CommonFilter
      * @see  org.springframework.web.bind.annotation.RequestBody
      * @see  io.github.nichetoolkit.rest.RestResult
      * @see  org.springframework.web.bind.annotation.PostMapping
@@ -140,8 +139,8 @@ public class CommonController {
     /**
      * <code>deleteByFilter</code>
      * <p>The delete by filter method.</p>
-     * @param filter {@link io.github.nichetoolkit.mybatis.simple.CommonFilter} <p>The filter parameter is <code>CommonFilter</code> type.</p>
-     * @see  io.github.nichetoolkit.mybatis.simple.CommonFilter
+     * @param filter {@link CommonFilter} <p>The filter parameter is <code>CommonFilter</code> type.</p>
+     * @see  CommonFilter
      * @see  org.springframework.web.bind.annotation.RequestBody
      * @see  io.github.nichetoolkit.rest.RestResult
      * @see  org.springframework.web.bind.annotation.PostMapping

@@ -12,6 +12,7 @@ import org.apache.ibatis.type.JdbcType;
 import org.checkerframework.checker.units.qual.C;
 import org.springframework.lang.NonNull;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -395,6 +396,40 @@ public class DefaultColumnFactory implements MybatisColumnFactory {
         } else {
             mybatisColumn.setJdbcType(JdbcType.UNDEFINED);
         }
+
+        RestLoadParam restLoadParam = field.getAnnotation(RestLoadParam.class);
+        if (GeneralUtils.isNotEmpty(restLoadParam) && !fieldIgnored) {
+            mybatisColumn.setLoadParam(true);
+            if (GeneralUtils.isNotEmpty(restLoadParam.load())) {
+                mybatisColumn.setLoadValue(restLoadParam.load());
+            }
+            if (GeneralUtils.isNotEmpty(restLoadParam.type())) {
+                mybatisColumn.getLoadTypes().addAll(Arrays.asList(restLoadParam.type()));
+            }
+        }
+        RestLoadKey restLoadKey = field.getAnnotation(RestLoadKey.class);
+        if (GeneralUtils.isNotEmpty(restLoadKey) && !fieldIgnored) {
+            mybatisColumn.setLoadKey(true);
+            /* 覆盖 RestLoadParam LoadValue  */
+            if (GeneralUtils.isNotEmpty(restLoadKey.load())) {
+                mybatisColumn.setLoadValue(restLoadKey.load());
+            }
+            if (GeneralUtils.isNotEmpty(restLoadKey.type())) {
+                mybatisColumn.getLoadTypes().add(restLoadKey.type());
+            }
+        }
+        RestLoadEntity restLoadEntity = field.getAnnotation(RestLoadEntity.class);
+        if (GeneralUtils.isNotEmpty(restLoadEntity) && !fieldIgnored) {
+            mybatisColumn.setLoadEntity(true);
+            if (GeneralUtils.isNotEmpty(restLoadEntity.index())) {
+                mybatisColumn.setLoadIndex(restLoadEntity.index());
+            }
+            /* 覆盖 RestLoadKey LoadValue  */
+            if (GeneralUtils.isNotEmpty(restLoadEntity.load())) {
+                mybatisColumn.setLoadValue(restLoadEntity.load());
+            }
+        }
+
         if (field.isIdentity()) {
             mybatisColumn.setUpdate(false);
         }

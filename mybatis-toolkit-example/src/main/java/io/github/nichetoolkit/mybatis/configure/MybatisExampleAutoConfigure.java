@@ -1,6 +1,6 @@
 package io.github.nichetoolkit.mybatis.configure;
 
-import io.github.nichetoolkit.mybatis.simple.TemplateIdentity;
+import io.github.nichetoolkit.mybatis.test.template.TemplateIdentity;
 import io.github.nichetoolkit.rest.identity.IdentityUtils;
 import io.github.nichetoolkit.rice.resolver.RestIdResolver;
 import lombok.extern.slf4j.Slf4j;

@@ -1,9 +1,9 @@
 package io.github.nichetoolkit.mybatis.controller;
 
-import io.github.nichetoolkit.mybatis.service.TemplateService;
-import io.github.nichetoolkit.mybatis.simple.TemplateFilter;
-import io.github.nichetoolkit.mybatis.simple.TemplateIdentity;
-import io.github.nichetoolkit.mybatis.simple.TemplateModel;
+import io.github.nichetoolkit.mybatis.test.template.TemplateService;
+import io.github.nichetoolkit.mybatis.test.template.TemplateFilter;
+import io.github.nichetoolkit.mybatis.test.template.TemplateIdentity;
+import io.github.nichetoolkit.mybatis.test.template.TemplateModel;
 import io.github.nichetoolkit.rest.RestException;
 import io.github.nichetoolkit.rest.RestResult;
 import io.github.nichetoolkit.rest.userlog.stereotype.RestNotelog;
@@ -32,16 +32,16 @@ public class TemplateController {
 
     /**
      * <code>templateService</code>
-     * {@link io.github.nichetoolkit.mybatis.service.TemplateService} <p>The <code>templateService</code> field.</p>
-     * @see  io.github.nichetoolkit.mybatis.service.TemplateService
+     * {@link TemplateService} <p>The <code>templateService</code> field.</p>
+     * @see  TemplateService
      */
     private final TemplateService templateService;
 
     /**
      * <code>TemplateController</code>
      * <p>Instantiates a new template controller.</p>
-     * @param templateService {@link io.github.nichetoolkit.mybatis.service.TemplateService} <p>The template service parameter is <code>TemplateService</code> type.</p>
-     * @see  io.github.nichetoolkit.mybatis.service.TemplateService
+     * @param templateService {@link TemplateService} <p>The template service parameter is <code>TemplateService</code> type.</p>
+     * @see  TemplateService
      * @see  org.springframework.beans.factory.annotation.Autowired
      */
     @Autowired
@@ -52,8 +52,8 @@ public class TemplateController {
     /**
      * <code>create</code>
      * <p>The create method.</p>
-     * @param templateModel {@link io.github.nichetoolkit.mybatis.simple.TemplateModel} <p>The template model parameter is <code>TemplateModel</code> type.</p>
-     * @see  io.github.nichetoolkit.mybatis.simple.TemplateModel
+     * @param templateModel {@link TemplateModel} <p>The template model parameter is <code>TemplateModel</code> type.</p>
+     * @see  TemplateModel
      * @see  org.springframework.web.bind.annotation.RequestBody
      * @see  io.github.nichetoolkit.rest.RestResult
      * @see  org.springframework.web.bind.annotation.PostMapping
@@ -69,8 +69,8 @@ public class TemplateController {
     /**
      * <code>update</code>
      * <p>The update method.</p>
-     * @param templateModel {@link io.github.nichetoolkit.mybatis.simple.TemplateModel} <p>The template model parameter is <code>TemplateModel</code> type.</p>
-     * @see  io.github.nichetoolkit.mybatis.simple.TemplateModel
+     * @param templateModel {@link TemplateModel} <p>The template model parameter is <code>TemplateModel</code> type.</p>
+     * @see  TemplateModel
      * @see  org.springframework.web.bind.annotation.RequestBody
      * @see  io.github.nichetoolkit.rest.RestResult
      * @see  org.springframework.web.bind.annotation.PostMapping
@@ -86,9 +86,9 @@ public class TemplateController {
     /**
      * <code>queryById</code>
      * <p>The query by id method.</p>
-     * @param id {@link io.github.nichetoolkit.mybatis.simple.TemplateIdentity} <p>The id parameter is <code>TemplateIdentity</code> type.</p>
+     * @param id {@link TemplateIdentity} <p>The id parameter is <code>TemplateIdentity</code> type.</p>
      * @param tablekey {@link java.lang.String} <p>The tablekey parameter is <code>String</code> type.</p>
-     * @see  io.github.nichetoolkit.mybatis.simple.TemplateIdentity
+     * @see  TemplateIdentity
      * @see  java.lang.String
      * @see  org.springframework.web.bind.annotation.PathVariable
      * @see  io.github.nichetoolkit.rest.RestResult
@@ -106,8 +106,8 @@ public class TemplateController {
     /**
      * <code>queryByFilter</code>
      * <p>The query by filter method.</p>
-     * @param filter {@link io.github.nichetoolkit.mybatis.simple.TemplateFilter} <p>The filter parameter is <code>TemplateFilter</code> type.</p>
-     * @see  io.github.nichetoolkit.mybatis.simple.TemplateFilter
+     * @param filter {@link TemplateFilter} <p>The filter parameter is <code>TemplateFilter</code> type.</p>
+     * @see  TemplateFilter
      * @see  org.springframework.web.bind.annotation.RequestBody
      * @see  io.github.nichetoolkit.rest.RestResult
      * @see  org.springframework.web.bind.annotation.PostMapping
@@ -124,9 +124,9 @@ public class TemplateController {
     /**
      * <code>deleteById</code>
      * <p>The delete by id method.</p>
-     * @param id {@link io.github.nichetoolkit.mybatis.simple.TemplateIdentity} <p>The id parameter is <code>TemplateIdentity</code> type.</p>
+     * @param id {@link TemplateIdentity} <p>The id parameter is <code>TemplateIdentity</code> type.</p>
      * @param tablekey {@link java.lang.String} <p>The tablekey parameter is <code>String</code> type.</p>
-     * @see  io.github.nichetoolkit.mybatis.simple.TemplateIdentity
+     * @see  TemplateIdentity
      * @see  java.lang.String
      * @see  org.springframework.web.bind.annotation.PathVariable
      * @see  io.github.nichetoolkit.rest.RestResult
@@ -144,8 +144,8 @@ public class TemplateController {
     /**
      * <code>deleteByFilter</code>
      * <p>The delete by filter method.</p>
-     * @param filter {@link io.github.nichetoolkit.mybatis.simple.TemplateFilter} <p>The filter parameter is <code>TemplateFilter</code> type.</p>
-     * @see  io.github.nichetoolkit.mybatis.simple.TemplateFilter
+     * @param filter {@link TemplateFilter} <p>The filter parameter is <code>TemplateFilter</code> type.</p>
+     * @see  TemplateFilter
      * @see  org.springframework.web.bind.annotation.RequestBody
      * @see  io.github.nichetoolkit.rest.RestResult
      * @see  org.springframework.web.bind.annotation.PostMapping

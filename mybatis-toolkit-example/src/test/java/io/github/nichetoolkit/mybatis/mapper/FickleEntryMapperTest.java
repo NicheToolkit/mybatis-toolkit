@@ -3,6 +3,7 @@ package io.github.nichetoolkit.mybatis.mapper;
 import io.github.nichetoolkit.mybatis.MybatisExampleApplicationTests;
 import io.github.nichetoolkit.mybatis.enums.MybatisType;
 import io.github.nichetoolkit.mybatis.fickle.RestFickle;
+import io.github.nichetoolkit.mybatis.test.fickle.FickleEntryMapper;
 import io.github.nichetoolkit.rest.RestException;
 import io.github.nichetoolkit.rest.util.JsonUtils;
 import org.junit.jupiter.api.MethodOrderer;
