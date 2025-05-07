@@ -1,4 +1,4 @@
-package io.github.nichetoolkit.mybatis.service;
+package io.github.nichetoolkit.mybatis.mapper;
 
 import io.github.nichetoolkit.mybatis.*;
 import io.github.nichetoolkit.mybatis.test.simple.SimpleEntity;

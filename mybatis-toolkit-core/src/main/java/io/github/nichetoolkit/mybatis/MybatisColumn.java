@@ -223,7 +223,7 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
      * {@link java.lang.String} <p>The <code>loadValue</code> field.</p>
      * @see java.lang.String
      */
-    protected String loadValue;
+    protected final List<String> loadKeys = new ArrayList<>();
 
     /**
      * <code>loadType</code>

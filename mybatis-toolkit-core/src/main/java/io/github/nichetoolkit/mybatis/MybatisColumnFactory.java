@@ -55,7 +55,6 @@ public interface MybatisColumnFactory extends MybatisOrder {
      * @see io.github.nichetoolkit.mybatis.MybatisTable
      * @see org.springframework.lang.NonNull
      * @see io.github.nichetoolkit.mybatis.MybatisField
-     * @see java.lang.Class
      * @see io.github.nichetoolkit.mybatis.MybatisColumnFactory.Chain
      * @see com.fasterxml.jackson.databind.JavaType
      * @see java.util.Optional
@@ -98,7 +97,6 @@ public interface MybatisColumnFactory extends MybatisOrder {
          * @see java.util.Optional
          */
         Optional<List<MybatisColumn>> createColumn(@NonNull MybatisTable table, @NonNull MybatisField field, JavaType fickleType, boolean isFickleKey, boolean isFickleValue);
-
 
     }
 }

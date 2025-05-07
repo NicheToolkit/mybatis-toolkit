@@ -9,13 +9,9 @@ import io.github.nichetoolkit.mybatis.enums.SortType;
 import io.github.nichetoolkit.mybatis.enums.StyleType;
 import io.github.nichetoolkit.mybatis.error.MybatisIdentityLackError;
 import io.github.nichetoolkit.mybatis.error.MybatisLinkageLackError;
-import io.github.nichetoolkit.mybatis.handler.FickleArrayTypeHandler;
-import io.github.nichetoolkit.mybatis.handler.FickleListTypeHandler;
-import io.github.nichetoolkit.mybatis.handler.FickleMapTypeHandler;
-import io.github.nichetoolkit.rest.RestFitter;
+import io.github.nichetoolkit.mybatis.handler.*;
 import io.github.nichetoolkit.rest.RestOptional;
 import io.github.nichetoolkit.rest.error.lack.ConfigureLackError;
-import io.github.nichetoolkit.rest.reflect.RestGenericTypes;
 import io.github.nichetoolkit.rest.util.GeneralUtils;
 import lombok.Getter;
 import lombok.Setter;
@@ -29,13 +25,9 @@ import org.apache.ibatis.reflection.MetaObject;
 import org.apache.ibatis.session.Configuration;
 import org.apache.ibatis.type.JdbcType;
 import org.apache.ibatis.type.TypeException;
-import org.apache.ibatis.type.TypeHandler;
 import org.apache.ibatis.type.UnknownTypeHandler;
 
-import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
 import java.util.*;
 import java.util.function.Function;
 import java.util.regex.Matcher;
@@ -283,6 +275,13 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
      */
     @Setter
     private boolean autoResultMap = true;
+
+    /**
+     * <code>autoResultMapHandlers</code>
+     * {@link java.util.List} <p>The <code>autoResultMapHandlers</code> field.</p>
+     * @see java.util.List
+     */
+    private final List<AutoResultMapHandler> autoResultMapHandlers = new ArrayList<>();
     /**
      * <code>useOperate</code>
      * <p>The <code>useOperate</code> field.</p>
@@ -988,6 +987,9 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
      */
     private ResultMap autoResultMap(Configuration configuration, ProviderContext providerContext, String cacheKey) {
         List<ResultMapping> resultMappings = new ArrayList<>();
+        if (GeneralUtils.isNotEmpty(this.autoResultMapHandlers)) {
+
+        }
         for (MybatisColumn column : selectColumns()) {
             String columnName = column.columnName();
             /* 去掉可能存在的分隔符，例如：`order` */
@@ -1025,12 +1027,34 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
             ResultMapping.Builder builder = new ResultMapping.Builder(configuration, property, columnName, Object.class);
             if (fickleType instanceof MapType) {
                 builder.typeHandler(FickleMapTypeHandler.DEFAULT_HANDLER);
-            } else if (fickleType instanceof CollectionType){
+            } else if (fickleType instanceof CollectionType) {
                 builder.typeHandler(FickleListTypeHandler.DEFAULT_HANDLER);
             } else {
                 builder.typeHandler(FickleArrayTypeHandler.DEFAULT_HANDLER);
             }
             resultMappings.add(builder.build());
+        }
+        if (GeneralUtils.isNotEmpty(this.loadColumns)) {
+            List<MybatisColumn> loadKeyColumns = this.loadKeyColumns();
+            List<MybatisColumn> loadParamColumns = this.loadParamColumns();
+            for (Map.Entry<Class<?>, MybatisColumn> entry : loadColumns.entrySet()) {
+                Class<?> entryKey = entry.getKey();
+                MybatisColumn column = entry.getValue();
+                Class<?> fieldType = column.getField().fieldType();
+                String property = column.property();
+                String columnName = column.columnName();
+                ResultMapping.Builder builder = new ResultMapping.Builder(configuration, property, columnName, entryKey);
+                if (Collection.class.isAssignableFrom(fieldType)) {
+                    builder.typeHandler(MultiResultTypeHandler.DEFAULT_HANDLER);
+                    resultMappings.add(builder.build());
+                } else if (fieldType.isArray()) {
+                    builder.typeHandler(ArrayResultTypeHandler.DEFAULT_HANDLER);
+                    resultMappings.add(builder.build());
+                } else if (fieldType == entryKey) {
+                    builder.typeHandler(SingleResultTypeHandler.DEFAULT_HANDLER);
+                    resultMappings.add(builder.build());
+                }
+            }
         }
         String resultMapId = resultMapId(providerContext, DEFAULT_RESULT_MAP_NAME);
         ResultMap.Builder builder = new ResultMap.Builder(configuration, resultMapId, this.entityType, resultMappings, true);
@@ -1045,31 +1069,6 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
      * @param typeHandlerClass {@link java.lang.Class} <p>The type handler class parameter is <code>Class</code> type.</p>
      * @return {@link org.apache.ibatis.type.TypeHandler} <p>The get type handler instance return object is <code>TypeHandler</code> type.</p>
      * @see java.lang.Class
-     * @see org.apache.ibatis.type.TypeHandler
-     */
-    public TypeHandler<?> getTypeHandlerInstance(Class<?> javaTypeClass, Class<?> typeHandlerClass) {
-        if (javaTypeClass != null) {
-            try {
-                Constructor<?> c = typeHandlerClass.getConstructor(Class.class);
-                return (TypeHandler<?>) c.newInstance(javaTypeClass);
-            } catch (NoSuchMethodException ignored) {
-            } catch (Exception e) {
-                throw new TypeException("It is failed invoking constructor for handler " + typeHandlerClass, e);
-            }
-        }
-        try {
-            Constructor<?> c = typeHandlerClass.getConstructor();
-            return (TypeHandler<?>) c.newInstance();
-        } catch (Exception e) {
-            throw new TypeException("It is unable to find a usable constructor for " + typeHandlerClass, e);
-        }
-    }
-
-    /**
-     * <code>tableColumns</code>
-     * <p>The table columns method.</p>
-     * @return {@link java.util.List} <p>The table columns return object is <code>List</code> type.</p>
-     * @see java.util.List
      */
     public List<MybatisColumn> tableColumns() {
         return this.tableColumns;
@@ -1108,7 +1107,7 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
      * @return {@link java.util.Map} <p>The link columns return object is <code>Map</code> type.</p>
      * @see java.util.Map
      */
-    public Map<String,MybatisColumn> linkColumns() {
+    public Map<String, MybatisColumn> linkColumns() {
         return this.linkColumns;
     }
 
@@ -1118,7 +1117,7 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
      * @return {@link java.util.Map} <p>The load columns return object is <code>Map</code> type.</p>
      * @see java.util.Map
      */
-    public Map<Class<?>,MybatisColumn> loadColumns() {
+    public Map<Class<?>, MybatisColumn> loadColumns() {
         return this.loadColumns;
     }
 

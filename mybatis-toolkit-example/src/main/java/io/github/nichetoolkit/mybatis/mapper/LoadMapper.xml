@@ -16,15 +16,19 @@
         <result property="createTime" column="create_time"/>
         <result property="updateTime" column="update_time"/>
 
-        <association property="linkEntity1" column="{link_id1=id}"
+        <association property="linkEntity1" column="link_id1"
                      javaType="io.github.nichetoolkit.mybatis.test.load.LoadLinkEntity1"
                      select="io.github.nichetoolkit.mybatis.mapper.LoadLinkMapper1.findById" >
         </association>
 
-        <collection property="linkEntity2s" column="{param_id=param_id}"
+        <collection property="linkEntity2s" column="{linkId=param_id}"
                      ofType="io.github.nichetoolkit.mybatis.test.load.LoadLinkEntity2"
                      select="io.github.nichetoolkit.mybatis.mapper.LoadLinkMapper2.findByLinkId" >
         </collection>
     </resultMap>
+
+    <select id="querAllTest" resultMap="loadResultMap">
+        SELECT * FROM ntr_load
+    </select>
 
 </mapper>

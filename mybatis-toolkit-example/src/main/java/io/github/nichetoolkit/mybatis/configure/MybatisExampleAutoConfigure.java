@@ -4,6 +4,7 @@ import io.github.nichetoolkit.mybatis.test.template.TemplateIdentity;
 import io.github.nichetoolkit.rest.identity.IdentityUtils;
 import io.github.nichetoolkit.rice.resolver.RestIdResolver;
 import lombok.extern.slf4j.Slf4j;
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -19,6 +20,7 @@ import org.springframework.context.annotation.Configuration;
  */
 @Slf4j
 @Configuration
+@MapperScan("io.github.nichetoolkit.mybatis.mapper")
 @ComponentScan(basePackages = {"io.github.nichetoolkit.mybatis"})
 public class MybatisExampleAutoConfigure {
     /**

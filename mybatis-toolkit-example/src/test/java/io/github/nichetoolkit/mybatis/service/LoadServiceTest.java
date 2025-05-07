@@ -2,6 +2,7 @@ package io.github.nichetoolkit.mybatis.service;
 
 import io.github.nichetoolkit.mybatis.MybatisExampleApplicationTests;
 import io.github.nichetoolkit.mybatis.load.RestLoad;
+import io.github.nichetoolkit.mybatis.mapper.LoadMapper;
 import io.github.nichetoolkit.mybatis.test.load.LoadIdentity;
 import io.github.nichetoolkit.mybatis.test.load.LoadModel;
 import io.github.nichetoolkit.mybatis.test.load.*;
@@ -26,6 +27,10 @@ class LoadServiceTest extends MybatisExampleApplicationTests {
     @Autowired
     private LoadService loadService;
 
+
+    @Autowired
+    private LoadMapper loadMapper;
+
     private final String testParamId1 = "1666549566271964311";
     private final String testParamId2 = "1666549566271964312";
 
@@ -44,6 +49,12 @@ class LoadServiceTest extends MybatisExampleApplicationTests {
     private final String testLinkId2 = "1666551617199345620";
     private final String testLinkId2_1 = "1666551617199345621";
     private final String testLinkId2_2 = "1666551617199345622";
+
+    @Test
+    public void queryAllTest() throws RestException {
+        List<LoadEntity> loadEntities = loadMapper.querAllTest();
+        System.out.println(JsonUtils.parseJson(loadEntities));
+    }
     
     @Order(1)
     @Test

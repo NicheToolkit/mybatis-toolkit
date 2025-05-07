@@ -1,10 +1,14 @@
 package io.github.nichetoolkit.mybatis.mapper;
 
 import io.github.nichetoolkit.mybatis.*;
+import io.github.nichetoolkit.mybatis.natives.MybatisFindLoadMapper;
 import io.github.nichetoolkit.mybatis.test.load.LoadEntity;
 import io.github.nichetoolkit.mybatis.test.load.LoadIdentity;
 import io.github.nichetoolkit.mybatis.test.load.LoadLinkage;
+import io.github.nichetoolkit.rice.mapper.natives.FindLoadMapper;
 import org.apache.ibatis.annotations.Mapper;
+
+import java.util.List;
 
 /**
  * <code>LoadMapper</code>
@@ -23,5 +27,8 @@ public interface LoadMapper extends MybatisInfoMapper<LoadEntity, LoadIdentity>,
         MybatisFindLinkMapper<LoadEntity, LoadLinkage, LoadIdentity>,
         MybatisDeleteLinkMapper<LoadEntity, LoadLinkage, LoadIdentity>,
         MybatisRemoveLinkMapper<LoadEntity, LoadLinkage, LoadIdentity>,
-        MybatisOperateLinkMapper<LoadEntity, LoadLinkage, LoadIdentity> {
+        MybatisOperateLinkMapper<LoadEntity, LoadLinkage, LoadIdentity>,
+        MybatisFindLoadMapper<LoadEntity, LoadIdentity> {
+
+    List<LoadEntity> querAllTest();
 }

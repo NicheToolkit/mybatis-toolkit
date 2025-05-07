@@ -62,7 +62,7 @@
 
         <dependency>
             <groupId>io.github.nichetoolkit</groupId>
-            <artifactId>rice-toolkit-core</artifactId>
+            <artifactId>rice-toolkit-context</artifactId>
         </dependency>
 
         <dependency>

@@ -125,9 +125,14 @@ public class MybatisMapperFactory<M extends MybatisSuperMapper<E, I>, E extends 
      * @see java.lang.SuppressWarnings
      */
     @SuppressWarnings(value = "unchecked")
-    public void cacheMapper(Class<?> mapperClass, Object mapper) {
+    private void cacheMapper(Class<?> mapperClass, Object mapper) {
         if (GeneralUtils.isEmpty(mapperClass) || GeneralUtils.isEmpty(mapper)) {
             return;
+        }
+        if (MybatisMapper.class.isAssignableFrom(mapperClass)) {
+            MybatisMapper<?> mybatisMapper = (MybatisMapper<?>) mapper;
+            mybatisMapper.mapperType();
+            mybatisMapper.entityType();
         }
         if (MybatisSuperMapper.class.isAssignableFrom(mapperClass)) {
             Class<?> entityClass = MybatisClassFinder.findEntityClass(mapperClass, null);

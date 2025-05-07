@@ -398,7 +398,7 @@ public class DefaultColumnFactory implements MybatisColumnFactory {
         if (GeneralUtils.isNotEmpty(restLoadParam) && !fieldIgnored) {
             mybatisColumn.setLoadParam(true);
             if (GeneralUtils.isNotEmpty(restLoadParam.param())) {
-                mybatisColumn.setLoadValue(restLoadParam.param());
+                mybatisColumn.getLoadKeys().add(restLoadParam.param());
             }
             if (GeneralUtils.isNotEmpty(restLoadParam.types())) {
                 mybatisColumn.getLoadTypes().addAll(Arrays.asList(restLoadParam.types()));
@@ -409,9 +409,9 @@ public class DefaultColumnFactory implements MybatisColumnFactory {
             mybatisColumn.setLoadKey(true);
             /* 覆盖 RestLoadParam LoadValue  */
             if (GeneralUtils.isNotEmpty(restLoadKey.key())) {
-                mybatisColumn.setLoadValue(restLoadKey.key());
+                mybatisColumn.getLoadKeys().add(restLoadKey.key());
             }
-            if (GeneralUtils.isNotEmpty(restLoadKey.type())) {
+            if (GeneralUtils.isNotEmpty(restLoadKey.type()) && restLoadKey.type() != Void.class) {
                 mybatisColumn.getLoadTypes().add(restLoadKey.type());
             }
         }
@@ -426,7 +426,7 @@ public class DefaultColumnFactory implements MybatisColumnFactory {
             }
             /* 覆盖 RestLoadKey LoadValue  */
             if (GeneralUtils.isNotEmpty(restLoadEntity.key())) {
-                mybatisColumn.setLoadValue(restLoadEntity.key());
+                mybatisColumn.getLoadKeys().add(restLoadEntity.key());
             }
         }
 
