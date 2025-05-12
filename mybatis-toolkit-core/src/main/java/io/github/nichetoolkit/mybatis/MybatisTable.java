@@ -1,8 +1,5 @@
 package io.github.nichetoolkit.mybatis;
 
-import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.type.CollectionType;
-import com.fasterxml.jackson.databind.type.MapType;
 import io.github.nichetoolkit.mybatis.consts.SQLConstants;
 import io.github.nichetoolkit.mybatis.consts.ScriptConstants;
 import io.github.nichetoolkit.mybatis.enums.SortType;
@@ -18,19 +15,14 @@ import lombok.Setter;
 import org.apache.ibatis.annotations.SelectProvider;
 import org.apache.ibatis.builder.annotation.ProviderContext;
 import org.apache.ibatis.mapping.MappedStatement;
-import org.apache.ibatis.mapping.ResultFlag;
 import org.apache.ibatis.mapping.ResultMap;
 import org.apache.ibatis.mapping.ResultMapping;
 import org.apache.ibatis.reflection.MetaObject;
 import org.apache.ibatis.session.Configuration;
-import org.apache.ibatis.type.JdbcType;
-import org.apache.ibatis.type.TypeException;
-import org.apache.ibatis.type.UnknownTypeHandler;
 
 import java.lang.reflect.Field;
 import java.util.*;
 import java.util.function.Function;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -988,71 +980,10 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
     private ResultMap autoResultMap(Configuration configuration, ProviderContext providerContext, String cacheKey) {
         List<ResultMapping> resultMappings = new ArrayList<>();
         if (GeneralUtils.isNotEmpty(this.autoResultMapHandlers)) {
-
-        }
-        for (MybatisColumn column : selectColumns()) {
-            String columnName = column.columnName();
-            /* 去掉可能存在的分隔符，例如：`order` */
-            Matcher matcher = MybatisTable.DELIMITER.matcher(columnName);
-            if (matcher.find()) {
-                columnName = matcher.group(1);
-            }
-            String property = column.property();
-            if ((column.isSpecialIdentity() || column.isSpecialLinkage() || column.isSpecialAlertness()) && column.isParentNotEmpty()) {
-                property = column.property(column.ofParentPrefix(true));
-            }
-            ResultMapping.Builder builder = new ResultMapping.Builder(configuration, property, columnName, column.javaType());
-            if (column.getJdbcType() != null && column.getJdbcType() != JdbcType.UNDEFINED) {
-                builder.jdbcType(column.getJdbcType());
-            }
-            if (column.getTypeHandler() != null && column.getTypeHandler() != UnknownTypeHandler.class) {
-                try {
-                    builder.typeHandler(getTypeHandlerInstance(column.javaType(), column.getTypeHandler()));
-                } catch (TypeException exception) {
-                    throw new ConfigureLackError(exception);
-                }
-            }
-            List<ResultFlag> flags = new ArrayList<>();
-            if (column.isPrimaryKey() || column.isUnionKey() || column.isIdentityKey()) {
-                flags.add(ResultFlag.ID);
-            }
-            builder.flags(flags);
-            resultMappings.add(builder.build());
-        }
-        if (GeneralUtils.isNotEmpty(this.fickleValueColumn)) {
-            MybatisColumn column = this.fickleValueColumn;
-            JavaType fickleType = fickleValueColumn.fickleType;
-            String property = column.property();
-            String columnName = column.columnName();
-            ResultMapping.Builder builder = new ResultMapping.Builder(configuration, property, columnName, Object.class);
-            if (fickleType instanceof MapType) {
-                builder.typeHandler(FickleMapTypeHandler.DEFAULT_HANDLER);
-            } else if (fickleType instanceof CollectionType) {
-                builder.typeHandler(FickleListTypeHandler.DEFAULT_HANDLER);
-            } else {
-                builder.typeHandler(FickleArrayTypeHandler.DEFAULT_HANDLER);
-            }
-            resultMappings.add(builder.build());
-        }
-        if (GeneralUtils.isNotEmpty(this.loadColumns)) {
-            List<MybatisColumn> loadKeyColumns = this.loadKeyColumns();
-            List<MybatisColumn> loadParamColumns = this.loadParamColumns();
-            for (Map.Entry<Class<?>, MybatisColumn> entry : loadColumns.entrySet()) {
-                Class<?> entryKey = entry.getKey();
-                MybatisColumn column = entry.getValue();
-                Class<?> fieldType = column.getField().fieldType();
-                String property = column.property();
-                String columnName = column.columnName();
-                ResultMapping.Builder builder = new ResultMapping.Builder(configuration, property, columnName, entryKey);
-                if (Collection.class.isAssignableFrom(fieldType)) {
-                    builder.typeHandler(MultiResultTypeHandler.DEFAULT_HANDLER);
-                    resultMappings.add(builder.build());
-                } else if (fieldType.isArray()) {
-                    builder.typeHandler(ArrayResultTypeHandler.DEFAULT_HANDLER);
-                    resultMappings.add(builder.build());
-                } else if (fieldType == entryKey) {
-                    builder.typeHandler(SingleResultTypeHandler.DEFAULT_HANDLER);
-                    resultMappings.add(builder.build());
+            this.autoResultMapHandlers.sort(AutoResultMapHandler::compareTo);
+            for (AutoResultMapHandler autoResultMapHandler : this.autoResultMapHandlers) {
+                if (autoResultMapHandler.supports(this)) {
+                    autoResultMapHandler.autoResultMapHandler(configuration,this,resultMappings);
                 }
             }
         }
@@ -1061,14 +992,21 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
         return builder.build();
     }
 
+    /**
+     * <code>addAutoResultMapHandler</code>
+     * <p>The add auto result map handler method.</p>
+     * @param handler {@link io.github.nichetoolkit.mybatis.handler.AutoResultMapHandler} <p>The handler parameter is <code>AutoResultMapHandler</code> type.</p>
+     * @see io.github.nichetoolkit.mybatis.handler.AutoResultMapHandler
+     */
+    public void addAutoResultMapHandler(AutoResultMapHandler handler) {
+        this.autoResultMapHandlers.add(handler);
+    }
 
     /**
-     * <code>getTypeHandlerInstance</code>
-     * <p>The get type handler instance getter method.</p>
-     * @param javaTypeClass    {@link java.lang.Class} <p>The java type class parameter is <code>Class</code> type.</p>
-     * @param typeHandlerClass {@link java.lang.Class} <p>The type handler class parameter is <code>Class</code> type.</p>
-     * @return {@link org.apache.ibatis.type.TypeHandler} <p>The get type handler instance return object is <code>TypeHandler</code> type.</p>
-     * @see java.lang.Class
+     * <code>tableColumns</code>
+     * <p>The table columns method.</p>
+     * @return {@link java.util.List} <p>The table columns return object is <code>List</code> type.</p>
+     * @see java.util.List
      */
     public List<MybatisColumn> tableColumns() {
         return this.tableColumns;

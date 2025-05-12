@@ -1,6 +1,9 @@
 package io.github.nichetoolkit.mybatis;
 
 import io.github.nichetoolkit.mybatis.configure.MybatisTableProperties;
+import io.github.nichetoolkit.mybatis.defaults.handler.DefaultAutoResultMapHandler;
+import io.github.nichetoolkit.mybatis.defaults.handler.FickleAutoResultMapHandler;
+import io.github.nichetoolkit.mybatis.defaults.handler.LoadAutoResultMapHandler;
 import io.github.nichetoolkit.rest.util.GeneralUtils;
 import io.github.nichetoolkit.mybatis.enums.StyleType;
 import io.github.nichetoolkit.mybatis.table.RestProperties;
@@ -75,6 +78,9 @@ public class DefaultTableFactory implements MybatisTableFactory {
         restSelectIgnores(entityType, mybatisTable);
         restInsertIgnores(entityType, mybatisTable);
         restUpdateIgnores(entityType, mybatisTable);
+        mybatisTable.addAutoResultMapHandler(DefaultAutoResultMapHandler.DEFAULT_HANDLER);
+        mybatisTable.addAutoResultMapHandler(FickleAutoResultMapHandler.DEFAULT_HANDLER);
+        mybatisTable.addAutoResultMapHandler(LoadAutoResultMapHandler.DEFAULT_HANDLER);
         return mybatisTable;
     }
 

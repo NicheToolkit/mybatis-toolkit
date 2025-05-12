@@ -1,7 +1,9 @@
-package io.github.nichetoolkit.mybatis.handler;
+package io.github.nichetoolkit.mybatis.defaults.handler;
 
 import io.github.nichetoolkit.mybatis.MybatisColumn;
 import io.github.nichetoolkit.mybatis.MybatisTable;
+import io.github.nichetoolkit.mybatis.handler.AutoResultMapHandler;
+import io.github.nichetoolkit.mybatis.handler.FickleArrayTypeHandler;
 import io.github.nichetoolkit.rest.error.lack.ConfigureLackError;
 import io.github.nichetoolkit.rest.util.GeneralUtils;
 import org.apache.ibatis.mapping.ResultFlag;
@@ -24,21 +26,25 @@ import java.util.regex.Matcher;
  * @since Jdk1.8
  */
 public class DefaultAutoResultMapHandler implements AutoResultMapHandler {
+
     /**
-     * <code>mybatisTable</code>
-     * {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>The <code>mybatisTable</code> field.</p>
-     * @see io.github.nichetoolkit.mybatis.MybatisTable
+     * <code>DEFAULT_HANDLER</code>
+     * {@link io.github.nichetoolkit.mybatis.handler.AutoResultMapHandler} <p>The constant <code>DEFAULT_HANDLER</code> field.</p>
+     * @see io.github.nichetoolkit.mybatis.handler.AutoResultMapHandler
      */
-    private final MybatisTable mybatisTable;
+    public static final AutoResultMapHandler DEFAULT_HANDLER = new DefaultAutoResultMapHandler();
+
 
     /**
      * <code>DefaultAutoResultMapHandler</code>
      * <p>Instantiates a new default auto result map handler.</p>
-     * @param mybatisTable {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>The mybatis table parameter is <code>MybatisTable</code> type.</p>
-     * @see io.github.nichetoolkit.mybatis.MybatisTable
      */
-    public DefaultAutoResultMapHandler(MybatisTable mybatisTable) {
-        this.mybatisTable = mybatisTable;
+    public DefaultAutoResultMapHandler() {
+    }
+
+    @Override
+    public int getOrder() {
+        return Integer.MIN_VALUE;
     }
 
     @Override
@@ -47,7 +53,7 @@ public class DefaultAutoResultMapHandler implements AutoResultMapHandler {
     }
 
     @Override
-    public void autoResultMapHandler(Configuration configuration, List<ResultMapping> resultMappings) {
+    public void autoResultMapHandler(Configuration configuration, MybatisTable mybatisTable, List<ResultMapping> resultMappings) {
         List<MybatisColumn> selectColumns = mybatisTable.selectColumns();
         for (MybatisColumn column : selectColumns) {
             String columnName = column.columnName();
