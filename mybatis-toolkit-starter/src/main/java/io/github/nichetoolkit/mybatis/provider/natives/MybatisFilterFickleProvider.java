@@ -68,6 +68,6 @@ public class MybatisFilterFickleProvider implements MybatisSqlProvider {
     public static String findDynamicAllByFickleWhere(ProviderContext providerContext, String tablename, String whereSql, RestFickle<?>[] fickleParams) throws RestException {
         OptionalUtils.ofEmpty(whereSql, "The where sql param of 'findAllByFickleWhere' method cannot be empty!", log, message -> new MybatisParamErrorException("findAllByFickleWhere", "whereSql", message));
         ConsumerActuator<MybatisTable> tableOptional = table -> OptionalUtils.ofEmpty(table.selectColumns(), "The select columns of table with 'findAllByFickleWhere' method cannot be empty!", log, message -> new MybatisTableErrorException("findAllByFickleWhere", "selectColumns", message));
-        return MybatisSqlProvider.providingOfWhere(providerContext, tablename, whereSql, tableOptional, fickleParams, FICKLE_SQL_SUPPLY);
+        return MybatisSqlProvider.providingOfWhere(providerContext, tablename, whereSql, tableOptional, fickleParams, ENTRY_SQL_SUPPLY);
     }
 }

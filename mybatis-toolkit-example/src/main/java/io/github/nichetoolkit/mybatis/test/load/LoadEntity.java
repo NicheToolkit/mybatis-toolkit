@@ -27,10 +27,10 @@ public class LoadEntity extends DefaultInfoEntity<LoadEntity, LoadModel, LoadIde
     @RestForceInsert("now()")
     private Date time;
 
-    @RestLoadEntity(key = "linkEntity1")
+    @RestLoadEntity
     private LoadLinkEntity1 linkEntity1;
 
-    @RestLoadEntity(key = "linkEntity2s", index = 1)
+    @RestLoadEntity(1)
     private List<LoadLinkEntity2> linkEntity2s;
 
     public LoadEntity() {

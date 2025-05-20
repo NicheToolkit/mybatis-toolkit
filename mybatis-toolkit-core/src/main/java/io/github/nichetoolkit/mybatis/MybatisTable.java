@@ -168,7 +168,7 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
      * {@link java.util.Map} <p>The <code>loadColumns</code> field.</p>
      * @see java.util.Map
      */
-    private final Map<Class<?>, MybatisColumn> loadColumns = new HashMap<>();
+    private final Map<Class<?>, MybatisColumn> loadColumns = new LinkedHashMap<>();
 
     /**
      * <code>fickleKeyColumn</code>

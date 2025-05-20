@@ -73,7 +73,7 @@ public class MybatisFindFickleProvider implements MybatisSqlProvider {
         ConsumerActuator<MybatisTable> tableOptional = table -> {
             OptionalUtils.ofEmpty(table.selectColumns(), selectColumns, log, message -> new MybatisTableErrorException("findByIdFickle", "selectColumns", message));
         };
-        return MybatisSqlProvider.providingOfId(providerContext, tablename, id, tableOptional, fickleParams, FICKLE_SQL_SUPPLY);
+        return MybatisSqlProvider.providingOfId(providerContext, tablename, id, tableOptional, fickleParams, ENTRY_SQL_SUPPLY);
     }
 
     /**
@@ -116,6 +116,6 @@ public class MybatisFindFickleProvider implements MybatisSqlProvider {
         ConsumerActuator<MybatisTable> tableOptional = table -> {
             OptionalUtils.ofEmpty(table.selectColumns(), "The select columns of table with 'findAllFickle' method cannot be empty!", message -> new MybatisTableErrorException("findAllFickle", "selectColumns", message));
         };
-        return MybatisSqlProvider.providingOfAll(providerContext, tablename, idList, tableOptional, fickleParams, FICKLE_SQL_SUPPLY);
+        return MybatisSqlProvider.providingOfAll(providerContext, tablename, idList, tableOptional, fickleParams, ENTRY_SQL_SUPPLY);
     }
 }

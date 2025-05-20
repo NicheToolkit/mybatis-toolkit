@@ -5,10 +5,7 @@ import com.fasterxml.jackson.databind.type.CollectionType;
 import com.fasterxml.jackson.databind.type.MapType;
 import io.github.nichetoolkit.mybatis.MybatisColumn;
 import io.github.nichetoolkit.mybatis.MybatisTable;
-import io.github.nichetoolkit.mybatis.handler.AutoResultMapHandler;
-import io.github.nichetoolkit.mybatis.handler.FickleArrayTypeHandler;
-import io.github.nichetoolkit.mybatis.handler.FickleListTypeHandler;
-import io.github.nichetoolkit.mybatis.handler.FickleMapTypeHandler;
+import io.github.nichetoolkit.mybatis.handler.*;
 import io.github.nichetoolkit.rest.error.lack.ConfigureLackError;
 import io.github.nichetoolkit.rest.util.GeneralUtils;
 import org.apache.ibatis.mapping.ResultFlag;
@@ -64,11 +61,11 @@ public class FickleAutoResultMapHandler implements AutoResultMapHandler {
         String columnName = column.columnName();
         ResultMapping.Builder builder = new ResultMapping.Builder(configuration, property, columnName, Object.class);
         if (fickleType instanceof MapType) {
-            builder.typeHandler(FickleMapTypeHandler.DEFAULT_HANDLER);
+            builder.typeHandler(FickleResultTypeHandler.fickleMapHandler());
         } else if (fickleType instanceof CollectionType) {
-            builder.typeHandler(FickleListTypeHandler.DEFAULT_HANDLER);
+            builder.typeHandler(FickleResultTypeHandler.fickleListHandler());
         } else {
-            builder.typeHandler(FickleArrayTypeHandler.DEFAULT_HANDLER);
+            builder.typeHandler(FickleResultTypeHandler.fickleArrayHandler());
         }
         resultMappings.add(builder.build());
     }

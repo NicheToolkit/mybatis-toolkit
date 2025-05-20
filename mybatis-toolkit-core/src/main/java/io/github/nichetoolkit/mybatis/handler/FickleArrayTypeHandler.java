@@ -13,16 +13,10 @@ import java.sql.*;
  * <code>FickleArrayTypeHandler</code>
  * <p>The fickle array type handler class.</p>
  * @author Cyan (snow22314@outlook.com)
- * @see org.apache.ibatis.type.BaseTypeHandler
+ * @see io.github.nichetoolkit.mybatis.handler.FickleResultTypeHandler
  * @since Jdk1.8
  */
-public class FickleArrayTypeHandler extends BaseTypeHandler<Object> {
-
-    /**
-     * <code>DEFAULT_HANDLER</code>
-     * {@link io.github.nichetoolkit.mybatis.handler.FickleArrayTypeHandler} <p>The constant <code>DEFAULT_HANDLER</code> field.</p>
-     */
-    public static final FickleArrayTypeHandler DEFAULT_HANDLER = new FickleArrayTypeHandler();
+public class FickleArrayTypeHandler extends FickleResultTypeHandler {
 
     /**
      * <code>ARRAY_TYPE</code>
@@ -35,26 +29,11 @@ public class FickleArrayTypeHandler extends BaseTypeHandler<Object> {
      * <code>FickleArrayTypeHandler</code>
      * <p>Instantiates a new fickle array type handler.</p>
      */
-    public FickleArrayTypeHandler() {
+    FickleArrayTypeHandler() {
     }
 
-    public void setNonNullParameter(PreparedStatement ps, int i, Object parameter, JdbcType jdbcType) throws SQLException {
-        throw new SQLException("The 'setNonNullParameter' method of 'FickleArrayTypeHandler' is not supported");
-    }
-
-
-    public Object getNullableResult(ResultSet rs, String columnName) throws SQLException {
-        String json = rs.getString(columnName);
-        return JsonUtils.parseArray(json, ARRAY_TYPE);
-    }
-
-    public Object getNullableResult(ResultSet rs, int columnIndex) throws SQLException {
-        String json = rs.getString(columnIndex);
-        return JsonUtils.parseArray(json, ARRAY_TYPE);
-    }
-
-    public Object getNullableResult(CallableStatement cs, int columnIndex) throws SQLException {
-        String json = cs.getString(columnIndex);
+    @Override
+    Object parseResultJson(String json) {
         return JsonUtils.parseArray(json, ARRAY_TYPE);
     }
 

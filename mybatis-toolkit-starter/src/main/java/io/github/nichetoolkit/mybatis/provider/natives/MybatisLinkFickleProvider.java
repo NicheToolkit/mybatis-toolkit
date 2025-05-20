@@ -74,7 +74,7 @@ public class MybatisLinkFickleProvider implements MybatisSqlProvider {
         String selectColumns = "The select columns of table with 'findByLinkIdFickle' method cannot be empty!";
         ConsumerActuator<MybatisTable> tableOptional = table -> OptionalUtils.ofEmpty(table.selectColumns(), selectColumns, log,
                 message -> new MybatisTableErrorException("findByLinkIdFickle", "selectColumns", message));
-        return MybatisSqlProvider.providingOfLinkId(providerContext, tablename, linkId, linkName, tableOptional, fickleParams, FICKLE_SQL_SUPPLY);
+        return MybatisSqlProvider.providingOfLinkId(providerContext, tablename, linkId, linkName, tableOptional, fickleParams, ENTRY_SQL_SUPPLY);
     }
 
     /**
@@ -117,6 +117,6 @@ public class MybatisLinkFickleProvider implements MybatisSqlProvider {
     public static <L> String findDynamicAllByLinkIdsFickle(ProviderContext providerContext, String tablename, Collection<L> linkIdList, String linkName, RestFickle<?>[] fickleParams) throws RestException {
         OptionalUtils.ofEmpty(linkIdList, "The link id list param of 'findAllByLinkIdsFickle' method cannot be empty!", log, message -> new MybatisParamErrorException("findAllByLinkIdsFickle", "linkIdList", message));
         ConsumerActuator<MybatisTable> tableOptional = table -> OptionalUtils.ofEmpty(table.selectColumns(), "The select columns of table with 'findAllByLinkIdsFickle' method cannot be empty!", message -> new MybatisTableErrorException("findAllByLinkIdsFickles", "selectColumns", message));
-        return MybatisSqlProvider.providingOfLinkIdAll(providerContext, tablename, linkIdList, linkName, tableOptional, fickleParams, FICKLE_SQL_SUPPLY);
+        return MybatisSqlProvider.providingOfLinkIdAll(providerContext, tablename, linkIdList, linkName, tableOptional, fickleParams, ENTRY_SQL_SUPPLY);
     }
 }

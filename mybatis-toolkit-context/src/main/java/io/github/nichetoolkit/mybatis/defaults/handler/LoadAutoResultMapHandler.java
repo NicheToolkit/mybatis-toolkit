@@ -49,23 +49,45 @@ public class LoadAutoResultMapHandler implements AutoResultMapHandler {
         List<MybatisColumn> loadKeyColumns = mybatisTable.loadKeyColumns();
         List<MybatisColumn> loadParamColumns = mybatisTable.loadParamColumns();
         for (Map.Entry<Class<?>, MybatisColumn> entry : mybatisTable.getLoadColumns().entrySet()) {
-            Class<?> entryKey = entry.getKey();
+            Class<?> entryType = entry.getKey();
             MybatisColumn column = entry.getValue();
             Class<?> fieldType = column.getField().fieldType();
+            List<String> loadKeys = column.getLoadKeys();
+            MybatisColumn loadKey = destineColumnOfLoadKey(loadKeys, entryType, loadKeyColumns);
+            if (GeneralUtils.isEmpty(loadKey)) {
+                continue;
+            }
+            String columnName = loadKey.columnName();
+            column.setLoadColumn(columnName);
             String property = column.property();
-            String columnName = column.columnName();
-            ResultMapping.Builder builder = new ResultMapping.Builder(configuration, property, columnName, entryKey);
+            ResultMapping.Builder builder = new ResultMapping.Builder(configuration, property, columnName, entryType);
             if (Collection.class.isAssignableFrom(fieldType)) {
-                builder.typeHandler(MultiResultTypeHandler.DEFAULT_HANDLER);
+                builder.typeHandler(LoadResultTypeHandler.multiResultHandler(mybatisTable));
                 resultMappings.add(builder.build());
             } else if (fieldType.isArray()) {
-                builder.typeHandler(ArrayResultTypeHandler.DEFAULT_HANDLER);
+                builder.typeHandler(LoadResultTypeHandler.arrayResultHandler(mybatisTable));
                 resultMappings.add(builder.build());
-            } else if (fieldType == entryKey) {
-                builder.typeHandler(SingleResultTypeHandler.DEFAULT_HANDLER);
+            } else if (fieldType == entryType) {
+                builder.typeHandler(LoadResultTypeHandler.singleResultHandler(mybatisTable));
                 resultMappings.add(builder.build());
             }
         }
+    }
+
+    private MybatisColumn destineColumnOfLoadKey(List<String> keys, Class<?> type,List<MybatisColumn> loadKeyColumns) {
+        for (MybatisColumn mybatisColumn : loadKeyColumns) {
+            List<Class<?>> loadTypes = mybatisColumn.getLoadTypes();
+            if (loadTypes.contains(type)) {
+                return mybatisColumn;
+            }
+            List<String> loadKeys = mybatisColumn.getLoadKeys();
+            for (String key : keys) {
+                if (loadKeys.contains(key)) {
+                    return mybatisColumn;
+                }
+            }
+        }
+        return null;
     }
 
 }

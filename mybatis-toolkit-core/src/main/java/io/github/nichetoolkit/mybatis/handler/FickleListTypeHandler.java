@@ -14,15 +14,10 @@ import java.util.List;
  * <code>FickleListTypeHandler</code>
  * <p>The fickle list type handler class.</p>
  * @author Cyan (snow22314@outlook.com)
- * @see org.apache.ibatis.type.BaseTypeHandler
+ * @see io.github.nichetoolkit.mybatis.handler.FickleResultTypeHandler
  * @since Jdk1.8
  */
-public class FickleListTypeHandler extends BaseTypeHandler<Object> {
-    /**
-     * <code>DEFAULT_HANDLER</code>
-     * {@link io.github.nichetoolkit.mybatis.handler.FickleListTypeHandler} <p>The constant <code>DEFAULT_HANDLER</code> field.</p>
-     */
-    public static final FickleListTypeHandler DEFAULT_HANDLER = new FickleListTypeHandler();
+public class FickleListTypeHandler extends FickleResultTypeHandler {
 
     /**
      * <code>COLLECTION_TYPE</code>
@@ -35,25 +30,11 @@ public class FickleListTypeHandler extends BaseTypeHandler<Object> {
      * <code>FickleListTypeHandler</code>
      * <p>Instantiates a new fickle list type handler.</p>
      */
-    public FickleListTypeHandler() {
+    FickleListTypeHandler() {
     }
 
-    public void setNonNullParameter(PreparedStatement ps, int i, Object parameter, JdbcType jdbcType) throws SQLException {
-        throw new SQLException("The 'setNonNullParameter' method of 'FickleListTypeHandler' is not supported");
-    }
-
-    public Object getNullableResult(ResultSet rs, String columnName) throws SQLException {
-        String json = rs.getString(columnName);
-        return JsonUtils.parseList(json,COLLECTION_TYPE);
-    }
-
-    public Object getNullableResult(ResultSet rs, int columnIndex) throws SQLException {
-        String json = rs.getString(columnIndex);
-        return JsonUtils.parseList(json,COLLECTION_TYPE);
-    }
-
-    public Object getNullableResult(CallableStatement cs, int columnIndex) throws SQLException {
-        String json = cs.getString(columnIndex);
+    @Override
+    Object parseResultJson(String json) {
         return JsonUtils.parseList(json,COLLECTION_TYPE);
     }
 }

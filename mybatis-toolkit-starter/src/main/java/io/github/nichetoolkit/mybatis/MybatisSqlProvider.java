@@ -13,6 +13,7 @@ import io.github.nichetoolkit.mybatis.enums.ExcludedType;
 import io.github.nichetoolkit.mybatis.error.MybatisParamErrorException;
 import io.github.nichetoolkit.mybatis.error.MybatisUnsupportedErrorException;
 import io.github.nichetoolkit.mybatis.fickle.RestFickle;
+import io.github.nichetoolkit.mybatis.load.RestLoad;
 import io.github.nichetoolkit.rest.*;
 import io.github.nichetoolkit.rest.actuator.ConsumerActuator;
 import io.github.nichetoolkit.rest.holder.ApplicationContextHolder;
@@ -39,7 +40,7 @@ public interface MybatisSqlProvider {
                     .from().append(table.tablename(tablename))
                     .where(sqlBuilder).toString();
 
-    MybatisSqlSupply.EntrySqlSupply FICKLE_SQL_SUPPLY = (tablename, table, keySqlBuilder, valueSqlBuilder) ->
+    MybatisSqlSupply.EntrySqlSupply ENTRY_SQL_SUPPLY = (tablename, table, keySqlBuilder, valueSqlBuilder) ->
             SqlBuilder.sqlBuilder()
                     .select().append(keySqlBuilder)
                     .from().append(table.tablename(tablename))
@@ -376,6 +377,19 @@ public interface MybatisSqlProvider {
         }
     }
 
+    static <I, S> String providingOfId(ProviderContext providerContext, @Nullable String tablename, I idParameter, ConsumerActuator<MybatisTable> tableOptional, RestLoad[] loadParams, MybatisSqlSupply.EntrySqlSupply sqlSupply) throws RestException {
+        Object identity = reviseParameter(idParameter);
+        return MybatisSqlScript.caching(providerContext, (table, sqlScript) -> {
+            tableOptional.actuate(table);
+            String ofSelectColumns = table.sqlOfSelectColumns();
+            SqlBuilder keyBuilder = SqlBuilder.sqlBuilder(ofSelectColumns);
+            keyOfLoad(table, loadParams, keyBuilder);
+            SqlBuilder valueBuilder = SqlBuilder.sqlBuilder();
+            valueOfIdentity(table, identity, valueBuilder);
+            return sqlSupply.supply(tablename, table, keyBuilder, valueBuilder);
+        });
+    }
+
     static <I, S> String providingOfId(ProviderContext providerContext, @Nullable String tablename, I idParameter, ConsumerActuator<MybatisTable> tableOptional, RestFickle<?>[] fickleParams, MybatisSqlSupply.EntrySqlSupply sqlSupply) throws RestException {
         Object identity = reviseParameter(idParameter);
         return MybatisSqlScript.caching(providerContext, (table, sqlScript) -> {
@@ -698,6 +712,21 @@ public interface MybatisSqlProvider {
         }));
     }
 
+    static String sqlOfLoad(String loadKey, Integer loadIndex) {
+        /* "'{\"key\":\"" + loadKey + "\",\"index\":\"" + loadIndex + "\",\"value\":', " + true + ", '}', "; */
+        SqlBuilder sqlBuilder = SqlBuilder.sqlBuilder();
+        sqlBuilder.sQuote().curlyLt();
+        if (GeneralUtils.isNotEmpty(loadKey)) {
+            sqlBuilder.dQuote(RestLoad._KEY).colon().dQuote(loadKey).comma();
+        }
+        if (GeneralUtils.isNotEmpty(loadIndex)) {
+            sqlBuilder.dQuote(RestLoad._INDEX).colon().dQuote(loadIndex).comma();
+        }
+        sqlBuilder.dQuote(RestLoad._VALUE).colon().sQuote().comma()
+                .dQuote(true).comma().sQuote(SQLConstants.CURLY_GT).comma();
+        return sqlBuilder.toString();
+    }
+
     static String sqlOfFickle(String columnName, String fickleName) {
         /* "'{\"key\":\"" + columnName + "\",\"name\":\"" + fickleName + "\",\"value\":', " + columnName + ", '}', "; */
         SqlBuilder sqlBuilder = SqlBuilder.sqlBuilder();
@@ -706,6 +735,19 @@ public interface MybatisSqlProvider {
                 .dQuote(RestFickle._VALUE).colon().sQuote().comma()
                 .append(columnName).comma().sQuote(SQLConstants.CURLY_GT).comma();
         return sqlBuilder.toString();
+    }
+
+    static void keyOfLoad(MybatisTable table, RestLoad[] loadParams, SqlBuilder keyBuilder) throws RestException {
+        MybatisTableStyle mybatisTableStyle = MybatisContextHolder.defaultTableStyle();
+        RestOptional.ofEmptyable(loadParams).ifEmptyPresent(params -> {
+            keyBuilder.comma().concat().braceLt().sQuote(SQLConstants.SQUARE_LT).comma();
+            String ofLoadParams = RestStream.stream(params).filter(RestLoad::getValue).map(load -> {
+                String loadKey = load.getKey();
+                Integer loadIndex = load.getIndex();
+                return sqlOfLoad(loadKey, loadIndex);
+            }).collect(RestCollectors.joining(SqlBuilder.sqlBuilder().sQuote(SQLConstants.COMMA).comma()));
+            keyBuilder.append(ofLoadParams).sQuote(SQLConstants.SQUARE_GT).braceGt().as(EntityConstants.LOADS);
+        });
     }
 
     static void keyOfFickle(MybatisTable table, RestFickle<?>[] fickleParams, SqlBuilder keyBuilder) throws RestException {

@@ -219,16 +219,16 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
     protected boolean loadParam;
 
     /**
-     * <code>loadValue</code>
-     * {@link java.lang.String} <p>The <code>loadValue</code> field.</p>
-     * @see java.lang.String
+     * <code>loadKeys</code>
+     * {@link java.util.List} <p>The <code>loadKeys</code> field.</p>
+     * @see java.util.List
      */
     protected final List<String> loadKeys = new ArrayList<>();
 
     /**
-     * <code>loadType</code>
-     * {@link java.lang.Class} <p>The <code>loadType</code> field.</p>
-     * @see java.lang.Class
+     * <code>loadTypes</code>
+     * {@link java.util.List} <p>The <code>loadTypes</code> field.</p>
+     * @see java.util.List
      */
     protected final List<Class<?>> loadTypes = new ArrayList<>();
 
@@ -237,6 +237,13 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
      * <p>The <code>loadEntity</code> field.</p>
      */
     protected boolean loadEntity;
+
+    /**
+     * <code>loadColumn</code>
+     * {@link java.lang.String} <p>The <code>loadColumn</code> field.</p>
+     * @see java.lang.String
+     */
+    protected String loadColumn;
 
     /**
      * <code>loadIndex</code>

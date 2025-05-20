@@ -428,6 +428,8 @@ public class DefaultColumnFactory implements MybatisColumnFactory {
             if (GeneralUtils.isNotEmpty(restLoadEntity.key())) {
                 mybatisColumn.getLoadKeys().add(restLoadEntity.key());
             }
+            /* 默认添加 字段名称为 loadKey */
+            mybatisColumn.getLoadKeys().add(mybatisColumn.property());
         }
 
         if (field.isIdentity()) {

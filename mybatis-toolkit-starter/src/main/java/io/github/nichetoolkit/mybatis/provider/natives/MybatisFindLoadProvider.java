@@ -73,7 +73,7 @@ public class MybatisFindLoadProvider implements MybatisSqlProvider {
         ConsumerActuator<MybatisTable> tableOptional = table -> {
             OptionalUtils.ofEmpty(table.selectColumns(), selectColumns, log, message -> new MybatisTableErrorException("findByIdLoad", "selectColumns", message));
         };
-        return MybatisSqlProvider.providingOfId(providerContext, tablename, id, tableOptional, SELECT_SQL_SUPPLY);
+        return MybatisSqlProvider.providingOfId(providerContext, tablename, id, tableOptional, loadParams, ENTRY_SQL_SUPPLY);
     }
 
     /**
