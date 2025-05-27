@@ -2,7 +2,7 @@
 package io.github.nichetoolkit.mybatis.record;
 
 import io.github.nichetoolkit.mybatis.MybatisMapper;
-import io.github.nichetoolkit.mybatis.MybatisMapperFactory;
+import io.github.nichetoolkit.mybatis.DefaultMapperFactory;
 import io.github.nichetoolkit.mybatis.MybatisSuperMapper;
 import io.github.nichetoolkit.rice.IdEntity;
 
@@ -26,7 +26,7 @@ public interface MybatisSuperRecord<M extends MybatisSuperMapper<E, I>, E extend
      * @return M <p>The super mapper return object is <code>M</code> type.</p>
      */
     default M superMapper() {
-    return MybatisMapperFactory.<M,E, I>defaultInstance().superMapper(entityType());
+    return DefaultMapperFactory.<M,E, I>defaultInstance().superMapper(entityType());
   }
 
 }

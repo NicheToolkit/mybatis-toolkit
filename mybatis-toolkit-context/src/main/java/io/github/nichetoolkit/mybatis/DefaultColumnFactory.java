@@ -421,8 +421,9 @@ public class DefaultColumnFactory implements MybatisColumnFactory {
             mybatisColumn.setSelect(false);
             mybatisColumn.setInsert(false);
             mybatisColumn.setUpdate(false);
-            if (GeneralUtils.isNotEmpty(restLoadEntity.index())) {
-                mybatisColumn.setLoadIndex(restLoadEntity.index());
+            mybatisColumn.setLoadIndex(0);
+            if (GeneralUtils.isNotEmpty(restLoadEntity.table())) {
+                mybatisColumn.setLoadTable(restLoadEntity.table());
             }
             /* 覆盖 RestLoadKey LoadValue  */
             if (GeneralUtils.isNotEmpty(restLoadEntity.key())) {

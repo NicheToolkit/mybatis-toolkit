@@ -1,9 +1,13 @@
 package io.github.nichetoolkit.mybatis.handler;
 
 import io.github.nichetoolkit.mybatis.MybatisTable;
+import io.github.nichetoolkit.rest.util.GeneralUtils;
 
+import java.lang.reflect.Array;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * <code>LoadSingleTypeHandler</code>
@@ -25,8 +29,13 @@ public class LoadSingleTypeHandler extends LoadResultTypeHandler {
     }
 
     @Override
-    Object parseResultJson(String json, ResultSet rs, String columnName) throws SQLException {
+    @SuppressWarnings(value = "unchecked")
+    protected <E> E parseResult(Class<E> entityType,List<?> result) throws SQLException {
+        if (GeneralUtils.isNotEmpty(result)) {
+            return (E) result.get(0);
+        }
         return null;
     }
+
 
 }

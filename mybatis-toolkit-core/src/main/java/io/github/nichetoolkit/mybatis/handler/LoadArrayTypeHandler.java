@@ -1,9 +1,12 @@
 package io.github.nichetoolkit.mybatis.handler;
 
 import io.github.nichetoolkit.mybatis.MybatisTable;
+import io.github.nichetoolkit.rest.util.GeneralUtils;
 
+import java.lang.reflect.Array;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 /**
  * <code>LoadArrayTypeHandler</code>
@@ -25,7 +28,12 @@ public class LoadArrayTypeHandler extends LoadResultTypeHandler {
     }
 
     @Override
-    Object parseResultJson(String json, ResultSet rs, String columnName) throws SQLException {
+    @SuppressWarnings(value = "unchecked")
+    protected <E> E[]  parseResult(Class<E> entityType,List<?> result) throws SQLException {
+        if (GeneralUtils.isNotEmpty(result)) {
+            E[] entityArray = (E[]) Array.newInstance(entityType);
+            result.toArray(entityArray);
+        }
         return null;
     }
 

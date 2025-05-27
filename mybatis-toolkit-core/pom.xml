@@ -55,7 +55,7 @@
     <dependencies>
         <dependency>
             <groupId>io.github.nichetoolkit</groupId>
-            <artifactId>rice-toolkit-mybatis</artifactId>
+            <artifactId>rice-toolkit-context</artifactId>
         </dependency>
 
         <dependency>

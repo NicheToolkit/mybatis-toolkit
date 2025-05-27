@@ -1076,7 +1076,7 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
      * @see java.util.List
      */
     public List<MybatisColumn> loadParamColumns() {
-        return this.tableColumns.stream().filter(column -> column.isLoadParam() || column.isLoadKey()).collect(Collectors.toList());
+        return this.tableColumns.stream().filter(MybatisColumn::isLoadParam).collect(Collectors.toList());
     }
 
     /**

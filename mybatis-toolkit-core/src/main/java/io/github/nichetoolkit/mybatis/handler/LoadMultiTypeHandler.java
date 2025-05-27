@@ -1,15 +1,19 @@
 package io.github.nichetoolkit.mybatis.handler;
 
 import io.github.nichetoolkit.mybatis.MybatisColumn;
+import io.github.nichetoolkit.mybatis.MybatisMapperFactory;
 import io.github.nichetoolkit.mybatis.MybatisTable;
 import io.github.nichetoolkit.mybatis.consts.EntityConstants;
 import io.github.nichetoolkit.mybatis.load.RestLoad;
+import io.github.nichetoolkit.rest.RestEntry;
 import io.github.nichetoolkit.rest.util.GeneralUtils;
 import io.github.nichetoolkit.rest.util.JsonUtils;
+import io.github.nichetoolkit.rice.IdEntity;
+import io.github.nichetoolkit.rice.mapper.SuperMapper;
 
+import java.lang.reflect.Array;
 import java.sql.*;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * <code>LoadMultiTypeHandler</code>
@@ -31,19 +35,13 @@ public class LoadMultiTypeHandler extends LoadResultTypeHandler {
     }
 
     @Override
-    Object parseResultJson(String json, ResultSet rs, String columnName) throws SQLException {
-        String loadsJson = rs.getString(EntityConstants.LOADS);
-        List<RestLoad.OfRestLoad> restLoads = JsonUtils.parseList(loadsJson, RestLoad.OfRestLoad.class);
-        Map<Class<?>, MybatisColumn> loadColumns = superTable.getLoadColumns();
-        if (GeneralUtils.isEmpty(restLoads)) {
-            return null;
+    @SuppressWarnings(value = "unchecked")
+    protected <E> List<E> parseResult(Class<E> entityType, List<?> result) throws SQLException {
+        if (GeneralUtils.isNotEmpty(result)) {
+            return (List<E>) result;
         }
-
         return null;
     }
 
-//    MybatisColumn destineColumnOfLoadKey() {
-//
-//    }
 
 }

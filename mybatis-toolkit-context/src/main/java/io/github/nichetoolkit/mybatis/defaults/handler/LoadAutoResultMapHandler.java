@@ -47,7 +47,6 @@ public class LoadAutoResultMapHandler implements AutoResultMapHandler {
     @Override
     public void autoResultMapHandler(Configuration configuration, MybatisTable mybatisTable, List<ResultMapping> resultMappings) {
         List<MybatisColumn> loadKeyColumns = mybatisTable.loadKeyColumns();
-        List<MybatisColumn> loadParamColumns = mybatisTable.loadParamColumns();
         for (Map.Entry<Class<?>, MybatisColumn> entry : mybatisTable.getLoadColumns().entrySet()) {
             Class<?> entryType = entry.getKey();
             MybatisColumn column = entry.getValue();

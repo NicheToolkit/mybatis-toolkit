@@ -33,7 +33,7 @@ import org.springframework.lang.NonNull;
 @AutoConfiguration
 @ComponentScan(basePackages = {"io.github.nichetoolkit.mybatis"})
 @Import({MybatisStarterAutoConfigure.MybatisMapperAutoRegister.class})
-@ImportAutoConfiguration({MybatisRecordAutoConfigure.class})
+@ImportAutoConfiguration({MybatisMapperAutoConfigure.class})
 public class MybatisStarterAutoConfigure {
 
     /**
