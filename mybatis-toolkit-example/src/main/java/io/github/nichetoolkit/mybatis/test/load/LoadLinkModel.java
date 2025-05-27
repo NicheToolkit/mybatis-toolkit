@@ -3,14 +3,10 @@ package io.github.nichetoolkit.mybatis.test.load;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import io.github.nichetoolkit.rest.util.BeanUtils;
 import io.github.nichetoolkit.rice.RestInfoModel;
-import io.github.nichetoolkit.rice.enums.OperateType;
-import io.github.nichetoolkit.rice.enums.SaveType;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.lang.NonNull;
 
 import java.util.Date;
 
@@ -18,7 +14,7 @@ import java.util.Date;
 @Getter
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class LoadLinkModel extends RestInfoModel<LoadLinkModel, LoadLinkEntity> {
+public class LoadLinkModel<M extends LoadLinkModel<M, E>, E extends LoadLinkEntity<E, M>> extends RestInfoModel<M, E> {
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date time;
@@ -32,104 +28,4 @@ public class LoadLinkModel extends RestInfoModel<LoadLinkModel, LoadLinkEntity> 
         super(id);
     }
 
-    public LoadLinkModel(Builder builder) {
-        super(builder);
-        this.time = builder.time;
-    }
-
-    @Override
-    public LoadLinkEntity toEntity() {
-        LoadLinkEntity entity = new LoadLinkEntity();
-        BeanUtils.copyNonnullProperties(this,entity);
-        entity.setOperate(this.operate.getKey());
-        return entity;
-    }
-
-    public static class Builder extends RestInfoModel.Builder<LoadLinkModel, LoadLinkEntity> {
-        protected Date time;
-
-        public Builder() {
-        }
-
-        public Builder time(Long time) {
-            this.time = new Date(time);
-            return this;
-        }
-
-        public Builder time(Date time) {
-            this.time = time;
-            return this;
-        }
-
-        @Override
-        public Builder id(String id) {
-            this.id = id;
-            return this;
-        }
-
-        @Override
-        public Builder name(String name) {
-            this.name = name;
-            return this;
-        }
-
-        @Override
-        public Builder description(String description) {
-            this.description = description;
-            return this;
-        }
-
-        @Override
-        public Builder createTime(Date createTime) {
-            this.createTime = createTime;
-            return this;
-        }
-
-        @Override
-        public Builder createTime(@NonNull Long createTime) {
-            this.createTime = new Date(createTime);
-            return this;
-        }
-
-        @Override
-        public Builder updateTime(Date updateTime) {
-            this.updateTime = updateTime;
-            return this;
-        }
-
-        @Override
-        public Builder updateTime(@NonNull Long updateTime) {
-            this.updateTime = new Date(updateTime);
-            return this;
-        }
-
-        @Override
-        public Builder operate(OperateType operate) {
-            this.operate = operate;
-            return this;
-        }
-
-        @Override
-        public Builder operate(Integer operate) {
-            this.operate = OperateType.parseKey(operate);
-            return this;
-        }
-
-        @Override
-        public Builder save(SaveType save) {
-            this.save = save;
-            return this;
-        }
-
-        @Override
-        public Builder save(Integer save) {
-            this.save = SaveType.parseKey(save);
-            return this;
-        }
-
-        @Override
-        public LoadLinkModel build() {
-            return new LoadLinkModel(this);
-        }
-    }
 }

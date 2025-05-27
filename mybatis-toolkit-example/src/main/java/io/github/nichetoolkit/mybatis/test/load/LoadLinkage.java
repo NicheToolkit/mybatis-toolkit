@@ -1,7 +1,6 @@
 package io.github.nichetoolkit.mybatis.test.load;
 
 import io.github.nichetoolkit.mybatis.column.RestLoadKey;
-import io.github.nichetoolkit.mybatis.column.RestLoadParam;
 import io.github.nichetoolkit.mybatis.table.RestLinkage;
 import lombok.Getter;
 import lombok.Setter;
@@ -14,10 +13,10 @@ import java.util.Objects;
 @RestLinkage
 public class LoadLinkage implements Serializable {
     /* load and type may be anyone use */
-    @RestLoadKey(key = "linkEntity1", type = LoadLinkEntity1.class)
+    @RestLoadKey(key = "linkEntity1", type = LoadLink1Entity.class)
     private String linkId1;
 
-    @RestLoadKey(key = "linkEntity2", type = LoadLinkEntity2.class)
+    @RestLoadKey(key = "linkEntity2", type = LoadLink2Entity.class)
     private String linkId2;
 
     public LoadLinkage() {

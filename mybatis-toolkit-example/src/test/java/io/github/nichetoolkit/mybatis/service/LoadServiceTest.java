@@ -2,7 +2,6 @@ package io.github.nichetoolkit.mybatis.service;
 
 import io.github.nichetoolkit.mybatis.MybatisExampleApplicationTests;
 import io.github.nichetoolkit.mybatis.load.RestLoad;
-import io.github.nichetoolkit.mybatis.mapper.LoadMapper;
 import io.github.nichetoolkit.mybatis.test.load.LoadIdentity;
 import io.github.nichetoolkit.mybatis.test.load.LoadModel;
 import io.github.nichetoolkit.mybatis.test.load.*;
@@ -27,9 +26,11 @@ class LoadServiceTest extends MybatisExampleApplicationTests {
     @Autowired
     private LoadService loadService;
 
+    @Autowired
+    private LoadLink1Service loadLink1Service;
 
     @Autowired
-    private LoadMapper loadMapper;
+    private LoadLink2Service loadLink2Service;
 
     private final String testParamId1 = "1666549566271964311";
     private final String testParamId2 = "1666549566271964312";
@@ -50,12 +51,49 @@ class LoadServiceTest extends MybatisExampleApplicationTests {
     private final String testLinkId2_1 = "1666551617199345621";
     private final String testLinkId2_2 = "1666551617199345622";
 
+    @Order(0)
     @Test
-    public void queryAllTest() throws RestException {
-        List<LoadEntity> loadEntities = loadMapper.querAllTest();
-        System.out.println(JsonUtils.parseJson(loadEntities));
+    public void loadTestData() throws RestException {
+        LoadLink1Model loadLinkModel1_1 = new LoadLink1Model(testLinkId1);
+        loadLinkModel1_1.setName("name_" + GeneralUtils.uuid());
+        loadLinkModel1_1.setDescription("description_" + GeneralUtils.uuid());
+        loadLinkModel1_1.setParamId(testParamId1);
+
+        LoadLink1Model loadLinkModel1_2 = new LoadLink1Model(testLinkId1_1);
+        loadLinkModel1_2.setName("name_" + GeneralUtils.uuid());
+        loadLinkModel1_2.setDescription("description_" + GeneralUtils.uuid());
+        loadLinkModel1_2.setParamId(testParamId1);
+
+        LoadLink1Model loadLinkModel1_3 = new LoadLink1Model(testLinkId1_2);
+        loadLinkModel1_3.setName("name_" + GeneralUtils.uuid());
+        loadLinkModel1_3.setDescription("description_" + GeneralUtils.uuid());
+        loadLinkModel1_3.setParamId(testParamId1);
+
+        List<LoadLink1Model> saveAll1 = loadLink1Service.saveAll(Arrays.asList(loadLinkModel1_1, loadLinkModel1_2, loadLinkModel1_3));
+        System.out.println(JsonUtils.parseJson(saveAll1));
+
+        LoadLink2Model loadLinkModel2_1 = new LoadLink2Model(testLinkId2);
+        loadLinkModel2_1.setName("name_" + GeneralUtils.uuid());
+        loadLinkModel2_1.setDescription("description_" + GeneralUtils.uuid());
+        loadLinkModel2_1.setParamId(testParamId1);
+
+        LoadLink2Model loadLinkModel2_2 = new LoadLink2Model(testLinkId2_1);
+        loadLinkModel2_2.setName("name_" + GeneralUtils.uuid());
+        loadLinkModel2_2.setDescription("description_" + GeneralUtils.uuid());
+        loadLinkModel2_2.setParamId(testParamId1);
+
+        LoadLink2Model loadLinkModel2_3 = new LoadLink2Model(testLinkId2_2);
+        loadLinkModel2_3.setName("name_" + GeneralUtils.uuid());
+        loadLinkModel2_3.setDescription("description_" + GeneralUtils.uuid());
+        loadLinkModel2_3.setParamId(testParamId1);
+
+        List<LoadLink2Model> saveAll2 = loadLink2Service.saveAll(Arrays.asList(loadLinkModel2_1, loadLinkModel2_2, loadLinkModel2_3));
+        System.out.println(JsonUtils.parseJson(saveAll2));
     }
-    
+
+
+
+
     @Order(1)
     @Test
     public void save() throws RestException {

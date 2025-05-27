@@ -21,17 +21,17 @@ public class LoadEntity extends DefaultInfoEntity<LoadEntity, LoadModel, LoadIde
     @RestLinkKey
     private LoadLinkage linkage;
 
-    @RestLoadParam(param = "paramId", types = LoadLinkEntity2.class)
+    @RestLoadParam(param = "paramId", types = LoadLink2Entity.class)
     private String paramId;
 
     @RestForceInsert("now()")
     private Date time;
 
     @RestLoadEntity
-    private LoadLinkEntity1 linkEntity1;
+    private LoadLink1Entity linkEntity1;
 
     @RestLoadEntity(1)
-    private List<LoadLinkEntity2> linkEntity2s;
+    private List<LoadLink2Entity> linkEntity2s;
 
     public LoadEntity() {
     }

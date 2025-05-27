@@ -1,12 +1,12 @@
 package io.github.nichetoolkit.mybatis.mapper;
 
 import io.github.nichetoolkit.mybatis.*;
-import io.github.nichetoolkit.mybatis.test.load.LoadLinkEntity2;
+import io.github.nichetoolkit.mybatis.test.load.LoadLink1Entity;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
- * <code>LoadLinkMapper2</code>
- * <p>The load link mapper 2 interface.</p>
+ * <code>LoadLink1Mapper</code>
+ * <p>The load link 1 mapper interface.</p>
  * @author Cyan (snow22314@outlook.com)
  * @see io.github.nichetoolkit.mybatis.MybatisInfoMapper
  * @see io.github.nichetoolkit.mybatis.MybatisFindLinkMapper
@@ -17,9 +17,9 @@ import org.apache.ibatis.annotations.Mapper;
  * @since Jdk1.8
  */
 @Mapper
-public interface LoadLinkMapper2 extends MybatisInfoMapper<LoadLinkEntity2, String>,
-        MybatisFindLinkMapper<LoadLinkEntity2, String, String>,
-        MybatisDeleteLinkMapper<LoadLinkEntity2, String, String>,
-        MybatisRemoveLinkMapper<LoadLinkEntity2, String, String>,
-        MybatisOperateLinkMapper<LoadLinkEntity2, String, String> {
+public interface LoadLink1Mapper extends MybatisInfoMapper<LoadLink1Entity, String>,
+        MybatisFindLinkMapper<LoadLink1Entity, String, String>,
+        MybatisDeleteLinkMapper<LoadLink1Entity, String, String>,
+        MybatisRemoveLinkMapper<LoadLink1Entity, String, String>,
+        MybatisOperateLinkMapper<LoadLink1Entity, String, String> {
 }
