@@ -14,6 +14,7 @@ import io.github.nichetoolkit.mybatis.error.MybatisParamErrorException;
 import io.github.nichetoolkit.mybatis.error.MybatisUnsupportedErrorException;
 import io.github.nichetoolkit.mybatis.fickle.RestFickle;
 import io.github.nichetoolkit.mybatis.load.RestLoad;
+import io.github.nichetoolkit.mybatis.load.RestParam;
 import io.github.nichetoolkit.rest.*;
 import io.github.nichetoolkit.rest.actuator.ConsumerActuator;
 import io.github.nichetoolkit.rest.holder.ApplicationContextHolder;
@@ -400,6 +401,20 @@ public interface MybatisSqlProvider {
             SqlBuilder valueBuilder = SqlBuilder.sqlBuilder();
             valueOfIdentity(table, identity, valueBuilder);
             return sqlSupply.supply(tablename, table, keyBuilder, valueBuilder);
+        });
+    }
+
+    static <I, S> String providingOfIdOrParams(ProviderContext providerContext, @Nullable String tablename, I idParameter, ConsumerActuator<MybatisTable> tableOptional, RestParam[] params, MybatisSqlSupply.SimpleSqlSupply sqlSupply) throws RestException {
+        Object identity = reviseParameter(idParameter);
+        return MybatisSqlScript.caching(providerContext, (table, sqlScript) -> {
+            tableOptional.actuate(table);
+            SqlBuilder valueBuilder = SqlBuilder.sqlBuilder();
+            if (GeneralUtils.isNotEmpty(params)) {
+                valuesOfParams(table, params, valueBuilder);
+            } else {
+                valueOfIdentity(table, identity, valueBuilder);
+            }
+            return sqlSupply.supply(tablename, table, valueBuilder);
         });
     }
 
@@ -799,7 +814,11 @@ public interface MybatisSqlProvider {
         }
     }
 
-
+    static <I> void valuesOfParams(MybatisTable table, RestParam[] params, SqlBuilder valueBuilder) throws RestException {
+        String collect =  RestStream.stream(params).map(param -> SqlBuilder.sqlBuilder().append(param.getKey()).eq().value(param.getValue()).toString())
+                .collect(RestCollectors.joining(SQLConstants.BLANK + SQLConstants.AND + SQLConstants.BLANK));
+        valueBuilder.append(collect);
+    }
 
     static void valueOfIdentity(MybatisTable table, Object identity, SqlBuilder valueBuilder) throws RestException {
         if (table.isSpecialIdentity()) {
