@@ -6,13 +6,16 @@ import io.github.nichetoolkit.mybatis.column.RestLoadEntity;
 import io.github.nichetoolkit.mybatis.column.RestLoadParam;
 import io.github.nichetoolkit.mybatis.table.RestEntity;
 import io.github.nichetoolkit.rest.util.BeanUtils;
+import io.github.nichetoolkit.rest.util.GeneralUtils;
 import io.github.nichetoolkit.rice.DefaultInfoEntity;
 import io.github.nichetoolkit.rice.enums.OperateType;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Setter
 @Getter
@@ -47,6 +50,13 @@ public class LoadEntity extends DefaultInfoEntity<LoadEntity, LoadModel, LoadIde
         loadModel.setOperate(OperateType.parseKey(this.operate));
         loadModel.setLinkId1(this.linkage.getLinkId1());
         loadModel.setLinkId2(this.linkage.getLinkId2());
+        if (GeneralUtils.isNotEmpty(this.linkEntity1)) {
+            loadModel.setLink1(this.linkEntity1.toModel());
+        }
+        if (GeneralUtils.isNotEmpty(this.linkEntity2s)) {
+            List<LoadLink2Model> loadLink2Models = this.linkEntity2s.stream().map(LoadLink2Entity::toModel).collect(Collectors.toList());
+            loadModel.setLink2s(new ArrayList<>(loadLink2Models));
+        }
         return loadModel;
     }
 

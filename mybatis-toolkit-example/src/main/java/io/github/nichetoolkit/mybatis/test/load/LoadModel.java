@@ -3,6 +3,7 @@ package io.github.nichetoolkit.mybatis.test.load;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import io.github.nichetoolkit.mybatis.column.RestLoadEntity;
 import io.github.nichetoolkit.rest.util.BeanUtils;
 import io.github.nichetoolkit.rice.DefaultInfoModel;
 import io.github.nichetoolkit.rice.enums.OperateType;
@@ -13,6 +14,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.lang.NonNull;
 
 import java.util.Date;
+import java.util.List;
 
 @Setter
 @Getter
@@ -26,6 +28,10 @@ public class LoadModel extends DefaultInfoModel<LoadModel, LoadEntity, LoadIdent
     private Date time;
 
     private String paramId;
+
+    private LoadLinkModel<?,?> link1;
+
+    private List<LoadLinkModel<?,?>> link2s;
 
     public LoadModel() {
     }

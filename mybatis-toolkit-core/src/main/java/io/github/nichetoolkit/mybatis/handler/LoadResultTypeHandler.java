@@ -4,10 +4,9 @@ import io.github.nichetoolkit.mybatis.MybatisColumn;
 import io.github.nichetoolkit.mybatis.MybatisMapperFactory;
 import io.github.nichetoolkit.mybatis.MybatisTable;
 import io.github.nichetoolkit.mybatis.consts.EntityConstants;
-import io.github.nichetoolkit.mybatis.load.RestLoad;
 import io.github.nichetoolkit.mybatis.load.RestParam;
 import io.github.nichetoolkit.rest.util.GeneralUtils;
-import io.github.nichetoolkit.rest.util.JsonUtils;
+import io.github.nichetoolkit.rest.util.JsonPurityUtils;
 import io.github.nichetoolkit.rice.mapper.FindParamMapper;
 import io.github.nichetoolkit.rice.mapper.SuperMapper;
 import org.apache.ibatis.type.BaseTypeHandler;
@@ -70,8 +69,8 @@ public abstract class LoadResultTypeHandler extends BaseTypeHandler<Object> {
         Map<Class<?>, MybatisColumn> loadColumns = superTable.getLoadColumns();
         List<MybatisColumn> mybatisColumns = superTable.loadKeyColumns();
         String loadsJson = resultSet.getString(EntityConstants.LOADS);
-        List<RestLoad.OfRestLoad> loadPresents = JsonUtils.parseList(loadsJson, RestLoad.OfRestLoad.class);
-        Map.Entry<Class<?>, MybatisColumn> loadEntry = destineLoadEntry(columnName, loadPresents, loadColumns);
+        List<String> loadKeys = JsonPurityUtils.parseList(loadsJson, String.class);
+        Map.Entry<Class<?>, MybatisColumn> loadEntry = destineLoadEntry(columnName, loadKeys, loadColumns);
         Object columnValue = resultSet.getObject(columnName);
         if (GeneralUtils.isNotEmpty(loadEntry) && GeneralUtils.isNotEmpty(columnValue)) {
             List<MybatisColumn> loadParamColumns = superTable.loadParamColumns();
@@ -140,8 +139,8 @@ public abstract class LoadResultTypeHandler extends BaseTypeHandler<Object> {
         return result;
     }
 
-    private Map.Entry<Class<?>,MybatisColumn> destineLoadEntry(String columnName, List<RestLoad.OfRestLoad> loadPresents, Map<Class<?>, MybatisColumn> loadColumns) {
-        if (GeneralUtils.isEmpty(loadPresents) || GeneralUtils.isEmpty(loadColumns)) {
+    private Map.Entry<Class<?>,MybatisColumn> destineLoadEntry(String columnName, List<String> loadKeys, Map<Class<?>, MybatisColumn> loadColumns) {
+        if (GeneralUtils.isEmpty(loadKeys) || GeneralUtils.isEmpty(loadColumns)) {
             return null;
         }
         for (Map.Entry<Class<?>, MybatisColumn> entry : loadColumns.entrySet()) {
@@ -151,12 +150,7 @@ public abstract class LoadResultTypeHandler extends BaseTypeHandler<Object> {
             if (GeneralUtils.isEmpty(entryKeys) || !entryKeys.contains(columnName)) {
                 continue;
             }
-            for (RestLoad.OfRestLoad loadPresent : loadPresents) {
-                Boolean loadValue = loadPresent.getValue();
-                if (GeneralUtils.isEmpty(loadValue) || !loadValue) {
-                    continue;
-                }
-                String loadKey = loadPresent.getKey();
+            for (String loadKey : loadKeys) {
                 if (GeneralUtils.isNotEmpty(loadKey) && entryKeys.contains(loadKey)) {
                     return entry;
                 }

@@ -21,6 +21,7 @@ import io.github.nichetoolkit.rest.holder.ApplicationContextHolder;
 import io.github.nichetoolkit.rest.stream.RestCollectors;
 import io.github.nichetoolkit.rest.stream.RestStream;
 import io.github.nichetoolkit.rest.util.GeneralUtils;
+import io.github.nichetoolkit.rest.util.JsonPurityUtils;
 import io.github.nichetoolkit.rest.util.OptionalUtils;
 import io.github.nichetoolkit.rice.enums.OperateType;
 import org.apache.ibatis.builder.annotation.ProviderContext;
@@ -727,15 +728,12 @@ public interface MybatisSqlProvider {
         }));
     }
 
-    static String sqlOfLoad(String loadKey, Integer loadIndex) {
-        /* "'{\"key\":\"" + loadKey + "\",\"index\":\"" + loadIndex + "\",\"value\":', " + true + ", '}', "; */
+    static String sqlOfLoad(RestLoad load) {
+        /* "'{\"key\":\"" + loadKey + "\",\"value\":', " + true + ", '}', "; */
         SqlBuilder sqlBuilder = SqlBuilder.sqlBuilder();
         sqlBuilder.sQuote().curlyLt();
-        if (GeneralUtils.isNotEmpty(loadKey)) {
-            sqlBuilder.dQuote(RestLoad._KEY).colon().dQuote(loadKey).comma();
-        }
-        if (GeneralUtils.isNotEmpty(loadIndex)) {
-            sqlBuilder.dQuote(RestLoad._INDEX).colon().dQuote(loadIndex).comma();
+        if (GeneralUtils.isNotEmpty(load.getKey())) {
+            sqlBuilder.dQuote(RestLoad._KEY).colon().dQuote(load.getKey()).comma();
         }
         sqlBuilder.dQuote(RestLoad._VALUE).colon().sQuote().comma()
                 .dQuote(true).comma().sQuote(SQLConstants.CURLY_GT).comma();
@@ -755,13 +753,11 @@ public interface MybatisSqlProvider {
     static void keyOfLoad(MybatisTable table, RestLoad[] loadParams, SqlBuilder keyBuilder) throws RestException {
         MybatisTableStyle mybatisTableStyle = MybatisContextHolder.defaultTableStyle();
         RestOptional.ofEmptyable(loadParams).ifEmptyPresent(params -> {
-            keyBuilder.comma().concat().braceLt().sQuote(SQLConstants.SQUARE_LT).comma();
-            String ofLoadParams = RestStream.stream(params).filter(RestLoad::getValue).map(load -> {
-                String loadKey = load.getKey();
-                Integer loadIndex = load.getIndex();
-                return sqlOfLoad(loadKey, loadIndex);
-            }).collect(RestCollectors.joining(SqlBuilder.sqlBuilder().sQuote(SQLConstants.COMMA).comma()));
-            keyBuilder.append(ofLoadParams).sQuote(SQLConstants.SQUARE_GT).braceGt().as(EntityConstants.LOADS);
+            List<String> keys = RestStream.stream(params).filter(RestLoad::getValue).map(RestLoad::getKey).distinct().collect(RestCollectors.toList());
+            if (GeneralUtils.isNotEmpty(keys)) {
+                String keysJson = JsonPurityUtils.parseJson(keys);
+                keyBuilder.comma().value(keysJson).as(EntityConstants.LOADS);
+            }
         });
     }
 
