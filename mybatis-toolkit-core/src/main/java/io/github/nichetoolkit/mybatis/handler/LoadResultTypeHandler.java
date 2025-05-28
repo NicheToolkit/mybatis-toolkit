@@ -67,31 +67,30 @@ public abstract class LoadResultTypeHandler extends BaseTypeHandler<Object> {
 
     @SuppressWarnings(value = "unchecked")
     protected Object getLoadResult(ResultSet resultSet, String columnName) throws SQLException {
-        Object columnValue = resultSet.getObject(columnName);
+        Map<Class<?>, MybatisColumn> loadColumns = superTable.getLoadColumns();
+        List<MybatisColumn> mybatisColumns = superTable.loadKeyColumns();
         String loadsJson = resultSet.getString(EntityConstants.LOADS);
         List<RestLoad.OfRestLoad> loadPresents = JsonUtils.parseList(loadsJson, RestLoad.OfRestLoad.class);
-        Map<Class<?>, MybatisColumn> loadColumns = superTable.getLoadColumns();
-        List<MybatisColumn> loadParamColumns = superTable.loadParamColumns();
-        if (GeneralUtils.isNotEmpty(loadColumns)) {
-            Map.Entry<Class<?>, MybatisColumn> loadEntry = destineLoadEntry(loadPresents, loadColumns);
-            if (GeneralUtils.isNotEmpty(loadEntry)) {
-                RestParam[] loadParams = destineLoadParams(resultSet, loadEntry, loadParamColumns);
-                MybatisMapperFactory<SuperMapper<?,?>, ?, ?> mapperFactory = MybatisMapperFactory.instanceOfBean();
-                Class<?> entryKey = loadEntry.getKey();
-                MybatisColumn entryValue = loadEntry.getValue();
-                SuperMapper<?, ?> superMapper = mapperFactory.superMapper(entryKey);
-                if (GeneralUtils.isNotEmpty(superMapper)) {
-                    FindParamMapper<?, Object> findParamMapper = (FindParamMapper<?, Object>) superMapper;
-                    String loadTable = entryValue.getLoadTable();
-                    List<?> entityList;
-                    if (GeneralUtils.isNotEmpty(loadTable)) {
-                        String tablename = destineTablename(resultSet, loadTable);
-                        entityList = findParamMapper.findDynamicAllByIdOrParams(tablename,columnValue,loadParams);
-                    } else {
-                        entityList = findParamMapper.findAllByIdOrParams(columnValue,loadParams);
-                    }
-                    return parseResult(entryKey,entityList);
+        Map.Entry<Class<?>, MybatisColumn> loadEntry = destineLoadEntry(columnName, loadPresents, loadColumns);
+        Object columnValue = resultSet.getObject(columnName);
+        if (GeneralUtils.isNotEmpty(loadEntry) && GeneralUtils.isNotEmpty(columnValue)) {
+            List<MybatisColumn> loadParamColumns = superTable.loadParamColumns();
+            RestParam[] loadParams = destineLoadParams(resultSet, loadEntry, loadParamColumns);
+            MybatisMapperFactory<SuperMapper<?,?>, ?, ?> mapperFactory = MybatisMapperFactory.instanceOfBean();
+            Class<?> entryKey = loadEntry.getKey();
+            MybatisColumn entryValue = loadEntry.getValue();
+            SuperMapper<?, ?> superMapper = mapperFactory.superMapper(entryKey);
+            if (GeneralUtils.isNotEmpty(superMapper)) {
+                FindParamMapper<?, Object> findParamMapper = (FindParamMapper<?, Object>) superMapper;
+                String loadTable = entryValue.getLoadTable();
+                List<?> entityList;
+                if (GeneralUtils.isNotEmpty(loadTable)) {
+                    String tablename = destineTablename(resultSet, loadTable);
+                    entityList = findParamMapper.findDynamicAllByIdOrParams(tablename,columnValue,loadParams);
+                } else {
+                    entityList = findParamMapper.findAllByIdOrParams(columnValue,loadParams);
                 }
+                return parseResult(entryKey,entityList);
             }
         }
         return null;
@@ -100,11 +99,11 @@ public abstract class LoadResultTypeHandler extends BaseTypeHandler<Object> {
     private RestParam[] destineLoadParams(ResultSet resultSet, Map.Entry<Class<?>, MybatisColumn> loadEntry, List<MybatisColumn> loadParamColumns) throws SQLException {
         Class<?> entryKey = loadEntry.getKey();
         MybatisColumn entryValue = loadEntry.getValue();
-        List<String> entryKeys = entryValue.getLoadKeys();
+        Set<String> entryKeys = entryValue.getLoadKeys();
         Map<String,Object> loadParams = new HashMap<>();
         for (MybatisColumn loadParam : loadParamColumns) {
             String columnName = loadParam.getColumn();
-            List<String> loadParamKeys = loadParam.getLoadKeys();
+            Set<String> loadParamKeys = loadParam.getLoadKeys();
             List<Class<?>> loadParamTypes = loadParam.getLoadTypes();
             if (GeneralUtils.isNotEmpty(loadParamTypes) && loadParamTypes.contains(entryKey)) {
                 Object columnValue = resultSet.getObject(columnName);
@@ -141,22 +140,24 @@ public abstract class LoadResultTypeHandler extends BaseTypeHandler<Object> {
         return result;
     }
 
-    private Map.Entry<Class<?>,MybatisColumn> destineLoadEntry(List<RestLoad.OfRestLoad> loadPresents, Map<Class<?>, MybatisColumn> loadColumns) {
+    private Map.Entry<Class<?>,MybatisColumn> destineLoadEntry(String columnName, List<RestLoad.OfRestLoad> loadPresents, Map<Class<?>, MybatisColumn> loadColumns) {
+        if (GeneralUtils.isEmpty(loadPresents) || GeneralUtils.isEmpty(loadColumns)) {
+            return null;
+        }
         for (Map.Entry<Class<?>, MybatisColumn> entry : loadColumns.entrySet()) {
             Class<?> entryKey = entry.getKey();
             MybatisColumn entryValue = entry.getValue();
-            Integer entryIndex = entryValue.getLoadIndex();
-            List<String> entryKeys = entryValue.getLoadKeys();
+            Set<String> entryKeys = entryValue.getLoadKeys();
+            if (GeneralUtils.isEmpty(entryKeys) || !entryKeys.contains(columnName)) {
+                continue;
+            }
             for (RestLoad.OfRestLoad loadPresent : loadPresents) {
                 Boolean loadValue = loadPresent.getValue();
                 if (GeneralUtils.isEmpty(loadValue) || !loadValue) {
                     continue;
                 }
                 String loadKey = loadPresent.getKey();
-                Integer loadIndex = Optional.ofNullable(loadPresent.getIndex()).orElse(0);
                 if (GeneralUtils.isNotEmpty(loadKey) && entryKeys.contains(loadKey)) {
-                    return entry;
-                } else if (loadIndex.equals(entryIndex)) {
                     return entry;
                 }
             }

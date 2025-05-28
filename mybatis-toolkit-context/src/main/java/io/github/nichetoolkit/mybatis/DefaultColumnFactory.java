@@ -409,10 +409,10 @@ public class DefaultColumnFactory implements MybatisColumnFactory {
             mybatisColumn.setLoadKey(true);
             /* 覆盖 RestLoadParam LoadValue  */
             if (GeneralUtils.isNotEmpty(restLoadKey.key())) {
-                mybatisColumn.getLoadKeys().add(restLoadKey.key());
+                mybatisColumn.addLoadKey(restLoadKey.key());
             }
             if (GeneralUtils.isNotEmpty(restLoadKey.type()) && restLoadKey.type() != Void.class) {
-                mybatisColumn.getLoadTypes().add(restLoadKey.type());
+                mybatisColumn.addLoadType(restLoadKey.type());
             }
         }
         RestLoadEntity restLoadEntity = field.getAnnotation(RestLoadEntity.class);
@@ -421,7 +421,6 @@ public class DefaultColumnFactory implements MybatisColumnFactory {
             mybatisColumn.setSelect(false);
             mybatisColumn.setInsert(false);
             mybatisColumn.setUpdate(false);
-            mybatisColumn.setLoadIndex(0);
             if (GeneralUtils.isNotEmpty(restLoadEntity.table())) {
                 mybatisColumn.setLoadTable(restLoadEntity.table());
             }
@@ -431,6 +430,7 @@ public class DefaultColumnFactory implements MybatisColumnFactory {
             }
             /* 默认添加 字段名称为 loadKey */
             mybatisColumn.getLoadKeys().add(mybatisColumn.property());
+            mybatisColumn.getLoadKeys().add(mybatisColumn.columnName());
         }
 
         if (field.isIdentity()) {

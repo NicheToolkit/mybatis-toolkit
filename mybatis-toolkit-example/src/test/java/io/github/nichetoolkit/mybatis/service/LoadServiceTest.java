@@ -132,7 +132,7 @@ class LoadServiceTest extends MybatisExampleApplicationTests {
     @Test
     public void queryById() throws RestException {
         LoadIdentity identity = new LoadIdentity(testLoadPk1, testLoadPk2);
-        LoadModel loadModel = loadService.queryById(identity, RestLoad.of("linkEntity2"));
+        LoadModel loadModel = loadService.queryById(identity, RestLoad.of("linkEntity2s"));
         System.out.println(JsonUtils.parseJson(loadModel));
     }
 

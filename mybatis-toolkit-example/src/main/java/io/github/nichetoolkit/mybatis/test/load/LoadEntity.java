@@ -30,7 +30,7 @@ public class LoadEntity extends DefaultInfoEntity<LoadEntity, LoadModel, LoadIde
     @RestLoadEntity
     private LoadLink1Entity linkEntity1;
 
-    @RestLoadEntity(1)
+    @RestLoadEntity
     private List<LoadLink2Entity> linkEntity2s;
 
     public LoadEntity() {

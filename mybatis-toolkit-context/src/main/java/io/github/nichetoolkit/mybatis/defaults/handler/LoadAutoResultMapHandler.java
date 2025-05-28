@@ -10,6 +10,7 @@ import org.apache.ibatis.session.Configuration;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * <code>LoadAutoResultMapHandler</code>
@@ -51,13 +52,13 @@ public class LoadAutoResultMapHandler implements AutoResultMapHandler {
             Class<?> entryType = entry.getKey();
             MybatisColumn column = entry.getValue();
             Class<?> fieldType = column.getField().fieldType();
-            List<String> loadKeys = column.getLoadKeys();
+            Set<String> loadKeys = column.getLoadKeys();
             MybatisColumn loadKey = destineColumnOfLoadKey(loadKeys, entryType, loadKeyColumns);
             if (GeneralUtils.isEmpty(loadKey)) {
                 continue;
             }
             String columnName = loadKey.columnName();
-            column.setLoadColumn(columnName);
+            column.addLoadKey(columnName);
             String property = column.property();
             ResultMapping.Builder builder = new ResultMapping.Builder(configuration, property, columnName, entryType);
             if (Collection.class.isAssignableFrom(fieldType)) {
@@ -73,13 +74,13 @@ public class LoadAutoResultMapHandler implements AutoResultMapHandler {
         }
     }
 
-    private MybatisColumn destineColumnOfLoadKey(List<String> keys, Class<?> type,List<MybatisColumn> loadKeyColumns) {
+    private MybatisColumn destineColumnOfLoadKey(Set<String> keys, Class<?> type, List<MybatisColumn> loadKeyColumns) {
         for (MybatisColumn mybatisColumn : loadKeyColumns) {
             List<Class<?>> loadTypes = mybatisColumn.getLoadTypes();
             if (loadTypes.contains(type)) {
                 return mybatisColumn;
             }
-            List<String> loadKeys = mybatisColumn.getLoadKeys();
+            Set<String> loadKeys = mybatisColumn.getLoadKeys();
             for (String key : keys) {
                 if (loadKeys.contains(key)) {
                     return mybatisColumn;
