@@ -116,6 +116,6 @@ public class MybatisFindLoadProvider implements MybatisSqlProvider {
         ConsumerActuator<MybatisTable> tableOptional = table -> {
             OptionalUtils.ofEmpty(table.selectColumns(), "The select columns of table with 'findAllLoad' method cannot be empty!", message -> new MybatisTableErrorException("findAllLoad", "selectColumns", message));
         };
-        return MybatisSqlProvider.providingOfAll(providerContext, tablename, idList, tableOptional, SELECT_SQL_SUPPLY);
+        return MybatisSqlProvider.providingOfAll(providerContext, tablename, idList, tableOptional, loadParams, ENTRY_SQL_SUPPLY);
     }
 }

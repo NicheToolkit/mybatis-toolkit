@@ -49,7 +49,7 @@ public abstract class LoadResultTypeHandler extends BaseTypeHandler<Object> {
 
     @Override
     public Object getNullableResult(ResultSet rs, String columnName) throws SQLException {
-        return getLoadResult(rs,columnName);
+        return getLoadResult(rs, columnName);
     }
 
     @Override
@@ -62,20 +62,25 @@ public abstract class LoadResultTypeHandler extends BaseTypeHandler<Object> {
         throw new SQLException("The 'getNullableResult' method of 'LoadResultTypeHandler' with 'callableStatement' is not supported");
     }
 
-    abstract protected <E> Object parseResult(Class<E> entityType,List<?> result) throws SQLException;
+    abstract protected <E> Object parseResult(Class<E> entityType, List<?> result) throws SQLException;
 
     @SuppressWarnings(value = "unchecked")
     protected Object getLoadResult(ResultSet resultSet, String columnName) throws SQLException {
+        String loadsJson;
+        try {
+            loadsJson = resultSet.getString(EntityConstants.LOADS);
+        } catch (SQLException ignored) {
+            return null;
+        }
+        List<String> loadKeys = JsonPurityUtils.parseList(loadsJson, String.class);
         Map<Class<?>, MybatisColumn> loadColumns = superTable.getLoadColumns();
         List<MybatisColumn> mybatisColumns = superTable.loadKeyColumns();
-        String loadsJson = resultSet.getString(EntityConstants.LOADS);
-        List<String> loadKeys = JsonPurityUtils.parseList(loadsJson, String.class);
         Map.Entry<Class<?>, MybatisColumn> loadEntry = destineLoadEntry(columnName, loadKeys, loadColumns);
         Object columnValue = resultSet.getObject(columnName);
         if (GeneralUtils.isNotEmpty(loadEntry) && GeneralUtils.isNotEmpty(columnValue)) {
             List<MybatisColumn> loadParamColumns = superTable.loadParamColumns();
             RestParam[] loadParams = destineLoadParams(resultSet, loadEntry, loadParamColumns);
-            MybatisMapperFactory<SuperMapper<?,?>, ?, ?> mapperFactory = MybatisMapperFactory.instanceOfBean();
+            MybatisMapperFactory<SuperMapper<?, ?>, ?, ?> mapperFactory = MybatisMapperFactory.instanceOfBean();
             Class<?> entryKey = loadEntry.getKey();
             MybatisColumn entryValue = loadEntry.getValue();
             SuperMapper<?, ?> superMapper = mapperFactory.superMapper(entryKey);
@@ -85,11 +90,11 @@ public abstract class LoadResultTypeHandler extends BaseTypeHandler<Object> {
                 List<?> entityList;
                 if (GeneralUtils.isNotEmpty(loadTable)) {
                     String tablename = destineTablename(resultSet, loadTable);
-                    entityList = findParamMapper.findDynamicAllByIdOrParams(tablename,columnValue,loadParams);
+                    entityList = findParamMapper.findDynamicAllByIdOrParams(tablename, columnValue, loadParams);
                 } else {
-                    entityList = findParamMapper.findAllByIdOrParams(columnValue,loadParams);
+                    entityList = findParamMapper.findAllByIdOrParams(columnValue, loadParams);
                 }
-                return parseResult(entryKey,entityList);
+                return parseResult(entryKey, entityList);
             }
         }
         return null;
@@ -99,7 +104,7 @@ public abstract class LoadResultTypeHandler extends BaseTypeHandler<Object> {
         Class<?> entryKey = loadEntry.getKey();
         MybatisColumn entryValue = loadEntry.getValue();
         Set<String> entryKeys = entryValue.getLoadKeys();
-        Map<String,Object> loadParams = new HashMap<>();
+        Map<String, Object> loadParams = new HashMap<>();
         for (MybatisColumn loadParam : loadParamColumns) {
             String columnName = loadParam.getColumn();
             Set<String> loadParamKeys = loadParam.getLoadKeys();
@@ -121,25 +126,25 @@ public abstract class LoadResultTypeHandler extends BaseTypeHandler<Object> {
         return loadParams.entrySet().stream().map(RestParam::of).toArray(RestParam[]::new);
     }
 
-    private String destineTablename(ResultSet resultSet,String loadTable) throws SQLException {
+    private String destineTablename(ResultSet resultSet, String loadTable) throws SQLException {
         String regex = "\\{[^}]*}";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(loadTable);
-        String result = null;
-        while(matcher.find()){
+        String result = loadTable;
+        while (matcher.find()) {
             String param = matcher.group(0);
             String columnName = param.substring(1, param.length() - 1);
             if (GeneralUtils.isNotEmpty(columnName)) {
                 String columnValue = resultSet.getString(columnName);
                 if (GeneralUtils.isNotEmpty(columnValue)) {
-                    result = loadTable.replaceFirst(regex,columnValue);
+                    result = loadTable.replaceFirst(regex, columnValue);
                 }
             }
         }
         return result;
     }
 
-    private Map.Entry<Class<?>,MybatisColumn> destineLoadEntry(String columnName, List<String> loadKeys, Map<Class<?>, MybatisColumn> loadColumns) {
+    private Map.Entry<Class<?>, MybatisColumn> destineLoadEntry(String columnName, List<String> loadKeys, Map<Class<?>, MybatisColumn> loadColumns) {
         if (GeneralUtils.isEmpty(loadKeys) || GeneralUtils.isEmpty(loadColumns)) {
             return null;
         }

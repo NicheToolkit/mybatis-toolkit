@@ -142,7 +142,7 @@ class LoadServiceTest extends MybatisExampleApplicationTests {
         LoadIdentity identity = new LoadIdentity(testLoadPk1, testLoadPk2);
         LoadIdentity identity1 = new LoadIdentity(testLoadPk1_1, null);
         LoadIdentity identity2 = new LoadIdentity(null, testLoadPk2_2);
-        List<LoadModel> loadModels = loadService.queryAll( Arrays.asList(identity, identity1, identity2));
+        List<LoadModel> loadModels = loadService.queryAll( Arrays.asList(identity, identity1, identity2),RestLoad.of("linkEntity1"));
         System.out.println(JsonUtils.parseJson(loadModels));
     }
 
