@@ -34,24 +34,6 @@ public class MybatisFilterLoadProvider implements MybatisSqlProvider {
     }
 
     /**
-     * <code>findAllByLoadWhere</code>
-     * <p>The find all by load where method.</p>
-     * @param <I>             {@link java.lang.Object} <p>The parameter can be of any type.</p>
-     * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>The provider context parameter is <code>ProviderContext</code> type.</p>
-     * @param whereSql        {@link java.lang.String} <p>The where sql parameter is <code>String</code> type.</p>
-     * @param loadParams      {@link io.github.nichetoolkit.mybatis.load.RestLoad} <p>The load params parameter is <code>RestLoad</code> type.</p>
-     * @return {@link java.lang.String} <p>The find all by load where return object is <code>String</code> type.</p>
-     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
-     * @see org.apache.ibatis.builder.annotation.ProviderContext
-     * @see java.lang.String
-     * @see io.github.nichetoolkit.mybatis.load.RestLoad
-     * @see io.github.nichetoolkit.rest.RestException
-     */
-    public static <I> String findAllByLoadWhere(ProviderContext providerContext, String whereSql, RestLoad[] loadParams) throws RestException {
-        return findDynamicAllByLoadWhere(providerContext, null, whereSql, loadParams);
-    }
-
-    /**
      * <code>findDynamicAllByLoadWhere</code>
      * <p>The find dynamic all by load where method.</p>
      * @param <I>             {@link java.lang.Object} <p>The parameter can be of any type.</p>

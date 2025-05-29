@@ -27,9 +27,9 @@ import java.util.List;
 public interface MybatisFindFickleMapper<E extends RestId<I>, I> extends MybatisMapper<E>, FindFickleMapper<E, I> {
 
     @Override
-    @Lang(MybatisSqlSourceCaching.class)
-    @SelectProvider(MybatisSqlProviderResolver.class)
-    E findByIdFickle(@Param("id") I id, @Param("fickleParams") RestFickle<?>... fickleParams);
+    default E findByIdFickle(@Param("id") I id, @Param("fickleParams") RestFickle<?>... fickleParams) {
+        return findDynamicByIdFickle(null, id, fickleParams);
+    }
 
     @Override
     @Lang(MybatisSqlSourceCaching.class)
@@ -37,9 +37,9 @@ public interface MybatisFindFickleMapper<E extends RestId<I>, I> extends Mybatis
     E findDynamicByIdFickle(@Param("tablename") String tablename, @Param("id") I id, @Param("fickleParams") RestFickle<?>... fickleParams);
 
     @Override
-    @Lang(MybatisSqlSourceCaching.class)
-    @SelectProvider(MybatisSqlProviderResolver.class)
-    List<E> findAllFickle(@Param("idList") Collection<I> idList, @Param("fickleParams") RestFickle<?>... fickleParams);
+    default List<E> findAllFickle(@Param("idList") Collection<I> idList, @Param("fickleParams") RestFickle<?>... fickleParams) {
+        return findDynamicAllFickle(null, idList, fickleParams);
+    }
 
     @Override
     @Lang(MybatisSqlSourceCaching.class)

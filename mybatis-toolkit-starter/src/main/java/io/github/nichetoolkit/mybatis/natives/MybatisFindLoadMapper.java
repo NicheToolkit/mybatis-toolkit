@@ -24,12 +24,12 @@ import java.util.List;
  * @see io.github.nichetoolkit.rice.mapper.natives.FindLoadMapper
  * @since Jdk1.8
  */
-public interface MybatisFindLoadMapper <E extends RestId<I>, I> extends MybatisMapper<E>, FindLoadMapper<E, I> {
+public interface MybatisFindLoadMapper<E extends RestId<I>, I> extends MybatisMapper<E>, FindLoadMapper<E, I> {
 
     @Override
-    @Lang(MybatisSqlSourceCaching.class)
-    @SelectProvider(MybatisSqlProviderResolver.class)
-    E findByIdLoad(@Param("id") I id, @Param("loadParams") RestLoad... loadParams);
+    default E findByIdLoad(@Param("id") I id, @Param("loadParams") RestLoad... loadParams) {
+        return findDynamicByIdLoad(null, id, loadParams);
+    }
 
     @Override
     @Lang(MybatisSqlSourceCaching.class)
@@ -37,9 +37,9 @@ public interface MybatisFindLoadMapper <E extends RestId<I>, I> extends MybatisM
     E findDynamicByIdLoad(@Param("tablename") String tablename, @Param("id") I id, @Param("loadParams") RestLoad... loadParams);
 
     @Override
-    @Lang(MybatisSqlSourceCaching.class)
-    @SelectProvider(MybatisSqlProviderResolver.class)
-    List<E> findAllLoad(@Param("idList") Collection<I> idList, @Param("loadParams") RestLoad... loadParams);
+    default List<E> findAllLoad(@Param("idList") Collection<I> idList, @Param("loadParams") RestLoad... loadParams) {
+        return findDynamicAllLoad(null, idList, loadParams);
+    }
 
     @Override
     @Lang(MybatisSqlSourceCaching.class)

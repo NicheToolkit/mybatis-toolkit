@@ -35,24 +35,6 @@ public class MybatisFindFickleProvider implements MybatisSqlProvider {
     }
 
     /**
-     * <code>findByIdFickle</code>
-     * <p>The find by id fickle method.</p>
-     * @param <I>             {@link java.lang.Object} <p>The parameter can be of any type.</p>
-     * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>The provider context parameter is <code>ProviderContext</code> type.</p>
-     * @param id              I <p>The id parameter is <code>I</code> type.</p>
-     * @param fickleParams    {@link io.github.nichetoolkit.mybatis.fickle.RestFickle} <p>The fickle params parameter is <code>RestFickle</code> type.</p>
-     * @return {@link java.lang.String} <p>The find by id fickle return object is <code>String</code> type.</p>
-     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
-     * @see org.apache.ibatis.builder.annotation.ProviderContext
-     * @see io.github.nichetoolkit.mybatis.fickle.RestFickle
-     * @see java.lang.String
-     * @see io.github.nichetoolkit.rest.RestException
-     */
-    public static <I> String findByIdFickle(ProviderContext providerContext, I id, RestFickle<?>[] fickleParams) throws RestException {
-        return findDynamicByIdFickle(providerContext, null, id, fickleParams);
-    }
-
-    /**
      * <code>findDynamicByIdFickle</code>
      * <p>The find dynamic by id fickle method.</p>
      * @param <I>             {@link java.lang.Object} <p>The parameter can be of any type.</p>
@@ -74,25 +56,6 @@ public class MybatisFindFickleProvider implements MybatisSqlProvider {
             OptionalUtils.ofEmpty(table.selectColumns(), selectColumns, log, message -> new MybatisTableErrorException("findByIdFickle", "selectColumns", message));
         };
         return MybatisSqlProvider.providingOfId(providerContext, tablename, id, tableOptional, fickleParams, ENTRY_SQL_SUPPLY);
-    }
-
-    /**
-     * <code>findAllFickle</code>
-     * <p>The find all fickle method.</p>
-     * @param <I>             {@link java.lang.Object} <p>The parameter can be of any type.</p>
-     * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>The provider context parameter is <code>ProviderContext</code> type.</p>
-     * @param idList          {@link java.util.Collection} <p>The id list parameter is <code>Collection</code> type.</p>
-     * @param fickleParams    {@link io.github.nichetoolkit.mybatis.fickle.RestFickle} <p>The fickle params parameter is <code>RestFickle</code> type.</p>
-     * @return {@link java.lang.String} <p>The find all fickle return object is <code>String</code> type.</p>
-     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
-     * @see org.apache.ibatis.builder.annotation.ProviderContext
-     * @see java.util.Collection
-     * @see io.github.nichetoolkit.mybatis.fickle.RestFickle
-     * @see java.lang.String
-     * @see io.github.nichetoolkit.rest.RestException
-     */
-    public static <I> String findAllFickle(ProviderContext providerContext, Collection<I> idList, RestFickle<?>[] fickleParams) throws RestException {
-        return findDynamicAllFickle(providerContext, null, idList, fickleParams);
     }
 
     /**

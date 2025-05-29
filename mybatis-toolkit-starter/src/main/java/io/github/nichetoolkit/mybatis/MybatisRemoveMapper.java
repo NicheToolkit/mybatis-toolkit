@@ -11,20 +11,20 @@ import java.util.Collection;
 /**
  * <code>MybatisRemoveMapper</code>
  * <p>The mybatis remove mapper interface.</p>
- * @param <E>  {@link io.github.nichetoolkit.rice.RestId} <p>The generic parameter is <code>RestId</code> type.</p>
- * @param <I>  {@link java.lang.Object} <p>The parameter can be of any type.</p>
- * @see  io.github.nichetoolkit.rice.RestId
- * @see  io.github.nichetoolkit.mybatis.MybatisMapper
- * @see  io.github.nichetoolkit.rice.mapper.RemoveMapper
+ * @param <E> {@link io.github.nichetoolkit.rice.RestId} <p>The generic parameter is <code>RestId</code> type.</p>
+ * @param <I> {@link java.lang.Object} <p>The parameter can be of any type.</p>
  * @author Cyan (snow22314@outlook.com)
+ * @see io.github.nichetoolkit.rice.RestId
+ * @see io.github.nichetoolkit.mybatis.MybatisMapper
+ * @see io.github.nichetoolkit.rice.mapper.RemoveMapper
  * @since Jdk1.8
  */
-public interface MybatisRemoveMapper<E extends RestId<I>,I> extends MybatisMapper<E>, RemoveMapper<I> {
+public interface MybatisRemoveMapper<E extends RestId<I>, I> extends MybatisMapper<E>, RemoveMapper<I> {
 
     @Override
-    @Lang(MybatisSqlSourceCaching.class)
-    @UpdateProvider(MybatisSqlProviderResolver.class)
-    Integer removeById(@Param("id") I id, @Param("logic") Object logic);
+    default Integer removeById(@Param("id") I id, @Param("logic") Object logic) {
+        return removeDynamicById(null, id, logic);
+    }
 
     @Override
     @Lang(MybatisSqlSourceCaching.class)
@@ -32,9 +32,9 @@ public interface MybatisRemoveMapper<E extends RestId<I>,I> extends MybatisMappe
     Integer removeDynamicById(@Param("tablename") String tablename, @Param("id") I id, @Param("logic") Object logic);
 
     @Override
-    @Lang(MybatisSqlSourceCaching.class)
-    @UpdateProvider(MybatisSqlProviderResolver.class)
-    Integer removeAll(@Param("idList") Collection<I> idList, @Param("logic") Object logic);
+    default Integer removeAll(@Param("idList") Collection<I> idList, @Param("logic") Object logic) {
+        return removeDynamicAll(null, idList, logic);
+    }
 
     @Override
     @Lang(MybatisSqlSourceCaching.class)
@@ -42,9 +42,9 @@ public interface MybatisRemoveMapper<E extends RestId<I>,I> extends MybatisMappe
     Integer removeDynamicAll(@Param("tablename") String tablename, @Param("idList") Collection<I> idList, @Param("logic") Object logic);
 
     @Override
-    @Lang(MybatisSqlSourceCaching.class)
-    @UpdateProvider(MybatisSqlProviderResolver.class)
-    Integer removeAllByWhere(@Param("whereSql") String whereSql, @Param("logic") Object logic);
+    default Integer removeAllByWhere(@Param("whereSql") String whereSql, @Param("logic") Object logic) {
+        return removeDynamicAllByWhere(null, whereSql, logic);
+    }
 
     @Override
     @Lang(MybatisSqlSourceCaching.class)

@@ -20,12 +20,12 @@ import java.util.List;
  * @see io.github.nichetoolkit.rice.mapper.FindParamMapper
  * @since Jdk1.8
  */
-public interface MybatisFindParamMapper<E extends RestId<I>, I> extends MybatisMapper<E>, FindParamMapper<E,I> {
+public interface MybatisFindParamMapper<E extends RestId<I>, I> extends MybatisMapper<E>, FindParamMapper<E, I> {
 
     @Override
-    @Lang(MybatisSqlSourceCaching.class)
-    @SelectProvider(MybatisSqlProviderResolver.class)
-    List<E> findAllByIdOrParams(@Param("id") I id, @Param("params") RestParam... params);
+    default List<E> findAllByIdOrParams(@Param("id") I id, @Param("params") RestParam... params) {
+        return findDynamicAllByIdOrParams(null, id, params);
+    }
 
     @Override
     @Lang(MybatisSqlSourceCaching.class)

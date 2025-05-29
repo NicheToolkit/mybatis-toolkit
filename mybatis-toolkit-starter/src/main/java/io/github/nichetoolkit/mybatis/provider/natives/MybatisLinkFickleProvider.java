@@ -25,20 +25,12 @@ public class MybatisLinkFickleProvider implements MybatisSqlProvider {
         return Arrays.asList(DatabaseType.POSTGRESQL, DatabaseType.MYSQL, DatabaseType.GAUSSDB, DatabaseType.SQLITE);
     }
 
-    public static <L> String findByLinkIdFickle(ProviderContext providerContext, L linkId, String linkName, RestFickle<?>[] fickleParams) throws RestException {
-        return findDynamicByLinkIdFickle(providerContext, null, linkId, linkName, fickleParams);
-    }
-
     public static <L> String findDynamicByLinkIdFickle(ProviderContext providerContext, String tablename, L linkId, String linkName, RestFickle<?>[] fickleParams) throws RestException {
         OptionalUtils.ofEmpty(linkId, "The link id param of 'findByLinkIdFickle' method cannot be empty!", log, message -> new MybatisParamErrorException("findByLinkIdFickle", "linkId", message));
         String selectColumns = "The select columns of table with 'findByLinkIdFickle' method cannot be empty!";
         ConsumerActuator<MybatisTable> tableOptional = table -> OptionalUtils.ofEmpty(table.selectColumns(), selectColumns, log,
                 message -> new MybatisTableErrorException("findByLinkIdFickle", "selectColumns", message));
         return MybatisSqlProvider.providingOfLinkId(providerContext, tablename, linkId, linkName, tableOptional, fickleParams, ENTRY_SQL_SUPPLY);
-    }
-
-    public static <L> String findAllByLinkIdsFickle(ProviderContext providerContext, Collection<L> linkIdList, String linkName, RestFickle<?>[] fickleParams) throws RestException {
-        return findDynamicAllByLinkIdsFickle(providerContext, null, linkIdList, linkName, fickleParams);
     }
 
     public static <L> String findDynamicAllByLinkIdsFickle(ProviderContext providerContext, String tablename, Collection<L> linkIdList, String linkName, RestFickle<?>[] fickleParams) throws RestException {

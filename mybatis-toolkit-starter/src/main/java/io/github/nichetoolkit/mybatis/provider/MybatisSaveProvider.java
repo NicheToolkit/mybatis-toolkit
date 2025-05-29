@@ -35,22 +35,6 @@ public class MybatisSaveProvider implements MybatisSqlProvider {
     }
 
     /**
-     * <code>save</code>
-     * <p>The save method.</p>
-     * @param <E>  {@link java.lang.Object} <p>The parameter can be of any type.</p>
-     * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>The provider context parameter is <code>ProviderContext</code> type.</p>
-     * @param entity E <p>The entity parameter is <code>E</code> type.</p>
-     * @see  org.apache.ibatis.builder.annotation.ProviderContext
-     * @see  java.lang.String
-     * @see  io.github.nichetoolkit.rest.RestException
-     * @return  {@link java.lang.String} <p>The save return object is <code>String</code> type.</p>
-     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
-     */
-    public static <E> String save(ProviderContext providerContext, E entity) throws RestException {
-        return saveDynamic(providerContext, null, entity);
-    }
-
-    /**
      * <code>saveDynamic</code>
      * <p>The save dynamic method.</p>
      * @param <E>  {@link java.lang.Object} <p>The parameter can be of any type.</p>
@@ -69,23 +53,6 @@ public class MybatisSaveProvider implements MybatisSqlProvider {
         ConsumerActuator<MybatisTable> tableOptional = table -> OptionalUtils.ofEmpty(table.insertColumns(), insertColumns, log,
                 message -> new MybatisTableErrorException("save", "insertColumns", message));
         return MybatisSqlProvider.providingOfSave(providerContext, tablename, entity, tableOptional, SAVE_SQL_SUPPLY);
-    }
-
-    /**
-     * <code>saveAll</code>
-     * <p>The save all method.</p>
-     * @param <E>  {@link java.lang.Object} <p>The parameter can be of any type.</p>
-     * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>The provider context parameter is <code>ProviderContext</code> type.</p>
-     * @param entityList {@link java.util.Collection} <p>The entity list parameter is <code>Collection</code> type.</p>
-     * @see  org.apache.ibatis.builder.annotation.ProviderContext
-     * @see  java.util.Collection
-     * @see  java.lang.String
-     * @see  io.github.nichetoolkit.rest.RestException
-     * @return  {@link java.lang.String} <p>The save all return object is <code>String</code> type.</p>
-     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
-     */
-    public static <E> String saveAll(ProviderContext providerContext, Collection<E> entityList) throws RestException {
-        return saveDynamicAll(providerContext, null, entityList);
     }
 
     /**

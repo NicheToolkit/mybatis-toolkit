@@ -35,23 +35,6 @@ public class MybatisInfoProvider implements MybatisSqlProvider {
     }
 
     /**
-     * <code>findByName</code>
-     * <p>The find by name method.</p>
-     * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>The provider context parameter is <code>ProviderContext</code> type.</p>
-     * @param name {@link java.lang.String} <p>The name parameter is <code>String</code> type.</p>
-     * @param logic {@link java.lang.Object} <p>The logic parameter is <code>Object</code> type.</p>
-     * @see  org.apache.ibatis.builder.annotation.ProviderContext
-     * @see  java.lang.String
-     * @see  java.lang.Object
-     * @see  io.github.nichetoolkit.rest.RestException
-     * @return  {@link java.lang.String} <p>The find by name return object is <code>String</code> type.</p>
-     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
-     */
-    public static String findByName(ProviderContext providerContext, String name, Object logic) throws RestException {
-        return findDynamicByName(providerContext, null, name, logic);
-    }
-
-    /**
      * <code>findDynamicByName</code>
      * <p>The find dynamic by name method.</p>
      * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>The provider context parameter is <code>ProviderContext</code> type.</p>
@@ -71,25 +54,6 @@ public class MybatisInfoProvider implements MybatisSqlProvider {
         ConsumerActuator<MybatisTable> tableOptional = table -> OptionalUtils.ofEmpty(table.selectColumns(), selectColumns, log,
                 message -> new MybatisTableErrorException("findByName", "selectColumns", message));
         return MybatisSqlProvider.providingOfName(providerContext, tablename, name, tableOptional, SELECT_SQL_SUPPLY);
-    }
-
-    /**
-     * <code>findByNameAndNotId</code>
-     * <p>The find by name and not id method.</p>
-     * @param <I>  {@link java.lang.Object} <p>The parameter can be of any type.</p>
-     * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>The provider context parameter is <code>ProviderContext</code> type.</p>
-     * @param name {@link java.lang.String} <p>The name parameter is <code>String</code> type.</p>
-     * @param id I <p>The id parameter is <code>I</code> type.</p>
-     * @param logic {@link java.lang.Object} <p>The logic parameter is <code>Object</code> type.</p>
-     * @see  org.apache.ibatis.builder.annotation.ProviderContext
-     * @see  java.lang.String
-     * @see  java.lang.Object
-     * @see  io.github.nichetoolkit.rest.RestException
-     * @return  {@link java.lang.String} <p>The find by name and not id return object is <code>String</code> type.</p>
-     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
-     */
-    public static <I> String findByNameAndNotId(ProviderContext providerContext, String name, I id, Object logic) throws RestException {
-        return findDynamicByNameAndNotId(providerContext, null, name, id, logic);
     }
 
     /**
@@ -117,24 +81,6 @@ public class MybatisInfoProvider implements MybatisSqlProvider {
     }
 
     /**
-     * <code>findByEntityUnique</code>
-     * <p>The find by entity unique method.</p>
-     * @param <E>  {@link java.lang.Object} <p>The parameter can be of any type.</p>
-     * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>The provider context parameter is <code>ProviderContext</code> type.</p>
-     * @param entity E <p>The entity parameter is <code>E</code> type.</p>
-     * @param logic {@link java.lang.Object} <p>The logic parameter is <code>Object</code> type.</p>
-     * @see  org.apache.ibatis.builder.annotation.ProviderContext
-     * @see  java.lang.Object
-     * @see  java.lang.String
-     * @see  io.github.nichetoolkit.rest.RestException
-     * @return  {@link java.lang.String} <p>The find by entity unique return object is <code>String</code> type.</p>
-     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
-     */
-    public static <E> String findByEntityUnique(ProviderContext providerContext, E entity, Object logic) throws RestException {
-        return findDynamicByEntityUnique(providerContext, null, entity, logic);
-    }
-
-    /**
      * <code>findDynamicByEntityUnique</code>
      * <p>The find dynamic by entity unique method.</p>
      * @param <E>  {@link java.lang.Object} <p>The parameter can be of any type.</p>
@@ -153,26 +99,6 @@ public class MybatisInfoProvider implements MybatisSqlProvider {
         OptionalUtils.ofEmpty(entity, "The entity param of 'findByEntity' method cannot be empty!", log, message -> new MybatisParamErrorException("findByEntity", "entity", message));
         ConsumerActuator<MybatisTable> tableOptional = tableOptional("findByEntity");
         return MybatisSqlProvider.providingOfEntity(providerContext, tablename, entity, tableOptional, SELECT_SQL_SUPPLY);
-    }
-
-    /**
-     * <code>findByEntityUniqueAndNotId</code>
-     * <p>The find by entity unique and not id method.</p>
-     * @param <I>  {@link java.lang.Object} <p>The parameter can be of any type.</p>
-     * @param <E>  {@link java.lang.Object} <p>The parameter can be of any type.</p>
-     * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>The provider context parameter is <code>ProviderContext</code> type.</p>
-     * @param entity E <p>The entity parameter is <code>E</code> type.</p>
-     * @param id I <p>The id parameter is <code>I</code> type.</p>
-     * @param logic {@link java.lang.Object} <p>The logic parameter is <code>Object</code> type.</p>
-     * @see  org.apache.ibatis.builder.annotation.ProviderContext
-     * @see  java.lang.Object
-     * @see  java.lang.String
-     * @see  io.github.nichetoolkit.rest.RestException
-     * @return  {@link java.lang.String} <p>The find by entity unique and not id return object is <code>String</code> type.</p>
-     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
-     */
-    public static <I, E> String findByEntityUniqueAndNotId(ProviderContext providerContext, E entity, I id, Object logic) throws RestException {
-        return findDynamicByEntityUniqueAndNotId(providerContext, null, entity, id, logic);
     }
 
     /**

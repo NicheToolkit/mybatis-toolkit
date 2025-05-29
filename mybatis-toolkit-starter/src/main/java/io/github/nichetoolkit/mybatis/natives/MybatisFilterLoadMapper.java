@@ -28,9 +28,9 @@ import java.util.List;
 public interface MybatisFilterLoadMapper<E extends RestId<I>, I> extends MybatisMapper<E>, FilterLoadMapper<E, I> {
 
     @Override
-    @Lang(MybatisSqlSourceCaching.class)
-    @SelectProvider(MybatisSqlProviderResolver.class)
-    List<E> findAllByLoadWhere(@Param("whereSql") String whereSql, @Param("loadParams") RestLoad... loadParams);
+    default List<E> findAllByLoadWhere(@Param("whereSql") String whereSql, @Param("loadParams") RestLoad... loadParams) {
+        return findDynamicAllByLoadWhere(null, whereSql, loadParams);
+    }
 
     @Override
     @Lang(MybatisSqlSourceCaching.class)

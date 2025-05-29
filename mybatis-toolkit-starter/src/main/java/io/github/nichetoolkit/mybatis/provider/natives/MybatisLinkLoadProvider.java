@@ -36,25 +36,6 @@ public class MybatisLinkLoadProvider implements MybatisSqlProvider {
     }
 
     /**
-     * <code>findByLinkIdLoad</code>
-     * <p>The find by link id load method.</p>
-     * @param <L>             {@link java.lang.Object} <p>The parameter can be of any type.</p>
-     * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>The provider context parameter is <code>ProviderContext</code> type.</p>
-     * @param linkId          L <p>The link id parameter is <code>L</code> type.</p>
-     * @param linkName        {@link java.lang.String} <p>The link name parameter is <code>String</code> type.</p>
-     * @param loadParams      {@link io.github.nichetoolkit.mybatis.load.RestLoad} <p>The load params parameter is <code>RestLoad</code> type.</p>
-     * @return {@link java.lang.String} <p>The find by link id load return object is <code>String</code> type.</p>
-     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
-     * @see org.apache.ibatis.builder.annotation.ProviderContext
-     * @see java.lang.String
-     * @see io.github.nichetoolkit.mybatis.load.RestLoad
-     * @see io.github.nichetoolkit.rest.RestException
-     */
-    public static <L> String findByLinkIdLoad(ProviderContext providerContext, L linkId, String linkName, RestLoad[] loadParams) throws RestException {
-        return findDynamicByLinkIdLoad(providerContext, null, linkId, linkName, loadParams);
-    }
-
-    /**
      * <code>findDynamicByLinkIdLoad</code>
      * <p>The find dynamic by link id load method.</p>
      * @param <L>             {@link java.lang.Object} <p>The parameter can be of any type.</p>
@@ -76,26 +57,6 @@ public class MybatisLinkLoadProvider implements MybatisSqlProvider {
         ConsumerActuator<MybatisTable> tableOptional = table -> OptionalUtils.ofEmpty(table.selectColumns(), selectColumns, log,
                 message -> new MybatisTableErrorException("findByLinkIdLoad", "selectColumns", message));
         return MybatisSqlProvider.providingOfLinkId(providerContext, tablename, linkId, linkName, tableOptional, loadParams, ENTRY_SQL_SUPPLY);
-    }
-
-    /**
-     * <code>findAllByLinkIdsLoad</code>
-     * <p>The find all by link ids load method.</p>
-     * @param <L>             {@link java.lang.Object} <p>The parameter can be of any type.</p>
-     * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>The provider context parameter is <code>ProviderContext</code> type.</p>
-     * @param linkIdList      {@link java.util.Collection} <p>The link id list parameter is <code>Collection</code> type.</p>
-     * @param linkName        {@link java.lang.String} <p>The link name parameter is <code>String</code> type.</p>
-     * @param loadParams      {@link io.github.nichetoolkit.mybatis.load.RestLoad} <p>The load params parameter is <code>RestLoad</code> type.</p>
-     * @return {@link java.lang.String} <p>The find all by link ids load return object is <code>String</code> type.</p>
-     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
-     * @see org.apache.ibatis.builder.annotation.ProviderContext
-     * @see java.util.Collection
-     * @see java.lang.String
-     * @see io.github.nichetoolkit.mybatis.load.RestLoad
-     * @see io.github.nichetoolkit.rest.RestException
-     */
-    public static <L> String findAllByLinkIdsLoad(ProviderContext providerContext, Collection<L> linkIdList, String linkName, RestLoad[] loadParams) throws RestException {
-        return findDynamicAllByLinkIdsLoad(providerContext, null, linkIdList, linkName, loadParams);
     }
 
     /**

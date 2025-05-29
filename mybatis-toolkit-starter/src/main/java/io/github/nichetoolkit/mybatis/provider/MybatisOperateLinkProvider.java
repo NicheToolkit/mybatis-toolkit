@@ -35,25 +35,6 @@ public class MybatisOperateLinkProvider implements MybatisSqlProvider {
     }
 
     /**
-     * <code>operateByLinkId</code>
-     * <p>The operate by link id method.</p>
-     * @param <L>             {@link java.lang.Object} <p>The parameter can be of any type.</p>
-     * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>The provider context parameter is <code>ProviderContext</code> type.</p>
-     * @param linkId          L <p>The link id parameter is <code>L</code> type.</p>
-     * @param linkName        {@link java.lang.String} <p>The link name parameter is <code>String</code> type.</p>
-     * @param operate         {@link java.lang.Integer} <p>The operate parameter is <code>Integer</code> type.</p>
-     * @return {@link java.lang.String} <p>The operate by link id return object is <code>String</code> type.</p>
-     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
-     * @see org.apache.ibatis.builder.annotation.ProviderContext
-     * @see java.lang.String
-     * @see java.lang.Integer
-     * @see io.github.nichetoolkit.rest.RestException
-     */
-    public static <L> String operateByLinkId(ProviderContext providerContext, L linkId, String linkName, Integer operate) throws RestException {
-        return operateDynamicByLinkId(providerContext, null, linkId, linkName, operate);
-    }
-
-    /**
      * <code>operateDynamicByLinkId</code>
      * <p>The operate dynamic by link id method.</p>
      * @param <L>             {@link java.lang.Object} <p>The parameter can be of any type.</p>
@@ -76,26 +57,6 @@ public class MybatisOperateLinkProvider implements MybatisSqlProvider {
         ConsumerActuator<MybatisTable> tableOptional = table ->
                 OptionalUtils.ofEmpty(table.getLogicColumn(), operateColumn, log, message -> new MybatisTableErrorException("operateByLinkId", "operateColumn", message));
         return MybatisSqlProvider.providingOfLinkId(providerContext, tablename, linkId, linkName, tableOptional, OPERATE_SQL_SUPPLY);
-    }
-
-    /**
-     * <code>operateAllByLinkIds</code>
-     * <p>The operate all by link ids method.</p>
-     * @param <L>             {@link java.lang.Object} <p>The parameter can be of any type.</p>
-     * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>The provider context parameter is <code>ProviderContext</code> type.</p>
-     * @param linkIdList      {@link java.util.Collection} <p>The link id list parameter is <code>Collection</code> type.</p>
-     * @param linkName        {@link java.lang.String} <p>The link name parameter is <code>String</code> type.</p>
-     * @param operate         {@link java.lang.Integer} <p>The operate parameter is <code>Integer</code> type.</p>
-     * @return {@link java.lang.String} <p>The operate all by link ids return object is <code>String</code> type.</p>
-     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
-     * @see org.apache.ibatis.builder.annotation.ProviderContext
-     * @see java.util.Collection
-     * @see java.lang.String
-     * @see java.lang.Integer
-     * @see io.github.nichetoolkit.rest.RestException
-     */
-    public static <L> String operateAllByLinkIds(ProviderContext providerContext, Collection<L> linkIdList, String linkName, Integer operate) throws RestException {
-        return operateDynamicAllByLinkIds(providerContext, null, linkIdList, linkName, operate);
     }
 
     /**

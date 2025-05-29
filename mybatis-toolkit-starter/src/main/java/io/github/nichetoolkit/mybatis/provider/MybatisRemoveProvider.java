@@ -35,24 +35,6 @@ public class MybatisRemoveProvider implements MybatisSqlProvider {
     }
 
     /**
-     * <code>removeById</code>
-     * <p>The remove by id method.</p>
-     * @param <I>  {@link java.lang.Object} <p>The parameter can be of any type.</p>
-     * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>The provider context parameter is <code>ProviderContext</code> type.</p>
-     * @param id I <p>The id parameter is <code>I</code> type.</p>
-     * @param logic {@link java.lang.Object} <p>The logic parameter is <code>Object</code> type.</p>
-     * @see  org.apache.ibatis.builder.annotation.ProviderContext
-     * @see  java.lang.Object
-     * @see  java.lang.String
-     * @see  io.github.nichetoolkit.rest.RestException
-     * @return  {@link java.lang.String} <p>The remove by id return object is <code>String</code> type.</p>
-     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
-     */
-    public static <I> String removeById(ProviderContext providerContext, I id, Object logic) throws RestException {
-        return removeDynamicById(providerContext, null, id, logic);
-    }
-
-    /**
      * <code>removeDynamicById</code>
      * <p>The remove dynamic by id method.</p>
      * @param <I>  {@link java.lang.Object} <p>The parameter can be of any type.</p>
@@ -74,25 +56,6 @@ public class MybatisRemoveProvider implements MybatisSqlProvider {
         ConsumerActuator<MybatisTable> tableOptional = table ->
                 OptionalUtils.ofEmpty(table.getLogicColumn(), logicColumn, log, message -> new MybatisTableErrorException("removeById", "logicColumn", message));
         return MybatisSqlProvider.providingOfId(providerContext, tablename, id, tableOptional, REMOVE_SQL_SUPPLY);
-    }
-
-    /**
-     * <code>removeAll</code>
-     * <p>The remove all method.</p>
-     * @param <I>  {@link java.lang.Object} <p>The parameter can be of any type.</p>
-     * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>The provider context parameter is <code>ProviderContext</code> type.</p>
-     * @param idList {@link java.util.Collection} <p>The id list parameter is <code>Collection</code> type.</p>
-     * @param logic {@link java.lang.Object} <p>The logic parameter is <code>Object</code> type.</p>
-     * @see  org.apache.ibatis.builder.annotation.ProviderContext
-     * @see  java.util.Collection
-     * @see  java.lang.Object
-     * @see  java.lang.String
-     * @see  io.github.nichetoolkit.rest.RestException
-     * @return  {@link java.lang.String} <p>The remove all return object is <code>String</code> type.</p>
-     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
-     */
-    public static <I> String removeAll(ProviderContext providerContext, Collection<I> idList,  Object logic) throws RestException {
-        return removeDynamicAll(providerContext, null, idList, logic);
     }
 
     /**
@@ -118,23 +81,6 @@ public class MybatisRemoveProvider implements MybatisSqlProvider {
         ConsumerActuator<MybatisTable> tableOptional = table ->
                 OptionalUtils.ofEmpty(table.getLogicColumn(), logicColumn, log, message -> new MybatisTableErrorException("removeAll", "logicColumn", message));
         return MybatisSqlProvider.providingOfAll(providerContext, tablename, idList, tableOptional, REMOVE_SQL_SUPPLY);
-    }
-
-    /**
-     * <code>removeAllByWhere</code>
-     * <p>The remove all by where method.</p>
-     * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>The provider context parameter is <code>ProviderContext</code> type.</p>
-     * @param whereSql {@link java.lang.String} <p>The where sql parameter is <code>String</code> type.</p>
-     * @param logic {@link java.lang.Object} <p>The logic parameter is <code>Object</code> type.</p>
-     * @see  org.apache.ibatis.builder.annotation.ProviderContext
-     * @see  java.lang.String
-     * @see  java.lang.Object
-     * @see  io.github.nichetoolkit.rest.RestException
-     * @return  {@link java.lang.String} <p>The remove all by where return object is <code>String</code> type.</p>
-     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
-     */
-    public static String removeAllByWhere(ProviderContext providerContext, String whereSql,Object logic) throws RestException {
-        return removeDynamicAllByWhere(providerContext, null, whereSql, logic);
     }
 
     /**

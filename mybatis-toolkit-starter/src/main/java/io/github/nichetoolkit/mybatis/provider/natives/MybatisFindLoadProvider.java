@@ -35,24 +35,6 @@ public class MybatisFindLoadProvider implements MybatisSqlProvider {
     }
 
     /**
-     * <code>findByIdLoad</code>
-     * <p>The find by id load method.</p>
-     * @param <I>             {@link java.lang.Object} <p>The parameter can be of any type.</p>
-     * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>The provider context parameter is <code>ProviderContext</code> type.</p>
-     * @param id              I <p>The id parameter is <code>I</code> type.</p>
-     * @param loadParams      {@link io.github.nichetoolkit.mybatis.load.RestLoad} <p>The load params parameter is <code>RestLoad</code> type.</p>
-     * @return {@link java.lang.String} <p>The find by id load return object is <code>String</code> type.</p>
-     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
-     * @see org.apache.ibatis.builder.annotation.ProviderContext
-     * @see io.github.nichetoolkit.mybatis.load.RestLoad
-     * @see java.lang.String
-     * @see io.github.nichetoolkit.rest.RestException
-     */
-    public static <I> String findByIdLoad(ProviderContext providerContext, I id, RestLoad[] loadParams) throws RestException {
-        return findDynamicByIdLoad(providerContext, null, id, loadParams);
-    }
-
-    /**
      * <code>findDynamicByIdLoad</code>
      * <p>The find dynamic by id load method.</p>
      * @param <I>             {@link java.lang.Object} <p>The parameter can be of any type.</p>
@@ -74,25 +56,6 @@ public class MybatisFindLoadProvider implements MybatisSqlProvider {
             OptionalUtils.ofEmpty(table.selectColumns(), selectColumns, log, message -> new MybatisTableErrorException("findByIdLoad", "selectColumns", message));
         };
         return MybatisSqlProvider.providingOfId(providerContext, tablename, id, tableOptional, loadParams, ENTRY_SQL_SUPPLY);
-    }
-
-    /**
-     * <code>findAllLoad</code>
-     * <p>The find all load method.</p>
-     * @param <I>             {@link java.lang.Object} <p>The parameter can be of any type.</p>
-     * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>The provider context parameter is <code>ProviderContext</code> type.</p>
-     * @param idList          {@link java.util.Collection} <p>The id list parameter is <code>Collection</code> type.</p>
-     * @param loadParams      {@link io.github.nichetoolkit.mybatis.load.RestLoad} <p>The load params parameter is <code>RestLoad</code> type.</p>
-     * @return {@link java.lang.String} <p>The find all load return object is <code>String</code> type.</p>
-     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
-     * @see org.apache.ibatis.builder.annotation.ProviderContext
-     * @see java.util.Collection
-     * @see io.github.nichetoolkit.mybatis.load.RestLoad
-     * @see java.lang.String
-     * @see io.github.nichetoolkit.rest.RestException
-     */
-    public static <I> String findAllLoad(ProviderContext providerContext, Collection<I> idList, RestLoad[] loadParams) throws RestException {
-        return findDynamicAllLoad(providerContext, null, idList, loadParams);
     }
 
     /**

@@ -11,14 +11,14 @@ import java.util.Collection;
 /**
  * <code>MybatisOperateLinkMapper</code>
  * <p>The mybatis operate link mapper interface.</p>
- * @param <E>  {@link io.github.nichetoolkit.rice.RestId} <p>The generic parameter is <code>RestId</code> type.</p>
- * @param <L>  {@link java.lang.Object} <p>The parameter can be of any type.</p>
- * @param <I>  {@link java.lang.Object} <p>The parameter can be of any type.</p>
- * @see  io.github.nichetoolkit.rice.RestId
- * @see  io.github.nichetoolkit.mybatis.MybatisMapper
- * @see  io.github.nichetoolkit.rice.mapper.OperateLinkMapper
- * @see  io.github.nichetoolkit.mybatis.MybatisOperateMapper
+ * @param <E> {@link io.github.nichetoolkit.rice.RestId} <p>The generic parameter is <code>RestId</code> type.</p>
+ * @param <L> {@link java.lang.Object} <p>The parameter can be of any type.</p>
+ * @param <I> {@link java.lang.Object} <p>The parameter can be of any type.</p>
  * @author Cyan (snow22314@outlook.com)
+ * @see io.github.nichetoolkit.rice.RestId
+ * @see io.github.nichetoolkit.mybatis.MybatisMapper
+ * @see io.github.nichetoolkit.mybatis.MybatisOperateMapper
+ * @see io.github.nichetoolkit.rice.mapper.OperateLinkMapper
  * @since Jdk1.8
  */
 public interface MybatisOperateLinkMapper<E extends RestId<I>, L, I> extends MybatisMapper<E>, MybatisOperateMapper<E, I>, OperateLinkMapper<L, I> {
@@ -44,9 +44,9 @@ public interface MybatisOperateLinkMapper<E extends RestId<I>, L, I> extends Myb
     }
 
     @Override
-    @Lang(MybatisSqlSourceCaching.class)
-    @UpdateProvider(MybatisSqlProviderResolver.class)
-    Integer operateByLinkId(@Param("linkId") L linkId, @Param("linkName") String linkName, @Param("operate") Integer operate);
+    default Integer operateByLinkId(@Param("linkId") L linkId, @Param("linkName") String linkName, @Param("operate") Integer operate) {
+        return operateDynamicByLinkId(null, linkId, linkName, operate);
+    }
 
     @Override
     @Lang(MybatisSqlSourceCaching.class)
@@ -54,9 +54,9 @@ public interface MybatisOperateLinkMapper<E extends RestId<I>, L, I> extends Myb
     Integer operateDynamicByLinkId(@Param("tablename") String tablename, @Param("linkId") L linkId, @Param("linkName") String linkName, @Param("operate") Integer operate);
 
     @Override
-    @Lang(MybatisSqlSourceCaching.class)
-    @UpdateProvider(MybatisSqlProviderResolver.class)
-    Integer operateAllByLinkIds(@Param("linkIdList") Collection<L> linkIdList, @Param("linkName") String linkName, @Param("operate") Integer operate);
+    default Integer operateAllByLinkIds(@Param("linkIdList") Collection<L> linkIdList, @Param("linkName") String linkName, @Param("operate") Integer operate) {
+        return operateDynamicAllByLinkIds(null, linkIdList, linkName, operate);
+    }
 
     @Override
     @Lang(MybatisSqlSourceCaching.class)

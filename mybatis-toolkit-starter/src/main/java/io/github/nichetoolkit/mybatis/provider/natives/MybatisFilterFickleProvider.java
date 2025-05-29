@@ -14,7 +14,6 @@ import org.apache.ibatis.builder.annotation.ProviderContext;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -32,23 +31,6 @@ public class MybatisFilterFickleProvider implements MybatisSqlProvider {
     @Override
     public List<DatabaseType> databaseTypes() {
         return Arrays.asList(DatabaseType.POSTGRESQL, DatabaseType.MYSQL, DatabaseType.GAUSSDB, DatabaseType.SQLITE);
-    }
-
-    /**
-     * <code>findAllByFickleWhere</code>
-     * <p>The find all by fickle where method.</p>
-     * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>The provider context parameter is <code>ProviderContext</code> type.</p>
-     * @param whereSql        {@link java.lang.String} <p>The where sql parameter is <code>String</code> type.</p>
-     * @param fickleParams    {@link io.github.nichetoolkit.mybatis.fickle.RestFickle} <p>The fickle params parameter is <code>RestFickle</code> type.</p>
-     * @return {@link java.lang.String} <p>The find all by fickle where return object is <code>String</code> type.</p>
-     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
-     * @see org.apache.ibatis.builder.annotation.ProviderContext
-     * @see java.lang.String
-     * @see io.github.nichetoolkit.mybatis.fickle.RestFickle
-     * @see io.github.nichetoolkit.rest.RestException
-     */
-    public static String findAllByFickleWhere(ProviderContext providerContext, String whereSql, RestFickle<?>[] fickleParams) throws RestException {
-        return findDynamicAllByFickleWhere(providerContext, null, whereSql, fickleParams);
     }
 
     /**

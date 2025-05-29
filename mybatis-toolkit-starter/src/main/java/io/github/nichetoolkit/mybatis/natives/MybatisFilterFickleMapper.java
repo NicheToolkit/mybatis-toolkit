@@ -26,9 +26,9 @@ import java.util.List;
 public interface MybatisFilterFickleMapper<E extends RestId<I>, I> extends MybatisMapper<E>, FilterFickleMapper<E, I> {
 
     @Override
-    @Lang(MybatisSqlSourceCaching.class)
-    @SelectProvider(MybatisSqlProviderResolver.class)
-    List<E> findAllByFickleWhere(@Param("whereSql") String whereSql, @Param("fickleParams") RestFickle<?>... fickleParams);
+    default List<E> findAllByFickleWhere(@Param("whereSql") String whereSql, @Param("fickleParams") RestFickle<?>... fickleParams) {
+        return findDynamicAllByFickleWhere(null, whereSql, fickleParams);
+    }
 
     @Override
     @Lang(MybatisSqlSourceCaching.class)

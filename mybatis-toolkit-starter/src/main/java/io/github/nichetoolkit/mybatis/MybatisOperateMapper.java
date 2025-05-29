@@ -11,20 +11,20 @@ import java.util.Collection;
 /**
  * <code>MybatisOperateMapper</code>
  * <p>The mybatis operate mapper interface.</p>
- * @param <E>  {@link io.github.nichetoolkit.rice.RestId} <p>The generic parameter is <code>RestId</code> type.</p>
- * @param <I>  {@link java.lang.Object} <p>The parameter can be of any type.</p>
- * @see  io.github.nichetoolkit.rice.RestId
- * @see  io.github.nichetoolkit.mybatis.MybatisMapper
- * @see  io.github.nichetoolkit.rice.mapper.OperateMapper
+ * @param <E> {@link io.github.nichetoolkit.rice.RestId} <p>The generic parameter is <code>RestId</code> type.</p>
+ * @param <I> {@link java.lang.Object} <p>The parameter can be of any type.</p>
  * @author Cyan (snow22314@outlook.com)
+ * @see io.github.nichetoolkit.rice.RestId
+ * @see io.github.nichetoolkit.mybatis.MybatisMapper
+ * @see io.github.nichetoolkit.rice.mapper.OperateMapper
  * @since Jdk1.8
  */
 public interface MybatisOperateMapper<E extends RestId<I>, I> extends MybatisMapper<E>, OperateMapper<I> {
 
     @Override
-    @Lang(MybatisSqlSourceCaching.class)
-    @UpdateProvider(MybatisSqlProviderResolver.class)
-    Integer operateById(@Param("id") I id, @Param("operate") Integer operate);
+    default Integer operateById(@Param("id") I id, @Param("operate") Integer operate) {
+        return operateDynamicById(null, id, operate);
+    }
 
     @Override
     @Lang(MybatisSqlSourceCaching.class)
@@ -32,9 +32,9 @@ public interface MybatisOperateMapper<E extends RestId<I>, I> extends MybatisMap
     Integer operateDynamicById(@Param("tablename") String tablename, @Param("id") I id, @Param("operate") Integer operate);
 
     @Override
-    @Lang(MybatisSqlSourceCaching.class)
-    @UpdateProvider(MybatisSqlProviderResolver.class)
-    Integer operateAll(@Param("idList") Collection<I> idList, @Param("operate") Integer operate);
+    default Integer operateAll(@Param("idList") Collection<I> idList, @Param("operate") Integer operate) {
+        return operateDynamicAll(null, idList, operate);
+    }
 
     @Override
     @Lang(MybatisSqlSourceCaching.class)
@@ -42,9 +42,9 @@ public interface MybatisOperateMapper<E extends RestId<I>, I> extends MybatisMap
     Integer operateDynamicAll(@Param("tablename") String tablename, @Param("idList") Collection<I> idList, @Param("operate") Integer operate);
 
     @Override
-    @Lang(MybatisSqlSourceCaching.class)
-    @UpdateProvider(MybatisSqlProviderResolver.class)
-    Integer operateAllByWhere(@Param("whereSql") String whereSql, @Param("operate") Integer operate);
+    default Integer operateAllByWhere(@Param("whereSql") String whereSql, @Param("operate") Integer operate) {
+        return operateDynamicAllByWhere(null, whereSql, operate);
+    }
 
     @Override
     @Lang(MybatisSqlSourceCaching.class)

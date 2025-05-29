@@ -32,24 +32,6 @@ public class MybatisAlertProvider implements MybatisSqlProvider {
     }
 
     /**
-     * <code>alertById</code>
-     * <p>The alert by id method.</p>
-     * @param <I>  {@link java.lang.Object} <p>The parameter can be of any type.</p>
-     * @param <S>  {@link java.lang.Object} <p>The parameter can be of any type.</p>
-     * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>The provider context parameter is <code>ProviderContext</code> type.</p>
-     * @param id I <p>The id parameter is <code>I</code> type.</p>
-     * @param status S <p>The status parameter is <code>S</code> type.</p>
-     * @see  org.apache.ibatis.builder.annotation.ProviderContext
-     * @see  java.lang.String
-     * @see  io.github.nichetoolkit.rest.RestException
-     * @return  {@link java.lang.String} <p>The alert by id return object is <code>String</code> type.</p>
-     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
-     */
-    public static <I, S> String alertById(ProviderContext providerContext, I id, S status) throws RestException {
-        return alertDynamicById(providerContext, null, id, status);
-    }
-
-    /**
      * <code>alertDynamicById</code>
      * <p>The alert dynamic by id method.</p>
      * @param <I>  {@link java.lang.Object} <p>The parameter can be of any type.</p>
@@ -68,25 +50,6 @@ public class MybatisAlertProvider implements MybatisSqlProvider {
         OptionalUtils.ofEmpty(id, "The id param of 'alertById' method cannot be empty!", message -> new MybatisParamErrorException("alertById", "id", message));
         OptionalUtils.ofEmpty(status, "The status param of 'alertById' method cannot be empty!", message -> new MybatisParamErrorException("alertById", "status", message));
         return MybatisSqlProvider.providingOfId(providerContext, tablename, id, status, ALERT_SQL_SUPPLY);
-    }
-
-    /**
-     * <code>alertAll</code>
-     * <p>The alert all method.</p>
-     * @param <I>  {@link java.lang.Object} <p>The parameter can be of any type.</p>
-     * @param <S>  {@link java.lang.Object} <p>The parameter can be of any type.</p>
-     * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>The provider context parameter is <code>ProviderContext</code> type.</p>
-     * @param idList {@link java.util.Collection} <p>The id list parameter is <code>Collection</code> type.</p>
-     * @param status S <p>The status parameter is <code>S</code> type.</p>
-     * @see  org.apache.ibatis.builder.annotation.ProviderContext
-     * @see  java.util.Collection
-     * @see  java.lang.String
-     * @see  io.github.nichetoolkit.rest.RestException
-     * @return  {@link java.lang.String} <p>The alert all return object is <code>String</code> type.</p>
-     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
-     */
-    public static <I, S> String alertAll(ProviderContext providerContext, Collection<I> idList, S status) throws RestException {
-        return alertDynamicAll(providerContext, null, idList, status);
     }
 
     /**

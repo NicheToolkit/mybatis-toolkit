@@ -35,25 +35,6 @@ public class MybatisRemoveLinkProvider implements MybatisSqlProvider {
     }
 
     /**
-     * <code>removeByLinkId</code>
-     * <p>The remove by link id method.</p>
-     * @param <L>             {@link java.lang.Object} <p>The parameter can be of any type.</p>
-     * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>The provider context parameter is <code>ProviderContext</code> type.</p>
-     * @param linkId          L <p>The link id parameter is <code>L</code> type.</p>
-     * @param linkName        {@link java.lang.String} <p>The link name parameter is <code>String</code> type.</p>
-     * @param logic           {@link java.lang.Object} <p>The logic parameter is <code>Object</code> type.</p>
-     * @return {@link java.lang.String} <p>The remove by link id return object is <code>String</code> type.</p>
-     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
-     * @see org.apache.ibatis.builder.annotation.ProviderContext
-     * @see java.lang.String
-     * @see java.lang.Object
-     * @see io.github.nichetoolkit.rest.RestException
-     */
-    public static <L> String removeByLinkId(ProviderContext providerContext, L linkId, String linkName, Object logic) throws RestException {
-        return removeDynamicByLinkId(providerContext, null, linkId, linkName, logic);
-    }
-
-    /**
      * <code>removeDynamicByLinkId</code>
      * <p>The remove dynamic by link id method.</p>
      * @param <L>             {@link java.lang.Object} <p>The parameter can be of any type.</p>
@@ -75,26 +56,6 @@ public class MybatisRemoveLinkProvider implements MybatisSqlProvider {
         String logicColumn = "The logic column of table with 'removeByLinkId' method cannot be empty!";
         ConsumerActuator<MybatisTable> tableOptional = table -> OptionalUtils.ofEmpty(table.getLogicColumn(), logicColumn, log, message -> new MybatisTableErrorException("removeByLinkId", "logicColumn", message));
         return MybatisSqlProvider.providingOfLinkId(providerContext, tablename, linkId, linkName, tableOptional, REMOVE_SQL_SUPPLY);
-    }
-
-    /**
-     * <code>removeAllByLinkIds</code>
-     * <p>The remove all by link ids method.</p>
-     * @param <L>             {@link java.lang.Object} <p>The parameter can be of any type.</p>
-     * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>The provider context parameter is <code>ProviderContext</code> type.</p>
-     * @param linkIdList      {@link java.util.Collection} <p>The link id list parameter is <code>Collection</code> type.</p>
-     * @param linkName        {@link java.lang.String} <p>The link name parameter is <code>String</code> type.</p>
-     * @param logic           {@link java.lang.Object} <p>The logic parameter is <code>Object</code> type.</p>
-     * @return {@link java.lang.String} <p>The remove all by link ids return object is <code>String</code> type.</p>
-     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
-     * @see org.apache.ibatis.builder.annotation.ProviderContext
-     * @see java.util.Collection
-     * @see java.lang.String
-     * @see java.lang.Object
-     * @see io.github.nichetoolkit.rest.RestException
-     */
-    public static <L> String removeAllByLinkIds(ProviderContext providerContext, Collection<L> linkIdList, String linkName, Object logic) throws RestException {
-        return removeDynamicAllByLinkIds(providerContext, null, linkIdList, linkName, logic);
     }
 
     /**
