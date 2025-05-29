@@ -4,10 +4,6 @@ import com.fasterxml.jackson.databind.type.ArrayType;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import io.github.nichetoolkit.mybatis.fickle.RestFickle;
 import io.github.nichetoolkit.rest.util.JsonUtils;
-import org.apache.ibatis.type.BaseTypeHandler;
-import org.apache.ibatis.type.JdbcType;
-
-import java.sql.*;
 
 /**
  * <code>FickleArrayTypeHandler</code>

@@ -3,7 +3,6 @@ package io.github.nichetoolkit.mybatis.defaults.handler;
 import io.github.nichetoolkit.mybatis.MybatisColumn;
 import io.github.nichetoolkit.mybatis.MybatisTable;
 import io.github.nichetoolkit.mybatis.handler.AutoResultMapHandler;
-import io.github.nichetoolkit.mybatis.handler.FickleArrayTypeHandler;
 import io.github.nichetoolkit.rest.error.lack.ConfigureLackError;
 import io.github.nichetoolkit.rest.util.GeneralUtils;
 import org.apache.ibatis.mapping.ResultFlag;

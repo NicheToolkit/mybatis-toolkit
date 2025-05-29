@@ -3,10 +3,7 @@ package io.github.nichetoolkit.mybatis.handler;
 import io.github.nichetoolkit.mybatis.MybatisTable;
 import io.github.nichetoolkit.rest.util.GeneralUtils;
 
-import java.lang.reflect.Array;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Arrays;
 import java.util.List;
 
 /**

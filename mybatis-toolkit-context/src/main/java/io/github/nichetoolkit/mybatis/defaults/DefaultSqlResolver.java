@@ -16,39 +16,39 @@ import java.util.stream.Stream;
 /**
  * <code>DefaultSqlResolver</code>
  * <p>The default sql resolver class.</p>
- * @see  io.github.nichetoolkit.mybatis.MybatisSqlScriptResolver
  * @author Cyan (snow22314@outlook.com)
+ * @see io.github.nichetoolkit.mybatis.MybatisSqlScriptResolver
  * @since Jdk1.8
  */
 public abstract class DefaultSqlResolver implements MybatisSqlScriptResolver {
     /**
      * <code>type</code>
      * {@link java.lang.annotation.ElementType} <p>The <code>type</code> field.</p>
-     * @see  java.lang.annotation.ElementType
+     * @see java.lang.annotation.ElementType
      */
     protected final ElementType type;
     /**
      * <code>target</code>
      * {@link java.lang.Object} <p>The <code>target</code> field.</p>
-     * @see  java.lang.Object
+     * @see java.lang.Object
      */
     protected final Object target;
     /**
      * <code>annotations</code>
      * {@link java.lang.annotation.Annotation} <p>The <code>annotations</code> field.</p>
-     * @see  java.lang.annotation.Annotation
+     * @see java.lang.annotation.Annotation
      */
     protected final Annotation[] annotations;
 
     /**
      * <code>DefaultSqlResolver</code>
      * <p>Instantiates a new default sql resolver.</p>
-     * @param target {@link java.lang.Object} <p>The target parameter is <code>Object</code> type.</p>
-     * @param type {@link java.lang.annotation.ElementType} <p>The type parameter is <code>ElementType</code> type.</p>
+     * @param target      {@link java.lang.Object} <p>The target parameter is <code>Object</code> type.</p>
+     * @param type        {@link java.lang.annotation.ElementType} <p>The type parameter is <code>ElementType</code> type.</p>
      * @param annotations {@link java.lang.annotation.Annotation} <p>The annotations parameter is <code>Annotation</code> type.</p>
-     * @see  java.lang.Object
-     * @see  java.lang.annotation.ElementType
-     * @see  java.lang.annotation.Annotation
+     * @see java.lang.Object
+     * @see java.lang.annotation.ElementType
+     * @see java.lang.annotation.Annotation
      */
     public DefaultSqlResolver(Object target, ElementType type, Annotation[] annotations) {
         this.type = type;
@@ -59,8 +59,8 @@ public abstract class DefaultSqlResolver implements MybatisSqlScriptResolver {
     /**
      * <code>elementType</code>
      * <p>The element type method.</p>
-     * @return  {@link java.lang.annotation.ElementType} <p>The element type return object is <code>ElementType</code> type.</p>
-     * @see  java.lang.annotation.ElementType
+     * @return {@link java.lang.annotation.ElementType} <p>The element type return object is <code>ElementType</code> type.</p>
+     * @see java.lang.annotation.ElementType
      */
     public ElementType elementType() {
         return type;
@@ -69,8 +69,8 @@ public abstract class DefaultSqlResolver implements MybatisSqlScriptResolver {
     /**
      * <code>target</code>
      * <p>The target method.</p>
-     * @return  {@link java.lang.Object} <p>The target return object is <code>Object</code> type.</p>
-     * @see  java.lang.Object
+     * @return {@link java.lang.Object} <p>The target return object is <code>Object</code> type.</p>
+     * @see java.lang.Object
      */
     public Object target() {
         return target;
@@ -79,8 +79,8 @@ public abstract class DefaultSqlResolver implements MybatisSqlScriptResolver {
     /**
      * <code>annotations</code>
      * <p>The annotations method.</p>
-     * @return  {@link java.lang.annotation.Annotation} <p>The annotations return object is <code>Annotation</code> type.</p>
-     * @see  java.lang.annotation.Annotation
+     * @return {@link java.lang.annotation.Annotation} <p>The annotations return object is <code>Annotation</code> type.</p>
+     * @see java.lang.annotation.Annotation
      */
     public Annotation[] annotations() {
         return annotations;
@@ -90,9 +90,9 @@ public abstract class DefaultSqlResolver implements MybatisSqlScriptResolver {
      * <code>getParameterName</code>
      * <p>The get parameter name getter method.</p>
      * @param parameter {@link java.lang.reflect.Parameter} <p>The parameter parameter is <code>Parameter</code> type.</p>
-     * @see  java.lang.reflect.Parameter
-     * @see  java.lang.String
-     * @return  {@link java.lang.String} <p>The get parameter name return object is <code>String</code> type.</p>
+     * @return {@link java.lang.String} <p>The get parameter name return object is <code>String</code> type.</p>
+     * @see java.lang.reflect.Parameter
+     * @see java.lang.String
      */
     public String getParameterName(Parameter parameter) {
         /* 优先使用 @Param 注解指定的值 */

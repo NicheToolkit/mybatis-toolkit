@@ -74,6 +74,18 @@ public class LoadAutoResultMapHandler implements AutoResultMapHandler {
         }
     }
 
+    /**
+     * <code>destineColumnOfLoadKey</code>
+     * <p>The destine column of load key method.</p>
+     * @param keys           {@link java.util.Set} <p>The keys parameter is <code>Set</code> type.</p>
+     * @param type           {@link java.lang.Class} <p>The type parameter is <code>Class</code> type.</p>
+     * @param loadKeyColumns {@link java.util.List} <p>The load key columns parameter is <code>List</code> type.</p>
+     * @return {@link io.github.nichetoolkit.mybatis.MybatisColumn} <p>The destine column of load key return object is <code>MybatisColumn</code> type.</p>
+     * @see java.util.Set
+     * @see java.lang.Class
+     * @see java.util.List
+     * @see io.github.nichetoolkit.mybatis.MybatisColumn
+     */
     private MybatisColumn destineColumnOfLoadKey(Set<String> keys, Class<?> type, List<MybatisColumn> loadKeyColumns) {
         for (MybatisColumn mybatisColumn : loadKeyColumns) {
             List<Class<?>> loadTypes = mybatisColumn.getLoadTypes();

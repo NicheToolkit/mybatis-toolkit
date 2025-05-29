@@ -14,7 +14,6 @@ import org.apache.ibatis.builder.annotation.ProviderContext;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 
 /**

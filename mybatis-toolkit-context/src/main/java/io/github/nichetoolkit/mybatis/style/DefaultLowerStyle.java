@@ -12,8 +12,8 @@ import java.lang.reflect.Field;
 /**
  * <code>DefaultLowerStyle</code>
  * <p>The default lower style class.</p>
- * @see  io.github.nichetoolkit.mybatis.MybatisTableStyle
  * @author Cyan (snow22314@outlook.com)
+ * @see io.github.nichetoolkit.mybatis.MybatisTableStyle
  * @since Jdk1.8
  */
 public class DefaultLowerStyle implements MybatisTableStyle {

@@ -9,10 +9,28 @@ import org.springframework.lang.NonNull;
 
 import java.util.*;
 
+/**
+ * <code>SimpleFilter</code>
+ * <p>The simple filter class.</p>
+ * @author Cyan (snow22314@outlook.com)
+ * @see io.github.nichetoolkit.rice.RestFilter
+ * @see io.github.nichetoolkit.rice.filter.StatusFilter
+ * @since Jdk1.8
+ */
 public class SimpleFilter extends RestFilter implements StatusFilter<SimpleStatus> {
 
+    /**
+     * <code>status</code>
+     * {@link io.github.nichetoolkit.mybatis.test.simple.SimpleStatus} <p>The <code>status</code> field.</p>
+     * @see io.github.nichetoolkit.mybatis.test.simple.SimpleStatus
+     */
     private SimpleStatus status;
 
+    /**
+     * <code>statuses</code>
+     * {@link java.util.Set} <p>The <code>statuses</code> field.</p>
+     * @see java.util.Set
+     */
     private Set<SimpleStatus> statuses;
 
     @Override

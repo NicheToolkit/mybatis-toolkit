@@ -11,8 +11,8 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * <code>DefaultCachingTableFactory</code>
  * <p>The default caching table factory class.</p>
- * @see  io.github.nichetoolkit.mybatis.MybatisTableFactory
  * @author Cyan (snow22314@outlook.com)
+ * @see io.github.nichetoolkit.mybatis.MybatisTableFactory
  * @since Jdk1.8
  */
 public class DefaultCachingTableFactory implements MybatisTableFactory {
@@ -20,7 +20,7 @@ public class DefaultCachingTableFactory implements MybatisTableFactory {
     /**
      * <code>classTables</code>
      * {@link java.util.Map} <p>The <code>classTables</code> field.</p>
-     * @see  java.util.Map
+     * @see java.util.Map
      */
     private final Map<Class<?>, MybatisTable> classTables;
 

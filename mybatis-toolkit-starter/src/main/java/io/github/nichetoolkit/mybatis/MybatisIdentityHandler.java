@@ -10,8 +10,8 @@ import java.util.Collection;
 /**
  * <code>MybatisIdentityHandler</code>
  * <p>The mybatis identity handler class.</p>
- * @see  io.github.nichetoolkit.rice.DefaultIdentityHandler
  * @author Cyan (snow22314@outlook.com)
+ * @see io.github.nichetoolkit.rice.DefaultIdentityHandler
  * @since Jdk1.8
  */
 public class MybatisIdentityHandler extends DefaultIdentityHandler<Serializable> {

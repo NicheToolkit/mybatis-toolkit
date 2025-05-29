@@ -10,15 +10,15 @@ import java.util.List;
 /**
  * <code>DefaultTableFactoryChain</code>
  * <p>The default table factory chain class.</p>
- * @see  io.github.nichetoolkit.mybatis.MybatisTableFactory.Chain
  * @author Cyan (snow22314@outlook.com)
+ * @see io.github.nichetoolkit.mybatis.MybatisTableFactory.Chain
  * @since Jdk1.8
  */
 public class DefaultTableFactoryChain implements MybatisTableFactory.Chain {
     /**
      * <code>factories</code>
      * {@link java.util.List} <p>The <code>factories</code> field.</p>
-     * @see  java.util.List
+     * @see java.util.List
      */
     private final List<MybatisTableFactory> factories;
     /**
@@ -36,7 +36,7 @@ public class DefaultTableFactoryChain implements MybatisTableFactory.Chain {
      * <code>DefaultTableFactoryChain</code>
      * <p>Instantiates a new default table factory chain.</p>
      * @param factories {@link java.util.List} <p>The factories parameter is <code>List</code> type.</p>
-     * @see  java.util.List
+     * @see java.util.List
      */
     public DefaultTableFactoryChain(List<MybatisTableFactory> factories) {
         this(factories, 0);
@@ -46,8 +46,8 @@ public class DefaultTableFactoryChain implements MybatisTableFactory.Chain {
      * <code>DefaultTableFactoryChain</code>
      * <p>Instantiates a new default table factory chain.</p>
      * @param factories {@link java.util.List} <p>The factories parameter is <code>List</code> type.</p>
-     * @param index int <p>The index parameter is <code>int</code> type.</p>
-     * @see  java.util.List
+     * @param index     int <p>The index parameter is <code>int</code> type.</p>
+     * @see java.util.List
      */
     private DefaultTableFactoryChain(List<MybatisTableFactory> factories, int index) {
         this.factories = factories;

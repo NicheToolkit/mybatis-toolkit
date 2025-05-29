@@ -51,9 +51,7 @@ public class MybatisFilterLoadProvider implements MybatisSqlProvider {
     public static <I> String findDynamicAllByLoadWhere(ProviderContext providerContext, String tablename, String whereSql, RestLoad[] loadParams) throws RestException {
         OptionalUtils.ofEmpty(whereSql, "The where sql param of 'findAllByLoadWhere' method cannot be empty!", log, message -> new MybatisParamErrorException("findAllByLoadWhere", "whereSql", message));
         String selectColumns = "The select columns of table with 'findAllByLoadWhere' method cannot be empty!";
-        ConsumerActuator<MybatisTable> tableOptional = table -> {
-            OptionalUtils.ofEmpty(table.selectColumns(), selectColumns, log, message -> new MybatisTableErrorException("findAllByLoadWhere", "selectColumns", message));
-        };
+        ConsumerActuator<MybatisTable> tableOptional = table -> OptionalUtils.ofEmpty(table.selectColumns(), selectColumns, log, message -> new MybatisTableErrorException("findAllByLoadWhere", "selectColumns", message));
         return MybatisSqlProvider.providingOfWhere(providerContext, tablename, whereSql, tableOptional, loadParams, ENTRY_SQL_SUPPLY);
     }
 

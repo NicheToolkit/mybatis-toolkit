@@ -8,11 +8,11 @@ import org.springframework.stereotype.Component;
 /**
  * <code>MybatisCacheProperties</code>
  * <p>The mybatis cache properties class.</p>
- * @see  lombok.Getter
- * @see  lombok.Setter
- * @see  org.springframework.stereotype.Component
- * @see  org.springframework.boot.context.properties.ConfigurationProperties
  * @author Cyan (snow22314@outlook.com)
+ * @see lombok.Getter
+ * @see lombok.Setter
+ * @see org.springframework.stereotype.Component
+ * @see org.springframework.boot.context.properties.ConfigurationProperties
  * @since Jdk1.8
  */
 @Getter
@@ -23,7 +23,7 @@ public class MybatisCacheProperties {
     /**
      * <code>initSize</code>
      * {@link java.lang.Integer} <p>The <code>initSize</code> field.</p>
-     * @see  java.lang.Integer
+     * @see java.lang.Integer
      */
     private Integer initSize = 1024;
     /**

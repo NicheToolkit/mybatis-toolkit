@@ -10,7 +10,6 @@ import java.util.concurrent.ConcurrentHashMap;
  * <p>The mybatis mapper interface.</p>
  * @param <E> {@link java.lang.Object} <p>The parameter can be of any type.</p>
  * @author Cyan (snow22314@outlook.com)
- * @see org.springframework.beans.factory.InitializingBean
  * @since Jdk1.8
  */
 public interface MybatisMapper<E> {

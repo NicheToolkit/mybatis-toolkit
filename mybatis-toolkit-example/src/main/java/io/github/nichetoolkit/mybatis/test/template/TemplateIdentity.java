@@ -11,11 +11,11 @@ import java.util.Objects;
 /**
  * <code>TemplateIdentity</code>
  * <p>The template identity class.</p>
- * @see  java.io.Serializable
- * @see  lombok.Setter
- * @see  lombok.Getter
- * @see  RestIdentity
  * @author Cyan (snow22314@outlook.com)
+ * @see java.io.Serializable
+ * @see lombok.Setter
+ * @see lombok.Getter
+ * @see io.github.nichetoolkit.mybatis.table.RestIdentity
  * @since Jdk1.8
  */
 @Setter
@@ -25,16 +25,16 @@ public class TemplateIdentity implements Serializable {
     /**
      * <code>templatePk1</code>
      * {@link java.lang.String} <p>The <code>templatePk1</code> field.</p>
-     * @see  java.lang.String
-     * @see  RestUnionKey
+     * @see java.lang.String
+     * @see io.github.nichetoolkit.mybatis.column.RestUnionKey
      */
     @RestUnionKey
     private String templatePk1;
     /**
      * <code>templatePk2</code>
      * {@link java.lang.String} <p>The <code>templatePk2</code> field.</p>
-     * @see  java.lang.String
-     * @see  RestUnionKey
+     * @see java.lang.String
+     * @see io.github.nichetoolkit.mybatis.column.RestUnionKey
      */
     @RestUnionKey
     private String templatePk2;
@@ -51,7 +51,7 @@ public class TemplateIdentity implements Serializable {
      * <p>Instantiates a new template identity.</p>
      * @param templatePk1 {@link java.lang.String} <p>The template pk 1 parameter is <code>String</code> type.</p>
      * @param templatePk2 {@link java.lang.String} <p>The template pk 2 parameter is <code>String</code> type.</p>
-     * @see  java.lang.String
+     * @see java.lang.String
      */
     public TemplateIdentity(String templatePk1, String templatePk2) {
         this.templatePk1 = templatePk1;

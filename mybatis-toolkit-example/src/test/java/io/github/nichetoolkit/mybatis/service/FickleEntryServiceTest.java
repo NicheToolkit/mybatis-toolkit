@@ -21,19 +21,61 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * <code>FickleEntryServiceTest</code>
+ * <p>The fickle entry service test class.</p>
+ * @author Cyan (snow22314@outlook.com)
+ * @see io.github.nichetoolkit.mybatis.MybatisExampleApplicationTests
+ * @see org.junit.jupiter.api.TestMethodOrder
+ * @since Jdk1.8
+ */
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class FickleEntryServiceTest extends MybatisExampleApplicationTests {
 
+    /**
+     * <code>fickleEntryService</code>
+     * {@link io.github.nichetoolkit.mybatis.service.FickleEntryService} <p>The <code>fickleEntryService</code> field.</p>
+     * @see org.springframework.beans.factory.annotation.Autowired
+     */
     @Autowired
     private FickleEntryService fickleEntryService;
 
+    /**
+     * <code>fickleEntryMapper</code>
+     * {@link io.github.nichetoolkit.mybatis.mapper.FickleEntryMapper} <p>The <code>fickleEntryMapper</code> field.</p>
+     * @see io.github.nichetoolkit.mybatis.mapper.FickleEntryMapper
+     * @see org.springframework.beans.factory.annotation.Autowired
+     */
     @Autowired
     private FickleEntryMapper fickleEntryMapper;
 
+    /**
+     * <code>testId</code>
+     * {@link java.lang.String} <p>The <code>testId</code> field.</p>
+     * @see java.lang.String
+     */
     private final String testId = "1656549566276964350";
+    /**
+     * <code>testId1</code>
+     * {@link java.lang.String} <p>The <code>testId1</code> field.</p>
+     * @see java.lang.String
+     */
     private final String testId1 = "1656549566276964351";
+    /**
+     * <code>testId2</code>
+     * {@link java.lang.String} <p>The <code>testId2</code> field.</p>
+     * @see java.lang.String
+     */
     private final String testId2 = "1656549566276964352";
 
+    /**
+     * <code>save</code>
+     * <p>The save method.</p>
+     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
+     * @see org.junit.jupiter.api.Order
+     * @see org.junit.jupiter.api.Test
+     * @see io.github.nichetoolkit.rest.RestException
+     */
     @Order(1)
     @Test
     public void save() throws RestException {
@@ -55,6 +97,14 @@ class FickleEntryServiceTest extends MybatisExampleApplicationTests {
         System.out.println(JsonUtils.parseJson(save));
     }
 
+    /**
+     * <code>saveAll</code>
+     * <p>The save all method.</p>
+     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
+     * @see org.junit.jupiter.api.Order
+     * @see org.junit.jupiter.api.Test
+     * @see io.github.nichetoolkit.rest.RestException
+     */
     @Order(2)
     @Test
     public void saveAll() throws RestException {
@@ -88,6 +138,14 @@ class FickleEntryServiceTest extends MybatisExampleApplicationTests {
         System.out.println(JsonUtils.parseJson(fickleEntryModels));
     }
 
+    /**
+     * <code>queryById</code>
+     * <p>The query by id method.</p>
+     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
+     * @see org.junit.jupiter.api.Order
+     * @see org.junit.jupiter.api.Test
+     * @see io.github.nichetoolkit.rest.RestException
+     */
     @Order(3)
     @Test
     public void queryById() throws RestException {
@@ -95,6 +153,14 @@ class FickleEntryServiceTest extends MybatisExampleApplicationTests {
         System.out.println(JsonUtils.parseJson(fickleEntryModel));
     }
 
+    /**
+     * <code>queryAll</code>
+     * <p>The query all method.</p>
+     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
+     * @see org.junit.jupiter.api.Order
+     * @see org.junit.jupiter.api.Test
+     * @see io.github.nichetoolkit.rest.RestException
+     */
     @Order(4)
     @Test
     public void queryAll() throws RestException {
@@ -102,6 +168,14 @@ class FickleEntryServiceTest extends MybatisExampleApplicationTests {
         System.out.println(JsonUtils.parseJson(fickleEntryModels));
     }
 
+    /**
+     * <code>queryAllWithFilter</code>
+     * <p>The query all with filter method.</p>
+     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
+     * @see org.junit.jupiter.api.Order
+     * @see org.junit.jupiter.api.Test
+     * @see io.github.nichetoolkit.rest.RestException
+     */
     @Order(5)
     @Test
     public void queryAllWithFilter() throws RestException {
@@ -111,18 +185,42 @@ class FickleEntryServiceTest extends MybatisExampleApplicationTests {
         System.out.println(JsonUtils.parseJson(restPage));
     }
 
+    /**
+     * <code>deleteById</code>
+     * <p>The delete by id method.</p>
+     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
+     * @see org.junit.jupiter.api.Order
+     * @see org.junit.jupiter.api.Test
+     * @see io.github.nichetoolkit.rest.RestException
+     */
     @Order(6)
     @Test
     public void deleteById() throws RestException {
         fickleEntryService.deleteById(testId);
     }
 
+    /**
+     * <code>deleteAll</code>
+     * <p>The delete all method.</p>
+     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
+     * @see org.junit.jupiter.api.Order
+     * @see org.junit.jupiter.api.Test
+     * @see io.github.nichetoolkit.rest.RestException
+     */
     @Order(7)
     @Test
     public void deleteAll() throws RestException {
         fickleEntryService.deleteAll(Arrays.asList(testId1, testId2));
     }
 
+    /**
+     * <code>deleteAllWithFilter</code>
+     * <p>The delete all with filter method.</p>
+     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
+     * @see org.junit.jupiter.api.Order
+     * @see org.junit.jupiter.api.Test
+     * @see io.github.nichetoolkit.rest.RestException
+     */
     @Order(8)
     @Test
     public void deleteAllWithFilter() throws RestException {

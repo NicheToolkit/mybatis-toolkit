@@ -18,8 +18,8 @@ import java.util.Optional;
 /**
  * <code>DefaultEntityClassFinder</code>
  * <p>The default entity class finder class.</p>
- * @see  io.github.nichetoolkit.mybatis.MybatisEntityClassFinder
  * @author Cyan (snow22314@outlook.com)
+ * @see io.github.nichetoolkit.mybatis.MybatisEntityClassFinder
  * @since Jdk1.8
  */
 public class DefaultEntityClassFinder extends MybatisEntityClassFinder {

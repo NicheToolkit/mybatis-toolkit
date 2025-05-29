@@ -15,11 +15,11 @@ import java.util.Date;
 /**
  * <code>TemplateEntity</code>
  * <p>The template entity class.</p>
- * @see  io.github.nichetoolkit.rice.DefaultInfoEntity
- * @see  lombok.Setter
- * @see  lombok.Getter
- * @see  RestEntity
  * @author Cyan (snow22314@outlook.com)
+ * @see io.github.nichetoolkit.rice.DefaultInfoEntity
+ * @see lombok.Setter
+ * @see lombok.Getter
+ * @see io.github.nichetoolkit.mybatis.table.RestEntity
  * @since Jdk1.8
  */
 @Setter
@@ -28,25 +28,25 @@ import java.util.Date;
 public class TemplateEntity extends DefaultInfoEntity<TemplateEntity, TemplateModel, TemplateIdentity> {
     /**
      * <code>linkage</code>
-     * {@link TemplateLinkage} <p>The <code>linkage</code> field.</p>
-     * @see  TemplateLinkage
-     * @see  RestLinkKey
+     * {@link io.github.nichetoolkit.mybatis.test.template.TemplateLinkage} <p>The <code>linkage</code> field.</p>
+     * @see io.github.nichetoolkit.mybatis.test.template.TemplateLinkage
+     * @see io.github.nichetoolkit.mybatis.column.RestLinkKey
      */
     @RestLinkKey
     private TemplateLinkage linkage;
     /**
      * <code>time</code>
      * {@link java.util.Date} <p>The <code>time</code> field.</p>
-     * @see  java.util.Date
-     * @see  RestForceInsert
+     * @see java.util.Date
+     * @see io.github.nichetoolkit.mybatis.column.RestForceInsert
      */
     @RestForceInsert("now()")
     private Date time;
     /**
      * <code>status</code>
-     * {@link TemplateAlertness} <p>The <code>status</code> field.</p>
-     * @see  TemplateAlertness
-     * @see  RestAlertKey
+     * {@link io.github.nichetoolkit.mybatis.test.template.TemplateAlertness} <p>The <code>status</code> field.</p>
+     * @see io.github.nichetoolkit.mybatis.test.template.TemplateAlertness
+     * @see io.github.nichetoolkit.mybatis.column.RestAlertKey
      */
     @RestAlertKey
     private TemplateAlertness status;
@@ -61,8 +61,8 @@ public class TemplateEntity extends DefaultInfoEntity<TemplateEntity, TemplateMo
     /**
      * <code>TemplateEntity</code>
      * <p>Instantiates a new template entity.</p>
-     * @param id {@link TemplateIdentity} <p>The id parameter is <code>TemplateIdentity</code> type.</p>
-     * @see  TemplateIdentity
+     * @param id {@link io.github.nichetoolkit.mybatis.test.template.TemplateIdentity} <p>The id parameter is <code>TemplateIdentity</code> type.</p>
+     * @see io.github.nichetoolkit.mybatis.test.template.TemplateIdentity
      */
     public TemplateEntity(TemplateIdentity id) {
         super(id);

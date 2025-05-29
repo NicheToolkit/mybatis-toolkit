@@ -1,17 +1,8 @@
 package io.github.nichetoolkit.mybatis.handler;
 
-import io.github.nichetoolkit.mybatis.MybatisColumn;
-import io.github.nichetoolkit.mybatis.MybatisMapperFactory;
 import io.github.nichetoolkit.mybatis.MybatisTable;
-import io.github.nichetoolkit.mybatis.consts.EntityConstants;
-import io.github.nichetoolkit.mybatis.load.RestLoad;
-import io.github.nichetoolkit.rest.RestEntry;
 import io.github.nichetoolkit.rest.util.GeneralUtils;
-import io.github.nichetoolkit.rest.util.JsonUtils;
-import io.github.nichetoolkit.rice.IdEntity;
-import io.github.nichetoolkit.rice.mapper.SuperMapper;
 
-import java.lang.reflect.Array;
 import java.sql.*;
 import java.util.*;
 

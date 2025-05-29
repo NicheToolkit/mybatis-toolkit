@@ -62,8 +62,34 @@ public abstract class LoadResultTypeHandler extends BaseTypeHandler<Object> {
         throw new SQLException("The 'getNullableResult' method of 'LoadResultTypeHandler' with 'callableStatement' is not supported");
     }
 
+    /**
+     * <code>parseResult</code>
+     * <p>The parse result method.</p>
+     * @param <E>        {@link java.lang.Object} <p>The parameter can be of any type.</p>
+     * @param entityType {@link java.lang.Class} <p>The entity type parameter is <code>Class</code> type.</p>
+     * @param result     {@link java.util.List} <p>The result parameter is <code>List</code> type.</p>
+     * @return {@link java.lang.Object} <p>The parse result return object is <code>Object</code> type.</p>
+     * @throws SQLException {@link java.sql.SQLException} <p>The sql exception is <code>SQLException</code> type.</p>
+     * @see java.lang.Class
+     * @see java.util.List
+     * @see java.lang.Object
+     * @see java.sql.SQLException
+     */
     abstract protected <E> Object parseResult(Class<E> entityType, List<?> result) throws SQLException;
 
+    /**
+     * <code>getLoadResult</code>
+     * <p>The get load result getter method.</p>
+     * @param resultSet  {@link java.sql.ResultSet} <p>The result set parameter is <code>ResultSet</code> type.</p>
+     * @param columnName {@link java.lang.String} <p>The column name parameter is <code>String</code> type.</p>
+     * @return {@link java.lang.Object} <p>The get load result return object is <code>Object</code> type.</p>
+     * @throws SQLException {@link java.sql.SQLException} <p>The sql exception is <code>SQLException</code> type.</p>
+     * @see java.sql.ResultSet
+     * @see java.lang.String
+     * @see java.lang.Object
+     * @see java.lang.SuppressWarnings
+     * @see java.sql.SQLException
+     */
     @SuppressWarnings(value = "unchecked")
     protected Object getLoadResult(ResultSet resultSet, String columnName) throws SQLException {
         String loadsJson;
@@ -100,6 +126,20 @@ public abstract class LoadResultTypeHandler extends BaseTypeHandler<Object> {
         return null;
     }
 
+    /**
+     * <code>destineLoadParams</code>
+     * <p>The destine load params method.</p>
+     * @param resultSet        {@link java.sql.ResultSet} <p>The result set parameter is <code>ResultSet</code> type.</p>
+     * @param loadEntry        {@link java.util.Map.Entry} <p>The load entry parameter is <code>Entry</code> type.</p>
+     * @param loadParamColumns {@link java.util.List} <p>The load param columns parameter is <code>List</code> type.</p>
+     * @return {@link io.github.nichetoolkit.mybatis.load.RestParam} <p>The destine load params return object is <code>RestParam</code> type.</p>
+     * @throws SQLException {@link java.sql.SQLException} <p>The sql exception is <code>SQLException</code> type.</p>
+     * @see java.sql.ResultSet
+     * @see java.util.Map.Entry
+     * @see java.util.List
+     * @see io.github.nichetoolkit.mybatis.load.RestParam
+     * @see java.sql.SQLException
+     */
     private RestParam[] destineLoadParams(ResultSet resultSet, Map.Entry<Class<?>, MybatisColumn> loadEntry, List<MybatisColumn> loadParamColumns) throws SQLException {
         Class<?> entryKey = loadEntry.getKey();
         MybatisColumn entryValue = loadEntry.getValue();
@@ -126,6 +166,17 @@ public abstract class LoadResultTypeHandler extends BaseTypeHandler<Object> {
         return loadParams.entrySet().stream().map(RestParam::of).toArray(RestParam[]::new);
     }
 
+    /**
+     * <code>destineTablename</code>
+     * <p>The destine tablename method.</p>
+     * @param resultSet {@link java.sql.ResultSet} <p>The result set parameter is <code>ResultSet</code> type.</p>
+     * @param loadTable {@link java.lang.String} <p>The load table parameter is <code>String</code> type.</p>
+     * @return {@link java.lang.String} <p>The destine tablename return object is <code>String</code> type.</p>
+     * @throws SQLException {@link java.sql.SQLException} <p>The sql exception is <code>SQLException</code> type.</p>
+     * @see java.sql.ResultSet
+     * @see java.lang.String
+     * @see java.sql.SQLException
+     */
     private String destineTablename(ResultSet resultSet, String loadTable) throws SQLException {
         String regex = "\\{[^}]*}";
         Pattern pattern = Pattern.compile(regex);
@@ -144,6 +195,18 @@ public abstract class LoadResultTypeHandler extends BaseTypeHandler<Object> {
         return result;
     }
 
+    /**
+     * <code>destineLoadEntry</code>
+     * <p>The destine load entry method.</p>
+     * @param columnName  {@link java.lang.String} <p>The column name parameter is <code>String</code> type.</p>
+     * @param loadKeys    {@link java.util.List} <p>The load keys parameter is <code>List</code> type.</p>
+     * @param loadColumns {@link java.util.Map} <p>The load columns parameter is <code>Map</code> type.</p>
+     * @return {@link java.util.Map.Entry} <p>The destine load entry return object is <code>Entry</code> type.</p>
+     * @see java.lang.String
+     * @see java.util.List
+     * @see java.util.Map
+     * @see java.util.Map.Entry
+     */
     private Map.Entry<Class<?>, MybatisColumn> destineLoadEntry(String columnName, List<String> loadKeys, Map<Class<?>, MybatisColumn> loadColumns) {
         if (GeneralUtils.isEmpty(loadKeys) || GeneralUtils.isEmpty(loadColumns)) {
             return null;

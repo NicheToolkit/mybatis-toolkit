@@ -11,6 +11,14 @@ import org.springframework.stereotype.Service;
 import java.util.Date;
 import java.util.Optional;
 
+/**
+ * <code>LoadLink2ServiceImpl</code>
+ * <p>The load link 2 service class.</p>
+ * @author Cyan (snow22314@outlook.com)
+ * @see io.github.nichetoolkit.rice.RestInfoService
+ * @see org.springframework.stereotype.Service
+ * @since Jdk1.8
+ */
 @Service
 public class LoadLink2ServiceImpl extends RestInfoService<LoadLink2Model, LoadLink2Entity, RestFilter> implements LoadLink2Service {
 

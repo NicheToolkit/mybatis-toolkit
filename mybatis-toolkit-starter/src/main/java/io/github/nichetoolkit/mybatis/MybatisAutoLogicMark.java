@@ -9,9 +9,9 @@ import org.springframework.stereotype.Component;
 /**
  * <code>MybatisAutoLogicMark</code>
  * <p>The mybatis auto logic mark class.</p>
- * @see  io.github.nichetoolkit.rice.DefaultLogicMark
- * @see  org.springframework.stereotype.Component
  * @author Cyan (snow22314@outlook.com)
+ * @see io.github.nichetoolkit.rice.DefaultLogicMark
+ * @see org.springframework.stereotype.Component
  * @since Jdk1.8
  */
 @Component
@@ -21,7 +21,7 @@ public class MybatisAutoLogicMark extends DefaultLogicMark {
      * <code>MybatisAutoLogicMark</code>
      * <p>Instantiates a new mybatis auto logic mark.</p>
      * @param serviceProperties {@link io.github.nichetoolkit.rice.configure.RiceServiceProperties} <p>The service properties parameter is <code>RiceServiceProperties</code> type.</p>
-     * @see  io.github.nichetoolkit.rice.configure.RiceServiceProperties
+     * @see io.github.nichetoolkit.rice.configure.RiceServiceProperties
      */
     public MybatisAutoLogicMark(RiceServiceProperties serviceProperties) {
         super(serviceProperties);

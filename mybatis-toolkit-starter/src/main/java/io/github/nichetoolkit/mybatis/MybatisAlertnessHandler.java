@@ -10,8 +10,8 @@ import java.util.Collection;
 /**
  * <code>MybatisAlertnessHandler</code>
  * <p>The mybatis alertness handler class.</p>
- * @see  io.github.nichetoolkit.rice.DefaultAlertnessHandler
  * @author Cyan (snow22314@outlook.com)
+ * @see io.github.nichetoolkit.rice.DefaultAlertnessHandler
  * @since Jdk1.8
  */
 public class MybatisAlertnessHandler extends DefaultAlertnessHandler<Serializable> {

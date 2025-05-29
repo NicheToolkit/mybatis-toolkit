@@ -6,19 +6,11 @@ import com.fasterxml.jackson.databind.type.MapType;
 import io.github.nichetoolkit.mybatis.MybatisColumn;
 import io.github.nichetoolkit.mybatis.MybatisTable;
 import io.github.nichetoolkit.mybatis.handler.*;
-import io.github.nichetoolkit.rest.error.lack.ConfigureLackError;
 import io.github.nichetoolkit.rest.util.GeneralUtils;
-import org.apache.ibatis.mapping.ResultFlag;
 import org.apache.ibatis.mapping.ResultMapping;
 import org.apache.ibatis.session.Configuration;
-import org.apache.ibatis.type.JdbcType;
-import org.apache.ibatis.type.TypeException;
-import org.apache.ibatis.type.TypeHandler;
-import org.apache.ibatis.type.UnknownTypeHandler;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
 
 /**
  * <code>FickleAutoResultMapHandler</code>

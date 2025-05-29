@@ -9,8 +9,8 @@ import java.util.Optional;
 /**
  * <code>TemplateStatus2</code>
  * <p>The template status 2 enumeration.</p>
- * @see  io.github.nichetoolkit.rest.RestValue
  * @author Cyan (snow22314@outlook.com)
+ * @see io.github.nichetoolkit.rest.RestValue
  * @since Jdk1.8
  */
 public enum TemplateStatus2 implements RestValue<Integer,String> {
@@ -29,23 +29,23 @@ public enum TemplateStatus2 implements RestValue<Integer,String> {
     /**
      * <code>key</code>
      * {@link java.lang.Integer} <p>The <code>key</code> field.</p>
-     * @see  java.lang.Integer
+     * @see java.lang.Integer
      */
     private final Integer key;
     /**
      * <code>value</code>
      * {@link java.lang.String} <p>The <code>value</code> field.</p>
-     * @see  java.lang.String
+     * @see java.lang.String
      */
     private final String value;
 
     /**
      * <code>TemplateStatus2</code>
      * <p>Instantiates a new template status 2.</p>
-     * @param key {@link java.lang.Integer} <p>The key parameter is <code>Integer</code> type.</p>
+     * @param key   {@link java.lang.Integer} <p>The key parameter is <code>Integer</code> type.</p>
      * @param value {@link java.lang.String} <p>The value parameter is <code>String</code> type.</p>
-     * @see  java.lang.Integer
-     * @see  java.lang.String
+     * @see java.lang.Integer
+     * @see java.lang.String
      */
     TemplateStatus2(Integer key, String value) {
         this.key = key;
@@ -67,9 +67,9 @@ public enum TemplateStatus2 implements RestValue<Integer,String> {
      * <code>parseKey</code>
      * <p>The parse key method.</p>
      * @param key {@link java.lang.Integer} <p>The key parameter is <code>Integer</code> type.</p>
-     * @see  java.lang.Integer
-     * @see  com.fasterxml.jackson.annotation.JsonCreator
-     * @return  {@link TemplateStatus2} <p>The parse key return object is <code>TemplateStatus2</code> type.</p>
+     * @return {@link io.github.nichetoolkit.mybatis.test.template.TemplateStatus2} <p>The parse key return object is <code>TemplateStatus2</code> type.</p>
+     * @see java.lang.Integer
+     * @see com.fasterxml.jackson.annotation.JsonCreator
      */
     @JsonCreator
     public static TemplateStatus2 parseKey(Integer key) {
@@ -81,8 +81,8 @@ public enum TemplateStatus2 implements RestValue<Integer,String> {
      * <code>parseValue</code>
      * <p>The parse value method.</p>
      * @param value {@link java.lang.String} <p>The value parameter is <code>String</code> type.</p>
-     * @see  java.lang.String
-     * @return  {@link TemplateStatus2} <p>The parse value return object is <code>TemplateStatus2</code> type.</p>
+     * @return {@link io.github.nichetoolkit.mybatis.test.template.TemplateStatus2} <p>The parse value return object is <code>TemplateStatus2</code> type.</p>
+     * @see java.lang.String
      */
     public static TemplateStatus2 parseValue(String value) {
         TemplateStatus2 typeEnum = RestValue.parseValue(TemplateStatus2.class, value);

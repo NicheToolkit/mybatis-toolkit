@@ -16,8 +16,8 @@ import java.util.function.Predicate;
 /**
  * <code>MybatisEntityClassFinder</code>
  * <p>The mybatis entity class finder class.</p>
- * @see  io.github.nichetoolkit.mybatis.MybatisClassFinder
  * @author Cyan (snow22314@outlook.com)
+ * @see io.github.nichetoolkit.mybatis.MybatisClassFinder
  * @since Jdk1.8
  */
 public abstract class MybatisEntityClassFinder implements MybatisClassFinder {
@@ -121,12 +121,12 @@ public abstract class MybatisEntityClassFinder implements MybatisClassFinder {
     /**
      * <code>entityTypeByReturnType</code>
      * <p>The entity type by return type method.</p>
-     * @param mapperType {@link java.lang.Class} <p>The mapper type parameter is <code>Class</code> type.</p>
+     * @param mapperType   {@link java.lang.Class} <p>The mapper type parameter is <code>Class</code> type.</p>
      * @param mapperMethod {@link java.lang.reflect.Method} <p>The mapper method parameter is <code>Method</code> type.</p>
-     * @see  java.lang.Class
-     * @see  java.lang.reflect.Method
-     * @see  java.util.Optional
-     * @return  {@link java.util.Optional} <p>The entity type by return type return object is <code>Optional</code> type.</p>
+     * @return {@link java.util.Optional} <p>The entity type by return type return object is <code>Optional</code> type.</p>
+     * @see java.lang.Class
+     * @see java.lang.reflect.Method
+     * @see java.util.Optional
      */
     protected Optional<Class<?>> entityTypeByReturnType(Class<?> mapperType, Method mapperMethod) {
         Class<?> returnType = MybatisGenericTypes.resolveMapperReturnType(mapperMethod, mapperType);
@@ -136,12 +136,12 @@ public abstract class MybatisEntityClassFinder implements MybatisClassFinder {
     /**
      * <code>entityTypeByParamTypes</code>
      * <p>The entity type by param types method.</p>
-     * @param mapperType {@link java.lang.Class} <p>The mapper type parameter is <code>Class</code> type.</p>
+     * @param mapperType   {@link java.lang.Class} <p>The mapper type parameter is <code>Class</code> type.</p>
      * @param mapperMethod {@link java.lang.reflect.Method} <p>The mapper method parameter is <code>Method</code> type.</p>
-     * @see  java.lang.Class
-     * @see  java.lang.reflect.Method
-     * @see  java.util.Optional
-     * @return  {@link java.util.Optional} <p>The entity type by param types return object is <code>Optional</code> type.</p>
+     * @return {@link java.util.Optional} <p>The entity type by param types return object is <code>Optional</code> type.</p>
+     * @see java.lang.Class
+     * @see java.lang.reflect.Method
+     * @see java.util.Optional
      */
     protected Optional<Class<?>> entityTypeByParamTypes(Class<?> mapperType, Method mapperMethod) {
         return classOfByTypes(RestGenericTypes.resolveParamTypes(mapperMethod, mapperType), this::isEntity);
@@ -150,12 +150,12 @@ public abstract class MybatisEntityClassFinder implements MybatisClassFinder {
     /**
      * <code>entityTypeByMapperMethod</code>
      * <p>The entity type by mapper method method.</p>
-     * @param mapperType {@link java.lang.Class} <p>The mapper type parameter is <code>Class</code> type.</p>
+     * @param mapperType   {@link java.lang.Class} <p>The mapper type parameter is <code>Class</code> type.</p>
      * @param mapperMethod {@link java.lang.reflect.Method} <p>The mapper method parameter is <code>Method</code> type.</p>
-     * @see  java.lang.Class
-     * @see  java.lang.reflect.Method
-     * @see  java.util.Optional
-     * @return  {@link java.util.Optional} <p>The entity type by mapper method return object is <code>Optional</code> type.</p>
+     * @return {@link java.util.Optional} <p>The entity type by mapper method return object is <code>Optional</code> type.</p>
+     * @see java.lang.Class
+     * @see java.lang.reflect.Method
+     * @see java.util.Optional
      */
     protected Optional<Class<?>> entityTypeByMapperMethod(Class<?> mapperType, Method mapperMethod) {
         return classOfByTypes(RestGenericTypes.resolveMethodTypes(mapperMethod, mapperType), this::isEntity);
@@ -165,9 +165,9 @@ public abstract class MybatisEntityClassFinder implements MybatisClassFinder {
      * <code>identityTypeByEntityType</code>
      * <p>The identity type by entity type method.</p>
      * @param entityType {@link java.lang.Class} <p>The entity type parameter is <code>Class</code> type.</p>
-     * @see  java.lang.Class
-     * @see  java.util.Optional
-     * @return  {@link java.util.Optional} <p>The identity type by entity type return object is <code>Optional</code> type.</p>
+     * @return {@link java.util.Optional} <p>The identity type by entity type return object is <code>Optional</code> type.</p>
+     * @see java.lang.Class
+     * @see java.util.Optional
      */
     protected Optional<Class<?>> identityTypeByEntityType(Class<?> entityType) {
         return classOfByTypes(RestGenericTypes.resolveSuperclassTypes(entityType), this::isIdentity);
@@ -176,12 +176,12 @@ public abstract class MybatisEntityClassFinder implements MybatisClassFinder {
     /**
      * <code>identityTypeByParamTypes</code>
      * <p>The identity type by param types method.</p>
-     * @param mapperType {@link java.lang.Class} <p>The mapper type parameter is <code>Class</code> type.</p>
+     * @param mapperType   {@link java.lang.Class} <p>The mapper type parameter is <code>Class</code> type.</p>
      * @param mapperMethod {@link java.lang.reflect.Method} <p>The mapper method parameter is <code>Method</code> type.</p>
-     * @see  java.lang.Class
-     * @see  java.lang.reflect.Method
-     * @see  java.util.Optional
-     * @return  {@link java.util.Optional} <p>The identity type by param types return object is <code>Optional</code> type.</p>
+     * @return {@link java.util.Optional} <p>The identity type by param types return object is <code>Optional</code> type.</p>
+     * @see java.lang.Class
+     * @see java.lang.reflect.Method
+     * @see java.util.Optional
      */
     protected Optional<Class<?>> identityTypeByParamTypes(Class<?> mapperType, Method mapperMethod) {
         return classOfByTypes(RestGenericTypes.resolveParamTypes(mapperMethod, mapperType), this::isIdentity);
@@ -191,9 +191,9 @@ public abstract class MybatisEntityClassFinder implements MybatisClassFinder {
      * <code>linkageTypeByEntityType</code>
      * <p>The linkage type by entity type method.</p>
      * @param entityType {@link java.lang.Class} <p>The entity type parameter is <code>Class</code> type.</p>
-     * @see  java.lang.Class
-     * @see  java.util.Optional
-     * @return  {@link java.util.Optional} <p>The linkage type by entity type return object is <code>Optional</code> type.</p>
+     * @return {@link java.util.Optional} <p>The linkage type by entity type return object is <code>Optional</code> type.</p>
+     * @see java.lang.Class
+     * @see java.util.Optional
      */
     protected Optional<Class<?>> linkageTypeByEntityType(Class<?> entityType) {
         return classOfByTypes(RestGenericTypes.resolveSuperclassTypes(entityType), this::isLinkage);
@@ -202,12 +202,12 @@ public abstract class MybatisEntityClassFinder implements MybatisClassFinder {
     /**
      * <code>linkageTypeByParamTypes</code>
      * <p>The linkage type by param types method.</p>
-     * @param mapperType {@link java.lang.Class} <p>The mapper type parameter is <code>Class</code> type.</p>
+     * @param mapperType   {@link java.lang.Class} <p>The mapper type parameter is <code>Class</code> type.</p>
      * @param mapperMethod {@link java.lang.reflect.Method} <p>The mapper method parameter is <code>Method</code> type.</p>
-     * @see  java.lang.Class
-     * @see  java.lang.reflect.Method
-     * @see  java.util.Optional
-     * @return  {@link java.util.Optional} <p>The linkage type by param types return object is <code>Optional</code> type.</p>
+     * @return {@link java.util.Optional} <p>The linkage type by param types return object is <code>Optional</code> type.</p>
+     * @see java.lang.Class
+     * @see java.lang.reflect.Method
+     * @see java.util.Optional
      */
     protected Optional<Class<?>> linkageTypeByParamTypes(Class<?> mapperType, Method mapperMethod) {
         return classOfByTypes(RestGenericTypes.resolveParamTypes(mapperMethod, mapperType), this::isLinkage);
@@ -217,9 +217,9 @@ public abstract class MybatisEntityClassFinder implements MybatisClassFinder {
      * <code>alertnessTypeByEntityType</code>
      * <p>The alertness type by entity type method.</p>
      * @param entityType {@link java.lang.Class} <p>The entity type parameter is <code>Class</code> type.</p>
-     * @see  java.lang.Class
-     * @see  java.util.Optional
-     * @return  {@link java.util.Optional} <p>The alertness type by entity type return object is <code>Optional</code> type.</p>
+     * @return {@link java.util.Optional} <p>The alertness type by entity type return object is <code>Optional</code> type.</p>
+     * @see java.lang.Class
+     * @see java.util.Optional
      */
     protected Optional<Class<?>> alertnessTypeByEntityType(Class<?> entityType) {
         return classOfByTypes(RestGenericTypes.resolveSuperclassTypes(entityType), this::isAlertness);
@@ -229,9 +229,9 @@ public abstract class MybatisEntityClassFinder implements MybatisClassFinder {
      * <code>ficklenessTypeByEntityType</code>
      * <p>The fickleness type by entity type method.</p>
      * @param entityType {@link java.lang.Class} <p>The entity type parameter is <code>Class</code> type.</p>
-     * @see  java.lang.Class
-     * @see  java.util.Optional
-     * @return  {@link java.util.Optional} <p>The fickleness type by entity type return object is <code>Optional</code> type.</p>
+     * @return {@link java.util.Optional} <p>The fickleness type by entity type return object is <code>Optional</code> type.</p>
+     * @see java.lang.Class
+     * @see java.util.Optional
      */
     protected Optional<Class<?>> ficklenessTypeByEntityType(Class<?> entityType) {
         return classOfByTypes(RestGenericTypes.resolveSuperclassTypes(entityType), this::isFickleness);
@@ -240,12 +240,12 @@ public abstract class MybatisEntityClassFinder implements MybatisClassFinder {
     /**
      * <code>alertnessTypeByParamTypes</code>
      * <p>The alertness type by param types method.</p>
-     * @param mapperType {@link java.lang.Class} <p>The mapper type parameter is <code>Class</code> type.</p>
+     * @param mapperType   {@link java.lang.Class} <p>The mapper type parameter is <code>Class</code> type.</p>
      * @param mapperMethod {@link java.lang.reflect.Method} <p>The mapper method parameter is <code>Method</code> type.</p>
-     * @see  java.lang.Class
-     * @see  java.lang.reflect.Method
-     * @see  java.util.Optional
-     * @return  {@link java.util.Optional} <p>The alertness type by param types return object is <code>Optional</code> type.</p>
+     * @return {@link java.util.Optional} <p>The alertness type by param types return object is <code>Optional</code> type.</p>
+     * @see java.lang.Class
+     * @see java.lang.reflect.Method
+     * @see java.util.Optional
      */
     protected Optional<Class<?>> alertnessTypeByParamTypes(Class<?> mapperType, Method mapperMethod) {
         return classOfByTypes(RestGenericTypes.resolveParamTypes(mapperMethod, mapperType), this::isAlertness);
@@ -254,12 +254,12 @@ public abstract class MybatisEntityClassFinder implements MybatisClassFinder {
     /**
      * <code>ficklenessTypeByParamTypes</code>
      * <p>The fickleness type by param types method.</p>
-     * @param mapperType {@link java.lang.Class} <p>The mapper type parameter is <code>Class</code> type.</p>
+     * @param mapperType   {@link java.lang.Class} <p>The mapper type parameter is <code>Class</code> type.</p>
      * @param mapperMethod {@link java.lang.reflect.Method} <p>The mapper method parameter is <code>Method</code> type.</p>
-     * @see  java.lang.Class
-     * @see  java.lang.reflect.Method
-     * @see  java.util.Optional
-     * @return  {@link java.util.Optional} <p>The fickleness type by param types return object is <code>Optional</code> type.</p>
+     * @return {@link java.util.Optional} <p>The fickleness type by param types return object is <code>Optional</code> type.</p>
+     * @see java.lang.Class
+     * @see java.lang.reflect.Method
+     * @see java.util.Optional
      */
     protected Optional<Class<?>> ficklenessTypeByParamTypes(Class<?> mapperType, Method mapperMethod) {
         return classOfByTypes(RestGenericTypes.resolveParamTypes(mapperMethod, mapperType), this::isFickleness);
@@ -269,9 +269,9 @@ public abstract class MybatisEntityClassFinder implements MybatisClassFinder {
      * <code>entityTypeByMapperType</code>
      * <p>The entity type by mapper type method.</p>
      * @param mapperType {@link java.lang.Class} <p>The mapper type parameter is <code>Class</code> type.</p>
-     * @see  java.lang.Class
-     * @see  java.util.Optional
-     * @return  {@link java.util.Optional} <p>The entity type by mapper type return object is <code>Optional</code> type.</p>
+     * @return {@link java.util.Optional} <p>The entity type by mapper type return object is <code>Optional</code> type.</p>
+     * @see java.lang.Class
+     * @see java.util.Optional
      */
     protected Optional<Class<?>> entityTypeByMapperType(Class<?> mapperType) {
         return classOfByTypes(RestGenericTypes.resolveInterfaceTypes(mapperType), this::isEntity);
@@ -281,9 +281,9 @@ public abstract class MybatisEntityClassFinder implements MybatisClassFinder {
      * <code>identityTypeByMapperType</code>
      * <p>The identity type by mapper type method.</p>
      * @param mapperType {@link java.lang.Class} <p>The mapper type parameter is <code>Class</code> type.</p>
-     * @see  java.lang.Class
-     * @see  java.util.Optional
-     * @return  {@link java.util.Optional} <p>The identity type by mapper type return object is <code>Optional</code> type.</p>
+     * @return {@link java.util.Optional} <p>The identity type by mapper type return object is <code>Optional</code> type.</p>
+     * @see java.lang.Class
+     * @see java.util.Optional
      */
     protected Optional<Class<?>> identityTypeByMapperType(Class<?> mapperType) {
         return classOfByTypes(RestGenericTypes.resolveInterfaceTypes(mapperType), this::isIdentity);
@@ -293,9 +293,9 @@ public abstract class MybatisEntityClassFinder implements MybatisClassFinder {
      * <code>linkageTypeByMapperType</code>
      * <p>The linkage type by mapper type method.</p>
      * @param mapperType {@link java.lang.Class} <p>The mapper type parameter is <code>Class</code> type.</p>
-     * @see  java.lang.Class
-     * @see  java.util.Optional
-     * @return  {@link java.util.Optional} <p>The linkage type by mapper type return object is <code>Optional</code> type.</p>
+     * @return {@link java.util.Optional} <p>The linkage type by mapper type return object is <code>Optional</code> type.</p>
+     * @see java.lang.Class
+     * @see java.util.Optional
      */
     protected Optional<Class<?>> linkageTypeByMapperType(Class<?> mapperType) {
         return classOfByTypes(RestGenericTypes.resolveInterfaceTypes(mapperType), this::isLinkage);
@@ -305,9 +305,9 @@ public abstract class MybatisEntityClassFinder implements MybatisClassFinder {
      * <code>alertnessTypeByMapperType</code>
      * <p>The alertness type by mapper type method.</p>
      * @param mapperType {@link java.lang.Class} <p>The mapper type parameter is <code>Class</code> type.</p>
-     * @see  java.lang.Class
-     * @see  java.util.Optional
-     * @return  {@link java.util.Optional} <p>The alertness type by mapper type return object is <code>Optional</code> type.</p>
+     * @return {@link java.util.Optional} <p>The alertness type by mapper type return object is <code>Optional</code> type.</p>
+     * @see java.lang.Class
+     * @see java.util.Optional
      */
     protected Optional<Class<?>> alertnessTypeByMapperType(Class<?> mapperType) {
         return classOfByTypes(RestGenericTypes.resolveInterfaceTypes(mapperType), this::isAlertness);
@@ -317,9 +317,9 @@ public abstract class MybatisEntityClassFinder implements MybatisClassFinder {
      * <code>ficklenessTypeByMapperType</code>
      * <p>The fickleness type by mapper type method.</p>
      * @param mapperType {@link java.lang.Class} <p>The mapper type parameter is <code>Class</code> type.</p>
-     * @see  java.lang.Class
-     * @see  java.util.Optional
-     * @return  {@link java.util.Optional} <p>The fickleness type by mapper type return object is <code>Optional</code> type.</p>
+     * @return {@link java.util.Optional} <p>The fickleness type by mapper type return object is <code>Optional</code> type.</p>
+     * @see java.lang.Class
+     * @see java.util.Optional
      */
     protected Optional<Class<?>> ficklenessTypeByMapperType(Class<?> mapperType) {
         return classOfByTypes(RestGenericTypes.resolveInterfaceTypes(mapperType), this::isFickleness);
@@ -329,12 +329,12 @@ public abstract class MybatisEntityClassFinder implements MybatisClassFinder {
     /**
      * <code>classOfByType</code>
      * <p>The class of by type method.</p>
-     * @param type {@link java.lang.reflect.Type} <p>The type parameter is <code>Type</code> type.</p>
+     * @param type      {@link java.lang.reflect.Type} <p>The type parameter is <code>Type</code> type.</p>
      * @param predicate {@link java.util.function.Predicate} <p>The predicate parameter is <code>Predicate</code> type.</p>
-     * @see  java.lang.reflect.Type
-     * @see  java.util.function.Predicate
-     * @see  java.util.Optional
-     * @return  {@link java.util.Optional} <p>The class of by type return object is <code>Optional</code> type.</p>
+     * @return {@link java.util.Optional} <p>The class of by type return object is <code>Optional</code> type.</p>
+     * @see java.lang.reflect.Type
+     * @see java.util.function.Predicate
+     * @see java.util.Optional
      */
     protected Optional<Class<?>> classOfByType(Type type, Predicate<Class<?>> predicate) {
         if (type instanceof Class) {
@@ -359,12 +359,12 @@ public abstract class MybatisEntityClassFinder implements MybatisClassFinder {
     /**
      * <code>classOfByTypes</code>
      * <p>The class of by types method.</p>
-     * @param types {@link java.lang.reflect.Type} <p>The types parameter is <code>Type</code> type.</p>
+     * @param types     {@link java.lang.reflect.Type} <p>The types parameter is <code>Type</code> type.</p>
      * @param predicate {@link java.util.function.Predicate} <p>The predicate parameter is <code>Predicate</code> type.</p>
-     * @see  java.lang.reflect.Type
-     * @see  java.util.function.Predicate
-     * @see  java.util.Optional
-     * @return  {@link java.util.Optional} <p>The class of by types return object is <code>Optional</code> type.</p>
+     * @return {@link java.util.Optional} <p>The class of by types return object is <code>Optional</code> type.</p>
+     * @see java.lang.reflect.Type
+     * @see java.util.function.Predicate
+     * @see java.util.Optional
      */
     protected Optional<Class<?>> classOfByTypes(Type[] types, Predicate<Class<?>> predicate) {
         for (Type type : types) {

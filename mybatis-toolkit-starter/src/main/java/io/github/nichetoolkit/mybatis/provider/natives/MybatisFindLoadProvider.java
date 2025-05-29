@@ -52,9 +52,7 @@ public class MybatisFindLoadProvider implements MybatisSqlProvider {
     public static <I> String findDynamicByIdLoad(ProviderContext providerContext, String tablename, I id, RestLoad[] loadParams) throws RestException {
         OptionalUtils.ofEmpty(id, "The id param of 'findByIdLoad' method cannot be empty!", log, message -> new MybatisParamErrorException("findByIdLoad", "id", message));
         String selectColumns = "The select columns of table with 'findByIdLoad' method cannot be empty!";
-        ConsumerActuator<MybatisTable> tableOptional = table -> {
-            OptionalUtils.ofEmpty(table.selectColumns(), selectColumns, log, message -> new MybatisTableErrorException("findByIdLoad", "selectColumns", message));
-        };
+        ConsumerActuator<MybatisTable> tableOptional = table -> OptionalUtils.ofEmpty(table.selectColumns(), selectColumns, log, message -> new MybatisTableErrorException("findByIdLoad", "selectColumns", message));
         return MybatisSqlProvider.providingOfId(providerContext, tablename, id, tableOptional, loadParams, ENTRY_SQL_SUPPLY);
     }
 
@@ -76,9 +74,7 @@ public class MybatisFindLoadProvider implements MybatisSqlProvider {
      */
     public static <I> String findDynamicAllLoad(ProviderContext providerContext, String tablename, Collection<I> idList, RestLoad[] loadParams) throws RestException {
         OptionalUtils.ofEmpty(idList, "The id list param of 'findAllLoad' method cannot be empty!", log, message -> new MybatisParamErrorException("findAllLoad", "idList", message));
-        ConsumerActuator<MybatisTable> tableOptional = table -> {
-            OptionalUtils.ofEmpty(table.selectColumns(), "The select columns of table with 'findAllLoad' method cannot be empty!", message -> new MybatisTableErrorException("findAllLoad", "selectColumns", message));
-        };
+        ConsumerActuator<MybatisTable> tableOptional = table -> OptionalUtils.ofEmpty(table.selectColumns(), "The select columns of table with 'findAllLoad' method cannot be empty!", message -> new MybatisTableErrorException("findAllLoad", "selectColumns", message));
         return MybatisSqlProvider.providingOfAll(providerContext, tablename, idList, tableOptional, loadParams, ENTRY_SQL_SUPPLY);
     }
 }

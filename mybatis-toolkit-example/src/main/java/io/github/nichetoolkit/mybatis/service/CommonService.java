@@ -7,9 +7,9 @@ import io.github.nichetoolkit.rice.service.*;
 /**
  * <code>CommonService</code>
  * <p>The common service interface.</p>
- * @see  io.github.nichetoolkit.rice.service.FilterService
- * @see  io.github.nichetoolkit.rice.service.SingleService
  * @author Cyan (snow22314@outlook.com)
+ * @see io.github.nichetoolkit.rice.service.FilterService
+ * @see io.github.nichetoolkit.rice.service.SingleService
  * @since Jdk1.8
  */
 public interface CommonService extends FilterService<CommonModel, CommonFilter, String, String>, SingleService<CommonModel, String, String> {

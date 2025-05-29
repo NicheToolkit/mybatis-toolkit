@@ -1,21 +1,11 @@
 package io.github.nichetoolkit.mybatis.handler;
 
 import com.fasterxml.jackson.databind.type.CollectionType;
-import com.fasterxml.jackson.databind.type.MapType;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import io.github.nichetoolkit.mybatis.fickle.RestFickle;
 import io.github.nichetoolkit.rest.RestOptional;
-import io.github.nichetoolkit.rest.error.natives.UnsupportedErrorException;
-import io.github.nichetoolkit.rest.stream.RestCollectors;
-import io.github.nichetoolkit.rest.stream.RestStream;
 import io.github.nichetoolkit.rest.util.JsonUtils;
-import org.apache.ibatis.type.BaseTypeHandler;
-import org.apache.ibatis.type.JdbcType;
 
-import java.sql.CallableStatement;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

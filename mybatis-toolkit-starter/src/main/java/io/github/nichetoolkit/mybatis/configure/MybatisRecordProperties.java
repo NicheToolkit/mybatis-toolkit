@@ -8,10 +8,10 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 /**
  * <code>MybatisRecordProperties</code>
  * <p>The mybatis record properties class.</p>
- * @see  lombok.Setter
- * @see  lombok.Getter
- * @see  org.springframework.boot.context.properties.ConfigurationProperties
  * @author Cyan (snow22314@outlook.com)
+ * @see lombok.Setter
+ * @see lombok.Getter
+ * @see org.springframework.boot.context.properties.ConfigurationProperties
  * @since Jdk1.8
  */
 @Setter

@@ -52,9 +52,7 @@ public class MybatisFindFickleProvider implements MybatisSqlProvider {
     public static <I> String findDynamicByIdFickle(ProviderContext providerContext, String tablename, I id, RestFickle<?>[] fickleParams) throws RestException {
         OptionalUtils.ofEmpty(id, "The id param of 'findByIdFickle' method cannot be empty!", log, message -> new MybatisParamErrorException("findByIdFickle", "id", message));
         String selectColumns = "The select columns of table with 'findByIdFickle' method cannot be empty!";
-        ConsumerActuator<MybatisTable> tableOptional = table -> {
-            OptionalUtils.ofEmpty(table.selectColumns(), selectColumns, log, message -> new MybatisTableErrorException("findByIdFickle", "selectColumns", message));
-        };
+        ConsumerActuator<MybatisTable> tableOptional = table -> OptionalUtils.ofEmpty(table.selectColumns(), selectColumns, log, message -> new MybatisTableErrorException("findByIdFickle", "selectColumns", message));
         return MybatisSqlProvider.providingOfId(providerContext, tablename, id, tableOptional, fickleParams, ENTRY_SQL_SUPPLY);
     }
 
@@ -76,9 +74,7 @@ public class MybatisFindFickleProvider implements MybatisSqlProvider {
      */
     public static <I> String findDynamicAllFickle(ProviderContext providerContext, String tablename, Collection<I> idList, RestFickle<?>[] fickleParams) throws RestException {
         OptionalUtils.ofEmpty(idList, "The id list param of 'findAllFickle' method cannot be empty!", log, message -> new MybatisParamErrorException("findAllFickle", "idList", message));
-        ConsumerActuator<MybatisTable> tableOptional = table -> {
-            OptionalUtils.ofEmpty(table.selectColumns(), "The select columns of table with 'findAllFickle' method cannot be empty!", message -> new MybatisTableErrorException("findAllFickle", "selectColumns", message));
-        };
+        ConsumerActuator<MybatisTable> tableOptional = table -> OptionalUtils.ofEmpty(table.selectColumns(), "The select columns of table with 'findAllFickle' method cannot be empty!", message -> new MybatisTableErrorException("findAllFickle", "selectColumns", message));
         return MybatisSqlProvider.providingOfAll(providerContext, tablename, idList, tableOptional, fickleParams, ENTRY_SQL_SUPPLY);
     }
 }

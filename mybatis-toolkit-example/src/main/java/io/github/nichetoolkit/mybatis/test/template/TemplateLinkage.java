@@ -10,11 +10,11 @@ import java.util.Objects;
 /**
  * <code>TemplateLinkage</code>
  * <p>The template linkage class.</p>
- * @see  java.io.Serializable
- * @see  lombok.Setter
- * @see  lombok.Getter
- * @see  RestLinkage
  * @author Cyan (snow22314@outlook.com)
+ * @see java.io.Serializable
+ * @see lombok.Setter
+ * @see lombok.Getter
+ * @see io.github.nichetoolkit.mybatis.table.RestLinkage
  * @since Jdk1.8
  */
 @Setter
@@ -25,14 +25,14 @@ public class TemplateLinkage implements Serializable {
     /**
      * <code>linkId1</code>
      * {@link java.lang.String} <p>The <code>linkId1</code> field.</p>
-     * @see  java.lang.String
+     * @see java.lang.String
      */
     private String linkId1;
 
     /**
      * <code>linkId2</code>
      * {@link java.lang.String} <p>The <code>linkId2</code> field.</p>
-     * @see  java.lang.String
+     * @see java.lang.String
      */
     private String linkId2;
 
@@ -48,7 +48,7 @@ public class TemplateLinkage implements Serializable {
      * <p>Instantiates a new template linkage.</p>
      * @param linkId1 {@link java.lang.String} <p>The link id 1 parameter is <code>String</code> type.</p>
      * @param linkId2 {@link java.lang.String} <p>The link id 2 parameter is <code>String</code> type.</p>
-     * @see  java.lang.String
+     * @see java.lang.String
      */
     public TemplateLinkage(String linkId1, String linkId2) {
         this.linkId1 = linkId1;

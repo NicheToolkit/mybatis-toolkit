@@ -22,9 +22,9 @@ import java.util.List;
 /**
  * <code>CommonServiceTest</code>
  * <p>The common service test class.</p>
- * @see  io.github.nichetoolkit.mybatis.MybatisExampleApplicationTests
- * @see  org.junit.jupiter.api.TestMethodOrder
  * @author Cyan (snow22314@outlook.com)
+ * @see io.github.nichetoolkit.mybatis.MybatisExampleApplicationTests
+ * @see org.junit.jupiter.api.TestMethodOrder
  * @since Jdk1.8
  */
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -32,8 +32,8 @@ class CommonServiceTest extends MybatisExampleApplicationTests {
 
     /**
      * <code>commonService</code>
-     * {@link CommonService} <p>The <code>commonService</code> field.</p>
-     * @see  org.springframework.beans.factory.annotation.Autowired
+     * {@link io.github.nichetoolkit.mybatis.service.CommonService} <p>The <code>commonService</code> field.</p>
+     * @see org.springframework.beans.factory.annotation.Autowired
      */
     @Autowired
     private CommonService commonService;
@@ -41,29 +41,29 @@ class CommonServiceTest extends MybatisExampleApplicationTests {
     /**
      * <code>testId</code>
      * {@link java.lang.String} <p>The <code>testId</code> field.</p>
-     * @see  java.lang.String
+     * @see java.lang.String
      */
     private final String testId = "1656549566276964350";
     /**
      * <code>testId1</code>
      * {@link java.lang.String} <p>The <code>testId1</code> field.</p>
-     * @see  java.lang.String
+     * @see java.lang.String
      */
     private final String testId1 = "1656549566276964351";
     /**
      * <code>testId2</code>
      * {@link java.lang.String} <p>The <code>testId2</code> field.</p>
-     * @see  java.lang.String
+     * @see java.lang.String
      */
     private final String testId2 = "1656549566276964352";
 
     /**
      * <code>save</code>
      * <p>The save method.</p>
-     * @see  org.junit.jupiter.api.Order
-     * @see  org.junit.jupiter.api.Test
-     * @see  io.github.nichetoolkit.rest.RestException
      * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
+     * @see org.junit.jupiter.api.Order
+     * @see org.junit.jupiter.api.Test
+     * @see io.github.nichetoolkit.rest.RestException
      */
     @Order(1)
     @Test
@@ -78,10 +78,10 @@ class CommonServiceTest extends MybatisExampleApplicationTests {
     /**
      * <code>saveAll</code>
      * <p>The save all method.</p>
-     * @see  org.junit.jupiter.api.Order
-     * @see  org.junit.jupiter.api.Test
-     * @see  io.github.nichetoolkit.rest.RestException
      * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
+     * @see org.junit.jupiter.api.Order
+     * @see org.junit.jupiter.api.Test
+     * @see io.github.nichetoolkit.rest.RestException
      */
     @Order(2)
     @Test
@@ -101,10 +101,10 @@ class CommonServiceTest extends MybatisExampleApplicationTests {
     /**
      * <code>queryById</code>
      * <p>The query by id method.</p>
-     * @see  org.junit.jupiter.api.Order
-     * @see  org.junit.jupiter.api.Test
-     * @see  io.github.nichetoolkit.rest.RestException
      * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
+     * @see org.junit.jupiter.api.Order
+     * @see org.junit.jupiter.api.Test
+     * @see io.github.nichetoolkit.rest.RestException
      */
     @Order(3)
     @Test
@@ -116,10 +116,10 @@ class CommonServiceTest extends MybatisExampleApplicationTests {
     /**
      * <code>queryAll</code>
      * <p>The query all method.</p>
-     * @see  org.junit.jupiter.api.Order
-     * @see  org.junit.jupiter.api.Test
-     * @see  io.github.nichetoolkit.rest.RestException
      * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
+     * @see org.junit.jupiter.api.Order
+     * @see org.junit.jupiter.api.Test
+     * @see io.github.nichetoolkit.rest.RestException
      */
     @Order(4)
     @Test
@@ -131,10 +131,10 @@ class CommonServiceTest extends MybatisExampleApplicationTests {
     /**
      * <code>queryAllWithFilter</code>
      * <p>The query all with filter method.</p>
-     * @see  org.junit.jupiter.api.Order
-     * @see  org.junit.jupiter.api.Test
-     * @see  io.github.nichetoolkit.rest.RestException
      * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
+     * @see org.junit.jupiter.api.Order
+     * @see org.junit.jupiter.api.Test
+     * @see io.github.nichetoolkit.rest.RestException
      */
     @Order(5)
     @Test
@@ -151,10 +151,10 @@ class CommonServiceTest extends MybatisExampleApplicationTests {
     /**
      * <code>deleteById</code>
      * <p>The delete by id method.</p>
-     * @see  org.junit.jupiter.api.Order
-     * @see  org.junit.jupiter.api.Test
-     * @see  io.github.nichetoolkit.rest.RestException
      * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
+     * @see org.junit.jupiter.api.Order
+     * @see org.junit.jupiter.api.Test
+     * @see io.github.nichetoolkit.rest.RestException
      */
     @Order(6)
     @Test
@@ -165,10 +165,10 @@ class CommonServiceTest extends MybatisExampleApplicationTests {
     /**
      * <code>deleteAll</code>
      * <p>The delete all method.</p>
-     * @see  org.junit.jupiter.api.Order
-     * @see  org.junit.jupiter.api.Test
-     * @see  io.github.nichetoolkit.rest.RestException
      * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
+     * @see org.junit.jupiter.api.Order
+     * @see org.junit.jupiter.api.Test
+     * @see io.github.nichetoolkit.rest.RestException
      */
     @Order(7)
     @Test
@@ -179,10 +179,10 @@ class CommonServiceTest extends MybatisExampleApplicationTests {
     /**
      * <code>deleteAllWithFilter</code>
      * <p>The delete all with filter method.</p>
-     * @see  org.junit.jupiter.api.Order
-     * @see  org.junit.jupiter.api.Test
-     * @see  io.github.nichetoolkit.rest.RestException
      * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
+     * @see org.junit.jupiter.api.Order
+     * @see org.junit.jupiter.api.Test
+     * @see io.github.nichetoolkit.rest.RestException
      */
     @Order(8)
     @Test
