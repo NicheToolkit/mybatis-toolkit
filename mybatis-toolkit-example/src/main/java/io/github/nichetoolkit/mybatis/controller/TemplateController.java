@@ -8,6 +8,7 @@ import io.github.nichetoolkit.rest.RestException;
 import io.github.nichetoolkit.rest.RestResult;
 import io.github.nichetoolkit.rest.userlog.stereotype.RestNotelog;
 import io.github.nichetoolkit.rice.RestPage;
+import io.github.nichetoolkit.rice.RestTablekey;
 import io.github.nichetoolkit.rice.stereotype.RestSkip;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -99,7 +100,7 @@ public class TemplateController {
      */
     @GetMapping("/query/{tablekey}")
     public RestResult<TemplateModel> queryById(TemplateIdentity id, @PathVariable("tablekey") String tablekey) throws RestException {
-        TemplateModel templateModel = templateService.queryById(tablekey, id);
+        TemplateModel templateModel = templateService.queryById(RestTablekey.of(tablekey), id);
         return RestResult.success(templateModel);
     }
 
@@ -137,7 +138,7 @@ public class TemplateController {
      */
     @DeleteMapping("/delete/{tablekey}")
     public RestResult<?> deleteById(TemplateIdentity id, @PathVariable("tablekey") String tablekey) throws RestException {
-        templateService.deleteById(tablekey, id);
+        templateService.deleteById(RestTablekey.of(tablekey), id);
         return RestResult.success();
     }
 

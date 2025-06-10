@@ -11,6 +11,7 @@ import io.github.nichetoolkit.rest.util.DateUtils;
 import io.github.nichetoolkit.rest.util.GeneralUtils;
 import io.github.nichetoolkit.rest.util.JsonUtils;
 import io.github.nichetoolkit.rice.RestPage;
+import io.github.nichetoolkit.rice.RestTablekey;
 import io.github.nichetoolkit.rice.enums.OperateType;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
@@ -160,7 +161,7 @@ class SimpleServiceTest extends MybatisExampleApplicationTests {
     @Order(3)
     @Test
     public void queryById() throws RestException {
-        SimpleModel simpleModel = simpleService.queryById(tablekey, testId);
+        SimpleModel simpleModel = simpleService.queryById(RestTablekey.of(tablekey), testId);
         System.out.println(JsonUtils.parseJson(simpleModel));
     }
 
@@ -175,7 +176,7 @@ class SimpleServiceTest extends MybatisExampleApplicationTests {
     @Order(4)
     @Test
     public void queryAll() throws RestException {
-        List<SimpleModel> simpleModels = simpleService.queryAll(tablekey, Arrays.asList(testId1, testId2));
+        List<SimpleModel> simpleModels = simpleService.queryAll(RestTablekey.of(tablekey), Arrays.asList(testId1, testId2));
         System.out.println(JsonUtils.parseJson(simpleModels));
     }
 
@@ -211,7 +212,7 @@ class SimpleServiceTest extends MybatisExampleApplicationTests {
     @Order(6)
     @Test
     public void queryByLinkId() throws RestException {
-        List<SimpleModel> simpleModels = simpleService.queryByLinkId(tablekey, testLinkId, RestKey.of("linkId"));
+        List<SimpleModel> simpleModels = simpleService.queryByLinkId(RestTablekey.of(tablekey), testLinkId, RestKey.of("linkId"));
         System.out.println(JsonUtils.parseJson(simpleModels));
     }
 
@@ -226,7 +227,7 @@ class SimpleServiceTest extends MybatisExampleApplicationTests {
     @Order(7)
     @Test
     public void queryAllByLinkIds() throws RestException {
-        List<SimpleModel> simpleModels = simpleService.queryAllByLinkIds(tablekey, Arrays.asList(testLinkId1, testLinkId2));
+        List<SimpleModel> simpleModels = simpleService.queryAllByLinkIds(RestTablekey.of(tablekey), Arrays.asList(testLinkId1, testLinkId2));
         System.out.println(JsonUtils.parseJson(simpleModels));
     }
 
@@ -241,7 +242,7 @@ class SimpleServiceTest extends MybatisExampleApplicationTests {
     @Order(8)
     @Test
     public void removeById() throws RestException {
-        simpleService.removeById(tablekey, testId);
+        simpleService.removeById(RestTablekey.of(tablekey), testId);
     }
 
     /**
@@ -255,7 +256,7 @@ class SimpleServiceTest extends MybatisExampleApplicationTests {
     @Order(9)
     @Test
     public void removeAll() throws RestException {
-        simpleService.removeAll(tablekey, Arrays.asList(testId1, testId2));
+        simpleService.removeAll(RestTablekey.of(tablekey), Arrays.asList(testId1, testId2));
     }
 
     /**
@@ -286,7 +287,7 @@ class SimpleServiceTest extends MybatisExampleApplicationTests {
     @Order(11)
     @Test
     public void removeByLinkId() throws RestException {
-        simpleService.removeByLinkId(tablekey, testLinkId);
+        simpleService.removeByLinkId(RestTablekey.of(tablekey), testLinkId);
     }
 
     /**
@@ -300,7 +301,7 @@ class SimpleServiceTest extends MybatisExampleApplicationTests {
     @Order(12)
     @Test
     public void removeAllByLinkIds() throws RestException {
-        simpleService.removeAllByLinkIds(tablekey, Arrays.asList(testLinkId1, testLinkId2));
+        simpleService.removeAllByLinkIds(RestTablekey.of(tablekey), Arrays.asList(testLinkId1, testLinkId2));
     }
 
     /**
@@ -314,7 +315,7 @@ class SimpleServiceTest extends MybatisExampleApplicationTests {
     @Order(13)
     @Test
     public void operateById() throws RestException {
-        simpleService.operateById(tablekey, testId, OperateType.NONE);
+        simpleService.operateById(RestTablekey.of(tablekey), testId, OperateType.NONE);
     }
 
     /**
@@ -328,7 +329,7 @@ class SimpleServiceTest extends MybatisExampleApplicationTests {
     @Order(14)
     @Test
     public void operateAll() throws RestException {
-        simpleService.operateAll(tablekey, Arrays.asList(testId1, testId2), OperateType.NONE);
+        simpleService.operateAll(RestTablekey.of(tablekey), Arrays.asList(testId1, testId2), OperateType.NONE);
     }
 
     /**
@@ -360,7 +361,7 @@ class SimpleServiceTest extends MybatisExampleApplicationTests {
     @Order(16)
     @Test
     public void operateByLinkId() throws RestException {
-        simpleService.operateByLinkId(tablekey, testLinkId, OperateType.NONE);
+        simpleService.operateByLinkId(RestTablekey.of(tablekey), testLinkId, OperateType.NONE);
     }
 
     /**
@@ -374,7 +375,7 @@ class SimpleServiceTest extends MybatisExampleApplicationTests {
     @Order(17)
     @Test
     public void operateAllByLinkIds() throws RestException {
-        simpleService.operateAllByLinkIds(tablekey, Arrays.asList(testLinkId1, testLinkId2), OperateType.NONE);
+        simpleService.operateAllByLinkIds(RestTablekey.of(tablekey), Arrays.asList(testLinkId1, testLinkId2), OperateType.NONE);
     }
 
     /**
@@ -388,7 +389,7 @@ class SimpleServiceTest extends MybatisExampleApplicationTests {
     @Order(18)
     @Test
     public void alertById() throws RestException {
-        simpleService.alertById(tablekey, testId, SimpleStatus.TEST);
+        simpleService.alertById(RestTablekey.of(tablekey), testId, SimpleStatus.TEST);
     }
 
     /**
@@ -402,7 +403,7 @@ class SimpleServiceTest extends MybatisExampleApplicationTests {
     @Order(19)
     @Test
     public void alertAll() throws RestException {
-        simpleService.alertAll(tablekey, Arrays.asList(testId1, testId2), SimpleStatus.TEST);
+        simpleService.alertAll(RestTablekey.of(tablekey), Arrays.asList(testId1, testId2), SimpleStatus.TEST);
     }
 
     /**
@@ -434,7 +435,7 @@ class SimpleServiceTest extends MybatisExampleApplicationTests {
     @Order(21)
     @Test
     public void alertByLinkId() throws RestException {
-        simpleService.alertByLinkId(tablekey, testLinkId, SimpleStatus.TEST);
+        simpleService.alertByLinkId(RestTablekey.of(tablekey), testLinkId, SimpleStatus.TEST);
     }
 
     /**
@@ -448,7 +449,7 @@ class SimpleServiceTest extends MybatisExampleApplicationTests {
     @Order(22)
     @Test
     public void alertAllByLinkIds() throws RestException {
-        simpleService.alertAllByLinkIds(tablekey, Arrays.asList(testLinkId1, testLinkId2), SimpleStatus.TEST);
+        simpleService.alertAllByLinkIds(RestTablekey.of(tablekey), Arrays.asList(testLinkId1, testLinkId2), SimpleStatus.TEST);
     }
 
     /**
@@ -462,7 +463,7 @@ class SimpleServiceTest extends MybatisExampleApplicationTests {
     @Order(23)
     @Test
     public void deleteById() throws RestException {
-        simpleService.deleteById(tablekey, testId);
+        simpleService.deleteById(RestTablekey.of(tablekey), testId);
     }
 
     /**
@@ -476,7 +477,7 @@ class SimpleServiceTest extends MybatisExampleApplicationTests {
     @Order(24)
     @Test
     public void deleteAll() throws RestException {
-        simpleService.deleteAll(tablekey, Arrays.asList(testId1, testId2));
+        simpleService.deleteAll(RestTablekey.of(tablekey), Arrays.asList(testId1, testId2));
     }
 
     /**
@@ -507,7 +508,7 @@ class SimpleServiceTest extends MybatisExampleApplicationTests {
     @Order(26)
     @Test
     public void deleteByLinkId() throws RestException {
-        simpleService.deleteByLinkId(tablekey, testLinkId);
+        simpleService.deleteByLinkId(RestTablekey.of(tablekey), testLinkId);
     }
 
     /**
@@ -521,7 +522,7 @@ class SimpleServiceTest extends MybatisExampleApplicationTests {
     @Order(27)
     @Test
     public void deleteAllByLinkIds() throws RestException {
-        simpleService.deleteAllByLinkIds(tablekey, Arrays.asList(testLinkId1, testLinkId2));
+        simpleService.deleteAllByLinkIds(RestTablekey.of(tablekey), Arrays.asList(testLinkId1, testLinkId2));
     }
 
 }

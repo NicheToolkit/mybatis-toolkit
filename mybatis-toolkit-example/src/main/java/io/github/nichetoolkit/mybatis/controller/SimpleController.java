@@ -7,6 +7,7 @@ import io.github.nichetoolkit.rest.RestException;
 import io.github.nichetoolkit.rest.RestResult;
 import io.github.nichetoolkit.rest.userlog.stereotype.RestNotelog;
 import io.github.nichetoolkit.rice.RestPage;
+import io.github.nichetoolkit.rice.RestTablekey;
 import io.github.nichetoolkit.rice.stereotype.RestSkip;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -98,7 +99,7 @@ public class SimpleController {
      */
     @GetMapping("/query/{tablekey}")
     public RestResult<SimpleModel> queryById(@RequestParam("id") String id, @PathVariable("tablekey") String tablekey) throws RestException {
-        SimpleModel simpleModel = simpleService.queryById(tablekey, id);
+        SimpleModel simpleModel = simpleService.queryById(RestTablekey.of(tablekey), id);
         return RestResult.success(simpleModel);
     }
 
@@ -136,7 +137,7 @@ public class SimpleController {
      */
     @DeleteMapping("/delete/{tablekey}")
     public RestResult<?> deleteById(@RequestParam("id") String id, @PathVariable("tablekey") String tablekey) throws RestException {
-        simpleService.deleteById(tablekey, id);
+        simpleService.deleteById(RestTablekey.of(tablekey), id);
         return RestResult.success();
     }
 
