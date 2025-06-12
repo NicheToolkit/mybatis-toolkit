@@ -1,5 +1,6 @@
 package io.github.nichetoolkit.mybatis;
 
+import io.github.nichetoolkit.rest.RestOrder;
 import org.apache.ibatis.builder.annotation.ProviderContext;
 import org.apache.ibatis.mapping.MappedStatement;
 import org.apache.ibatis.mapping.SqlSource;
@@ -11,10 +12,10 @@ import java.util.List;
  * <code>MybatisSqlSourceProvider</code>
  * <p>The mybatis sql source provider interface.</p>
  * @author Cyan (snow22314@outlook.com)
- * @see io.github.nichetoolkit.mybatis.MybatisOrder
+ * @see io.github.nichetoolkit.rest.RestOrder
  * @since Jdk1.8
  */
-public interface MybatisSqlSourceProvider extends MybatisOrder {
+public interface MybatisSqlSourceProvider extends RestOrder {
 
     /**
      * <code>ofProvide</code>

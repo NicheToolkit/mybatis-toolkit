@@ -2,6 +2,7 @@ package io.github.nichetoolkit.mybatis.defaults;
 
 import io.github.nichetoolkit.mybatis.*;
 import io.github.nichetoolkit.mybatis.error.MybatisSqlScriptLackError;
+import io.github.nichetoolkit.rest.RestOrder;
 import io.github.nichetoolkit.rest.util.GeneralUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.builder.annotation.ProviderContext;
@@ -45,7 +46,7 @@ public class DefaultSqlScriptResolver implements MybatisSqlScriptResolver {
         }
         /* 去重，排序 */
         resolvers = resolvers.stream().distinct()
-                .sorted(Comparator.comparing(wrapper -> ((MybatisOrder) wrapper).getOrder()).reversed())
+                .sorted(Comparator.comparing(wrapper -> ((RestOrder) wrapper).getOrder()).reversed())
                 .collect(Collectors.toList());
         for (MybatisSqlScriptResolver resolver : resolvers) {
             sqlScript = resolver.resolve(context, table, sqlScript);

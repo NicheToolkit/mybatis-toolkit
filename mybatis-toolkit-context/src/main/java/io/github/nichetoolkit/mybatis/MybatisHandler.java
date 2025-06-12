@@ -1,5 +1,6 @@
 package io.github.nichetoolkit.mybatis;
 
+import io.github.nichetoolkit.rest.RestOrder;
 import org.apache.ibatis.builder.annotation.ProviderContext;
 import org.apache.ibatis.mapping.MappedStatement;
 import org.springframework.core.io.support.SpringFactoriesLoader;
@@ -10,10 +11,10 @@ import java.util.List;
  * <code>MybatisHandler</code>
  * <p>The mybatis handler interface.</p>
  * @author Cyan (snow22314@outlook.com)
- * @see io.github.nichetoolkit.mybatis.MybatisOrder
+ * @see io.github.nichetoolkit.rest.RestOrder
  * @since Jdk1.8
  */
-public interface MybatisHandler extends MybatisOrder {
+public interface MybatisHandler extends RestOrder {
 
     /**
      * <code>ofHandle</code>

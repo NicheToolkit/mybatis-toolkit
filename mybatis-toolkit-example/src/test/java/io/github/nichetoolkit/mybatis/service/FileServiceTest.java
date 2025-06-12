@@ -25,10 +25,24 @@ import java.util.List;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class FileServiceTest extends MybatisExampleApplicationTests {
 
+    private String test = "a";
+
     @Order(1)
     @Test
     public void fileCreateTest() throws RestException {
         Path tempFile = FileUtils.createTempFile("test", ".png");
-        log.info("{}",tempFile.toString());
+        log.info("{}", tempFile.toString());
+    }
+
+    @Order(2)
+    @Test
+    public void Test() throws RestException {
+
+        log.info("{}", test = "b");
+        log.info("{}", test1());
+    }
+
+    private String test1() {
+        return test = "c";
     }
 }

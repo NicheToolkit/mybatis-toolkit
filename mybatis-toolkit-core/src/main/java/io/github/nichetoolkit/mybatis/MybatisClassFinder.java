@@ -1,5 +1,6 @@
 package io.github.nichetoolkit.mybatis;
 
+import io.github.nichetoolkit.rest.RestOrder;
 import org.springframework.core.io.support.SpringFactoriesLoader;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
@@ -13,10 +14,10 @@ import java.util.Optional;
  * <code>MybatisClassFinder</code>
  * <p>The mybatis class finder interface.</p>
  * @author Cyan (snow22314@outlook.com)
- * @see io.github.nichetoolkit.mybatis.MybatisOrder
+ * @see io.github.nichetoolkit.rest.RestOrder
  * @since Jdk1.8
  */
-public interface MybatisClassFinder extends MybatisOrder {
+public interface MybatisClassFinder extends RestOrder {
 
     /**
      * <code>findEntityClass</code>

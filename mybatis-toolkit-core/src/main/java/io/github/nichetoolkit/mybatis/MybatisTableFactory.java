@@ -1,5 +1,6 @@
 package io.github.nichetoolkit.mybatis;
 
+import io.github.nichetoolkit.rest.RestOrder;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 
@@ -7,10 +8,10 @@ import org.springframework.lang.Nullable;
  * <code>MybatisTableFactory</code>
  * <p>The mybatis table factory interface.</p>
  * @author Cyan (snow22314@outlook.com)
- * @see io.github.nichetoolkit.mybatis.MybatisOrder
+ * @see io.github.nichetoolkit.rest.RestOrder
  * @since Jdk1.8
  */
-public interface MybatisTableFactory extends MybatisOrder {
+public interface MybatisTableFactory extends RestOrder {
 
     /**
      * <code>supports</code>

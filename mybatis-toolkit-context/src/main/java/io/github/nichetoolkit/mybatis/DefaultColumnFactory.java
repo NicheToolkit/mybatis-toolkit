@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.JavaType;
 import io.github.nichetoolkit.mybatis.configure.MybatisTableProperties;
 import io.github.nichetoolkit.mybatis.consts.ScriptConstants;
 import io.github.nichetoolkit.mybatis.column.*;
+import io.github.nichetoolkit.rest.RestOrder;
 import io.github.nichetoolkit.rest.util.GeneralUtils;
 import org.apache.ibatis.type.JdbcType;
 import org.springframework.lang.NonNull;
@@ -299,10 +300,10 @@ public class DefaultColumnFactory implements MybatisColumnFactory {
         } else {
             mybatisColumn.setColumn(mybatisStyle.columnName(field));
         }
-        RestOrder restOrder = field.getAnnotation(RestOrder.class);
-        if (GeneralUtils.isNotEmpty(restOrder) && !fieldIgnored) {
-            if (GeneralUtils.isNotEmpty(restOrder.value())) {
-                mybatisColumn.setOrder(restOrder.value());
+        RestOrdered restOrdered = field.getAnnotation(RestOrdered.class);
+        if (GeneralUtils.isNotEmpty(restOrdered) && !fieldIgnored) {
+            if (GeneralUtils.isNotEmpty(restOrdered.value())) {
+                mybatisColumn.setOrder(restOrdered.value());
             }
         }
         RestSelect restSelect = field.getAnnotation(RestSelect.class);

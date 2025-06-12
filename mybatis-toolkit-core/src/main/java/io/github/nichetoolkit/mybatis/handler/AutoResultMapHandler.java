@@ -1,7 +1,7 @@
 package io.github.nichetoolkit.mybatis.handler;
 
-import io.github.nichetoolkit.mybatis.MybatisOrder;
 import io.github.nichetoolkit.mybatis.MybatisTable;
+import io.github.nichetoolkit.rest.RestOrder;
 import org.apache.ibatis.mapping.ResultMapping;
 import org.apache.ibatis.session.Configuration;
 import org.apache.ibatis.type.TypeException;
@@ -14,10 +14,10 @@ import java.util.List;
  * <code>AutoResultMapHandler</code>
  * <p>The auto result map handler interface.</p>
  * @author Cyan (snow22314@outlook.com)
- * @see io.github.nichetoolkit.mybatis.MybatisOrder
+ * @see io.github.nichetoolkit.rest.RestOrder
  * @since Jdk1.8
  */
-public interface AutoResultMapHandler extends MybatisOrder {
+public interface AutoResultMapHandler extends RestOrder {
 
     /**
      * <code>getTypeHandlerInstance</code>

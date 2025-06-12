@@ -5,6 +5,7 @@ import io.github.nichetoolkit.mybatis.consts.SQLConstants;
 import io.github.nichetoolkit.mybatis.consts.ScriptConstants;
 import io.github.nichetoolkit.mybatis.error.MybatisAssertErrorException;
 import io.github.nichetoolkit.rest.RestException;
+import io.github.nichetoolkit.rest.RestOrder;
 import io.github.nichetoolkit.rest.actuator.SupplierActuator;
 import io.github.nichetoolkit.rest.util.OptionalUtils;
 import org.apache.ibatis.builder.annotation.ProviderContext;
@@ -13,10 +14,10 @@ import org.apache.ibatis.builder.annotation.ProviderContext;
  * <code>MybatisSqlScript</code>
  * <p>The mybatis sql script interface.</p>
  * @author Cyan (snow22314@outlook.com)
- * @see io.github.nichetoolkit.mybatis.MybatisOrder
+ * @see io.github.nichetoolkit.rest.RestOrder
  * @since Jdk1.8
  */
-public interface MybatisSqlScript extends MybatisOrder {
+public interface MybatisSqlScript extends RestOrder {
 
     /**
      * <code>caching</code>

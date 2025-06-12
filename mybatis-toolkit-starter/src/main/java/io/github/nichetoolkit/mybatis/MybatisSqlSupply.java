@@ -2,16 +2,17 @@ package io.github.nichetoolkit.mybatis;
 
 import io.github.nichetoolkit.mybatis.builder.SqlBuilder;
 import io.github.nichetoolkit.rest.RestException;
+import io.github.nichetoolkit.rest.RestOrder;
 import org.springframework.lang.Nullable;
 
 /**
  * <code>MybatisSqlSupply</code>
  * <p>The mybatis sql supply interface.</p>
  * @author Cyan (snow22314@outlook.com)
- * @see io.github.nichetoolkit.mybatis.MybatisOrder
+ * @see io.github.nichetoolkit.rest.RestOrder
  * @since Jdk1.8
  */
-public interface MybatisSqlSupply extends MybatisOrder {
+public interface MybatisSqlSupply extends RestOrder {
 
     /**
      * <code>supply</code>

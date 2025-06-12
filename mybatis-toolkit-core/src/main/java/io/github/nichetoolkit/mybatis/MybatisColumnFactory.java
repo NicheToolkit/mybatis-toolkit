@@ -1,6 +1,7 @@
 package io.github.nichetoolkit.mybatis;
 
 import com.fasterxml.jackson.databind.JavaType;
+import io.github.nichetoolkit.rest.RestOrder;
 import org.springframework.lang.NonNull;
 
 import java.util.List;
@@ -10,10 +11,10 @@ import java.util.Optional;
  * <code>MybatisColumnFactory</code>
  * <p>The mybatis column factory interface.</p>
  * @author Cyan (snow22314@outlook.com)
- * @see io.github.nichetoolkit.mybatis.MybatisOrder
+ * @see io.github.nichetoolkit.rest.RestOrder
  * @since Jdk1.8
  */
-public interface MybatisColumnFactory extends MybatisOrder {
+public interface MybatisColumnFactory extends RestOrder {
 
     /**
      * <code>supports</code>
