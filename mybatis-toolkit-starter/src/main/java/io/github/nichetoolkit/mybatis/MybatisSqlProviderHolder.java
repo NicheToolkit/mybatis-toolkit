@@ -65,6 +65,11 @@ public class MybatisSqlProviderHolder implements RestServiceFitter<MybatisSqlPro
         INSTANCE = this;
     }
 
+    @Override
+    public int getOrder() {
+        return Integer.MAX_VALUE;
+    }
+
     /**
      * <code>instance</code>
      * <p>The instance method.</p>
