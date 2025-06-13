@@ -1,6 +1,7 @@
 package io.github.nichetoolkit.mybatis.configure;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
@@ -14,7 +15,7 @@ import org.springframework.context.annotation.Configuration;
  * @since Jdk1.8
  */
 @Slf4j
-@Configuration
+@AutoConfiguration
 @ComponentScan(basePackages = {"io.github.nichetoolkit.mybatis"})
 public class MybatisCoreAutoConfigure {
     /**
