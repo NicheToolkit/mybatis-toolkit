@@ -32,7 +32,6 @@ import org.springframework.lang.NonNull;
 @Slf4j
 @AutoConfiguration
 @ComponentScan(basePackages = {"io.github.nichetoolkit.mybatis"})
-@Import({MybatisStarterAutoConfigure.MybatisMapperAutoRegister.class})
 @ImportAutoConfiguration({MybatisMapperAutoConfigure.class})
 public class MybatisStarterAutoConfigure {
 
@@ -85,23 +84,6 @@ public class MybatisStarterAutoConfigure {
     @ConditionalOnMissingBean(DefaultAlertnessHandler.class)
     public DefaultAlertnessHandler<?> defaultAlertnessHandler() {
         return MybatisAlertnessHandler.DEFAULT_HANDLER;
-    }
-
-    /**
-     * <code>MybatisMapperAutoRegister</code>
-     * <p>The mybatis mapper auto register class.</p>
-     * @author Cyan (snow22314@outlook.com)
-     * @see org.springframework.context.annotation.ImportBeanDefinitionRegistrar
-     * @since Jdk1.8
-     */
-    public static class MybatisMapperAutoRegister implements ImportBeanDefinitionRegistrar {
-
-        @Override
-        public void registerBeanDefinitions(@NonNull AnnotationMetadata importingClassMetadata, @NonNull BeanDefinitionRegistry registry) {
-            MybatisClassPathMapperScanner scanner = new MybatisClassPathMapperScanner(registry, false);
-            scanner.registerFilters();
-            scanner.doScan("io.github.nichetoolkit.mybatis");
-        }
     }
 
 }
