@@ -32,6 +32,9 @@ import java.util.stream.Stream;
 
 @Slf4j
 public class MybatisMapperAutoRegister implements BeanFactoryAware, ImportBeanDefinitionRegistrar {
+
+    private static final String BASE_PACKAGES = "io.github.nichetoolkit.mybatis";
+
     private BeanFactory beanFactory;
 
     public MybatisMapperAutoRegister() {
@@ -41,6 +44,9 @@ public class MybatisMapperAutoRegister implements BeanFactoryAware, ImportBeanDe
     public void registerBeanDefinitions(@NonNull AnnotationMetadata importingClassMetadata, @NonNull BeanDefinitionRegistry registry) {
         if (AutoConfigurationPackages.has(this.beanFactory)) {
             List<String> packages = AutoConfigurationPackages.get(this.beanFactory);
+            if (GeneralUtils.isNotEmpty(packages) && !packages.contains(BASE_PACKAGES)) {
+                packages.add(BASE_PACKAGES);
+            }
             registerBeanDefinitionAnnotation(packages,registry);
         } else {
             AnnotationAttributes mapperScanAttrs = AnnotationAttributes.fromMap(importingClassMetadata.getAnnotationAttributes(MybatisMapperScan.class.getName()));
@@ -96,6 +102,9 @@ public class MybatisMapperAutoRegister implements BeanFactoryAware, ImportBeanDe
         basePackages.addAll(Arrays.stream(annoAttrs.getClassArray("basePackageClasses")).map(ClassUtils::getPackageName).collect(Collectors.toList()));
         if (basePackages.isEmpty()) {
             basePackages.add(getDefaultBasePackage(annoMeta));
+        }
+        if (!basePackages.contains(BASE_PACKAGES)) {
+            basePackages.add(BASE_PACKAGES);
         }
 
         String lazyInitialization = annoAttrs.getString("lazyInitialization");
