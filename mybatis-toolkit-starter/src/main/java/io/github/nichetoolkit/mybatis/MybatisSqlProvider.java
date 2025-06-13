@@ -1939,7 +1939,7 @@ public interface MybatisSqlProvider {
      */
     static void keyOfLoad(MybatisTable table, RestLoad[] loadParams, SqlBuilder keyBuilder) throws RestException {
         MybatisTableStyle mybatisTableStyle = MybatisContextHolder.defaultTableStyle();
-        RestOptional.ofEmptyable(loadParams).ifEmptyPresent(params -> {
+        RestOptional.ofEmptyable(loadParams).isNotEmpty(params -> {
             List<String> keys = RestStream.stream(params).filter(RestLoad::getValue).map(RestLoad::getKey).distinct().collect(RestCollectors.toList());
             if (GeneralUtils.isNotEmpty(keys)) {
                 String keysJson = JsonPurityUtils.parseJson(keys);
@@ -1962,7 +1962,7 @@ public interface MybatisSqlProvider {
      */
     static void keyOfFickle(MybatisTable table, RestFickle<?>[] fickleParams, SqlBuilder keyBuilder) throws RestException {
         MybatisTableStyle mybatisTableStyle = MybatisContextHolder.defaultTableStyle();
-        RestOptional.ofEmptyable(fickleParams).ifEmptyPresent(params -> {
+        RestOptional.ofEmptyable(fickleParams).isNotEmpty(params -> {
             keyBuilder.comma().concat().braceLt().sQuote(SQLConstants.SQUARE_LT).comma();
             String ofFickleParams = RestStream.stream(params).map(fickle -> {
                 String fickleName = fickle.getName();
@@ -2281,7 +2281,7 @@ public interface MybatisSqlProvider {
             sqlBuilder.doNothing();
         }
         ExcludedType excludedType = MybatisSqlProviderHolder.defaultExcludedType();
-        optionalUpdate.ifEmptyPresent(updateColumns -> {
+        optionalUpdate.isNotEmpty(updateColumns -> {
             String collect = RestStream.stream(updateColumns).map(column -> column.excluded(excludedType, table.tablename(tablename)))
                     .collect(RestCollectors.joining(SQLConstants.COMMA + SQLConstants.BLANK + SQLConstants.LINEFEED));
             sqlBuilder.append(collect);
