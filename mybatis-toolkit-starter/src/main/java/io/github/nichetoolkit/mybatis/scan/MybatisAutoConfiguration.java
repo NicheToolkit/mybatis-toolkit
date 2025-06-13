@@ -1,6 +1,5 @@
 package io.github.nichetoolkit.mybatis.scan;
 
-import io.github.nichetoolkit.mybatis.configure.MybatisMapperAutoRegister;
 import org.springframework.beans.factory.support.BeanNameGenerator;
 import org.springframework.boot.autoconfigure.AutoConfigurationExcludeFilter;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -28,7 +27,7 @@ import java.lang.annotation.*;
 )
 @Import({MybatisMapperAutoRegister.class})
 @MybatisMapperScan
-public @interface EnableMybatisToolkit {
+public @interface MybatisAutoConfiguration {
     @AliasFor(
             annotation = EnableAutoConfiguration.class
     )

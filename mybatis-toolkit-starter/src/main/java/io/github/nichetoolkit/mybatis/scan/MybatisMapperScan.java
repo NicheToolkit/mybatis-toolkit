@@ -1,8 +1,5 @@
 package io.github.nichetoolkit.mybatis.scan;
 
-import io.github.nichetoolkit.mybatis.configure.MybatisMapperAutoRegister;
-import org.mybatis.spring.annotation.MapperScannerRegistrar;
-import org.mybatis.spring.mapper.MapperFactoryBean;
 import org.springframework.beans.factory.support.BeanNameGenerator;
 import org.springframework.context.annotation.Import;
 import org.springframework.core.annotation.AliasFor;
@@ -13,7 +10,7 @@ import java.lang.annotation.*;
 @Target({ElementType.TYPE})
 @Documented
 @Import({MybatisMapperAutoRegister.class})
-public @interface MybatisMapperScan {
+@interface MybatisMapperScan {
     @AliasFor("basePackages")
     String[] value() default {};
 

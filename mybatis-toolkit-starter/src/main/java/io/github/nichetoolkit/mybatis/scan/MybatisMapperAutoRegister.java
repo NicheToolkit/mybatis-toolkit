@@ -1,11 +1,9 @@
-package io.github.nichetoolkit.mybatis.configure;
+package io.github.nichetoolkit.mybatis.scan;
 
-import io.github.nichetoolkit.mybatis.scan.MybatisMapperScan;
 import io.github.nichetoolkit.rest.util.GeneralUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.annotations.Mapper;
 import org.mybatis.spring.annotation.MapperScannerRegistrar;
-import org.mybatis.spring.mapper.MapperFactoryBean;
 import org.mybatis.spring.mapper.MapperScannerConfigurer;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.BeanWrapper;
