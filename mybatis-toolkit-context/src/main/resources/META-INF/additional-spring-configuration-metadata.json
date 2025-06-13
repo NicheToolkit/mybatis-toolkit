@@ -46,6 +46,13 @@
       "defaultValue": "false"
     },
     {
+      "name": "nichetoolkit.mybatis.table.use-lazy-init",
+      "type": "java.lang.Boolean",
+      "sourceType": "java.lang.Boolean",
+      "description": "the switch of use lazy init on mybatis configuration.",
+      "defaultValue": "false"
+    },
+    {
       "name": "nichetoolkit.mybatis.table.exclude-unused",
       "type": "java.lang.Boolean",
       "sourceType": "java.lang.Boolean",

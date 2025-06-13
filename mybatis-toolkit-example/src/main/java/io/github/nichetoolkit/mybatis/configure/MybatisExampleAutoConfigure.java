@@ -21,7 +21,6 @@ import org.springframework.context.annotation.Configuration;
  */
 @Slf4j
 @Configuration
-@MapperScan("io.github.nichetoolkit.mybatis.mapper")
 @ComponentScan(basePackages = {"io.github.nichetoolkit.mybatis"})
 public class MybatisExampleAutoConfigure {
     /**

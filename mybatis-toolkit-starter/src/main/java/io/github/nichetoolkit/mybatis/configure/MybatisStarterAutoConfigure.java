@@ -98,7 +98,7 @@ public class MybatisStarterAutoConfigure {
 
         @Override
         public void registerBeanDefinitions(@NonNull AnnotationMetadata importingClassMetadata, @NonNull BeanDefinitionRegistry registry) {
-            MybatisRestMapperScanner scanner = new MybatisRestMapperScanner(registry, false);
+            MybatisClassPathMapperScanner scanner = new MybatisClassPathMapperScanner(registry, false);
             scanner.registerFilters();
             scanner.doScan("io.github.nichetoolkit.mybatis");
         }

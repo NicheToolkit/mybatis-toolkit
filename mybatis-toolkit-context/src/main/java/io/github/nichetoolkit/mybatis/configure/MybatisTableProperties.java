@@ -62,6 +62,13 @@ public class MybatisTableProperties {
     private Boolean useOperate = false;
 
     /**
+     * <code>useLazyInit</code>
+     * {@link java.lang.Boolean} <p>The <code>useLazyInit</code> field.</p>
+     * @see java.lang.Boolean
+     */
+    private Boolean useLazyInit = false;
+
+    /**
      * <code>excludeUnused</code>
      * {@link java.lang.Boolean} <p>The <code>excludeUnused</code> field.</p>
      * @see java.lang.Boolean
