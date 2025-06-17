@@ -2,6 +2,7 @@ package io.github.nichetoolkit.mybatis.test.simple;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
+import io.github.nichetoolkit.rest.RestKey;
 import io.github.nichetoolkit.rest.RestValue;
 
 import java.util.Optional;
@@ -73,7 +74,7 @@ public enum SimpleStatus implements RestValue<Integer,String> {
      */
     @JsonCreator
     public static SimpleStatus parseKey(Integer key) {
-        SimpleStatus typeEnum = RestValue.parseKey(SimpleStatus.class, key);
+        SimpleStatus typeEnum = RestKey.parseKey(SimpleStatus.class, key);
         return Optional.ofNullable(typeEnum).orElse(SimpleStatus.NONE);
     }
 
