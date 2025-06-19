@@ -11,6 +11,7 @@ import io.github.nichetoolkit.rice.DefaultInfoEntity;
 import io.github.nichetoolkit.rice.enums.OperateType;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -29,6 +30,7 @@ import java.util.stream.Collectors;
  */
 @Setter
 @Getter
+@SuperBuilder
 @RestEntity(name = "ntr_load")
 public class LoadEntity extends DefaultInfoEntity<LoadEntity, LoadModel, LoadIdentity> {
     /**

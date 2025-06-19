@@ -3,6 +3,7 @@ package io.github.nichetoolkit.mybatis.test.load;
 import io.github.nichetoolkit.mybatis.table.RestEntity;
 import io.github.nichetoolkit.rest.util.BeanUtils;
 import io.github.nichetoolkit.rice.enums.OperateType;
+import lombok.experimental.SuperBuilder;
 
 /**
  * <code>LoadLink1Entity</code>
@@ -12,6 +13,7 @@ import io.github.nichetoolkit.rice.enums.OperateType;
  * @see io.github.nichetoolkit.mybatis.table.RestEntity
  * @since Jdk1.8
  */
+@SuperBuilder
 @RestEntity(name = "ntr_load_link1")
 public class LoadLink1Entity extends LoadLinkEntity<LoadLink1Entity, LoadLink1Model> {
 

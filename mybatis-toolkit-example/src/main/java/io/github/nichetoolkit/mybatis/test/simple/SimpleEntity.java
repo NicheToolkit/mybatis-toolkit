@@ -9,6 +9,7 @@ import io.github.nichetoolkit.rice.RestInfoEntity;
 import io.github.nichetoolkit.rice.enums.OperateType;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 import java.util.Date;
 
@@ -25,6 +26,7 @@ import java.util.Date;
  */
 @Setter
 @Getter
+@SuperBuilder
 @RestEntity(name = "ntr_simple")
 public class SimpleEntity extends RestInfoEntity<SimpleEntity, SimpleModel> {
     /**

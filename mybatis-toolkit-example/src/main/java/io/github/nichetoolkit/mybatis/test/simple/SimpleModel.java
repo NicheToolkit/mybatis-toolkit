@@ -6,12 +6,10 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import io.github.nichetoolkit.rest.util.BeanUtils;
 import io.github.nichetoolkit.rice.RestInfoModel;
 import io.github.nichetoolkit.rice.RestTablekey;
-import io.github.nichetoolkit.rice.enums.OperateType;
-import io.github.nichetoolkit.rice.enums.SaveType;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.lang.NonNull;
 
 import java.util.Date;
 
@@ -29,6 +27,7 @@ import java.util.Date;
  */
 @Setter
 @Getter
+@SuperBuilder
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class SimpleModel extends RestInfoModel<SimpleModel,SimpleEntity> implements RestTablekey<String> {
@@ -73,17 +72,6 @@ public class SimpleModel extends RestInfoModel<SimpleModel,SimpleEntity> impleme
         super(id);
     }
 
-    /**
-     * <code>SimpleModel</code>
-     * <p>Instantiates a new simple model.</p>
-     * @param builder {@link io.github.nichetoolkit.mybatis.test.simple.SimpleModel.Builder} <p>The builder parameter is <code>Builder</code> type.</p>
-     * @see io.github.nichetoolkit.mybatis.test.simple.SimpleModel.Builder
-     */
-    public SimpleModel(Builder builder) {
-        super(builder);
-        this.time = builder.time;
-    }
-
     @Override
     public SimpleEntity toEntity() {
         SimpleEntity entity = new SimpleEntity();
@@ -98,120 +86,4 @@ public class SimpleModel extends RestInfoModel<SimpleModel,SimpleEntity> impleme
         return "_dynamic";
     }
 
-    /**
-     * <code>Builder</code>
-     * <p>The builder class.</p>
-     * @author Cyan (snow22314@outlook.com)
-     * @see io.github.nichetoolkit.rice.RestInfoModel.Builder
-     * @since Jdk1.8
-     */
-    public static class Builder extends RestInfoModel.Builder<SimpleModel,SimpleEntity> {
-        /**
-         * <code>time</code>
-         * {@link java.util.Date} <p>The <code>time</code> field.</p>
-         * @see java.util.Date
-         */
-        protected Date time;
-
-        /**
-         * <code>Builder</code>
-         * <p>Instantiates a new builder.</p>
-         */
-        public Builder() {
-        }
-
-        /**
-         * <code>time</code>
-         * <p>The time method.</p>
-         * @param time {@link java.lang.Long} <p>The time parameter is <code>Long</code> type.</p>
-         * @return {@link io.github.nichetoolkit.mybatis.test.simple.SimpleModel.Builder} <p>The time return object is <code>Builder</code> type.</p>
-         * @see java.lang.Long
-         */
-        public Builder time(Long time) {
-            this.time = new Date(time);
-            return this;
-        }
-
-        /**
-         * <code>time</code>
-         * <p>The time method.</p>
-         * @param time {@link java.util.Date} <p>The time parameter is <code>Date</code> type.</p>
-         * @return {@link io.github.nichetoolkit.mybatis.test.simple.SimpleModel.Builder} <p>The time return object is <code>Builder</code> type.</p>
-         * @see java.util.Date
-         */
-        public Builder time(Date time) {
-            this.time = time;
-            return this;
-        }
-
-        @Override
-        public Builder id(String id) {
-            this.id = id;
-            return this;
-        }
-
-        @Override
-        public Builder name(String name) {
-            this.name = name;
-            return this;
-        }
-
-        @Override
-        public Builder description(String description) {
-            this.description = description;
-            return this;
-        }
-
-        @Override
-        public Builder createTime(Date createTime) {
-            this.createTime = createTime;
-            return this;
-        }
-
-        @Override
-        public Builder createTime(@NonNull Long createTime) {
-            this.createTime = new Date(createTime);
-            return this;
-        }
-
-        @Override
-        public Builder updateTime(Date updateTime) {
-            this.updateTime = updateTime;
-            return this;
-        }
-
-        @Override
-        public Builder updateTime(@NonNull Long updateTime) {
-            this.updateTime = new Date(updateTime);
-            return this;
-        }
-
-        @Override
-        public Builder operate(OperateType operate) {
-            this.operate = operate;
-            return this;
-        }
-
-        @Override
-        public Builder operate(Integer operate) {
-            this.operate = OperateType.parseKey(operate);
-            return this;
-        }
-
-        @Override
-        public Builder save(SaveType save) {
-            this.save = save;
-            return this;
-        }
-        @Override
-        public Builder save(Integer save) {
-            this.save = SaveType.parseKey(save);
-            return this;
-        }
-
-        @Override
-        public SimpleModel build() {
-            return new SimpleModel(this);
-        }
-    }
 }

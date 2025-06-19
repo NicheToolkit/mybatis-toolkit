@@ -3,6 +3,7 @@ package io.github.nichetoolkit.mybatis.test.template;
 import io.github.nichetoolkit.mybatis.table.RestLinkage;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -19,6 +20,7 @@ import java.util.Objects;
  */
 @Setter
 @Getter
+@SuperBuilder
 @RestLinkage
 public class TemplateLinkage implements Serializable {
 

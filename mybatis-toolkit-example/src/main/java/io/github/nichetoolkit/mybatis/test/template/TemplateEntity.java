@@ -9,6 +9,7 @@ import io.github.nichetoolkit.mybatis.table.RestEntity;
 import io.github.nichetoolkit.rice.enums.OperateType;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 import java.util.Date;
 
@@ -24,6 +25,7 @@ import java.util.Date;
  */
 @Setter
 @Getter
+@SuperBuilder
 @RestEntity(name = "ntr_template")
 public class TemplateEntity extends DefaultInfoEntity<TemplateEntity, TemplateModel, TemplateIdentity> {
     /**

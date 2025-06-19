@@ -6,6 +6,7 @@ import io.github.nichetoolkit.rice.RestInfoEntity;
 import io.github.nichetoolkit.mybatis.column.RestUpdate;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 import java.util.Date;
 
@@ -24,6 +25,7 @@ import java.util.Date;
  */
 @Setter
 @Getter
+@SuperBuilder
 @RestEntity(name = "ntr_common")
 @RestExcludes({"updateTime","createTime"})
 @RestUpdateIgnores({"name","description","updateTime"})

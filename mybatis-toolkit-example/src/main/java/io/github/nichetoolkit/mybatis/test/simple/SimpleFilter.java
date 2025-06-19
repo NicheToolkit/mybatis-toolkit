@@ -5,6 +5,8 @@ import io.github.nichetoolkit.rest.RestException;
 import io.github.nichetoolkit.rest.util.GeneralUtils;
 import io.github.nichetoolkit.rice.RestFilter;
 import io.github.nichetoolkit.rice.filter.StatusFilter;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 import org.springframework.lang.NonNull;
 
 import java.util.*;
@@ -15,8 +17,12 @@ import java.util.*;
  * @author Cyan (snow22314@outlook.com)
  * @see io.github.nichetoolkit.rice.RestFilter
  * @see io.github.nichetoolkit.rice.filter.StatusFilter
+ * @see lombok.experimental.SuperBuilder
+ * @see lombok.NoArgsConstructor
  * @since Jdk1.8
  */
+@SuperBuilder
+@NoArgsConstructor
 public class SimpleFilter extends RestFilter implements StatusFilter<SimpleStatus> {
 
     /**

@@ -4,6 +4,7 @@ import io.github.nichetoolkit.mybatis.column.RestLoadKey;
 import io.github.nichetoolkit.mybatis.table.RestLinkage;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -20,6 +21,7 @@ import java.util.Objects;
  */
 @Setter
 @Getter
+@SuperBuilder
 @RestLinkage
 public class LoadLinkage implements Serializable {
     /**

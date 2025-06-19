@@ -9,6 +9,7 @@ import io.github.nichetoolkit.rest.util.BeanUtils;
 import io.github.nichetoolkit.rice.RestInfoEntity;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 
 import java.util.*;
@@ -27,6 +28,7 @@ import java.util.*;
  */
 @Setter
 @Getter
+@SuperBuilder
 @RestEntity(name = "ntr_fickle_entry")
 @RestExcludes({"updateTime","createTime"})
 public class FickleEntryEntity extends RestInfoEntity<FickleEntryEntity, FickleEntryModel> {

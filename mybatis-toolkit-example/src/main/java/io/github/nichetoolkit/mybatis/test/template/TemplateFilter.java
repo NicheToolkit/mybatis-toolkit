@@ -4,6 +4,7 @@ import io.github.nichetoolkit.rest.RestException;
 import io.github.nichetoolkit.rest.util.GeneralUtils;
 import io.github.nichetoolkit.rice.DefaultFilter;
 import io.github.nichetoolkit.rice.filter.StatusFilter;
+import lombok.experimental.SuperBuilder;
 import org.springframework.lang.NonNull;
 
 import java.util.*;
@@ -16,6 +17,7 @@ import java.util.*;
  * @see io.github.nichetoolkit.rice.filter.StatusFilter
  * @since Jdk1.8
  */
+@SuperBuilder
 public class TemplateFilter extends DefaultFilter<TemplateIdentity,String> implements StatusFilter<TemplateAlertness> {
 
     /**

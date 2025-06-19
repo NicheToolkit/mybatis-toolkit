@@ -3,6 +3,7 @@ package io.github.nichetoolkit.mybatis.test.template;
 import io.github.nichetoolkit.mybatis.table.RestAlertness;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -20,6 +21,7 @@ import java.util.Optional;
  */
 @Setter
 @Getter
+@SuperBuilder
 @RestAlertness
 public class TemplateAlertness implements Serializable {
 

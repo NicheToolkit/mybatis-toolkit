@@ -4,6 +4,7 @@ import io.github.nichetoolkit.mybatis.column.RestUnionKey;
 import io.github.nichetoolkit.mybatis.table.RestIdentity;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -20,6 +21,7 @@ import java.util.Objects;
  */
 @Setter
 @Getter
+@SuperBuilder
 @RestIdentity
 public class LoadIdentity implements Serializable {
     /**
