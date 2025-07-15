@@ -68,7 +68,7 @@ public class MybatisMapperAutoConfigure {
      * @since Jdk1.8
      */
     @AutoConfiguration
-    @ConditionalOnProperty(prefix = "nichetoolkit.mybatis.record", name="enabled", havingValue = "true", matchIfMissing = true)
+    @ConditionalOnProperty(prefix = "nichetoolkit.mybatis.record", name="enabled", havingValue = "true")
     public static class MybatisRecordAutoRegister implements InitializingBean {
         /**
          * <code>mapperFactory</code>
