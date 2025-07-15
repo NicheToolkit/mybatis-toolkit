@@ -3,6 +3,7 @@ package io.github.nichetoolkit.mybatis;
 import io.github.nichetoolkit.mybatis.configure.MybatisCacheProperties;
 import io.github.nichetoolkit.mybatis.configure.MybatisTableProperties;
 import io.github.nichetoolkit.mybatis.enums.StyleType;
+import io.github.nichetoolkit.rest.fitter.RestFulfilledFitter;
 import io.github.nichetoolkit.rest.util.JsonUtils;
 import io.github.nichetoolkit.rice.RestServiceFitter;
 import lombok.Setter;
@@ -19,14 +20,14 @@ import java.util.concurrent.ConcurrentHashMap;
  * <code>MybatisContextHolder</code>
  * <p>The mybatis context holder class.</p>
  * @author Cyan (snow22314@outlook.com)
- * @see io.github.nichetoolkit.rice.RestServiceFitter
+ * @see io.github.nichetoolkit.rest.fitter.RestFulfilledFitter
  * @see lombok.extern.slf4j.Slf4j
  * @see lombok.Setter
  * @since Jdk1.8
  */
 @Slf4j
 @Setter
-public class MybatisContextHolder implements RestServiceFitter<MybatisContextHolder> {
+public class MybatisContextHolder implements RestFulfilledFitter<MybatisContextHolder> {
     /**
      * <code>tableProperties</code>
      * {@link io.github.nichetoolkit.mybatis.configure.MybatisTableProperties} <p>The <code>tableProperties</code> field.</p>

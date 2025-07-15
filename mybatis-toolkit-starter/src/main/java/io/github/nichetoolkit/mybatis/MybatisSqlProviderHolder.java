@@ -6,6 +6,7 @@ import io.github.nichetoolkit.mybatis.enums.ExcludedType;
 import io.github.nichetoolkit.mybatis.enums.StyleType;
 import io.github.nichetoolkit.mybatis.error.MybatisProviderLackError;
 import io.github.nichetoolkit.rest.RestOptional;
+import io.github.nichetoolkit.rest.fitter.RestFulfilledFitter;
 import io.github.nichetoolkit.rest.util.GeneralUtils;
 import io.github.nichetoolkit.rest.util.OptionalUtils;
 import io.github.nichetoolkit.rice.RestServiceFitter;
@@ -23,14 +24,14 @@ import java.util.concurrent.ConcurrentHashMap;
  * <code>MybatisSqlProviderHolder</code>
  * <p>The mybatis sql provider holder class.</p>
  * @author Cyan (snow22314@outlook.com)
- * @see io.github.nichetoolkit.rice.RestServiceFitter
+ * @see io.github.nichetoolkit.rest.fitter.RestFulfilledFitter
  * @see lombok.extern.slf4j.Slf4j
  * @see lombok.Setter
  * @since Jdk1.8
  */
 @Slf4j
 @Setter
-public class MybatisSqlProviderHolder implements RestServiceFitter<MybatisSqlProviderHolder> {
+public class MybatisSqlProviderHolder implements RestFulfilledFitter<MybatisSqlProviderHolder> {
     /**
      * <code>SQL_PROVIDER_CACHES</code>
      * {@link java.util.Map} <p>The constant <code>SQL_PROVIDER_CACHES</code> field.</p>
