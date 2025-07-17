@@ -25,6 +25,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * <p>The mybatis sql provider holder class.</p>
  * @author Cyan (snow22314@outlook.com)
  * @see io.github.nichetoolkit.rest.fitter.RestFulfilledFitter
+ * @see io.github.nichetoolkit.rice.RestServiceFitter
  * @see lombok.extern.slf4j.Slf4j
  * @see lombok.Setter
  * @since Jdk1.8
