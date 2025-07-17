@@ -3,7 +3,7 @@ package io.github.nichetoolkit.mybatis.configure;
 import io.github.nichetoolkit.mybatis.MybatisAlertnessHandler;
 import io.github.nichetoolkit.mybatis.MybatisColumnResolver;
 import io.github.nichetoolkit.mybatis.MybatisIdentityHandler;
-import io.github.nichetoolkit.rest.RestI18nBasename;
+import io.github.nichetoolkit.rest.RestI18n;
 import io.github.nichetoolkit.rice.DefaultAlertnessHandler;
 import io.github.nichetoolkit.rice.DefaultColumnResolver;
 import io.github.nichetoolkit.rice.DefaultIdentityHandler;
@@ -49,12 +49,12 @@ public class MybatisStarterAutoConfigure {
     /**
      * <code>mybatisI18nBasename</code>
      * <p>The mybatis i 18 n basename method.</p>
-     * @return {@link io.github.nichetoolkit.rest.RestI18nBasename} <p>The mybatis i 18 n basename return object is <code>RestI18nBasename</code> type.</p>
-     * @see io.github.nichetoolkit.rest.RestI18nBasename
+     * @return {@link io.github.nichetoolkit.rest.RestI18n} <p>The mybatis i 18 n basename return object is <code>RestI18n</code> type.</p>
+     * @see io.github.nichetoolkit.rest.RestI18n
      * @see org.springframework.context.annotation.Bean
      */
     @Bean
-    public RestI18nBasename mybatisI18nBasename() {
+    public RestI18n mybatisI18nBasename() {
         return () -> Collections.singleton(MYBATIS_I18N);
     }
 
