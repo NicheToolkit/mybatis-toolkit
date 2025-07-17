@@ -36,7 +36,7 @@ public class MybatisStarterAutoConfigure {
      * {@link java.lang.String} <p>The constant <code>MYBATIS_I18N</code> field.</p>
      * @see java.lang.String
      */
-    private static final String MYBATIS_I18N = "mybatis-i18n";
+    private static final String MYBATIS_I18N = "mybatis-i18n/messages";
 
     /**
      * <code>MybatisStarterAutoConfigure</code>
