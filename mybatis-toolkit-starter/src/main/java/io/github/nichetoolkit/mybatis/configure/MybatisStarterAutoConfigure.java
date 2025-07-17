@@ -3,20 +3,18 @@ package io.github.nichetoolkit.mybatis.configure;
 import io.github.nichetoolkit.mybatis.MybatisAlertnessHandler;
 import io.github.nichetoolkit.mybatis.MybatisColumnResolver;
 import io.github.nichetoolkit.mybatis.MybatisIdentityHandler;
+import io.github.nichetoolkit.rest.RestI18nBasename;
 import io.github.nichetoolkit.rice.DefaultAlertnessHandler;
 import io.github.nichetoolkit.rice.DefaultColumnResolver;
 import io.github.nichetoolkit.rice.DefaultIdentityHandler;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Import;
-import org.springframework.context.annotation.ImportBeanDefinitionRegistrar;
-import org.springframework.core.type.AnnotationMetadata;
-import org.springframework.lang.NonNull;
+
+import java.util.Collections;
 
 /**
  * <code>MybatisStarterAutoConfigure</code>
@@ -25,7 +23,6 @@ import org.springframework.lang.NonNull;
  * @see lombok.extern.slf4j.Slf4j
  * @see org.springframework.boot.autoconfigure.AutoConfiguration
  * @see org.springframework.context.annotation.ComponentScan
- * @see org.springframework.context.annotation.Import
  * @see org.springframework.boot.autoconfigure.ImportAutoConfiguration
  * @since Jdk1.8
  */
@@ -34,6 +31,12 @@ import org.springframework.lang.NonNull;
 @ComponentScan(basePackages = {"io.github.nichetoolkit.mybatis"})
 @ImportAutoConfiguration({MybatisMapperAutoConfigure.class})
 public class MybatisStarterAutoConfigure {
+    /**
+     * <code>MYBATIS_I18N</code>
+     * {@link java.lang.String} <p>The constant <code>MYBATIS_I18N</code> field.</p>
+     * @see java.lang.String
+     */
+    private static final String MYBATIS_I18N = "mybatis-i18n";
 
     /**
      * <code>MybatisStarterAutoConfigure</code>
@@ -42,6 +45,19 @@ public class MybatisStarterAutoConfigure {
     public MybatisStarterAutoConfigure() {
         log.debug("The auto configuration for [mybatis-starter] initiated");
     }
+
+    /**
+     * <code>mybatisI18nBasename</code>
+     * <p>The mybatis i 18 n basename method.</p>
+     * @return {@link io.github.nichetoolkit.rest.RestI18nBasename} <p>The mybatis i 18 n basename return object is <code>RestI18nBasename</code> type.</p>
+     * @see io.github.nichetoolkit.rest.RestI18nBasename
+     * @see org.springframework.context.annotation.Bean
+     */
+    @Bean
+    public RestI18nBasename mybatisI18nBasename() {
+        return () -> Collections.singleton(MYBATIS_I18N);
+    }
+
 
     /**
      * <code>defaultIdentityHandler</code>
