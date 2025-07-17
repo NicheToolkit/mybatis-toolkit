@@ -31,7 +31,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 @Slf4j
 @Setter
-public class MybatisSqlProviderHolder implements RestFulfilledFitter<MybatisSqlProviderHolder> {
+public class MybatisSqlProviderHolder implements RestFulfilledFitter<MybatisSqlProviderHolder>,RestServiceFitter<MybatisSqlProviderHolder> {
     /**
      * <code>SQL_PROVIDER_CACHES</code>
      * {@link java.util.Map} <p>The constant <code>SQL_PROVIDER_CACHES</code> field.</p>

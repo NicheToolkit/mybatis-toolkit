@@ -17,8 +17,8 @@ import org.springframework.context.annotation.ComponentScan;
  * @since Jdk1.8
  */
 @SpringBootApplication
-@ComponentScan(basePackages = "io.github.nichetoolkit")
 @MybatisAutoConfiguration
+@ComponentScan(basePackages = "io.github.nichetoolkit")
 public class MybatisExampleApplication extends SpringBootServletInitializer {
 
     /**

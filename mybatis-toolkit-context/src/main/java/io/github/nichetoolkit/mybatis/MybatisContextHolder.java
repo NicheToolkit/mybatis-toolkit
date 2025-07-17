@@ -27,7 +27,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 @Slf4j
 @Setter
-public class MybatisContextHolder implements RestFulfilledFitter<MybatisContextHolder> {
+public class MybatisContextHolder implements RestFulfilledFitter<MybatisContextHolder>,RestServiceFitter<MybatisContextHolder> {
     /**
      * <code>tableProperties</code>
      * {@link io.github.nichetoolkit.mybatis.configure.MybatisTableProperties} <p>The <code>tableProperties</code> field.</p>
