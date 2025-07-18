@@ -1,18 +1,20 @@
 package io.github.nichetoolkit.mybatis.configure;
 
 import io.github.nichetoolkit.mybatis.MybatisAlertnessHandler;
+import io.github.nichetoolkit.mybatis.MybatisAutoLogicMark;
 import io.github.nichetoolkit.mybatis.MybatisColumnResolver;
 import io.github.nichetoolkit.mybatis.MybatisIdentityHandler;
 import io.github.nichetoolkit.rest.RestI18n;
 import io.github.nichetoolkit.rice.DefaultAlertnessHandler;
 import io.github.nichetoolkit.rice.DefaultColumnResolver;
 import io.github.nichetoolkit.rice.DefaultIdentityHandler;
+import io.github.nichetoolkit.rice.configure.RiceServiceProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
+import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 
 import java.util.Collections;
 
@@ -22,14 +24,14 @@ import java.util.Collections;
  * @author Cyan (snow22314@outlook.com)
  * @see lombok.extern.slf4j.Slf4j
  * @see org.springframework.boot.autoconfigure.AutoConfiguration
- * @see org.springframework.context.annotation.ComponentScan
+ * @see org.springframework.boot.autoconfigure.AutoConfigureAfter
  * @see org.springframework.boot.autoconfigure.ImportAutoConfiguration
  * @since Jdk1.8
  */
 @Slf4j
 @AutoConfiguration
-@ComponentScan(basePackages = {"io.github.nichetoolkit.mybatis"})
-@ImportAutoConfiguration({MybatisMapperAutoConfigure.class})
+@AutoConfigureAfter(MybatisContextAutoConfigure.class)
+@ImportAutoConfiguration(MybatisMapperAutoConfigure.class)
 public class MybatisStarterAutoConfigure {
     /**
      * <code>MYBATIS_I18N</code>
@@ -101,5 +103,23 @@ public class MybatisStarterAutoConfigure {
     public DefaultAlertnessHandler<?> defaultAlertnessHandler() {
         return MybatisAlertnessHandler.DEFAULT_HANDLER;
     }
+
+
+    /**
+     * <code>autoLogicMark</code>
+     * <p>The auto logic mark method.</p>
+     * @param serviceProperties {@link io.github.nichetoolkit.rice.configure.RiceServiceProperties} <p>The service properties parameter is <code>RiceServiceProperties</code> type.</p>
+     * @return {@link io.github.nichetoolkit.mybatis.MybatisAutoLogicMark} <p>The auto logic mark return object is <code>MybatisAutoLogicMark</code> type.</p>
+     * @see io.github.nichetoolkit.rice.configure.RiceServiceProperties
+     * @see io.github.nichetoolkit.mybatis.MybatisAutoLogicMark
+     * @see org.springframework.context.annotation.Bean
+     * @see org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
+     */
+    @Bean
+    @ConditionalOnMissingBean(MybatisAutoLogicMark.class)
+    public MybatisAutoLogicMark autoLogicMark(RiceServiceProperties serviceProperties) {
+        return new MybatisAutoLogicMark(serviceProperties);
+    }
+
 
 }

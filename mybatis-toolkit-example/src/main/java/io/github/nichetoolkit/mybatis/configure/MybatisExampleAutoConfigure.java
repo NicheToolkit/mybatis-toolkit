@@ -4,25 +4,25 @@ import io.github.nichetoolkit.mybatis.test.template.TemplateIdentity;
 import io.github.nichetoolkit.rest.identity.IdentityUtils;
 import io.github.nichetoolkit.rice.resolver.RestIdResolver;
 import lombok.extern.slf4j.Slf4j;
-import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
+import org.springframework.boot.autoconfigure.AutoConfigureAfter;
+import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
 
 /**
  * <code>MybatisExampleAutoConfigure</code>
  * <p>The mybatis example auto configure class.</p>
  * @author Cyan (snow22314@outlook.com)
  * @see lombok.extern.slf4j.Slf4j
- * @see org.springframework.context.annotation.Configuration
- * @see org.mybatis.spring.annotation.MapperScan
- * @see org.springframework.context.annotation.ComponentScan
+ * @see org.springframework.boot.autoconfigure.AutoConfiguration
+ * @see org.springframework.boot.autoconfigure.AutoConfigureAfter
  * @since Jdk1.8
  */
 @Slf4j
 @AutoConfiguration
-@ComponentScan(basePackages = {"io.github.nichetoolkit.mybatis"})
+@AutoConfigureAfter({MybatisStarterAutoConfigure.class})
+@ImportAutoConfiguration(DatasourceAutoConfigure.class)
 public class MybatisExampleAutoConfigure {
     /**
      * <code>MybatisExampleAutoConfigure</code>

@@ -1,11 +1,10 @@
 package io.github.nichetoolkit.mybatis;
 
-import io.github.nichetoolkit.mybatis.scan.MybatisAutoConfiguration;
+import io.github.nichetoolkit.mybatis.scan.EnableMybatisConfiguration;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
-import org.springframework.context.annotation.ComponentScan;
 
 /**
  * <code>MybatisExampleApplication</code>
@@ -13,12 +12,11 @@ import org.springframework.context.annotation.ComponentScan;
  * @author Cyan (snow22314@outlook.com)
  * @see org.springframework.boot.web.servlet.support.SpringBootServletInitializer
  * @see org.springframework.boot.autoconfigure.SpringBootApplication
- * @see org.springframework.context.annotation.ComponentScan
+ * @see io.github.nichetoolkit.mybatis.scan.EnableMybatisConfiguration
  * @since Jdk1.8
  */
 @SpringBootApplication
-@MybatisAutoConfiguration
-@ComponentScan(basePackages = "io.github.nichetoolkit")
+@EnableMybatisConfiguration
 public class MybatisExampleApplication extends SpringBootServletInitializer {
 
     /**

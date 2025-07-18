@@ -1,22 +1,21 @@
 package io.github.nichetoolkit.mybatis.configure;
 
+import io.github.nichetoolkit.rice.configure.RiceContextAutoConfigure;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 
 /**
  * <code>MybatisCoreAutoConfigure</code>
  * <p>The mybatis core auto configure class.</p>
  * @author Cyan (snow22314@outlook.com)
  * @see lombok.extern.slf4j.Slf4j
- * @see org.springframework.context.annotation.Configuration
- * @see org.springframework.context.annotation.ComponentScan
+ * @see org.springframework.boot.autoconfigure.AutoConfiguration
  * @since Jdk1.8
  */
 @Slf4j
 @AutoConfiguration
-@ComponentScan(basePackages = {"io.github.nichetoolkit.mybatis"})
+@AutoConfigureAfter(RiceContextAutoConfigure.class)
 public class MybatisCoreAutoConfigure {
     /**
      * <code>MybatisCoreAutoConfigure</code>

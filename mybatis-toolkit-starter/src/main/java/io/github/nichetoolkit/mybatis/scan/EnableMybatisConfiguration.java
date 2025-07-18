@@ -27,7 +27,7 @@ import java.lang.annotation.*;
 )
 @Import({MybatisMapperAutoRegister.class})
 @MybatisMapperScan
-public @interface MybatisAutoConfiguration {
+public @interface EnableMybatisConfiguration {
     @AliasFor(
             annotation = EnableAutoConfiguration.class
     )

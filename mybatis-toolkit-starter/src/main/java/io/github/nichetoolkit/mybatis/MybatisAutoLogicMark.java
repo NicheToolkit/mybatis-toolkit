@@ -4,17 +4,14 @@ import io.github.nichetoolkit.rest.RestException;
 import io.github.nichetoolkit.rest.identity.IdentityUtils;
 import io.github.nichetoolkit.rice.DefaultLogicMark;
 import io.github.nichetoolkit.rice.configure.RiceServiceProperties;
-import org.springframework.stereotype.Component;
 
 /**
  * <code>MybatisAutoLogicMark</code>
  * <p>The mybatis auto logic mark class.</p>
  * @author Cyan (snow22314@outlook.com)
  * @see io.github.nichetoolkit.rice.DefaultLogicMark
- * @see org.springframework.stereotype.Component
  * @since Jdk1.8
  */
-@Component
 public class MybatisAutoLogicMark extends DefaultLogicMark {
 
     /**
