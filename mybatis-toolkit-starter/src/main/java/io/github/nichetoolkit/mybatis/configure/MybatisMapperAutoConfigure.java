@@ -12,6 +12,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 
 /**
  * <code>MybatisMapperAutoConfigure</code>
@@ -24,6 +25,7 @@ import org.springframework.context.annotation.Bean;
  */
 @Slf4j
 @AutoConfiguration
+@ComponentScan("io.github.nichetoolkit.mybatis.provider")
 @EnableConfigurationProperties({MybatisRecordProperties.class})
 public class MybatisMapperAutoConfigure {
 

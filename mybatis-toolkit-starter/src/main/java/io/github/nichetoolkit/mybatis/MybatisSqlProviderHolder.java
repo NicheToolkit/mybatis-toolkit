@@ -12,12 +12,12 @@ import io.github.nichetoolkit.rest.util.OptionalUtils;
 import io.github.nichetoolkit.rice.RestServiceFitter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.core.io.support.SpringFactoriesLoader;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -49,12 +49,10 @@ public class MybatisSqlProviderHolder implements RestFulfilledFitter<MybatisSqlP
     private MybatisTableProperties tableProperties;
     /**
      * <code>sqlProviders</code>
-     * {@link java.util.List} <p>The <code>sqlProviders</code> field.</p>
-     * @see java.util.List
-     * @see javax.annotation.Resource
+     * {@link java.util.Map} <p>The <code>sqlProviders</code> field.</p>
+     * @see java.util.Map
      */
-    @Resource
-    private List<MybatisSqlProvider> sqlProviders;
+    private Map<Class<? extends MybatisSqlProvider>,MybatisSqlProvider> sqlProviders = new HashMap<>();
 
     /**
      * <code>INSTANCE</code>
@@ -65,6 +63,25 @@ public class MybatisSqlProviderHolder implements RestFulfilledFitter<MybatisSqlP
     @Override
     public void afterPropertiesSet() {
         INSTANCE = this;
+    }
+
+    /**
+     * <code>setSqlProviders</code>
+     * <p>The set sql providers setter method.</p>
+     * @param sqlProviders {@link java.util.Collection} <p>The sql providers parameter is <code>Collection</code> type.</p>
+     * @see java.util.Collection
+     * @see javax.annotation.Resource
+     * @see org.springframework.boot.autoconfigure.condition.ConditionalOnBean
+     */
+    @Resource
+    @ConditionalOnBean(MybatisSqlProvider.class)
+    public void setSqlProviders(Collection<MybatisSqlProvider> sqlProviders) {
+        if (GeneralUtils.isNotEmpty(sqlProviders)) {
+            sqlProviders.forEach(sqlProvider -> {
+                this.sqlProviders.putIfAbsent(sqlProvider.getClass(),sqlProvider);
+            });
+        }
+
     }
 
     @Override
@@ -83,6 +100,7 @@ public class MybatisSqlProviderHolder implements RestFulfilledFitter<MybatisSqlP
 
     @Override
     public void afterAutowirePropertiesSet() {
+        log.info("[MybatisSqlProviderHolder] > sql providers size: {}", sqlProviders.size());
         loadOfSqlProviders();
         defaultSqlProviders();
     }
@@ -94,10 +112,10 @@ public class MybatisSqlProviderHolder implements RestFulfilledFitter<MybatisSqlP
     private void loadOfSqlProviders() {
         List<MybatisSqlProvider> sqlProvidersOfServiceLoader = SpringFactoriesLoader.loadFactories(MybatisSqlProvider.class, null);
         if (GeneralUtils.isNotEmpty(sqlProvidersOfServiceLoader)) {
-            this.sqlProviders.addAll(sqlProvidersOfServiceLoader);
+            setSqlProviders(sqlProvidersOfServiceLoader);
         }
         if (GeneralUtils.isNotEmpty(this.sqlProviders)) {
-            this.sqlProviders.stream().distinct().forEach(sqlProvider -> {
+            this.sqlProviders.values().stream().distinct().forEach(sqlProvider -> {
                 List<DatabaseType> databaseTypes = sqlProvider.databaseTypes();
                 if (GeneralUtils.isNotEmpty(databaseTypes)) {
                     databaseTypes.forEach(databaseType -> {

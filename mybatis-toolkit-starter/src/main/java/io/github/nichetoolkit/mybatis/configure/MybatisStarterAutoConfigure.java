@@ -30,8 +30,8 @@ import java.util.Collections;
  */
 @Slf4j
 @AutoConfiguration
-@AutoConfigureAfter(MybatisContextAutoConfigure.class)
 @ImportAutoConfiguration(MybatisMapperAutoConfigure.class)
+@AutoConfigureAfter(MybatisContextAutoConfigure.class)
 public class MybatisStarterAutoConfigure {
     /**
      * <code>MYBATIS_I18N</code>

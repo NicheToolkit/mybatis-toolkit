@@ -85,10 +85,10 @@ public class MybatisContextHolder implements RestFulfilledFitter<MybatisContextH
 
     @Override
     public void afterAutowirePropertiesSet() {
-        log.info("[MybatisContextHolder] > afterPropertiesSet: {}", JsonUtils.parseJson(tableProperties));
         SQL_SOURCE_CACHES = new ConcurrentHashMap<>(4);
         SQL_CACHES = new ConcurrentHashMap<>(this.cacheProperties.getInitSize());
         IS_USE_ONCE = this.cacheProperties.isUseOnce();
+        log.info("[MybatisContextHolder] > afterPropertiesSet: {}", JsonUtils.parseJson(tableProperties));
     }
 
     /**
