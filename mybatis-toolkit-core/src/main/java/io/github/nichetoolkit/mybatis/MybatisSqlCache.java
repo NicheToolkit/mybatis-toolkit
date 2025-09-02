@@ -2,6 +2,7 @@ package io.github.nichetoolkit.mybatis;
 
 import io.github.nichetoolkit.rest.RestException;
 import io.github.nichetoolkit.rest.actuator.SupplierActuator;
+import lombok.Setter;
 import org.apache.ibatis.builder.annotation.ProviderContext;
 
 /**
@@ -10,7 +11,7 @@ import org.apache.ibatis.builder.annotation.ProviderContext;
  * @author Cyan (snow22314@outlook.com)
  * @since Jdk1.8
  */
-public class MybatisSqlCache {
+public final class MybatisSqlCache {
     /**
      * <code>NULL_SQL_CACHE</code>
      * {@link io.github.nichetoolkit.mybatis.MybatisSqlCache} <p>The constant <code>NULL_SQL_CACHE</code> field.</p>
@@ -33,7 +34,8 @@ public class MybatisSqlCache {
      * {@link io.github.nichetoolkit.rest.actuator.SupplierActuator} <p>The <code>sqlScript</code> field.</p>
      * @see io.github.nichetoolkit.rest.actuator.SupplierActuator
      */
-    private final SupplierActuator<String> sqlScript;
+    @Setter
+    private SupplierActuator<String> sqlScript;
 
     /**
      * <code>MybatisSqlCache</code>

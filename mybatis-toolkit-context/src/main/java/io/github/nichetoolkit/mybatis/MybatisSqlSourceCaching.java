@@ -72,7 +72,19 @@ public class MybatisSqlSourceCaching extends XMLLanguageDriver {
      */
     public static String cache(ProviderContext providerContext, MybatisTable entity, SupplierActuator<String> sqlScriptSupplier) throws RestException {
         String cacheKey = cacheKey(providerContext);
-        if (!MybatisContextHolder.containsKey(cacheKey)) {
+        if (MybatisContextHolder.containsKey(cacheKey)) {
+            synchronized (cacheKey) {
+                if (MybatisContextHolder.containsKey(cacheKey)) {
+                    MybatisSqlCache sqlCache = MybatisContextHolder.getSqlCache(cacheKey);
+                    sqlCache.setSqlScript(sqlScriptSupplier);
+                } else {
+                    MybatisContextHolder.putSqlCache(cacheKey, new MybatisSqlCache(
+                            Objects.requireNonNull(providerContext),
+                            Objects.requireNonNull(entity),
+                            Objects.requireNonNull(sqlScriptSupplier)));
+                }
+            }
+        } else {
             isPresentLang(providerContext);
             synchronized (cacheKey) {
                 if (!MybatisContextHolder.containsKey(cacheKey)) {
@@ -80,6 +92,9 @@ public class MybatisSqlSourceCaching extends XMLLanguageDriver {
                             Objects.requireNonNull(providerContext),
                             Objects.requireNonNull(entity),
                             Objects.requireNonNull(sqlScriptSupplier)));
+                } else {
+                    MybatisSqlCache sqlCache = MybatisContextHolder.getSqlCache(cacheKey);
+                    sqlCache.setSqlScript(sqlScriptSupplier);
                 }
             }
         }
