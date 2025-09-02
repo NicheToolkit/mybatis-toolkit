@@ -72,11 +72,11 @@ public class MybatisSqlSourceCaching extends XMLLanguageDriver {
      */
     public static String cache(ProviderContext providerContext, MybatisTable entity, SupplierActuator<String> sqlScriptSupplier) throws RestException {
         String cacheKey = cacheKey(providerContext);
-        if (MybatisContextHolder.containsKey(cacheKey)) {
+        if (!MybatisContextHolder.containsKey(cacheKey)) {
             synchronized (cacheKey) {
                 if (MybatisContextHolder.containsKey(cacheKey)) {
                     MybatisSqlCache sqlCache = MybatisContextHolder.getSqlCache(cacheKey);
-                    sqlCache.setSqlScript(sqlScriptSupplier);
+                    sqlCache.refreshSqlScript(sqlScriptSupplier);
                 } else {
                     MybatisContextHolder.putSqlCache(cacheKey, new MybatisSqlCache(
                             Objects.requireNonNull(providerContext),
@@ -94,7 +94,7 @@ public class MybatisSqlSourceCaching extends XMLLanguageDriver {
                             Objects.requireNonNull(sqlScriptSupplier)));
                 } else {
                     MybatisSqlCache sqlCache = MybatisContextHolder.getSqlCache(cacheKey);
-                    sqlCache.setSqlScript(sqlScriptSupplier);
+                    sqlCache.refreshSqlScript(sqlScriptSupplier);
                 }
             }
         }
@@ -151,12 +151,34 @@ public class MybatisSqlSourceCaching extends XMLLanguageDriver {
                         }
                     }
                 }
+            } else {
+                /* 取出缓存的信息 */
+                MybatisSqlCache sqlCache = MybatisContextHolder.getSqlCache(cacheKey);
+                if (sqlCache == MybatisSqlCache.NULL_SQL_CACHE) {
+                    throw new ConfigureLackError(script + " => CACHE_SQL is NULL, you need to configure nichetoolkit.mybatis.table.cache-sql.use-once=false");
+                }
+                if (sqlCache.isRefreshed()) {
+                    synchronized (cacheKey) {
+                        String sqlScript;
+                        try {
+                            sqlScript = sqlCache.sqlScript();
+                        } catch (RestException exception) {
+                            throw new MethodLackError("the sql script has error, you need to configure entity with annotation, " + exception.getMessage(), exception);
+                        }
+                        Map<String, SqlSource> sqlSources = MybatisContextHolder.getSqlSource(configuration);
+                        /* 缓存 sqlSource */
+                        SqlSource sqlSource = super.createSqlSource(configuration, sqlScript, parameterType);
+                        sqlSources.put(cacheKey, sqlSource);
+                        /* 取消cache对象的引用，减少内存占用 */
+                        if (MybatisContextHolder.isUseOnce()) {
+                            MybatisContextHolder.putSqlCache(cacheKey, MybatisSqlCache.NULL_SQL_CACHE);
+                        }
+                    }
+                }
             }
             return MybatisContextHolder.getSqlSource(configuration, cacheKey);
         } else {
             return super.createSqlSource(configuration, script, parameterType);
         }
     }
-
-
 }

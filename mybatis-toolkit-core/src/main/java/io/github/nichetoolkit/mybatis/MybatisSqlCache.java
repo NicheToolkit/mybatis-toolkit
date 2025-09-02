@@ -2,6 +2,7 @@ package io.github.nichetoolkit.mybatis;
 
 import io.github.nichetoolkit.rest.RestException;
 import io.github.nichetoolkit.rest.actuator.SupplierActuator;
+import lombok.Getter;
 import lombok.Setter;
 import org.apache.ibatis.builder.annotation.ProviderContext;
 
@@ -34,8 +35,14 @@ public final class MybatisSqlCache {
      * {@link io.github.nichetoolkit.rest.actuator.SupplierActuator} <p>The <code>sqlScript</code> field.</p>
      * @see io.github.nichetoolkit.rest.actuator.SupplierActuator
      */
-    @Setter
     private SupplierActuator<String> sqlScript;
+
+    /**
+     * <code>refreshed</code>
+     * <p>The <code>refreshed</code> field.</p>
+     */
+    @Getter
+    private boolean refreshed;
 
     /**
      * <code>MybatisSqlCache</code>
@@ -66,11 +73,19 @@ public final class MybatisSqlCache {
     }
 
     /**
-     * <code>context</code>
-     * <p>The context method.</p>
-     * @return {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>The context return object is <code>ProviderContext</code> type.</p>
-     * @see org.apache.ibatis.builder.annotation.ProviderContext
+     * <code>refreshSqlScript</code>
+     * <p>The refresh sql script method.</p>
+     * @param sqlScript {@link io.github.nichetoolkit.rest.actuator.SupplierActuator} <p>The sql script parameter is <code>SupplierActuator</code> type.</p>
+     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
+     * @see io.github.nichetoolkit.rest.actuator.SupplierActuator
+     * @see io.github.nichetoolkit.rest.RestException
      */
+    public void refreshSqlScript(SupplierActuator<String> sqlScript) throws RestException {
+        this.refreshed = !this.sqlScript.equals(sqlScript);
+        if (this.refreshed) {
+            this.sqlScript = sqlScript;
+        }
+    }
     public ProviderContext context() {
         return context;
     }
