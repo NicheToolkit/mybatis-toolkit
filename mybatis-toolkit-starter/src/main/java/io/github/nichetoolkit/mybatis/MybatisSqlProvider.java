@@ -2223,7 +2223,7 @@ public interface MybatisSqlProvider {
                                 Object indexValue = field.get(value);
                                 sqlBuilder.value(indexValue).comma();
                             });
-                            sqlBuilder.deleteLastChar();
+                            sqlBuilder.deleteLastChar(2);
                             if (isMultiColumns) {
                                 sqlBuilder.braceGt().comma();
                             } else {
