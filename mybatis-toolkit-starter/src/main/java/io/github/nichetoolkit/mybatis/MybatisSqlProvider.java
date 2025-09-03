@@ -2230,7 +2230,7 @@ public interface MybatisSqlProvider {
                                 sqlBuilder.comma();
                             }
                         });
-                        sqlBuilder.deleteLastChar().braceGt();
+                        sqlBuilder.deleteLastChar(2).braceGt();
                     }
                 }
                 sqlBuilder.or();

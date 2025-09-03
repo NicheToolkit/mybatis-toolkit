@@ -241,14 +241,14 @@ public class MybatisSqlUtils {
                                 } catch (IllegalAccessException ignored) {
                                 }
                             });
-                            sqlBuilder.deleteLastChar();
+                            sqlBuilder.deleteLastChar(2);
                             if (isMultiColumns) {
                                 sqlBuilder.braceGt().comma();
                             } else {
                                 sqlBuilder.comma();
                             }
                         });
-                        sqlBuilder.deleteLastChar().braceGt();
+                        sqlBuilder.deleteLastChar(2).braceGt();
                     }
 
                 }
