@@ -632,10 +632,10 @@ public interface MybatisSqlProvider {
         return MybatisSqlScript.caching(providerContext, (table, sqlScript) -> {
             tableOptional.actuate(table);
             SqlBuilder valueBuilder = SqlBuilder.sqlBuilder();
-            if (GeneralUtils.isNotEmpty(params)) {
-                valuesOfParams(table, params, valueBuilder);
-            } else {
+            if (GeneralUtils.isNotEmpty(identity)) {
                 valueOfIdentity(table, identity, valueBuilder);
+            } else if (GeneralUtils.isNotEmpty(params)){
+                valuesOfParams(table, params, valueBuilder);
             }
             return sqlSupply.supply(tablename, table, valueBuilder);
         });
