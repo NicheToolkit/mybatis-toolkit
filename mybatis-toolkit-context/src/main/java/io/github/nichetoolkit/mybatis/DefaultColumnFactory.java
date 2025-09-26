@@ -399,7 +399,10 @@ public class DefaultColumnFactory implements MybatisColumnFactory {
         if (GeneralUtils.isNotEmpty(restLoadParam) && !fieldIgnored) {
             mybatisColumn.setLoadParam(true);
             if (GeneralUtils.isNotEmpty(restLoadParam.param())) {
-                mybatisColumn.getLoadKeys().add(restLoadParam.param());
+                mybatisColumn.setParamName(restLoadParam.param());
+            }
+            if (GeneralUtils.isNotEmpty(restLoadParam.keys())) {
+                mybatisColumn.getLoadKeys().addAll(Arrays.asList(restLoadParam.keys()));
             }
             if (GeneralUtils.isNotEmpty(restLoadParam.types())) {
                 mybatisColumn.getLoadTypes().addAll(Arrays.asList(restLoadParam.types()));
@@ -422,6 +425,9 @@ public class DefaultColumnFactory implements MybatisColumnFactory {
             mybatisColumn.setSelect(false);
             mybatisColumn.setInsert(false);
             mybatisColumn.setUpdate(false);
+            if (restLoadEntity.recursive()) {
+                mybatisColumn.setLoadRecursive(true);
+            }
             if (GeneralUtils.isNotEmpty(restLoadEntity.table())) {
                 mybatisColumn.setLoadTable(restLoadEntity.table());
             }

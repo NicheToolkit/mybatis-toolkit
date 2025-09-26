@@ -4,6 +4,7 @@ import io.github.nichetoolkit.mybatis.MybatisColumn;
 import io.github.nichetoolkit.mybatis.MybatisMapperFactory;
 import io.github.nichetoolkit.mybatis.MybatisTable;
 import io.github.nichetoolkit.mybatis.consts.EntityConstants;
+import io.github.nichetoolkit.mybatis.load.RestLoad;
 import io.github.nichetoolkit.mybatis.load.RestParam;
 import io.github.nichetoolkit.rest.util.GeneralUtils;
 import io.github.nichetoolkit.rest.util.JsonPurityUtils;
@@ -120,12 +121,21 @@ public abstract class LoadResultTypeHandler extends BaseTypeHandler<Object> {
         }
         FindParamMapper<?, Object> findParamMapper = (FindParamMapper<?, Object>) superMapper;
         String loadTable = entryValue.getLoadTable();
+        String entryColumnName = entryValue.getColumn();
         List<?> entityList;
         if (GeneralUtils.isNotEmpty(loadTable)) {
             String tablename = destineTablename(resultSet, loadTable);
-            entityList = findParamMapper.findDynamicAllByIdOrParams(tablename, columnValue, loadParams);
+            if (entryValue.isLoadRecursive()) {
+                entityList = findParamMapper.findDynamicAllLoadByIdOrParams(tablename, columnValue, loadParams, RestLoad.of(entryColumnName));
+            } else {
+                entityList = findParamMapper.findDynamicAllByIdOrParams(tablename, columnValue, loadParams);
+            }
         } else {
-            entityList = findParamMapper.findAllByIdOrParams(columnValue, loadParams);
+            if (entryValue.isLoadRecursive()) {
+                entityList = findParamMapper.findAllLoadByIdOrParams(columnValue, loadParams, RestLoad.of(entryColumnName));
+            } else {
+                entityList = findParamMapper.findAllByIdOrParams(columnValue, loadParams);
+            }
         }
         return parseResult(entryKey, entityList);
     }
@@ -151,18 +161,19 @@ public abstract class LoadResultTypeHandler extends BaseTypeHandler<Object> {
         Map<String, Object> loadParams = new HashMap<>();
         for (MybatisColumn loadParam : loadParamColumns) {
             String columnName = loadParam.getColumn();
+            String paramName = loadParam.getParamName();
             Set<String> loadParamKeys = loadParam.getLoadKeys();
             List<Class<?>> loadParamTypes = loadParam.getLoadTypes();
             if (GeneralUtils.isNotEmpty(loadParamTypes) && loadParamTypes.contains(entryKey)) {
                 Object columnValue = resultSet.getObject(columnName);
-                loadParams.putIfAbsent(columnName, columnValue);
+                loadParams.putIfAbsent(paramName, columnValue);
                 continue;
             }
             if (GeneralUtils.isNotEmpty(loadParamKeys)) {
                 for (String loadParamKey : loadParamKeys) {
                     if (entryKeys.contains(loadParamKey)) {
                         Object columnValue = resultSet.getObject(columnName);
-                        loadParams.putIfAbsent(columnName, columnValue);
+                        loadParams.putIfAbsent(paramName, columnValue);
                     }
                 }
             }

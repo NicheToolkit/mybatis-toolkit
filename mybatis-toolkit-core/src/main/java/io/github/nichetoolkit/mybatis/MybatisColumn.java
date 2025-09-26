@@ -62,6 +62,13 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
      * @see java.lang.String
      */
     protected String linkName;
+
+    /**
+     * <code>paramName</code>
+     * {@link java.lang.String} <p>The <code>paramName</code> field.</p>
+     * @see java.lang.String
+     */
+    protected String paramName;
     /**
      * <code>order</code>
      * {@link java.lang.Integer} <p>The <code>order</code> field.</p>
@@ -237,6 +244,12 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
      * <p>The <code>loadEntity</code> field.</p>
      */
     protected boolean loadEntity;
+
+    /**
+     * <code>loadRecursive</code>
+     * <p>The <code>loadRecursive</code> field.</p>
+     */
+    protected boolean loadRecursive;
 
     /**
      * <code>loadTable</code>
@@ -450,6 +463,19 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
      */
     public String columnName() {
         return this.column;
+    }
+
+    /**
+     * <code>paramName</code>
+     * <p>The param name method.</p>
+     * @return {@link java.lang.String} <p>The param name return object is <code>String</code> type.</p>
+     * @see java.lang.String
+     */
+    public String paramName() {
+        if (GeneralUtils.isEmpty(this.paramName)) {
+            return this.column;
+        }
+        return this.paramName;
     }
 
     /**

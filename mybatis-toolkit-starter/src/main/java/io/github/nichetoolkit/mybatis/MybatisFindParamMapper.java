@@ -1,5 +1,6 @@
 package io.github.nichetoolkit.mybatis;
 
+import io.github.nichetoolkit.mybatis.load.RestLoad;
 import io.github.nichetoolkit.mybatis.load.RestParam;
 import io.github.nichetoolkit.rice.RestId;
 import io.github.nichetoolkit.rice.mapper.FindParamMapper;
@@ -31,5 +32,16 @@ public interface MybatisFindParamMapper<E extends RestId<I>, I> extends MybatisM
     @Lang(MybatisSqlSourceCaching.class)
     @SelectProvider(MybatisSqlProviderResolver.class)
     List<E> findDynamicAllByIdOrParams(@Param("tablename") String tablename, @Param("id") I id, @Param("params") RestParam... params);
+
+    @Override
+    default List<E> findAllLoadByIdOrParams(@Param("id") I id, @Param("params") RestParam[] params, @Param("loadParams") RestLoad... loadParams) {
+        return findDynamicAllLoadByIdOrParams(null, id, params, loadParams);
+    }
+
+    @Override
+    @Lang(MybatisSqlSourceCaching.class)
+    @SelectProvider(MybatisSqlProviderResolver.class)
+    List<E> findDynamicAllLoadByIdOrParams(@Param("tablename") String tablename, @Param("id") I id, @Param("params") RestParam[] params, @Param("loadParams") RestLoad... loadParams);
+
 
 }
