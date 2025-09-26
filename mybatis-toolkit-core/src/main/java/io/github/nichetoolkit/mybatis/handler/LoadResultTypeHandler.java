@@ -107,7 +107,10 @@ public abstract class LoadResultTypeHandler extends BaseTypeHandler<Object> {
             return null;
         }
         List<MybatisColumn> loadParamColumns = superTable.loadParamColumns();
-        Object columnValue = resultSet.getObject(columnName);
+        Object columnValue = null;
+        if (!EntityConstants.LOADS.equals(columnName)) {
+            columnValue = resultSet.getObject(columnName);
+        }
         RestParam[] loadParams = destineLoadParams(resultSet, loadEntry, loadParamColumns);
         if (GeneralUtils.isEmpty(columnValue) && GeneralUtils.isEmpty(loadParams)) {
             return null;

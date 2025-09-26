@@ -2,6 +2,7 @@ package io.github.nichetoolkit.mybatis.defaults.handler;
 
 import io.github.nichetoolkit.mybatis.MybatisColumn;
 import io.github.nichetoolkit.mybatis.MybatisTable;
+import io.github.nichetoolkit.mybatis.consts.EntityConstants;
 import io.github.nichetoolkit.mybatis.handler.*;
 import io.github.nichetoolkit.rest.util.GeneralUtils;
 import org.apache.ibatis.mapping.ResultMapping;
@@ -59,11 +60,11 @@ public class LoadAutoResultMapHandler implements AutoResultMapHandler {
             if (GeneralUtils.isEmpty(loadKey) && GeneralUtils.isEmpty(loadParam)) {
                 continue;
             }
-            String columnName = column.columnName();
+            String columnName = EntityConstants.LOADS;
             if (GeneralUtils.isNotEmpty(loadKey)) {
                 columnName = loadKey.columnName();
-                column.addLoadKey(columnName);
             }
+            column.addLoadKey(columnName);
             String property = column.property();
             ResultMapping.Builder builder = new ResultMapping.Builder(configuration, property, columnName, entryType);
             if (Collection.class.isAssignableFrom(fieldType)) {
