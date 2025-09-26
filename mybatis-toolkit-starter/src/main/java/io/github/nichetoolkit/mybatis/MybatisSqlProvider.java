@@ -158,6 +158,9 @@ public interface MybatisSqlProvider {
      */
     @SuppressWarnings("unchecked")
     static <P> Object reviseParameter(P parameter) throws RestException {
+        if (GeneralUtils.isEmpty(parameter)) {
+            return parameter;
+        }
         Class<?> parameterClass = parameter.getClass();
         if (Map.class.isAssignableFrom(parameterClass)) {
             Map<String, ?> param = (Map<String, ?>) parameter;

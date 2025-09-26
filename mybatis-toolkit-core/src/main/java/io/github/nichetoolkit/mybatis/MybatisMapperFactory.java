@@ -1,10 +1,13 @@
 package io.github.nichetoolkit.mybatis;
 
 import io.github.nichetoolkit.mybatis.error.MybatisProviderLackError;
+import io.github.nichetoolkit.rest.holder.ApplicationContextHolder;
 import io.github.nichetoolkit.rest.util.GeneralUtils;
 import io.github.nichetoolkit.rice.IdEntity;
 import io.github.nichetoolkit.rice.mapper.SuperMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.ApplicationListener;
@@ -25,8 +28,10 @@ import java.util.concurrent.ConcurrentHashMap;
  * @see io.github.nichetoolkit.rice.IdEntity
  * @see org.springframework.context.ApplicationContextAware
  * @see org.springframework.context.ApplicationListener
+ * @see lombok.extern.slf4j.Slf4j
  * @since Jdk1.8
  */
+@Slf4j
 public abstract class MybatisMapperFactory<M extends SuperMapper<E, I>, E extends IdEntity<I>, I> implements ApplicationContextAware, ApplicationListener<ContextRefreshedEvent> {
 
     /**
@@ -46,11 +51,25 @@ public abstract class MybatisMapperFactory<M extends SuperMapper<E, I>, E extend
     @Override
     public void setApplicationContext(@NonNull ApplicationContext applicationContext) throws BeansException {
         MybatisMapperFactory.applicationContext = applicationContext;
+        log.debug("The application context of mybatis mapper factory applicationContext initialized!");
     }
 
     @Override
     public void onApplicationEvent(@NonNull ContextRefreshedEvent event) {
         registryMappers();
+    }
+
+    /**
+     * <code>applicationContext</code>
+     * <p>The application context method.</p>
+     * @return {@link org.springframework.context.ApplicationContext} <p>The application context return object is <code>ApplicationContext</code> type.</p>
+     * @see org.springframework.context.ApplicationContext
+     */
+    private static ApplicationContext applicationContext() {
+        if (applicationContext == null) {
+            applicationContext = ApplicationContextHolder.getApplicationContext();
+        }
+        return applicationContext;
     }
 
     /**
@@ -77,7 +96,8 @@ public abstract class MybatisMapperFactory<M extends SuperMapper<E, I>, E extend
      */
     @SuppressWarnings(value = "unchecked")
     public static <M extends SuperMapper<?, ?>> MybatisMapperFactory<M, ?, ?> instanceOfBean() {
-        return (MybatisMapperFactory<M, ?, ?>) applicationContext.getBean(MybatisMapperFactory.class);
+        ApplicationContext applicationContext1 = applicationContext();
+        return (MybatisMapperFactory<M, ?, ?>) applicationContext1.getBean(MybatisMapperFactory.class);
     }
 
     /**
@@ -95,14 +115,14 @@ public abstract class MybatisMapperFactory<M extends SuperMapper<E, I>, E extend
      */
     @SuppressWarnings(value = "unchecked")
     public static <M extends SuperMapper<E, I>, E extends IdEntity<I>, I> MybatisMapperFactory<M, E, I> getInstance(String instanceName) {
-        return (MybatisMapperFactory<M, E, I>) applicationContext.getBean(instanceName);
+        return (MybatisMapperFactory<M, E, I>) applicationContext().getBean(instanceName);
     }
 
     /**
      * <code>registryMappers</code>
      * <p>The registry mappers method.</p>
      */
-    abstract protected void registryMappers();
+    abstract public void registryMappers();
 
     /**
      * <code>cacheMapper</code>

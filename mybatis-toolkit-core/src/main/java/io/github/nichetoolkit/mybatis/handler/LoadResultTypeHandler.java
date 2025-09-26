@@ -102,28 +102,32 @@ public abstract class LoadResultTypeHandler extends BaseTypeHandler<Object> {
         Map<Class<?>, MybatisColumn> loadColumns = superTable.getLoadColumns();
         List<MybatisColumn> mybatisColumns = superTable.loadKeyColumns();
         Map.Entry<Class<?>, MybatisColumn> loadEntry = destineLoadEntry(columnName, loadKeys, loadColumns);
-        Object columnValue = resultSet.getObject(columnName);
-        if (GeneralUtils.isNotEmpty(loadEntry) && GeneralUtils.isNotEmpty(columnValue)) {
-            List<MybatisColumn> loadParamColumns = superTable.loadParamColumns();
-            RestParam[] loadParams = destineLoadParams(resultSet, loadEntry, loadParamColumns);
-            MybatisMapperFactory<SuperMapper<?, ?>, ?, ?> mapperFactory = MybatisMapperFactory.instanceOfBean();
-            Class<?> entryKey = loadEntry.getKey();
-            MybatisColumn entryValue = loadEntry.getValue();
-            SuperMapper<?, ?> superMapper = mapperFactory.superMapper(entryKey);
-            if (GeneralUtils.isNotEmpty(superMapper)) {
-                FindParamMapper<?, Object> findParamMapper = (FindParamMapper<?, Object>) superMapper;
-                String loadTable = entryValue.getLoadTable();
-                List<?> entityList;
-                if (GeneralUtils.isNotEmpty(loadTable)) {
-                    String tablename = destineTablename(resultSet, loadTable);
-                    entityList = findParamMapper.findDynamicAllByIdOrParams(tablename, columnValue, loadParams);
-                } else {
-                    entityList = findParamMapper.findAllByIdOrParams(columnValue, loadParams);
-                }
-                return parseResult(entryKey, entityList);
-            }
+        if (GeneralUtils.isEmpty(loadEntry)) {
+            return null;
         }
-        return null;
+        List<MybatisColumn> loadParamColumns = superTable.loadParamColumns();
+        Object columnValue = resultSet.getObject(columnName);
+        RestParam[] loadParams = destineLoadParams(resultSet, loadEntry, loadParamColumns);
+        if (GeneralUtils.isEmpty(columnValue) && GeneralUtils.isEmpty(loadParams)) {
+            return null;
+        }
+        MybatisMapperFactory<SuperMapper<?, ?>, ?, ?> mapperFactory = MybatisMapperFactory.instanceOfBean();
+        Class<?> entryKey = loadEntry.getKey();
+        MybatisColumn entryValue = loadEntry.getValue();
+        SuperMapper<?, ?> superMapper = mapperFactory.superMapper(entryKey);
+        if (GeneralUtils.isEmpty(superMapper)) {
+            return null;
+        }
+        FindParamMapper<?, Object> findParamMapper = (FindParamMapper<?, Object>) superMapper;
+        String loadTable = entryValue.getLoadTable();
+        List<?> entityList;
+        if (GeneralUtils.isNotEmpty(loadTable)) {
+            String tablename = destineTablename(resultSet, loadTable);
+            entityList = findParamMapper.findDynamicAllByIdOrParams(tablename, columnValue, loadParams);
+        } else {
+            entityList = findParamMapper.findAllByIdOrParams(columnValue, loadParams);
+        }
+        return parseResult(entryKey, entityList);
     }
 
     /**

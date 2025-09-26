@@ -48,17 +48,22 @@ public class LoadAutoResultMapHandler implements AutoResultMapHandler {
     @Override
     public void autoResultMapHandler(Configuration configuration, MybatisTable mybatisTable, List<ResultMapping> resultMappings) {
         List<MybatisColumn> loadKeyColumns = mybatisTable.loadKeyColumns();
+        List<MybatisColumn> loadParamColumns = mybatisTable.loadParamColumns();
         for (Map.Entry<Class<?>, MybatisColumn> entry : mybatisTable.getLoadColumns().entrySet()) {
             Class<?> entryType = entry.getKey();
             MybatisColumn column = entry.getValue();
             Class<?> fieldType = column.getField().fieldType();
             Set<String> loadKeys = column.getLoadKeys();
             MybatisColumn loadKey = destineColumnOfLoadKey(loadKeys, entryType, loadKeyColumns);
-            if (GeneralUtils.isEmpty(loadKey)) {
+            MybatisColumn loadParam = destineColumnOfLoadKey(loadKeys, entryType, loadParamColumns);
+            if (GeneralUtils.isEmpty(loadKey) && GeneralUtils.isEmpty(loadParam)) {
                 continue;
             }
-            String columnName = loadKey.columnName();
-            column.addLoadKey(columnName);
+            String columnName = column.columnName();
+            if (GeneralUtils.isNotEmpty(loadKey)) {
+                columnName = loadKey.columnName();
+                column.addLoadKey(columnName);
+            }
             String property = column.property();
             ResultMapping.Builder builder = new ResultMapping.Builder(configuration, property, columnName, entryType);
             if (Collection.class.isAssignableFrom(fieldType)) {

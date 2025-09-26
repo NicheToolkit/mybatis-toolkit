@@ -7,7 +7,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -20,6 +20,7 @@ import org.springframework.context.annotation.ComponentScan;
  * @author Cyan (snow22314@outlook.com)
  * @see lombok.extern.slf4j.Slf4j
  * @see org.springframework.boot.autoconfigure.AutoConfiguration
+ * @see org.springframework.context.annotation.ComponentScan
  * @see org.springframework.boot.context.properties.EnableConfigurationProperties
  * @since Jdk1.8
  */
@@ -46,15 +47,17 @@ public class MybatisMapperAutoConfigure {
      * @see io.github.nichetoolkit.mybatis.MybatisMapperFactory
      * @see org.springframework.context.annotation.Bean
      * @see org.springframework.beans.factory.annotation.Autowired
-     * @see org.springframework.boot.autoconfigure.condition.ConditionalOnBean
+     * @see org.springframework.boot.autoconfigure.condition.ConditionalOnClass
      * @see org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
      */
     @Bean
     @Autowired
-    @ConditionalOnBean(SqlSessionTemplate.class)
+    @ConditionalOnClass(SqlSessionTemplate.class)
     @ConditionalOnMissingBean(MybatisMapperFactory.class)
     public MybatisMapperFactory<?,?,?> mapperFactory(SqlSessionTemplate sqlSessionTemplate) {
-        return new DefaultMapperFactory<>(sqlSessionTemplate);
+        DefaultMapperFactory<?,?,?> mapperFactory = new DefaultMapperFactory<>(sqlSessionTemplate);
+        mapperFactory.registryMappers();
+        return mapperFactory;
     }
 
     /**

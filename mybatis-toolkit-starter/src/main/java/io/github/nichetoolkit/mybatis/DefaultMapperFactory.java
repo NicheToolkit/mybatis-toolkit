@@ -1,6 +1,7 @@
 package io.github.nichetoolkit.mybatis;
 
 import io.github.nichetoolkit.rice.IdEntity;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.binding.MapperRegistry;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +38,7 @@ public class DefaultMapperFactory<M extends MybatisSuperMapper<E, I>, E extends 
     }
 
     @Override
-    protected void registryMappers() {
+    public void registryMappers() {
         MapperRegistry mapperRegistry = this.sqlSessionTemplate.getConfiguration().getMapperRegistry();
         mapperRegistry.getMappers().forEach(mapper -> cacheMapper(mapper, this.sqlSessionTemplate.getMapper(mapper)));
     }
