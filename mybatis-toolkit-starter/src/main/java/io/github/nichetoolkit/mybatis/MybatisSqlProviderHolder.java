@@ -6,6 +6,7 @@ import io.github.nichetoolkit.mybatis.enums.ExcludedType;
 import io.github.nichetoolkit.mybatis.enums.StyleType;
 import io.github.nichetoolkit.mybatis.error.MybatisProviderLackError;
 import io.github.nichetoolkit.rest.RestOptional;
+import io.github.nichetoolkit.rest.error.lack.ConfigureLackError;
 import io.github.nichetoolkit.rest.fitter.RestFulfilledFitter;
 import io.github.nichetoolkit.rest.util.GeneralUtils;
 import io.github.nichetoolkit.rest.util.OptionalUtils;
@@ -95,7 +96,7 @@ public class MybatisSqlProviderHolder implements RestFulfilledFitter<MybatisSqlP
      * @return {@link io.github.nichetoolkit.mybatis.MybatisSqlProviderHolder} <p>The instance return object is <code>MybatisSqlProviderHolder</code> type.</p>
      */
     public static MybatisSqlProviderHolder instance() {
-        return INSTANCE;
+        return RestOptional.ofNullable(INSTANCE).orNullThrow(ConfigureLackError::new);
     }
 
     @Override
@@ -152,7 +153,7 @@ public class MybatisSqlProviderHolder implements RestFulfilledFitter<MybatisSqlP
      * @see io.github.nichetoolkit.mybatis.enums.DatabaseType
      */
     public static DatabaseType defaultDatabaseType() {
-        return INSTANCE.tableProperties.getDatabaseType();
+        return instance().tableProperties.getDatabaseType();
     }
 
     /**
@@ -162,7 +163,7 @@ public class MybatisSqlProviderHolder implements RestFulfilledFitter<MybatisSqlP
      * @see io.github.nichetoolkit.mybatis.enums.ExcludedType
      */
     public static ExcludedType defaultExcludedType() {
-        return INSTANCE.tableProperties.getExcludedType();
+        return instance().tableProperties.getExcludedType();
     }
 
     /**
@@ -172,7 +173,7 @@ public class MybatisSqlProviderHolder implements RestFulfilledFitter<MybatisSqlP
      * @see io.github.nichetoolkit.mybatis.enums.StyleType
      */
     public static StyleType defaultStyleType() {
-        return INSTANCE.tableProperties.getStyleType();
+        return instance().tableProperties.getStyleType();
     }
 
     /**
@@ -181,7 +182,7 @@ public class MybatisSqlProviderHolder implements RestFulfilledFitter<MybatisSqlP
      * @return boolean <p>The mysql ignore insert return object is <code>boolean</code> type.</p>
      */
     public static boolean mysqlIgnoreInsert() {
-        return INSTANCE.tableProperties.getMysqlIgnoreInsert();
+        return instance().tableProperties.getMysqlIgnoreInsert();
     }
 
     /**

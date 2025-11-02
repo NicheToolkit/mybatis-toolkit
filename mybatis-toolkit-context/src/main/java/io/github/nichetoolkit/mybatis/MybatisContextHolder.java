@@ -3,6 +3,8 @@ package io.github.nichetoolkit.mybatis;
 import io.github.nichetoolkit.mybatis.configure.MybatisCacheProperties;
 import io.github.nichetoolkit.mybatis.configure.MybatisTableProperties;
 import io.github.nichetoolkit.mybatis.enums.StyleType;
+import io.github.nichetoolkit.rest.RestOptional;
+import io.github.nichetoolkit.rest.error.lack.ConfigureLackError;
 import io.github.nichetoolkit.rest.fitter.RestFulfilledFitter;
 import io.github.nichetoolkit.rest.util.JsonUtils;
 import io.github.nichetoolkit.rice.RestServiceFitter;
@@ -75,7 +77,7 @@ public class MybatisContextHolder implements RestFulfilledFitter<MybatisContextH
      * @return {@link io.github.nichetoolkit.mybatis.MybatisContextHolder} <p>The instance return object is <code>MybatisContextHolder</code> type.</p>
      */
     public static MybatisContextHolder instance() {
-        return INSTANCE;
+        return RestOptional.ofNullable(INSTANCE).orNullThrow(ConfigureLackError::new);
     }
 
     @Override
@@ -106,7 +108,7 @@ public class MybatisContextHolder implements RestFulfilledFitter<MybatisContextH
      * @return boolean <p>The sql script show return object is <code>boolean</code> type.</p>
      */
     public static boolean sqlScriptShow() {
-        return INSTANCE.tableProperties.getSqlScriptShow();
+        return instance().tableProperties.getSqlScriptShow();
     }
 
     /**
@@ -116,7 +118,7 @@ public class MybatisContextHolder implements RestFulfilledFitter<MybatisContextH
      * @see io.github.nichetoolkit.mybatis.configure.MybatisTableProperties
      */
     public static MybatisTableProperties tableProperties() {
-        return INSTANCE.tableProperties;
+        return instance().tableProperties;
     }
 
     /**
@@ -126,7 +128,7 @@ public class MybatisContextHolder implements RestFulfilledFitter<MybatisContextH
      * @see io.github.nichetoolkit.mybatis.configure.MybatisCacheProperties
      */
     public static MybatisCacheProperties cacheProperties() {
-        return INSTANCE.cacheProperties;
+        return instance().cacheProperties;
     }
 
 
@@ -137,7 +139,7 @@ public class MybatisContextHolder implements RestFulfilledFitter<MybatisContextH
      * @see io.github.nichetoolkit.mybatis.enums.StyleType
      */
     public static StyleType defaultStyleType() {
-        return INSTANCE.tableProperties.getStyleType();
+        return instance().tableProperties.getStyleType();
     }
 
     /**
@@ -147,7 +149,7 @@ public class MybatisContextHolder implements RestFulfilledFitter<MybatisContextH
      * @see io.github.nichetoolkit.mybatis.MybatisTableStyle
      */
     public static MybatisTableStyle defaultTableStyle() {
-       return MybatisTableStyle.style(INSTANCE.tableProperties.getStyleType());
+       return MybatisTableStyle.style(instance().tableProperties.getStyleType());
     }
 
     /**
