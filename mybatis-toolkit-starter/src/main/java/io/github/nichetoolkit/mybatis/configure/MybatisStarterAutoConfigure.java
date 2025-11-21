@@ -4,7 +4,7 @@ import io.github.nichetoolkit.mybatis.MybatisAlertnessHandler;
 import io.github.nichetoolkit.mybatis.MybatisAutoLogicMark;
 import io.github.nichetoolkit.mybatis.MybatisColumnResolver;
 import io.github.nichetoolkit.mybatis.MybatisIdentityHandler;
-import io.github.nichetoolkit.rest.RestI18n;
+import io.github.nichetoolkit.rest.RestI18nResources;
 import io.github.nichetoolkit.rice.DefaultAlertnessHandler;
 import io.github.nichetoolkit.rice.DefaultColumnResolver;
 import io.github.nichetoolkit.rice.DefaultIdentityHandler;
@@ -16,16 +16,14 @@ import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 
-import java.util.Collections;
-
 /**
  * <code>MybatisStarterAutoConfigure</code>
  * <p>The mybatis starter auto configure class.</p>
  * @author Cyan (snow22314@outlook.com)
  * @see lombok.extern.slf4j.Slf4j
  * @see org.springframework.boot.autoconfigure.AutoConfiguration
- * @see org.springframework.boot.autoconfigure.AutoConfigureAfter
  * @see org.springframework.boot.autoconfigure.ImportAutoConfiguration
+ * @see org.springframework.boot.autoconfigure.AutoConfigureAfter
  * @since Jdk1.8
  */
 @Slf4j
@@ -49,15 +47,15 @@ public class MybatisStarterAutoConfigure {
     }
 
     /**
-     * <code>mybatisI18nBasename</code>
-     * <p>The mybatis i 18 n basename method.</p>
-     * @return {@link io.github.nichetoolkit.rest.RestI18n} <p>The mybatis i 18 n basename return object is <code>RestI18n</code> type.</p>
-     * @see io.github.nichetoolkit.rest.RestI18n
+     * <code>mybatisI18nResources</code>
+     * <p>The mybatis i 18 n resources method.</p>
+     * @return {@link io.github.nichetoolkit.rest.RestI18nResources} <p>The mybatis i 18 n resources return object is <code>RestI18nResources</code> type.</p>
+     * @see io.github.nichetoolkit.rest.RestI18nResources
      * @see org.springframework.context.annotation.Bean
      */
     @Bean
-    public RestI18n mybatisI18nBasename() {
-        return () -> Collections.singleton(MYBATIS_I18N);
+    public RestI18nResources mybatisI18nResources() {
+        return RestI18nResources.of(MYBATIS_I18N);
     }
 
 
