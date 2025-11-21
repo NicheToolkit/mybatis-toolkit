@@ -24,30 +24,30 @@ public interface MybatisTableMapper extends MybatisMapper<String>, TableMapper {
     @Override
     @Lang(MybatisSqlSourceCaching.class)
     @SelectProvider(MybatisSqlProviderResolver.class)
-    List<String> findTableColumns(@Param("tablename") String tablename);
+    List<String> findTableColumns(@Param("tableName") String tableName);
 
     @Override
     @Lang(MybatisSqlSourceCaching.class)
     @SelectProvider(MybatisSqlProviderResolver.class)
-    void createTableIndex(@Param("tablename") String tablename, @Param("field") RestField<?> field);
+    void createTableIndex(@Param("tableName") String tableName, @Param("field") RestField<?> field);
 
     @Override
     @Lang(MybatisSqlSourceCaching.class)
     @SelectProvider(MybatisSqlProviderResolver.class)
-    void dropTableIndex(@Param("tablename") String tablename, @Param("field") RestField<?> field);
+    void dropTableIndex(@Param("tableName") String tableName, @Param("field") RestField<?> field);
 
     @Override
     @Lang(MybatisSqlSourceCaching.class)
     @SelectProvider(MybatisSqlProviderResolver.class)
-    void modifyTableColumn(@Param("tablename") String tablename, @Param("field") RestField<?> field);
+    void modifyTableColumn(@Param("tableName") String tableName, @Param("field") RestField<?> field);
 
     @Override
     @Lang(MybatisSqlSourceCaching.class)
     @SelectProvider(MybatisSqlProviderResolver.class)
-    void addTableColumn(@Param("tablename") String tablename, @Param("field") RestField<?> field);
+    void addTableColumn(@Param("tableName") String tableName, @Param("field") RestField<?> field);
 
     @Override
     @Lang(MybatisSqlSourceCaching.class)
     @SelectProvider(MybatisSqlProviderResolver.class)
-    void dropTableColumn(@Param("tablename") String tablename, @Param("field") RestField<?> field);
+    void dropTableColumn(@Param("tableName") String tableName, @Param("field") RestField<?> field);
 }

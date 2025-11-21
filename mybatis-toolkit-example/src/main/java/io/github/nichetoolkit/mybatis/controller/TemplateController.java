@@ -8,7 +8,7 @@ import io.github.nichetoolkit.rest.RestException;
 import io.github.nichetoolkit.rest.RestResult;
 import io.github.nichetoolkit.rest.userlog.stereotype.RestNotelog;
 import io.github.nichetoolkit.rice.RestPage;
-import io.github.nichetoolkit.rice.RestTablekey;
+import io.github.nichetoolkit.rice.RestTableKey;
 import io.github.nichetoolkit.rice.stereotype.RestSkip;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -88,7 +88,7 @@ public class TemplateController {
      * <code>queryById</code>
      * <p>The query by id method.</p>
      * @param id       {@link io.github.nichetoolkit.mybatis.test.template.TemplateIdentity} <p>The id parameter is <code>TemplateIdentity</code> type.</p>
-     * @param tablekey {@link java.lang.String} <p>The tablekey parameter is <code>String</code> type.</p>
+     * @param tableKey {@link java.lang.String} <p>The tableKey parameter is <code>String</code> type.</p>
      * @return {@link io.github.nichetoolkit.rest.RestResult} <p>The query by id return object is <code>RestResult</code> type.</p>
      * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
      * @see io.github.nichetoolkit.mybatis.test.template.TemplateIdentity
@@ -98,9 +98,9 @@ public class TemplateController {
      * @see org.springframework.web.bind.annotation.GetMapping
      * @see io.github.nichetoolkit.rest.RestException
      */
-    @GetMapping("/query/{tablekey}")
-    public RestResult<TemplateModel> queryById(TemplateIdentity id, @PathVariable("tablekey") String tablekey) throws RestException {
-        TemplateModel templateModel = templateService.queryById(RestTablekey.of(tablekey), id);
+    @GetMapping("/query/{tableKey}")
+    public RestResult<TemplateModel> queryById(TemplateIdentity id, @PathVariable("tableKey") String tableKey) throws RestException {
+        TemplateModel templateModel = templateService.queryById(RestTableKey.of(tableKey), id);
         return RestResult.success(templateModel);
     }
 
@@ -126,7 +126,7 @@ public class TemplateController {
      * <code>deleteById</code>
      * <p>The delete by id method.</p>
      * @param id       {@link io.github.nichetoolkit.mybatis.test.template.TemplateIdentity} <p>The id parameter is <code>TemplateIdentity</code> type.</p>
-     * @param tablekey {@link java.lang.String} <p>The tablekey parameter is <code>String</code> type.</p>
+     * @param tableKey {@link java.lang.String} <p>The tableKey parameter is <code>String</code> type.</p>
      * @return {@link io.github.nichetoolkit.rest.RestResult} <p>The delete by id return object is <code>RestResult</code> type.</p>
      * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
      * @see io.github.nichetoolkit.mybatis.test.template.TemplateIdentity
@@ -136,9 +136,9 @@ public class TemplateController {
      * @see org.springframework.web.bind.annotation.DeleteMapping
      * @see io.github.nichetoolkit.rest.RestException
      */
-    @DeleteMapping("/delete/{tablekey}")
-    public RestResult<?> deleteById(TemplateIdentity id, @PathVariable("tablekey") String tablekey) throws RestException {
-        templateService.deleteById(RestTablekey.of(tablekey), id);
+    @DeleteMapping("/delete/{tableKey}")
+    public RestResult<?> deleteById(TemplateIdentity id, @PathVariable("tableKey") String tableKey) throws RestException {
+        templateService.deleteById(RestTableKey.of(tableKey), id);
         return RestResult.success();
     }
 

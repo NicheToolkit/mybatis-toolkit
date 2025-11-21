@@ -29,8 +29,8 @@ public interface MybatisDeleteLinkMapper<E extends RestId<I>, L, I> extends Myba
     }
 
     @Override
-    default Integer deleteDynamicByLinkId(@Param("tablename") String tablename, @Param("linkId") L linkId) {
-        return deleteDynamicByLinkId(tablename, linkId, null);
+    default Integer deleteDynamicByLinkId(@Param("tableName") String tableName, @Param("linkId") L linkId) {
+        return deleteDynamicByLinkId(tableName, linkId, null);
     }
 
     @Override
@@ -39,8 +39,8 @@ public interface MybatisDeleteLinkMapper<E extends RestId<I>, L, I> extends Myba
     }
 
     @Override
-    default Integer deleteDynamicAllByLinkIds(@Param("tablename") String tablename, @Param("linkIdList") Collection<L> linkIdList) {
-        return deleteDynamicAllByLinkIds(tablename, linkIdList, null);
+    default Integer deleteDynamicAllByLinkIds(@Param("tableName") String tableName, @Param("linkIdList") Collection<L> linkIdList) {
+        return deleteDynamicAllByLinkIds(tableName, linkIdList, null);
     }
 
     @Override
@@ -51,7 +51,7 @@ public interface MybatisDeleteLinkMapper<E extends RestId<I>, L, I> extends Myba
     @Override
     @Lang(MybatisSqlSourceCaching.class)
     @DeleteProvider(MybatisSqlProviderResolver.class)
-    Integer deleteDynamicByLinkId(@Param("tablename") String tablename, @Param("linkId") L linkId, @Param("linkName") String linkName);
+    Integer deleteDynamicByLinkId(@Param("tableName") String tableName, @Param("linkId") L linkId, @Param("linkName") String linkName);
 
     @Override
     default Integer deleteAllByLinkIds(@Param("linkIdList") Collection<L> linkIdList, @Param("linkName") String linkName) {
@@ -61,5 +61,5 @@ public interface MybatisDeleteLinkMapper<E extends RestId<I>, L, I> extends Myba
     @Override
     @Lang(MybatisSqlSourceCaching.class)
     @DeleteProvider(MybatisSqlProviderResolver.class)
-    Integer deleteDynamicAllByLinkIds(@Param("tablename") String tablename, @Param("linkIdList") Collection<L> linkIdList, @Param("linkName") String linkName);
+    Integer deleteDynamicAllByLinkIds(@Param("tableName") String tableName, @Param("linkIdList") Collection<L> linkIdList, @Param("linkName") String linkName);
 }

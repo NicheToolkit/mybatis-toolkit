@@ -7,7 +7,7 @@ import io.github.nichetoolkit.rest.RestException;
 import io.github.nichetoolkit.rest.RestResult;
 import io.github.nichetoolkit.rest.userlog.stereotype.RestNotelog;
 import io.github.nichetoolkit.rice.RestPage;
-import io.github.nichetoolkit.rice.RestTablekey;
+import io.github.nichetoolkit.rice.RestTableKey;
 import io.github.nichetoolkit.rice.stereotype.RestSkip;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -87,7 +87,7 @@ public class SimpleController {
      * <code>queryById</code>
      * <p>The query by id method.</p>
      * @param id       {@link java.lang.String} <p>The id parameter is <code>String</code> type.</p>
-     * @param tablekey {@link java.lang.String} <p>The tablekey parameter is <code>String</code> type.</p>
+     * @param tableKey {@link java.lang.String} <p>The tableKey parameter is <code>String</code> type.</p>
      * @return {@link io.github.nichetoolkit.rest.RestResult} <p>The query by id return object is <code>RestResult</code> type.</p>
      * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
      * @see java.lang.String
@@ -97,9 +97,9 @@ public class SimpleController {
      * @see org.springframework.web.bind.annotation.GetMapping
      * @see io.github.nichetoolkit.rest.RestException
      */
-    @GetMapping("/query/{tablekey}")
-    public RestResult<SimpleModel> queryById(@RequestParam("id") String id, @PathVariable("tablekey") String tablekey) throws RestException {
-        SimpleModel simpleModel = simpleService.queryById(RestTablekey.of(tablekey), id);
+    @GetMapping("/query/{tableKey}")
+    public RestResult<SimpleModel> queryById(@RequestParam("id") String id, @PathVariable("tableKey") String tableKey) throws RestException {
+        SimpleModel simpleModel = simpleService.queryById(RestTableKey.of(tableKey), id);
         return RestResult.success(simpleModel);
     }
 
@@ -125,7 +125,7 @@ public class SimpleController {
      * <code>deleteById</code>
      * <p>The delete by id method.</p>
      * @param id       {@link java.lang.String} <p>The id parameter is <code>String</code> type.</p>
-     * @param tablekey {@link java.lang.String} <p>The tablekey parameter is <code>String</code> type.</p>
+     * @param tableKey {@link java.lang.String} <p>The tableKey parameter is <code>String</code> type.</p>
      * @return {@link io.github.nichetoolkit.rest.RestResult} <p>The delete by id return object is <code>RestResult</code> type.</p>
      * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
      * @see java.lang.String
@@ -135,9 +135,9 @@ public class SimpleController {
      * @see org.springframework.web.bind.annotation.DeleteMapping
      * @see io.github.nichetoolkit.rest.RestException
      */
-    @DeleteMapping("/delete/{tablekey}")
-    public RestResult<?> deleteById(@RequestParam("id") String id, @PathVariable("tablekey") String tablekey) throws RestException {
-        simpleService.deleteById(RestTablekey.of(tablekey), id);
+    @DeleteMapping("/delete/{tableKey}")
+    public RestResult<?> deleteById(@RequestParam("id") String id, @PathVariable("tableKey") String tableKey) throws RestException {
+        simpleService.deleteById(RestTableKey.of(tableKey), id);
         return RestResult.success();
     }
 

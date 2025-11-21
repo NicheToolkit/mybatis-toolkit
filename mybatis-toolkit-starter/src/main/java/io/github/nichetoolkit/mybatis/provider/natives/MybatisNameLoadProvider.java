@@ -38,7 +38,7 @@ public class MybatisNameLoadProvider implements MybatisSqlProvider {
      * <p>The find dynamic by name load method.</p>
      * @param <L>             {@link java.lang.Object} <p>The parameter can be of any type.</p>
      * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>The provider context parameter is <code>ProviderContext</code> type.</p>
-     * @param tablename       {@link java.lang.String} <p>The tablename parameter is <code>String</code> type.</p>
+     * @param tableName       {@link java.lang.String} <p>The tableName parameter is <code>String</code> type.</p>
      * @param name            {@link java.lang.String} <p>The name parameter is <code>String</code> type.</p>
      * @param logic           {@link java.lang.Object} <p>The logic parameter is <code>Object</code> type.</p>
      * @param loadParams      {@link io.github.nichetoolkit.mybatis.load.RestLoad} <p>The load params parameter is <code>RestLoad</code> type.</p>
@@ -50,12 +50,12 @@ public class MybatisNameLoadProvider implements MybatisSqlProvider {
      * @see io.github.nichetoolkit.mybatis.load.RestLoad
      * @see io.github.nichetoolkit.rest.RestException
      */
-    public static <L> String findDynamicByNameLoad(ProviderContext providerContext, String tablename, String name, Object logic, RestLoad[] loadParams) throws RestException {
+    public static <L> String findDynamicByNameLoad(ProviderContext providerContext, String tableName, String name, Object logic, RestLoad[] loadParams) throws RestException {
         OptionalUtils.ofEmpty(name, "The name param of 'findByNameLoad' method cannot be empty!", log, message -> new MybatisParamErrorException("findByNameLoad", "name", message));
         String selectColumns = "The select columns of table with 'findByNameLoad' method cannot be empty!";
         ConsumerActuator<MybatisTable> tableOptional = table -> OptionalUtils.ofEmpty(table.selectColumns(), selectColumns, log,
                 message -> new MybatisTableErrorException("findByNameLoad", "selectColumns", message));
-        return MybatisSqlProvider.providingOfName(providerContext, tablename, name, tableOptional, loadParams, ENTRY_SQL_SUPPLY);
+        return MybatisSqlProvider.providingOfName(providerContext, tableName, name, tableOptional, loadParams, ENTRY_SQL_SUPPLY);
     }
 
 }

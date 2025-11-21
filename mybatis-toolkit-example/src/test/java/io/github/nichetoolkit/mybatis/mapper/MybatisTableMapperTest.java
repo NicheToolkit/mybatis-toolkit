@@ -33,11 +33,11 @@ class MybatisTableMapperTest extends MybatisExampleApplicationTests {
     private MybatisTableMapper tableMapper;
 
     /**
-     * <code>tablename</code>
-     * {@link java.lang.String} <p>The <code>tablename</code> field.</p>
+     * <code>tableName</code>
+     * {@link java.lang.String} <p>The <code>tableName</code> field.</p>
      * @see java.lang.String
      */
-    private final String tablename = "ntr_fickle_entry";
+    private final String tableName = "ntr_fickle_entry";
 
     /**
      * <code>tableColumns</code>
@@ -50,7 +50,7 @@ class MybatisTableMapperTest extends MybatisExampleApplicationTests {
     @Test
     @Order(1)
     public void tableColumns() throws RestException {
-        List<String> tableColumns = tableMapper.findTableColumns(tablename);
+        List<String> tableColumns = tableMapper.findTableColumns(tableName);
         System.out.println(JsonUtils.parseJson(tableColumns));
     }
 
@@ -66,7 +66,7 @@ class MybatisTableMapperTest extends MybatisExampleApplicationTests {
     @Order(2)
     public void addColumn() throws RestException {
         RestFickle<?> fickle = RestFickle.ofType("time1", MybatisType.TIMESTAMP,"TIMESTAMP");
-        tableMapper.addTableColumn(tablename,fickle);
+        tableMapper.addTableColumn(tableName,fickle);
     }
 
     /**
@@ -81,7 +81,7 @@ class MybatisTableMapperTest extends MybatisExampleApplicationTests {
     @Order(3)
     public void createIndex() throws RestException {
         RestFickle<?> fickle = RestFickle.ofType("time1", MybatisType.TIMESTAMP,"TIMESTAMP");
-        tableMapper.createTableIndex(tablename,fickle);
+        tableMapper.createTableIndex(tableName,fickle);
     }
 
     /**
@@ -96,7 +96,7 @@ class MybatisTableMapperTest extends MybatisExampleApplicationTests {
     @Order(4)
     public void dropIndex() throws RestException {
         RestFickle<?> fickle = RestFickle.ofType("time1", MybatisType.TIMESTAMP,"TIMESTAMP");
-        tableMapper.dropTableIndex(tablename,fickle);
+        tableMapper.dropTableIndex(tableName,fickle);
     }
 
     /**
@@ -111,7 +111,7 @@ class MybatisTableMapperTest extends MybatisExampleApplicationTests {
     @Order(5)
     public void modifyColumn() throws RestException {
         RestFickle<?> fickle = RestFickle.ofType("time1", MybatisType.TIMESTAMP,"TIMESTAMP");
-        tableMapper.modifyTableColumn(tablename,fickle);
+        tableMapper.modifyTableColumn(tableName,fickle);
     }
 
 
@@ -127,7 +127,7 @@ class MybatisTableMapperTest extends MybatisExampleApplicationTests {
     @Order(6)
     public void dropColumn() throws RestException {
         RestFickle<?> fickle = RestFickle.ofType("time1", MybatisType.TIMESTAMP,"TIMESTAMP");
-        tableMapper.dropTableColumn(tablename,fickle);
+        tableMapper.dropTableColumn(tableName,fickle);
     }
 
 }

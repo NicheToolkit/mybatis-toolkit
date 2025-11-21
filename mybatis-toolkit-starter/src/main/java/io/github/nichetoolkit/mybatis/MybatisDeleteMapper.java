@@ -29,7 +29,7 @@ public interface MybatisDeleteMapper<E extends RestId<I>, I> extends MybatisMapp
     @Override
     @Lang(MybatisSqlSourceCaching.class)
     @DeleteProvider(MybatisSqlProviderResolver.class)
-    Integer deleteDynamicById(@Param("tablename") String tablename, @Param("id") I id);
+    Integer deleteDynamicById(@Param("tableName") String tableName, @Param("id") I id);
 
     @Override
     default Integer deleteAll(@Param("idList") Collection<I> idList) {
@@ -39,7 +39,7 @@ public interface MybatisDeleteMapper<E extends RestId<I>, I> extends MybatisMapp
     @Override
     @Lang(MybatisSqlSourceCaching.class)
     @DeleteProvider(MybatisSqlProviderResolver.class)
-    Integer deleteDynamicAll(@Param("tablename") String tablename, @Param("idList") Collection<I> idList);
+    Integer deleteDynamicAll(@Param("tableName") String tableName, @Param("idList") Collection<I> idList);
 
     @Override
     default Integer deleteAllByWhere(@Param("whereSql") String whereSql) {
@@ -49,5 +49,5 @@ public interface MybatisDeleteMapper<E extends RestId<I>, I> extends MybatisMapp
     @Override
     @Lang(MybatisSqlSourceCaching.class)
     @DeleteProvider(MybatisSqlProviderResolver.class)
-    Integer deleteDynamicAllByWhere(@Param("tablename") String tablename, @Param("whereSql") String whereSql);
+    Integer deleteDynamicAllByWhere(@Param("tableName") String tableName, @Param("whereSql") String whereSql);
 }

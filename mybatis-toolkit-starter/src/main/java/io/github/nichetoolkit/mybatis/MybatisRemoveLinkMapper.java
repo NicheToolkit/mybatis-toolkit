@@ -29,8 +29,8 @@ public interface MybatisRemoveLinkMapper<E extends RestId<I>, L, I> extends Myba
     }
 
     @Override
-    default Integer removeDynamicByLinkId(@Param("tablename") String tablename, @Param("linkId") L linkId, @Param("logic") Object logic) {
-        return removeDynamicByLinkId(tablename, linkId, null, logic);
+    default Integer removeDynamicByLinkId(@Param("tableName") String tableName, @Param("linkId") L linkId, @Param("logic") Object logic) {
+        return removeDynamicByLinkId(tableName, linkId, null, logic);
     }
 
     @Override
@@ -39,8 +39,8 @@ public interface MybatisRemoveLinkMapper<E extends RestId<I>, L, I> extends Myba
     }
 
     @Override
-    default Integer removeDynamicAllByLinkIds(@Param("tablename") String tablename, @Param("linkIdList") Collection<L> linkIdList, @Param("logic") Object logic) {
-        return removeDynamicAllByLinkIds(tablename, linkIdList, null, logic);
+    default Integer removeDynamicAllByLinkIds(@Param("tableName") String tableName, @Param("linkIdList") Collection<L> linkIdList, @Param("logic") Object logic) {
+        return removeDynamicAllByLinkIds(tableName, linkIdList, null, logic);
     }
 
     @Override
@@ -51,7 +51,7 @@ public interface MybatisRemoveLinkMapper<E extends RestId<I>, L, I> extends Myba
     @Override
     @Lang(MybatisSqlSourceCaching.class)
     @UpdateProvider(MybatisSqlProviderResolver.class)
-    Integer removeDynamicByLinkId(@Param("tablename") String tablename, @Param("linkId") L linkId, @Param("linkName") String linkName, @Param("logic") Object logic);
+    Integer removeDynamicByLinkId(@Param("tableName") String tableName, @Param("linkId") L linkId, @Param("linkName") String linkName, @Param("logic") Object logic);
 
     @Override
     default Integer removeAllByLinkIds(@Param("linkIdList") Collection<L> linkIdList, @Param("linkName") String linkName, @Param("logic") Object logic) {
@@ -61,5 +61,5 @@ public interface MybatisRemoveLinkMapper<E extends RestId<I>, L, I> extends Myba
     @Override
     @Lang(MybatisSqlSourceCaching.class)
     @UpdateProvider(MybatisSqlProviderResolver.class)
-    Integer removeDynamicAllByLinkIds(@Param("tablename") String tablename, @Param("linkIdList") Collection<L> linkIdList, @Param("linkName") String linkName, @Param("logic") Object logic);
+    Integer removeDynamicAllByLinkIds(@Param("tableName") String tableName, @Param("linkIdList") Collection<L> linkIdList, @Param("linkName") String linkName, @Param("logic") Object logic);
 }

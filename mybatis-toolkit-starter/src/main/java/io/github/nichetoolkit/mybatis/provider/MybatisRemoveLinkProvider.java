@@ -39,7 +39,7 @@ public class MybatisRemoveLinkProvider implements MybatisSqlProvider {
      * <p>The remove dynamic by link id method.</p>
      * @param <L>             {@link java.lang.Object} <p>The parameter can be of any type.</p>
      * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>The provider context parameter is <code>ProviderContext</code> type.</p>
-     * @param tablename       {@link java.lang.String} <p>The tablename parameter is <code>String</code> type.</p>
+     * @param tableName       {@link java.lang.String} <p>The tableName parameter is <code>String</code> type.</p>
      * @param linkId          L <p>The link id parameter is <code>L</code> type.</p>
      * @param linkName        {@link java.lang.String} <p>The link name parameter is <code>String</code> type.</p>
      * @param logic           {@link java.lang.Object} <p>The logic parameter is <code>Object</code> type.</p>
@@ -50,12 +50,12 @@ public class MybatisRemoveLinkProvider implements MybatisSqlProvider {
      * @see java.lang.Object
      * @see io.github.nichetoolkit.rest.RestException
      */
-    public static <L> String removeDynamicByLinkId(ProviderContext providerContext, String tablename, L linkId, String linkName, Object logic) throws RestException {
+    public static <L> String removeDynamicByLinkId(ProviderContext providerContext, String tableName, L linkId, String linkName, Object logic) throws RestException {
         OptionalUtils.ofEmpty(linkId, "The link id param of 'removeByLinkId' method cannot be empty!", message -> new MybatisParamErrorException("removeByLinkId", "linkId", message));
         OptionalUtils.ofEmpty(logic, "The logic param of 'removeByLinkId' method cannot be empty!", message -> new MybatisParamErrorException("removeByLinkId", "logic", message));
         String logicColumn = "The logic column of table with 'removeByLinkId' method cannot be empty!";
         ConsumerActuator<MybatisTable> tableOptional = table -> OptionalUtils.ofEmpty(table.getLogicColumn(), logicColumn, log, message -> new MybatisTableErrorException("removeByLinkId", "logicColumn", message));
-        return MybatisSqlProvider.providingOfLinkId(providerContext, tablename, linkId, linkName, tableOptional, REMOVE_SQL_SUPPLY);
+        return MybatisSqlProvider.providingOfLinkId(providerContext, tableName, linkId, linkName, tableOptional, REMOVE_SQL_SUPPLY);
     }
 
     /**
@@ -63,7 +63,7 @@ public class MybatisRemoveLinkProvider implements MybatisSqlProvider {
      * <p>The remove dynamic all by link ids method.</p>
      * @param <L>             {@link java.lang.Object} <p>The parameter can be of any type.</p>
      * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>The provider context parameter is <code>ProviderContext</code> type.</p>
-     * @param tablename       {@link java.lang.String} <p>The tablename parameter is <code>String</code> type.</p>
+     * @param tableName       {@link java.lang.String} <p>The tableName parameter is <code>String</code> type.</p>
      * @param linkIdList      {@link java.util.Collection} <p>The link id list parameter is <code>Collection</code> type.</p>
      * @param linkName        {@link java.lang.String} <p>The link name parameter is <code>String</code> type.</p>
      * @param logic           {@link java.lang.Object} <p>The logic parameter is <code>Object</code> type.</p>
@@ -75,12 +75,12 @@ public class MybatisRemoveLinkProvider implements MybatisSqlProvider {
      * @see java.lang.Object
      * @see io.github.nichetoolkit.rest.RestException
      */
-    public static <L> String removeDynamicAllByLinkIds(ProviderContext providerContext, String tablename, Collection<L> linkIdList, String linkName, Object logic) throws RestException {
+    public static <L> String removeDynamicAllByLinkIds(ProviderContext providerContext, String tableName, Collection<L> linkIdList, String linkName, Object logic) throws RestException {
         OptionalUtils.ofEmpty(linkIdList, "The link id list param of 'removeAllByLinkIds' method cannot be empty!", message -> new MybatisParamErrorException("removeAllByLinkIds", "linkIdList", message));
         OptionalUtils.ofEmpty(logic, "The logic param of 'removeAllByLinkIds' method cannot be empty!", message -> new MybatisParamErrorException("removeAllByLinkIds", "logic", message));
         String logicColumn = "The logic column of table with 'removeAllByLinkIds' method cannot be empty!";
         ConsumerActuator<MybatisTable> tableOptional = table -> OptionalUtils.ofEmpty(table.getLogicColumn(), logicColumn, log, message -> new MybatisTableErrorException("removeAllByLinkIds", "logicColumn", message));
-        return MybatisSqlProvider.providingOfLinkIdAll(providerContext, tablename, linkIdList, linkName, tableOptional, REMOVE_SQL_SUPPLY);
+        return MybatisSqlProvider.providingOfLinkIdAll(providerContext, tableName, linkIdList, linkName, tableOptional, REMOVE_SQL_SUPPLY);
     }
 
 }

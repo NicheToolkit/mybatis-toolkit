@@ -29,7 +29,7 @@ public interface MybatisOperateMapper<E extends RestId<I>, I> extends MybatisMap
     @Override
     @Lang(MybatisSqlSourceCaching.class)
     @UpdateProvider(MybatisSqlProviderResolver.class)
-    Integer operateDynamicById(@Param("tablename") String tablename, @Param("id") I id, @Param("operate") Integer operate);
+    Integer operateDynamicById(@Param("tableName") String tableName, @Param("id") I id, @Param("operate") Integer operate);
 
     @Override
     default Integer operateAll(@Param("idList") Collection<I> idList, @Param("operate") Integer operate) {
@@ -39,7 +39,7 @@ public interface MybatisOperateMapper<E extends RestId<I>, I> extends MybatisMap
     @Override
     @Lang(MybatisSqlSourceCaching.class)
     @UpdateProvider(MybatisSqlProviderResolver.class)
-    Integer operateDynamicAll(@Param("tablename") String tablename, @Param("idList") Collection<I> idList, @Param("operate") Integer operate);
+    Integer operateDynamicAll(@Param("tableName") String tableName, @Param("idList") Collection<I> idList, @Param("operate") Integer operate);
 
     @Override
     default Integer operateAllByWhere(@Param("whereSql") String whereSql, @Param("operate") Integer operate) {
@@ -49,5 +49,5 @@ public interface MybatisOperateMapper<E extends RestId<I>, I> extends MybatisMap
     @Override
     @Lang(MybatisSqlSourceCaching.class)
     @UpdateProvider(MybatisSqlProviderResolver.class)
-    Integer operateDynamicAllByWhere(@Param("tablename") String tablename, @Param("whereSql") String whereSql, @Param("operate") Integer operate);
+    Integer operateDynamicAllByWhere(@Param("tableName") String tableName, @Param("whereSql") String whereSql, @Param("operate") Integer operate);
 }

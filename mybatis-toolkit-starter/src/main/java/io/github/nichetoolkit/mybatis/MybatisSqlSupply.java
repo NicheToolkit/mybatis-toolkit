@@ -17,7 +17,7 @@ public interface MybatisSqlSupply extends RestOrder {
     /**
      * <code>supply</code>
      * <p>The supply method.</p>
-     * @param tablename       {@link java.lang.String} <p>The tablename parameter is <code>String</code> type.</p>
+     * @param tableName       {@link java.lang.String} <p>The tableName parameter is <code>String</code> type.</p>
      * @param table           {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>The table parameter is <code>MybatisTable</code> type.</p>
      * @param sqlScript       {@link io.github.nichetoolkit.mybatis.MybatisSqlScript} <p>The sql script parameter is <code>MybatisSqlScript</code> type.</p>
      * @param keySqlBuilder   {@link io.github.nichetoolkit.mybatis.builder.SqlBuilder} <p>The key sql builder parameter is <code>SqlBuilder</code> type.</p>
@@ -33,7 +33,7 @@ public interface MybatisSqlSupply extends RestOrder {
      * @see java.lang.Object
      * @see io.github.nichetoolkit.rest.RestException
      */
-    String supply(@Nullable String tablename, MybatisTable table, MybatisSqlScript sqlScript, SqlBuilder keySqlBuilder, SqlBuilder valueSqlBuilder, Object... parameters) throws RestException;
+    String supply(@Nullable String tableName, MybatisTable table, MybatisSqlScript sqlScript, SqlBuilder keySqlBuilder, SqlBuilder valueSqlBuilder, Object... parameters) throws RestException;
 
     /**
      * <code>SupplySqlSupply</code>
@@ -44,14 +44,14 @@ public interface MybatisSqlSupply extends RestOrder {
     interface SupplySqlSupply extends MybatisSqlSupply {
 
         @Override
-        default String supply(String tablename, MybatisTable mybatisTable, MybatisSqlScript sqlScript, SqlBuilder keySqlBuilder, SqlBuilder valueSqlBuilder, Object... parameters) throws RestException {
-            return supply(tablename, mybatisTable, sqlScript, this, keySqlBuilder, valueSqlBuilder, parameters);
+        default String supply(String tableName, MybatisTable mybatisTable, MybatisSqlScript sqlScript, SqlBuilder keySqlBuilder, SqlBuilder valueSqlBuilder, Object... parameters) throws RestException {
+            return supply(tableName, mybatisTable, sqlScript, this, keySqlBuilder, valueSqlBuilder, parameters);
         }
 
         /**
          * <code>supply</code>
          * <p>The supply method.</p>
-         * @param tablename       {@link java.lang.String} <p>The tablename parameter is <code>String</code> type.</p>
+         * @param tableName       {@link java.lang.String} <p>The tableName parameter is <code>String</code> type.</p>
          * @param mybatisTable    {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>The mybatis table parameter is <code>MybatisTable</code> type.</p>
          * @param sqlScript       {@link io.github.nichetoolkit.mybatis.MybatisSqlScript} <p>The sql script parameter is <code>MybatisSqlScript</code> type.</p>
          * @param sqlSupply       {@link io.github.nichetoolkit.mybatis.MybatisSqlSupply} <p>The sql supply parameter is <code>MybatisSqlSupply</code> type.</p>
@@ -68,7 +68,7 @@ public interface MybatisSqlSupply extends RestOrder {
          * @see java.lang.Object
          * @see io.github.nichetoolkit.rest.RestException
          */
-        String supply(@Nullable String tablename, MybatisTable mybatisTable, MybatisSqlScript sqlScript, MybatisSqlSupply sqlSupply, SqlBuilder keySqlBuilder, SqlBuilder valueSqlBuilder, Object... parameters) throws RestException;
+        String supply(@Nullable String tableName, MybatisTable mybatisTable, MybatisSqlScript sqlScript, MybatisSqlSupply sqlSupply, SqlBuilder keySqlBuilder, SqlBuilder valueSqlBuilder, Object... parameters) throws RestException;
     }
 
     /**
@@ -80,14 +80,14 @@ public interface MybatisSqlSupply extends RestOrder {
     interface ParameterSqlSupply extends MybatisSqlSupply {
 
         @Override
-        default String supply(String tablename, MybatisTable mybatisTable, MybatisSqlScript sqlScript, SqlBuilder keySqlBuilder, SqlBuilder valueSqlBuilder, Object... parameters) throws RestException {
-            return supply(tablename, mybatisTable, keySqlBuilder, valueSqlBuilder, parameters);
+        default String supply(String tableName, MybatisTable mybatisTable, MybatisSqlScript sqlScript, SqlBuilder keySqlBuilder, SqlBuilder valueSqlBuilder, Object... parameters) throws RestException {
+            return supply(tableName, mybatisTable, keySqlBuilder, valueSqlBuilder, parameters);
         }
 
         /**
          * <code>supply</code>
          * <p>The supply method.</p>
-         * @param tablename       {@link java.lang.String} <p>The tablename parameter is <code>String</code> type.</p>
+         * @param tableName       {@link java.lang.String} <p>The tableName parameter is <code>String</code> type.</p>
          * @param mybatisTable    {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>The mybatis table parameter is <code>MybatisTable</code> type.</p>
          * @param keySqlBuilder   {@link io.github.nichetoolkit.mybatis.builder.SqlBuilder} <p>The key sql builder parameter is <code>SqlBuilder</code> type.</p>
          * @param valueSqlBuilder {@link io.github.nichetoolkit.mybatis.builder.SqlBuilder} <p>The value sql builder parameter is <code>SqlBuilder</code> type.</p>
@@ -101,7 +101,7 @@ public interface MybatisSqlSupply extends RestOrder {
          * @see java.lang.Object
          * @see io.github.nichetoolkit.rest.RestException
          */
-        String supply(@Nullable String tablename, MybatisTable mybatisTable, SqlBuilder keySqlBuilder, SqlBuilder valueSqlBuilder, Object... parameters) throws RestException;
+        String supply(@Nullable String tableName, MybatisTable mybatisTable, SqlBuilder keySqlBuilder, SqlBuilder valueSqlBuilder, Object... parameters) throws RestException;
     }
 
     /**
@@ -114,14 +114,14 @@ public interface MybatisSqlSupply extends RestOrder {
     interface ValueSqlSupply extends ParameterSqlSupply {
 
         @Override
-        default String supply(String tablename, MybatisTable mybatisTable, SqlBuilder keySqlBuilder, SqlBuilder valueSqlBuilder, Object... parameters) throws RestException {
-            return supply(tablename, mybatisTable, valueSqlBuilder, parameters);
+        default String supply(String tableName, MybatisTable mybatisTable, SqlBuilder keySqlBuilder, SqlBuilder valueSqlBuilder, Object... parameters) throws RestException {
+            return supply(tableName, mybatisTable, valueSqlBuilder, parameters);
         }
 
         /**
          * <code>supply</code>
          * <p>The supply method.</p>
-         * @param tablename       {@link java.lang.String} <p>The tablename parameter is <code>String</code> type.</p>
+         * @param tableName       {@link java.lang.String} <p>The tableName parameter is <code>String</code> type.</p>
          * @param mybatisTable    {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>The mybatis table parameter is <code>MybatisTable</code> type.</p>
          * @param sqlBuilder      {@link io.github.nichetoolkit.mybatis.builder.SqlBuilder} <p>The sql builder parameter is <code>SqlBuilder</code> type.</p>
          * @param statusParameter {@link java.lang.Object} <p>The status parameter parameter is <code>Object</code> type.</p>
@@ -134,7 +134,7 @@ public interface MybatisSqlSupply extends RestOrder {
          * @see java.lang.Object
          * @see io.github.nichetoolkit.rest.RestException
          */
-        String supply(@Nullable String tablename, MybatisTable mybatisTable, SqlBuilder sqlBuilder, Object... statusParameter) throws RestException;
+        String supply(@Nullable String tableName, MybatisTable mybatisTable, SqlBuilder sqlBuilder, Object... statusParameter) throws RestException;
     }
 
     /**
@@ -147,14 +147,14 @@ public interface MybatisSqlSupply extends RestOrder {
     interface KeySqlSupply extends ParameterSqlSupply {
 
         @Override
-        default String supply(String tablename, MybatisTable mybatisTable, SqlBuilder keySqlBuilder, SqlBuilder valueSqlBuilder, Object... parameters) throws RestException {
-            return supply(tablename, mybatisTable, keySqlBuilder, parameters);
+        default String supply(String tableName, MybatisTable mybatisTable, SqlBuilder keySqlBuilder, SqlBuilder valueSqlBuilder, Object... parameters) throws RestException {
+            return supply(tableName, mybatisTable, keySqlBuilder, parameters);
         }
 
         /**
          * <code>supply</code>
          * <p>The supply method.</p>
-         * @param tablename       {@link java.lang.String} <p>The tablename parameter is <code>String</code> type.</p>
+         * @param tableName       {@link java.lang.String} <p>The tableName parameter is <code>String</code> type.</p>
          * @param mybatisTable    {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>The mybatis table parameter is <code>MybatisTable</code> type.</p>
          * @param sqlBuilder      {@link io.github.nichetoolkit.mybatis.builder.SqlBuilder} <p>The sql builder parameter is <code>SqlBuilder</code> type.</p>
          * @param statusParameter {@link java.lang.Object} <p>The status parameter parameter is <code>Object</code> type.</p>
@@ -167,7 +167,7 @@ public interface MybatisSqlSupply extends RestOrder {
          * @see java.lang.Object
          * @see io.github.nichetoolkit.rest.RestException
          */
-        String supply(@Nullable String tablename, MybatisTable mybatisTable, SqlBuilder sqlBuilder, Object... statusParameter) throws RestException;
+        String supply(@Nullable String tableName, MybatisTable mybatisTable, SqlBuilder sqlBuilder, Object... statusParameter) throws RestException;
     }
 
     /**
@@ -180,14 +180,14 @@ public interface MybatisSqlSupply extends RestOrder {
     interface AlertSqlSupply extends ValueSqlSupply {
 
         @Override
-        default String supply(String tablename, MybatisTable mybatisTable, SqlBuilder sqlBuilder, Object... parameters) throws RestException {
-            return supply(tablename, mybatisTable, sqlBuilder, parameters[0]);
+        default String supply(String tableName, MybatisTable mybatisTable, SqlBuilder sqlBuilder, Object... parameters) throws RestException {
+            return supply(tableName, mybatisTable, sqlBuilder, parameters[0]);
         }
 
         /**
          * <code>supply</code>
          * <p>The supply method.</p>
-         * @param tablename       {@link java.lang.String} <p>The tablename parameter is <code>String</code> type.</p>
+         * @param tableName       {@link java.lang.String} <p>The tableName parameter is <code>String</code> type.</p>
          * @param mybatisTable    {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>The mybatis table parameter is <code>MybatisTable</code> type.</p>
          * @param sqlBuilder      {@link io.github.nichetoolkit.mybatis.builder.SqlBuilder} <p>The sql builder parameter is <code>SqlBuilder</code> type.</p>
          * @param statusParameter {@link java.lang.Object} <p>The status parameter parameter is <code>Object</code> type.</p>
@@ -200,7 +200,7 @@ public interface MybatisSqlSupply extends RestOrder {
          * @see java.lang.Object
          * @see io.github.nichetoolkit.rest.RestException
          */
-        String supply(@Nullable String tablename, MybatisTable mybatisTable, SqlBuilder sqlBuilder, Object statusParameter) throws RestException;
+        String supply(@Nullable String tableName, MybatisTable mybatisTable, SqlBuilder sqlBuilder, Object statusParameter) throws RestException;
     }
 
     /**
@@ -213,14 +213,14 @@ public interface MybatisSqlSupply extends RestOrder {
     interface SimpleSqlSupply extends ValueSqlSupply {
 
         @Override
-        default String supply(String tablename, MybatisTable mybatisTable, SqlBuilder valueSqlBuilder, Object... parameters) throws RestException {
-            return supply(tablename, mybatisTable, valueSqlBuilder);
+        default String supply(String tableName, MybatisTable mybatisTable, SqlBuilder valueSqlBuilder, Object... parameters) throws RestException {
+            return supply(tableName, mybatisTable, valueSqlBuilder);
         }
 
         /**
          * <code>supply</code>
          * <p>The supply method.</p>
-         * @param tablename    {@link java.lang.String} <p>The tablename parameter is <code>String</code> type.</p>
+         * @param tableName    {@link java.lang.String} <p>The tableName parameter is <code>String</code> type.</p>
          * @param mybatisTable {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>The mybatis table parameter is <code>MybatisTable</code> type.</p>
          * @param sqlBuilder   {@link io.github.nichetoolkit.mybatis.builder.SqlBuilder} <p>The sql builder parameter is <code>SqlBuilder</code> type.</p>
          * @return {@link java.lang.String} <p>The supply return object is <code>String</code> type.</p>
@@ -231,7 +231,7 @@ public interface MybatisSqlSupply extends RestOrder {
          * @see io.github.nichetoolkit.mybatis.builder.SqlBuilder
          * @see io.github.nichetoolkit.rest.RestException
          */
-        String supply(@Nullable String tablename, MybatisTable mybatisTable, SqlBuilder sqlBuilder) throws RestException;
+        String supply(@Nullable String tableName, MybatisTable mybatisTable, SqlBuilder sqlBuilder) throws RestException;
     }
 
     /**
@@ -244,14 +244,14 @@ public interface MybatisSqlSupply extends RestOrder {
     interface EntrySqlSupply extends ParameterSqlSupply {
 
         @Override
-        default String supply(String tablename, MybatisTable mybatisTable, SqlBuilder keySqlBuilder, SqlBuilder valueSqlBuilder, Object... parameters) throws RestException {
-            return supply(tablename, mybatisTable, keySqlBuilder, valueSqlBuilder);
+        default String supply(String tableName, MybatisTable mybatisTable, SqlBuilder keySqlBuilder, SqlBuilder valueSqlBuilder, Object... parameters) throws RestException {
+            return supply(tableName, mybatisTable, keySqlBuilder, valueSqlBuilder);
         }
 
         /**
          * <code>supply</code>
          * <p>The supply method.</p>
-         * @param tablename       {@link java.lang.String} <p>The tablename parameter is <code>String</code> type.</p>
+         * @param tableName       {@link java.lang.String} <p>The tableName parameter is <code>String</code> type.</p>
          * @param mybatisTable    {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>The mybatis table parameter is <code>MybatisTable</code> type.</p>
          * @param keySqlBuilder   {@link io.github.nichetoolkit.mybatis.builder.SqlBuilder} <p>The key sql builder parameter is <code>SqlBuilder</code> type.</p>
          * @param valueSqlBuilder {@link io.github.nichetoolkit.mybatis.builder.SqlBuilder} <p>The value sql builder parameter is <code>SqlBuilder</code> type.</p>
@@ -263,7 +263,7 @@ public interface MybatisSqlSupply extends RestOrder {
          * @see io.github.nichetoolkit.mybatis.builder.SqlBuilder
          * @see io.github.nichetoolkit.rest.RestException
          */
-        String supply(@Nullable String tablename, MybatisTable mybatisTable, SqlBuilder keySqlBuilder, SqlBuilder valueSqlBuilder) throws RestException;
+        String supply(@Nullable String tableName, MybatisTable mybatisTable, SqlBuilder keySqlBuilder, SqlBuilder valueSqlBuilder) throws RestException;
     }
 
 }

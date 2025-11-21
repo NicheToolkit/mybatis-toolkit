@@ -761,13 +761,13 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
      * <code>excluded</code>
      * <p>The excluded method.</p>
      * @param excludedType {@link io.github.nichetoolkit.mybatis.enums.ExcludedType} <p>The excluded type parameter is <code>ExcludedType</code> type.</p>
-     * @param tablename    {@link java.lang.String} <p>The tablename parameter is <code>String</code> type.</p>
+     * @param tableName    {@link java.lang.String} <p>The tableName parameter is <code>String</code> type.</p>
      * @return {@link java.lang.String} <p>The excluded return object is <code>String</code> type.</p>
      * @see io.github.nichetoolkit.mybatis.enums.ExcludedType
      * @see java.lang.String
      * @see org.springframework.lang.NonNull
      */
-    public String excluded(ExcludedType excludedType, @NonNull String tablename) {
+    public String excluded(ExcludedType excludedType, @NonNull String tableName) {
         if (this.forceUpdate) {
             return this.columnName() + SQLConstants.BLANK + SQLConstants.CONTRAST_EQ
                     + SQLConstants.BLANK + this.forceUpdateValue;
@@ -785,7 +785,7 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
             return this.columnName() + SQLConstants.BLANK + SQLConstants.CONTRAST_EQ + SQLConstants.BLANK + SQLConstants.CASE
                     + SQLConstants.BLANK + SQLConstants.WHEN + SQLConstants.BLANK + excludedColumn + SQLConstants.BLANK
                     + SQLConstants.IS_NOT_NULL + SQLConstants.BLANK + SQLConstants.THEN + SQLConstants.BLANK + excludedColumn + SQLConstants.BLANK
-                    + SQLConstants.ELSE + SQLConstants.BLANK + tablename + SQLConstants.PERIOD + this.columnName() + SQLConstants.BLANK + SQLConstants.END;
+                    + SQLConstants.ELSE + SQLConstants.BLANK + tableName + SQLConstants.PERIOD + this.columnName() + SQLConstants.BLANK + SQLConstants.END;
         }
     }
 
@@ -796,7 +796,7 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
      * @see java.lang.String
      */
     public String excluded() {
-        return excluded(ExcludedType.EXCLUDED, this.table.tablename());
+        return excluded(ExcludedType.EXCLUDED, this.table.tableName());
     }
 
     /**
@@ -808,7 +808,7 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
      * @see java.lang.String
      */
     public String excluded(ExcludedType excludedType) {
-        return excluded(excludedType, this.table.tablename());
+        return excluded(excludedType, this.table.tableName());
     }
 
     /**

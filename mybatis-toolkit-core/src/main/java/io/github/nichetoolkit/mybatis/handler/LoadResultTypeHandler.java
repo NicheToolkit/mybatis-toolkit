@@ -127,11 +127,11 @@ public abstract class LoadResultTypeHandler extends BaseTypeHandler<Object> {
         String entryColumnName = entryValue.getColumn();
         List<?> entityList;
         if (GeneralUtils.isNotEmpty(loadTable)) {
-            String tablename = destineTablename(resultSet, loadTable);
+            String tableName = destineTableName(resultSet, loadTable);
             if (entryValue.isLoadRecursive()) {
-                entityList = findParamMapper.findDynamicAllLoadByIdOrParams(tablename, columnValue, loadParams, RestLoad.of(entryColumnName));
+                entityList = findParamMapper.findDynamicAllLoadByIdOrParams(tableName, columnValue, loadParams, RestLoad.of(entryColumnName));
             } else {
-                entityList = findParamMapper.findDynamicAllByIdOrParams(tablename, columnValue, loadParams);
+                entityList = findParamMapper.findDynamicAllByIdOrParams(tableName, columnValue, loadParams);
             }
         } else {
             if (entryValue.isLoadRecursive()) {
@@ -185,17 +185,17 @@ public abstract class LoadResultTypeHandler extends BaseTypeHandler<Object> {
     }
 
     /**
-     * <code>destineTablename</code>
-     * <p>The destine tablename method.</p>
+     * <code>destineTableName</code>
+     * <p>The destine tableName method.</p>
      * @param resultSet {@link java.sql.ResultSet} <p>The result set parameter is <code>ResultSet</code> type.</p>
      * @param loadTable {@link java.lang.String} <p>The load table parameter is <code>String</code> type.</p>
-     * @return {@link java.lang.String} <p>The destine tablename return object is <code>String</code> type.</p>
+     * @return {@link java.lang.String} <p>The destine tableName return object is <code>String</code> type.</p>
      * @throws SQLException {@link java.sql.SQLException} <p>The sql exception is <code>SQLException</code> type.</p>
      * @see java.sql.ResultSet
      * @see java.lang.String
      * @see java.sql.SQLException
      */
-    private String destineTablename(ResultSet resultSet, String loadTable) throws SQLException {
+    private String destineTableName(ResultSet resultSet, String loadTable) throws SQLException {
         String regex = "\\{[^}]*}";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(loadTable);

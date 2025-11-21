@@ -36,7 +36,7 @@ public interface MybatisFickleLoadMapper<E extends RestId<I>, L, I> extends Myba
     @Override
     @Lang(MybatisSqlSourceCaching.class)
     @SelectProvider(MybatisSqlProviderResolver.class)
-    E findDynamicByIdFickleLoad(@Param("tablename") String tablename, @Param("id") I id, @Param("fickleParams") RestFickle<?>[] fickleParams, @Param("loadParams") RestLoad... loadParams);
+    E findDynamicByIdFickleLoad(@Param("tableName") String tableName, @Param("id") I id, @Param("fickleParams") RestFickle<?>[] fickleParams, @Param("loadParams") RestLoad... loadParams);
 
     @Override
     default List<E> findAllFickleLoad(@Param("idList") Collection<I> idList, @Param("fickleParams") RestFickle<?>[] fickleParams, @Param("loadParams") RestLoad... loadParams) {
@@ -46,6 +46,6 @@ public interface MybatisFickleLoadMapper<E extends RestId<I>, L, I> extends Myba
     @Override
     @Lang(MybatisSqlSourceCaching.class)
     @SelectProvider(MybatisSqlProviderResolver.class)
-    List<E> findDynamicAllFickleLoad(@Param("tablename") String tablename, @Param("idList") Collection<I> idList, @Param("fickleParams") RestFickle<?>[] fickleParams, @Param("loadParams") RestLoad... loadParams);
+    List<E> findDynamicAllFickleLoad(@Param("tableName") String tableName, @Param("idList") Collection<I> idList, @Param("fickleParams") RestFickle<?>[] fickleParams, @Param("loadParams") RestLoad... loadParams);
 
 }

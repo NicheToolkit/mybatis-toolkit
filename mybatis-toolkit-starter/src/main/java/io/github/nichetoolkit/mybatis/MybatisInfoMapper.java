@@ -29,7 +29,7 @@ public interface MybatisInfoMapper<E extends RestInfo<I>, I> extends MybatisSupe
     @Override
     @Lang(MybatisSqlSourceCaching.class)
     @SelectProvider(MybatisSqlProviderResolver.class)
-    List<E> findDynamicByName(@Param("tablename") String tablename, @Param("name") String name, @Param("logic") Object logic);
+    List<E> findDynamicByName(@Param("tableName") String tableName, @Param("name") String name, @Param("logic") Object logic);
 
     @Override
     default List<E> findByNameAndNotId(@Param("name") String name, @Param("id") I id, @Param("logic") Object logic) {
@@ -39,7 +39,7 @@ public interface MybatisInfoMapper<E extends RestInfo<I>, I> extends MybatisSupe
     @Override
     @Lang(MybatisSqlSourceCaching.class)
     @SelectProvider(MybatisSqlProviderResolver.class)
-    List<E> findDynamicByNameAndNotId(@Param("tablename") String tablename, @Param("name") String name, @Param("id") I id, @Param("logic") Object logic);
+    List<E> findDynamicByNameAndNotId(@Param("tableName") String tableName, @Param("name") String name, @Param("id") I id, @Param("logic") Object logic);
 
     @Override
     default List<E> findByEntityUnique(@Param("entity") E entity, @Param("logic") Object logic) {
@@ -49,7 +49,7 @@ public interface MybatisInfoMapper<E extends RestInfo<I>, I> extends MybatisSupe
     @Override
     @Lang(MybatisSqlSourceCaching.class)
     @SelectProvider(MybatisSqlProviderResolver.class)
-    List<E> findDynamicByEntityUnique(@Param("tablename") String tablename, @Param("entity") E entity, @Param("logic") Object logic);
+    List<E> findDynamicByEntityUnique(@Param("tableName") String tableName, @Param("entity") E entity, @Param("logic") Object logic);
 
     @Override
     default List<E> findByEntityUniqueAndNotId(@Param("entity") E entity, @Param("id") I id, @Param("logic") Object logic) {
@@ -59,5 +59,5 @@ public interface MybatisInfoMapper<E extends RestInfo<I>, I> extends MybatisSupe
     @Override
     @Lang(MybatisSqlSourceCaching.class)
     @SelectProvider(MybatisSqlProviderResolver.class)
-    List<E> findDynamicByEntityUniqueAndNotId(@Param("tablename") String tablename, @Param("entity") E entity, @Param("id") I id, @Param("logic") Object logic);
+    List<E> findDynamicByEntityUniqueAndNotId(@Param("tableName") String tableName, @Param("entity") E entity, @Param("id") I id, @Param("logic") Object logic);
 }

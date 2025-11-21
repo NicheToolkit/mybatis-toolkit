@@ -510,37 +510,37 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
     }
 
     /**
-     * <code>tablename</code>
-     * <p>The tablename method.</p>
-     * @return {@link java.lang.String} <p>The tablename return object is <code>String</code> type.</p>
+     * <code>tableName</code>
+     * <p>The tableName method.</p>
+     * @return {@link java.lang.String} <p>The tableName return object is <code>String</code> type.</p>
      * @see java.lang.String
      */
-    public String tablename() {
+    public String tableName() {
         return Stream.of(this.catalog, this.schema, this.table)
                 .filter(GeneralUtils::isNotEmpty)
                 .collect(Collectors.joining(SQLConstants.PERIOD));
     }
 
     /**
-     * <code>tablename</code>
-     * <p>The tablename method.</p>
-     * @param tablename {@link java.lang.String} <p>The tablename parameter is <code>String</code> type.</p>
-     * @return {@link java.lang.String} <p>The tablename return object is <code>String</code> type.</p>
+     * <code>tableName</code>
+     * <p>The tableName method.</p>
+     * @param tableName {@link java.lang.String} <p>The tableName parameter is <code>String</code> type.</p>
+     * @return {@link java.lang.String} <p>The tableName return object is <code>String</code> type.</p>
      * @see java.lang.String
      */
-    public String tablename(String tablename) {
-        return Optional.ofNullable(tablename).orElse(tablename());
+    public String tableName(String tableName) {
+        return Optional.ofNullable(tableName).orElse(tableName());
     }
 
     /**
-     * <code>tablenameAsAlias</code>
-     * <p>The tablename as alias method.</p>
-     * @param tablename {@link java.lang.String} <p>The tablename parameter is <code>String</code> type.</p>
-     * @return {@link java.lang.String} <p>The tablename as alias return object is <code>String</code> type.</p>
+     * <code>tableNameAsAlias</code>
+     * <p>The tableName as alias method.</p>
+     * @param tableName {@link java.lang.String} <p>The tableName parameter is <code>String</code> type.</p>
+     * @return {@link java.lang.String} <p>The tableName as alias return object is <code>String</code> type.</p>
      * @see java.lang.String
      */
-    public String tablenameAsAlias(String tablename) {
-        return Optional.ofNullable(tablename).orElse(tablename()) + SQLConstants.BLANK + SQLConstants.AS + SQLConstants.BLANK + this.alias;
+    public String tableNameAsAlias(String tableName) {
+        return Optional.ofNullable(tableName).orElse(tableName()) + SQLConstants.BLANK + SQLConstants.AS + SQLConstants.BLANK + this.alias;
     }
 
     /**
@@ -1604,16 +1604,16 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
         if (this == o) return true;
         if (!(o instanceof MybatisTable)) return false;
         MybatisTable entity = (MybatisTable) o;
-        return tablename().equals(entity.tablename());
+        return tableName().equals(entity.tableName());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(tablename());
+        return Objects.hash(tableName());
     }
 
     @Override
     public String toString() {
-        return tablename();
+        return tableName();
     }
 }

@@ -34,7 +34,7 @@ public interface MybatisFindLoadMapper<E extends RestId<I>, I> extends MybatisMa
     @Override
     @Lang(MybatisSqlSourceCaching.class)
     @SelectProvider(MybatisSqlProviderResolver.class)
-    E findDynamicByIdLoad(@Param("tablename") String tablename, @Param("id") I id, @Param("loadParams") RestLoad... loadParams);
+    E findDynamicByIdLoad(@Param("tableName") String tableName, @Param("id") I id, @Param("loadParams") RestLoad... loadParams);
 
     @Override
     default List<E> findAllLoad(@Param("idList") Collection<I> idList, @Param("loadParams") RestLoad... loadParams) {
@@ -44,6 +44,6 @@ public interface MybatisFindLoadMapper<E extends RestId<I>, I> extends MybatisMa
     @Override
     @Lang(MybatisSqlSourceCaching.class)
     @SelectProvider(MybatisSqlProviderResolver.class)
-    List<E> findDynamicAllLoad(@Param("tablename") String tablename, @Param("idList") Collection<I> idList, @Param("loadParams") RestLoad... loadParams);
+    List<E> findDynamicAllLoad(@Param("tableName") String tableName, @Param("idList") Collection<I> idList, @Param("loadParams") RestLoad... loadParams);
 
 }

@@ -39,7 +39,7 @@ public class MybatisOperateLinkProvider implements MybatisSqlProvider {
      * <p>The operate dynamic by link id method.</p>
      * @param <L>             {@link java.lang.Object} <p>The parameter can be of any type.</p>
      * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>The provider context parameter is <code>ProviderContext</code> type.</p>
-     * @param tablename       {@link java.lang.String} <p>The tablename parameter is <code>String</code> type.</p>
+     * @param tableName       {@link java.lang.String} <p>The tableName parameter is <code>String</code> type.</p>
      * @param linkId          L <p>The link id parameter is <code>L</code> type.</p>
      * @param linkName        {@link java.lang.String} <p>The link name parameter is <code>String</code> type.</p>
      * @param operate         {@link java.lang.Integer} <p>The operate parameter is <code>Integer</code> type.</p>
@@ -50,13 +50,13 @@ public class MybatisOperateLinkProvider implements MybatisSqlProvider {
      * @see java.lang.Integer
      * @see io.github.nichetoolkit.rest.RestException
      */
-    public static <L> String operateDynamicByLinkId(ProviderContext providerContext, String tablename, L linkId, String linkName, Integer operate) throws RestException {
+    public static <L> String operateDynamicByLinkId(ProviderContext providerContext, String tableName, L linkId, String linkName, Integer operate) throws RestException {
         OptionalUtils.ofEmpty(linkId, "The link id param of 'operateByLinkId' method cannot be empty!", message -> new MybatisTableErrorException("operateByLinkId", "linkId", message));
         OptionalUtils.ofEmpty(operate, "The operate param of 'operateByLinkId' method cannot be empty!", message -> new MybatisParamErrorException("operateByLinkId", "operate", message));
         String operateColumn = "The operate column of table with 'operateByLinkId' method cannot be empty!";
         ConsumerActuator<MybatisTable> tableOptional = table ->
                 OptionalUtils.ofEmpty(table.getLogicColumn(), operateColumn, log, message -> new MybatisTableErrorException("operateByLinkId", "operateColumn", message));
-        return MybatisSqlProvider.providingOfLinkId(providerContext, tablename, linkId, linkName, tableOptional, OPERATE_SQL_SUPPLY);
+        return MybatisSqlProvider.providingOfLinkId(providerContext, tableName, linkId, linkName, tableOptional, OPERATE_SQL_SUPPLY);
     }
 
     /**
@@ -64,7 +64,7 @@ public class MybatisOperateLinkProvider implements MybatisSqlProvider {
      * <p>The operate dynamic all by link ids method.</p>
      * @param <L>             {@link java.lang.Object} <p>The parameter can be of any type.</p>
      * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>The provider context parameter is <code>ProviderContext</code> type.</p>
-     * @param tablename       {@link java.lang.String} <p>The tablename parameter is <code>String</code> type.</p>
+     * @param tableName       {@link java.lang.String} <p>The tableName parameter is <code>String</code> type.</p>
      * @param linkIdList      {@link java.util.Collection} <p>The link id list parameter is <code>Collection</code> type.</p>
      * @param linkName        {@link java.lang.String} <p>The link name parameter is <code>String</code> type.</p>
      * @param operate         {@link java.lang.Integer} <p>The operate parameter is <code>Integer</code> type.</p>
@@ -76,13 +76,13 @@ public class MybatisOperateLinkProvider implements MybatisSqlProvider {
      * @see java.lang.Integer
      * @see io.github.nichetoolkit.rest.RestException
      */
-    public static <L> String operateDynamicAllByLinkIds(ProviderContext providerContext, String tablename, Collection<L> linkIdList, String linkName, Integer operate) throws RestException {
+    public static <L> String operateDynamicAllByLinkIds(ProviderContext providerContext, String tableName, Collection<L> linkIdList, String linkName, Integer operate) throws RestException {
         OptionalUtils.ofEmpty(linkIdList, "The link id list param of 'operateAllByLinkIds' method cannot be empty!", message -> new MybatisParamErrorException("operateAllByLinkIds", "linkIdList", message));
         OptionalUtils.ofEmpty(operate, "The operate param of 'operateAllByLinkIds' method cannot be empty!", message -> new MybatisParamErrorException("operateAllByLinkIds", "operate", message));
         String operateColumn = "The operate column of table with 'operateAllByLinkIds' method cannot be empty!";
         ConsumerActuator<MybatisTable> tableOptional = table ->
                 OptionalUtils.ofEmpty(table.getLogicColumn(), operateColumn, log, message -> new MybatisTableErrorException("operateAllByLinkIds", "operateColumn", message));
-        return MybatisSqlProvider.providingOfLinkIdAll(providerContext, tablename, linkIdList, linkName, tableOptional, OPERATE_SQL_SUPPLY);
+        return MybatisSqlProvider.providingOfLinkIdAll(providerContext, tableName, linkIdList, linkName, tableOptional, OPERATE_SQL_SUPPLY);
     }
 
 

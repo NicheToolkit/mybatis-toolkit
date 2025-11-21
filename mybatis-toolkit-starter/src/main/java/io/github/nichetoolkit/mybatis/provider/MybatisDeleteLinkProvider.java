@@ -37,7 +37,7 @@ public class MybatisDeleteLinkProvider implements MybatisSqlProvider {
      * <p>The delete dynamic by link id method.</p>
      * @param <L>             {@link java.lang.Object} <p>The parameter can be of any type.</p>
      * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>The provider context parameter is <code>ProviderContext</code> type.</p>
-     * @param tablename       {@link java.lang.String} <p>The tablename parameter is <code>String</code> type.</p>
+     * @param tableName       {@link java.lang.String} <p>The tableName parameter is <code>String</code> type.</p>
      * @param linkId          L <p>The link id parameter is <code>L</code> type.</p>
      * @param linkName        {@link java.lang.String} <p>The link name parameter is <code>String</code> type.</p>
      * @return {@link java.lang.String} <p>The delete dynamic by link id return object is <code>String</code> type.</p>
@@ -46,9 +46,9 @@ public class MybatisDeleteLinkProvider implements MybatisSqlProvider {
      * @see java.lang.String
      * @see io.github.nichetoolkit.rest.RestException
      */
-    public static <L> String deleteDynamicByLinkId(ProviderContext providerContext, String tablename, L linkId, String linkName) throws RestException {
+    public static <L> String deleteDynamicByLinkId(ProviderContext providerContext, String tableName, L linkId, String linkName) throws RestException {
         OptionalUtils.ofEmpty(linkId, "The link id param of 'deleteByLinkId' method cannot be empty!", message -> new MybatisTableErrorException("deleteByLinkId", "linkId", message));
-        return MybatisSqlProvider.providingOfLinkId(providerContext, tablename, linkId, linkName, table -> {
+        return MybatisSqlProvider.providingOfLinkId(providerContext, tableName, linkId, linkName, table -> {
         }, DELETE_SQL_SUPPLY);
     }
 
@@ -57,7 +57,7 @@ public class MybatisDeleteLinkProvider implements MybatisSqlProvider {
      * <p>The delete dynamic all by link ids method.</p>
      * @param <L>             {@link java.lang.Object} <p>The parameter can be of any type.</p>
      * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>The provider context parameter is <code>ProviderContext</code> type.</p>
-     * @param tablename       {@link java.lang.String} <p>The tablename parameter is <code>String</code> type.</p>
+     * @param tableName       {@link java.lang.String} <p>The tableName parameter is <code>String</code> type.</p>
      * @param linkIdList      {@link java.util.Collection} <p>The link id list parameter is <code>Collection</code> type.</p>
      * @param linkName        {@link java.lang.String} <p>The link name parameter is <code>String</code> type.</p>
      * @return {@link java.lang.String} <p>The delete dynamic all by link ids return object is <code>String</code> type.</p>
@@ -67,9 +67,9 @@ public class MybatisDeleteLinkProvider implements MybatisSqlProvider {
      * @see java.util.Collection
      * @see io.github.nichetoolkit.rest.RestException
      */
-    public static <L> String deleteDynamicAllByLinkIds(ProviderContext providerContext, String tablename, Collection<L> linkIdList, String linkName) throws RestException {
+    public static <L> String deleteDynamicAllByLinkIds(ProviderContext providerContext, String tableName, Collection<L> linkIdList, String linkName) throws RestException {
         OptionalUtils.ofEmpty(linkIdList, "The link id list param of 'deleteAllByLinkIds' method cannot be empty!", message -> new MybatisParamErrorException("deleteAllByLinkIds", "linkIdList", message));
-        return MybatisSqlProvider.providingOfLinkIdAll(providerContext, tablename, linkIdList, linkName, table -> {
+        return MybatisSqlProvider.providingOfLinkIdAll(providerContext, tableName, linkIdList, linkName, table -> {
         }, DELETE_SQL_SUPPLY);
     }
 

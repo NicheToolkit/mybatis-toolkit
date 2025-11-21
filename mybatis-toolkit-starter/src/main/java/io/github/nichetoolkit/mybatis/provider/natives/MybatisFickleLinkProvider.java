@@ -40,7 +40,7 @@ public class MybatisFickleLinkProvider implements MybatisSqlProvider {
      * <p>The find dynamic by link id fickle load method.</p>
      * @param <L>             {@link java.lang.Object} <p>The parameter can be of any type.</p>
      * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>The provider context parameter is <code>ProviderContext</code> type.</p>
-     * @param tablename       {@link java.lang.String} <p>The tablename parameter is <code>String</code> type.</p>
+     * @param tableName       {@link java.lang.String} <p>The tableName parameter is <code>String</code> type.</p>
      * @param linkId          L <p>The link id parameter is <code>L</code> type.</p>
      * @param linkName        {@link java.lang.String} <p>The link name parameter is <code>String</code> type.</p>
      * @param fickleParams    {@link io.github.nichetoolkit.mybatis.fickle.RestFickle} <p>The fickle params parameter is <code>RestFickle</code> type.</p>
@@ -53,12 +53,12 @@ public class MybatisFickleLinkProvider implements MybatisSqlProvider {
      * @see io.github.nichetoolkit.mybatis.load.RestLoad
      * @see io.github.nichetoolkit.rest.RestException
      */
-    public static <L> String findDynamicByLinkIdFickleLoad(ProviderContext providerContext, String tablename, L linkId, String linkName, RestFickle<?>[] fickleParams, RestLoad[] loadParams) throws RestException {
+    public static <L> String findDynamicByLinkIdFickleLoad(ProviderContext providerContext, String tableName, L linkId, String linkName, RestFickle<?>[] fickleParams, RestLoad[] loadParams) throws RestException {
         OptionalUtils.ofEmpty(linkId, "The link id param of 'findByLinkIdFickleLoad' method cannot be empty!", log, message -> new MybatisParamErrorException("findByLinkIdFickleLoad", "linkId", message));
         String selectColumns = "The select columns of table with 'findByLinkIdFickleLoad' method cannot be empty!";
         ConsumerActuator<MybatisTable> tableOptional = table -> OptionalUtils.ofEmpty(table.selectColumns(), selectColumns, log,
                 message -> new MybatisTableErrorException("findByLinkIdFickleLoad", "selectColumns", message));
-        return MybatisSqlProvider.providingOfLinkId(providerContext, tablename, linkId, linkName, tableOptional, fickleParams, loadParams, ENTRY_SQL_SUPPLY);
+        return MybatisSqlProvider.providingOfLinkId(providerContext, tableName, linkId, linkName, tableOptional, fickleParams, loadParams, ENTRY_SQL_SUPPLY);
     }
 
     /**
@@ -66,7 +66,7 @@ public class MybatisFickleLinkProvider implements MybatisSqlProvider {
      * <p>The find dynamic all by link ids fickle load method.</p>
      * @param <L>             {@link java.lang.Object} <p>The parameter can be of any type.</p>
      * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>The provider context parameter is <code>ProviderContext</code> type.</p>
-     * @param tablename       {@link java.lang.String} <p>The tablename parameter is <code>String</code> type.</p>
+     * @param tableName       {@link java.lang.String} <p>The tableName parameter is <code>String</code> type.</p>
      * @param linkIdList      {@link java.util.Collection} <p>The link id list parameter is <code>Collection</code> type.</p>
      * @param linkName        {@link java.lang.String} <p>The link name parameter is <code>String</code> type.</p>
      * @param fickleParams    {@link io.github.nichetoolkit.mybatis.fickle.RestFickle} <p>The fickle params parameter is <code>RestFickle</code> type.</p>
@@ -80,9 +80,9 @@ public class MybatisFickleLinkProvider implements MybatisSqlProvider {
      * @see io.github.nichetoolkit.mybatis.load.RestLoad
      * @see io.github.nichetoolkit.rest.RestException
      */
-    public static <L> String findDynamicAllByLinkIdsFickleLoad(ProviderContext providerContext, String tablename, Collection<L> linkIdList, String linkName, RestFickle<?>[] fickleParams, RestLoad[] loadParams) throws RestException {
+    public static <L> String findDynamicAllByLinkIdsFickleLoad(ProviderContext providerContext, String tableName, Collection<L> linkIdList, String linkName, RestFickle<?>[] fickleParams, RestLoad[] loadParams) throws RestException {
         OptionalUtils.ofEmpty(linkIdList, "The link id list param of 'findAllByLinkIdsFickleLoad' method cannot be empty!", log, message -> new MybatisParamErrorException("findAllByLinkIdsFickleLoad", "linkIdList", message));
         ConsumerActuator<MybatisTable> tableOptional = table -> OptionalUtils.ofEmpty(table.selectColumns(), "The select columns of table with 'findAllByLinkIdsFickleLoad' method cannot be empty!", message -> new MybatisTableErrorException("findAllByLinkIdsFickleLoad", "selectColumns", message));
-        return MybatisSqlProvider.providingOfLinkIdAll(providerContext, tablename, linkIdList, linkName, tableOptional, fickleParams, loadParams, ENTRY_SQL_SUPPLY);
+        return MybatisSqlProvider.providingOfLinkIdAll(providerContext, tableName, linkIdList, linkName, tableOptional, fickleParams, loadParams, ENTRY_SQL_SUPPLY);
     }
 }

@@ -33,6 +33,6 @@ public interface MybatisFilterLoadMapper<E extends RestId<I>, I> extends Mybatis
     @Override
     @Lang(MybatisSqlSourceCaching.class)
     @SelectProvider(MybatisSqlProviderResolver.class)
-    List<E> findDynamicAllByLoadWhere(@Param("tablename") String tablename, @Param("whereSql") String whereSql, @Param("loadParams") RestLoad... loadParams);
+    List<E> findDynamicAllByLoadWhere(@Param("tableName") String tableName, @Param("whereSql") String whereSql, @Param("loadParams") RestLoad... loadParams);
 
 }

@@ -29,7 +29,7 @@ public interface MybatisSaveMapper<E extends RestId<I>, I> extends MybatisMapper
     @Override
     @Lang(MybatisSqlSourceCaching.class)
     @InsertProvider(MybatisSqlProviderResolver.class)
-    Integer saveDynamic(@Param("tablename") String tablename, @Param("entity") E entity);
+    Integer saveDynamic(@Param("tableName") String tableName, @Param("entity") E entity);
 
     @Override
     default Integer saveAll(@Param("entityList") Collection<E> entityList) {
@@ -39,5 +39,5 @@ public interface MybatisSaveMapper<E extends RestId<I>, I> extends MybatisMapper
     @Override
     @Lang(MybatisSqlSourceCaching.class)
     @InsertProvider(MybatisSqlProviderResolver.class)
-    Integer saveDynamicAll(@Param("tablename") String tablename, @Param("entityList") Collection<E> entityList);
+    Integer saveDynamicAll(@Param("tableName") String tableName, @Param("entityList") Collection<E> entityList);
 }

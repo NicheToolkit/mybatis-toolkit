@@ -38,7 +38,7 @@ public class MybatisFickleFilterProvider implements MybatisSqlProvider {
      * <code>findDynamicAllByFickleLoadWhere</code>
      * <p>The find dynamic all by fickle load where method.</p>
      * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>The provider context parameter is <code>ProviderContext</code> type.</p>
-     * @param tablename       {@link java.lang.String} <p>The tablename parameter is <code>String</code> type.</p>
+     * @param tableName       {@link java.lang.String} <p>The tableName parameter is <code>String</code> type.</p>
      * @param whereSql        {@link java.lang.String} <p>The where sql parameter is <code>String</code> type.</p>
      * @param fickleParams    {@link io.github.nichetoolkit.mybatis.fickle.RestFickle} <p>The fickle params parameter is <code>RestFickle</code> type.</p>
      * @param loadParams      {@link io.github.nichetoolkit.mybatis.load.RestLoad} <p>The load params parameter is <code>RestLoad</code> type.</p>
@@ -50,10 +50,10 @@ public class MybatisFickleFilterProvider implements MybatisSqlProvider {
      * @see io.github.nichetoolkit.mybatis.load.RestLoad
      * @see io.github.nichetoolkit.rest.RestException
      */
-    public static String findDynamicAllByFickleLoadWhere(ProviderContext providerContext, String tablename, String whereSql, RestFickle<?>[] fickleParams, RestLoad[] loadParams) throws RestException {
+    public static String findDynamicAllByFickleLoadWhere(ProviderContext providerContext, String tableName, String whereSql, RestFickle<?>[] fickleParams, RestLoad[] loadParams) throws RestException {
         OptionalUtils.ofEmpty(whereSql, "The where sql param of 'findAllByFickleLoadWhere' method cannot be empty!", log, message -> new MybatisParamErrorException("findAllByFickleLoadWhere", "whereSql", message));
         ConsumerActuator<MybatisTable> tableOptional = table -> OptionalUtils.ofEmpty(table.selectColumns(), "The select columns of table with 'findAllByFickleLoadWhere' method cannot be empty!", log, message -> new MybatisTableErrorException("findAllByFickleLoadWhere", "selectColumns", message));
-        return MybatisSqlProvider.providingOfWhere(providerContext, tablename, whereSql, tableOptional, fickleParams, loadParams, ENTRY_SQL_SUPPLY);
+        return MybatisSqlProvider.providingOfWhere(providerContext, tableName, whereSql, tableOptional, fickleParams, loadParams, ENTRY_SQL_SUPPLY);
     }
 
 }

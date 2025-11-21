@@ -29,8 +29,8 @@ public interface MybatisFindLinkMapper<E extends RestId<I>, L, I> extends Mybati
     }
 
     @Override
-    default List<E> findDynamicByLinkId(@Param("tablename") String tablename, @Param("linkId") L linkId) {
-        return findDynamicByLinkId(tablename, linkId, null);
+    default List<E> findDynamicByLinkId(@Param("tableName") String tableName, @Param("linkId") L linkId) {
+        return findDynamicByLinkId(tableName, linkId, null);
     }
 
     @Override
@@ -39,8 +39,8 @@ public interface MybatisFindLinkMapper<E extends RestId<I>, L, I> extends Mybati
     }
 
     @Override
-    default List<E> findDynamicAllByLinkIds(@Param("tablename") String tablename, @Param("linkIdList") Collection<L> linkIdList) {
-        return findDynamicAllByLinkIds(tablename, linkIdList, null);
+    default List<E> findDynamicAllByLinkIds(@Param("tableName") String tableName, @Param("linkIdList") Collection<L> linkIdList) {
+        return findDynamicAllByLinkIds(tableName, linkIdList, null);
     }
 
     @Override
@@ -51,7 +51,7 @@ public interface MybatisFindLinkMapper<E extends RestId<I>, L, I> extends Mybati
     @Override
     @Lang(MybatisSqlSourceCaching.class)
     @SelectProvider(MybatisSqlProviderResolver.class)
-    List<E> findDynamicByLinkId(@Param("tablename") String tablename, @Param("linkId") L linkId, @Param("linkName") String linkName);
+    List<E> findDynamicByLinkId(@Param("tableName") String tableName, @Param("linkId") L linkId, @Param("linkName") String linkName);
 
     @Override
     default List<E> findAllByLinkIds(@Param("linkIdList") Collection<L> linkIdList, @Param("linkName") String linkName) {
@@ -61,5 +61,5 @@ public interface MybatisFindLinkMapper<E extends RestId<I>, L, I> extends Mybati
     @Override
     @Lang(MybatisSqlSourceCaching.class)
     @SelectProvider(MybatisSqlProviderResolver.class)
-    List<E> findDynamicAllByLinkIds(@Param("tablename") String tablename, @Param("linkIdList") Collection<L> linkIdList, @Param("linkName") String linkName);
+    List<E> findDynamicAllByLinkIds(@Param("tableName") String tableName, @Param("linkIdList") Collection<L> linkIdList, @Param("linkName") String linkName);
 }

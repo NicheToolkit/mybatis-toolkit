@@ -29,7 +29,7 @@ public interface MybatisRemoveMapper<E extends RestId<I>, I> extends MybatisMapp
     @Override
     @Lang(MybatisSqlSourceCaching.class)
     @UpdateProvider(MybatisSqlProviderResolver.class)
-    Integer removeDynamicById(@Param("tablename") String tablename, @Param("id") I id, @Param("logic") Object logic);
+    Integer removeDynamicById(@Param("tableName") String tableName, @Param("id") I id, @Param("logic") Object logic);
 
     @Override
     default Integer removeAll(@Param("idList") Collection<I> idList, @Param("logic") Object logic) {
@@ -39,7 +39,7 @@ public interface MybatisRemoveMapper<E extends RestId<I>, I> extends MybatisMapp
     @Override
     @Lang(MybatisSqlSourceCaching.class)
     @UpdateProvider(MybatisSqlProviderResolver.class)
-    Integer removeDynamicAll(@Param("tablename") String tablename, @Param("idList") Collection<I> idList, @Param("logic") Object logic);
+    Integer removeDynamicAll(@Param("tableName") String tableName, @Param("idList") Collection<I> idList, @Param("logic") Object logic);
 
     @Override
     default Integer removeAllByWhere(@Param("whereSql") String whereSql, @Param("logic") Object logic) {
@@ -49,5 +49,5 @@ public interface MybatisRemoveMapper<E extends RestId<I>, I> extends MybatisMapp
     @Override
     @Lang(MybatisSqlSourceCaching.class)
     @UpdateProvider(MybatisSqlProviderResolver.class)
-    Integer removeDynamicAllByWhere(@Param("tablename") String tablename, @Param("whereSql") String whereSql, @Param("logic") Object logic);
+    Integer removeDynamicAllByWhere(@Param("tableName") String tableName, @Param("whereSql") String whereSql, @Param("logic") Object logic);
 }

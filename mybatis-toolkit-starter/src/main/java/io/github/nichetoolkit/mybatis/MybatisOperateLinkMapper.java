@@ -29,8 +29,8 @@ public interface MybatisOperateLinkMapper<E extends RestId<I>, L, I> extends Myb
     }
 
     @Override
-    default Integer operateDynamicByLinkId(@Param("tablename") String tablename, @Param("linkId") L linkId, @Param("operate") Integer operate) {
-        return operateDynamicByLinkId(tablename, linkId, null, operate);
+    default Integer operateDynamicByLinkId(@Param("tableName") String tableName, @Param("linkId") L linkId, @Param("operate") Integer operate) {
+        return operateDynamicByLinkId(tableName, linkId, null, operate);
     }
 
     @Override
@@ -39,8 +39,8 @@ public interface MybatisOperateLinkMapper<E extends RestId<I>, L, I> extends Myb
     }
 
     @Override
-    default Integer operateDynamicAllByLinkIds(@Param("tablename") String tablename, @Param("linkIdList") Collection<L> linkIdList, @Param("operate") Integer operate) {
-        return operateDynamicAllByLinkIds(tablename, linkIdList, null, operate);
+    default Integer operateDynamicAllByLinkIds(@Param("tableName") String tableName, @Param("linkIdList") Collection<L> linkIdList, @Param("operate") Integer operate) {
+        return operateDynamicAllByLinkIds(tableName, linkIdList, null, operate);
     }
 
     @Override
@@ -51,7 +51,7 @@ public interface MybatisOperateLinkMapper<E extends RestId<I>, L, I> extends Myb
     @Override
     @Lang(MybatisSqlSourceCaching.class)
     @UpdateProvider(MybatisSqlProviderResolver.class)
-    Integer operateDynamicByLinkId(@Param("tablename") String tablename, @Param("linkId") L linkId, @Param("linkName") String linkName, @Param("operate") Integer operate);
+    Integer operateDynamicByLinkId(@Param("tableName") String tableName, @Param("linkId") L linkId, @Param("linkName") String linkName, @Param("operate") Integer operate);
 
     @Override
     default Integer operateAllByLinkIds(@Param("linkIdList") Collection<L> linkIdList, @Param("linkName") String linkName, @Param("operate") Integer operate) {
@@ -61,5 +61,5 @@ public interface MybatisOperateLinkMapper<E extends RestId<I>, L, I> extends Myb
     @Override
     @Lang(MybatisSqlSourceCaching.class)
     @UpdateProvider(MybatisSqlProviderResolver.class)
-    Integer operateDynamicAllByLinkIds(@Param("tablename") String tablename, @Param("linkIdList") Collection<L> linkIdList, @Param("linkName") String linkName, @Param("operate") Integer operate);
+    Integer operateDynamicAllByLinkIds(@Param("tableName") String tableName, @Param("linkIdList") Collection<L> linkIdList, @Param("linkName") String linkName, @Param("operate") Integer operate);
 }

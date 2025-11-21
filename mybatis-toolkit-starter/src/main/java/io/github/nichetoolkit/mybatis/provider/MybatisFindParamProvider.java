@@ -41,7 +41,7 @@ public class MybatisFindParamProvider implements MybatisSqlProvider {
      * <p>The find dynamic all by id or params method.</p>
      * @param <I>             {@link java.lang.Object} <p>The parameter can be of any type.</p>
      * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>The provider context parameter is <code>ProviderContext</code> type.</p>
-     * @param tablename       {@link java.lang.String} <p>The tablename parameter is <code>String</code> type.</p>
+     * @param tableName       {@link java.lang.String} <p>The tableName parameter is <code>String</code> type.</p>
      * @param id              I <p>The id parameter is <code>I</code> type.</p>
      * @param params          {@link io.github.nichetoolkit.mybatis.load.RestParam} <p>The params parameter is <code>RestParam</code> type.</p>
      * @return {@link java.lang.String} <p>The find dynamic all by id or params return object is <code>String</code> type.</p>
@@ -51,8 +51,8 @@ public class MybatisFindParamProvider implements MybatisSqlProvider {
      * @see io.github.nichetoolkit.mybatis.load.RestParam
      * @see io.github.nichetoolkit.rest.RestException
      */
-    public static <I> String findDynamicAllByIdOrParams(ProviderContext providerContext, String tablename, I id, RestParam[] params) throws RestException {
-        return findDynamicAllLoadByIdOrParams(providerContext, tablename, id, params, null);
+    public static <I> String findDynamicAllByIdOrParams(ProviderContext providerContext, String tableName, I id, RestParam[] params) throws RestException {
+        return findDynamicAllLoadByIdOrParams(providerContext, tableName, id, params, null);
     }
 
     /**
@@ -60,7 +60,7 @@ public class MybatisFindParamProvider implements MybatisSqlProvider {
      * <p>The find dynamic all load by id or params method.</p>
      * @param <I>             {@link java.lang.Object} <p>The parameter can be of any type.</p>
      * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>The provider context parameter is <code>ProviderContext</code> type.</p>
-     * @param tablename       {@link java.lang.String} <p>The tablename parameter is <code>String</code> type.</p>
+     * @param tableName       {@link java.lang.String} <p>The tableName parameter is <code>String</code> type.</p>
      * @param id              I <p>The id parameter is <code>I</code> type.</p>
      * @param params          {@link io.github.nichetoolkit.mybatis.load.RestParam} <p>The params parameter is <code>RestParam</code> type.</p>
      * @param loadParams      {@link io.github.nichetoolkit.mybatis.load.RestLoad} <p>The load params parameter is <code>RestLoad</code> type.</p>
@@ -72,10 +72,10 @@ public class MybatisFindParamProvider implements MybatisSqlProvider {
      * @see io.github.nichetoolkit.mybatis.load.RestLoad
      * @see io.github.nichetoolkit.rest.RestException
      */
-    public static <I> String findDynamicAllLoadByIdOrParams(ProviderContext providerContext, String tablename, I id, RestParam[] params, RestLoad[] loadParams) throws RestException {
+    public static <I> String findDynamicAllLoadByIdOrParams(ProviderContext providerContext, String tableName, I id, RestParam[] params, RestLoad[] loadParams) throws RestException {
         OptionalUtils.ofTrue(GeneralUtils.isEmpty(id) && GeneralUtils.isEmpty(params), "The id & param of 'findAllByIdOrParams' method cannot be empty!", log, message -> new MybatisParamErrorException("findAllByIdOrParams", "id", message));
         ConsumerActuator<MybatisTable> tableOptional = table -> OptionalUtils.ofEmpty(table.selectColumns(), "The select columns of table with 'findDynamicAllByIdOrParams' method cannot be empty!", message -> new MybatisTableErrorException("findDynamicAllByIdOrParams", "selectColumns", message));
-        return MybatisSqlProvider.providingOfIdOrParams(providerContext, tablename, id, tableOptional, params, loadParams, ENTRY_SQL_SUPPLY);
+        return MybatisSqlProvider.providingOfIdOrParams(providerContext, tableName, id, tableOptional, params, loadParams, ENTRY_SQL_SUPPLY);
     }
 
 }

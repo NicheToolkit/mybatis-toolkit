@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.github.nichetoolkit.rest.util.BeanUtils;
 import io.github.nichetoolkit.rice.RestInfoModel;
-import io.github.nichetoolkit.rice.RestTablekey;
+import io.github.nichetoolkit.rice.RestTableKey;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
@@ -18,7 +18,7 @@ import java.util.Date;
  * <p>The simple model class.</p>
  * @author Cyan (snow22314@outlook.com)
  * @see io.github.nichetoolkit.rice.RestInfoModel
- * @see io.github.nichetoolkit.rice.RestTablekey
+ * @see io.github.nichetoolkit.rice.RestTableKey
  * @see lombok.Setter
  * @see lombok.Getter
  * @see com.fasterxml.jackson.annotation.JsonInclude
@@ -30,7 +30,7 @@ import java.util.Date;
 @SuperBuilder
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class SimpleModel extends RestInfoModel<SimpleModel,SimpleEntity> implements RestTablekey<String> {
+public class SimpleModel extends RestInfoModel<SimpleModel,SimpleEntity> implements RestTableKey<String> {
     /**
      * <code>linkId</code>
      * {@link java.lang.String} <p>The <code>linkId</code> field.</p>
@@ -82,7 +82,7 @@ public class SimpleModel extends RestInfoModel<SimpleModel,SimpleEntity> impleme
     }
 
     @Override
-    public String getTablekey() {
+    public String getTableKey() {
         return "_dynamic";
     }
 

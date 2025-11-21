@@ -38,7 +38,7 @@ public class MybatisInfoProvider implements MybatisSqlProvider {
      * <code>findDynamicByName</code>
      * <p>The find dynamic by name method.</p>
      * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>The provider context parameter is <code>ProviderContext</code> type.</p>
-     * @param tablename       {@link java.lang.String} <p>The tablename parameter is <code>String</code> type.</p>
+     * @param tableName       {@link java.lang.String} <p>The tableName parameter is <code>String</code> type.</p>
      * @param name            {@link java.lang.String} <p>The name parameter is <code>String</code> type.</p>
      * @param logic           {@link java.lang.Object} <p>The logic parameter is <code>Object</code> type.</p>
      * @return {@link java.lang.String} <p>The find dynamic by name return object is <code>String</code> type.</p>
@@ -48,12 +48,12 @@ public class MybatisInfoProvider implements MybatisSqlProvider {
      * @see java.lang.Object
      * @see io.github.nichetoolkit.rest.RestException
      */
-    public static String findDynamicByName(ProviderContext providerContext, String tablename, String name, Object logic) throws RestException {
+    public static String findDynamicByName(ProviderContext providerContext, String tableName, String name, Object logic) throws RestException {
         OptionalUtils.ofEmpty(name, "The name param of 'findByName' method cannot be empty!", log, message -> new MybatisParamErrorException("findByName", "name", message));
         String selectColumns = "The select columns of table with 'findByName' method cannot be empty!";
         ConsumerActuator<MybatisTable> tableOptional = table -> OptionalUtils.ofEmpty(table.selectColumns(), selectColumns, log,
                 message -> new MybatisTableErrorException("findByName", "selectColumns", message));
-        return MybatisSqlProvider.providingOfName(providerContext, tablename, name, tableOptional, SELECT_SQL_SUPPLY);
+        return MybatisSqlProvider.providingOfName(providerContext, tableName, name, tableOptional, SELECT_SQL_SUPPLY);
     }
 
     /**
@@ -61,7 +61,7 @@ public class MybatisInfoProvider implements MybatisSqlProvider {
      * <p>The find dynamic by name and not id method.</p>
      * @param <I>             {@link java.lang.Object} <p>The parameter can be of any type.</p>
      * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>The provider context parameter is <code>ProviderContext</code> type.</p>
-     * @param tablename       {@link java.lang.String} <p>The tablename parameter is <code>String</code> type.</p>
+     * @param tableName       {@link java.lang.String} <p>The tableName parameter is <code>String</code> type.</p>
      * @param name            {@link java.lang.String} <p>The name parameter is <code>String</code> type.</p>
      * @param id              I <p>The id parameter is <code>I</code> type.</p>
      * @param logic           {@link java.lang.Object} <p>The logic parameter is <code>Object</code> type.</p>
@@ -72,12 +72,12 @@ public class MybatisInfoProvider implements MybatisSqlProvider {
      * @see java.lang.Object
      * @see io.github.nichetoolkit.rest.RestException
      */
-    public static <I> String findDynamicByNameAndNotId(ProviderContext providerContext, String tablename, String name, I id, Object logic) throws RestException {
+    public static <I> String findDynamicByNameAndNotId(ProviderContext providerContext, String tableName, String name, I id, Object logic) throws RestException {
         OptionalUtils.ofFalse(GeneralUtils.isNotEmpty(id) && GeneralUtils.isNotEmpty(name), "The id and name params of 'findByNameAndNotId' method cannot be empty!", log, message -> new MybatisParamErrorException("findByNameAndNotId", "id and name", message));
         String selectColumns = "The select columns of table with 'findByNameAndNotId' method cannot be empty!";
         ConsumerActuator<MybatisTable> tableOptional = table -> OptionalUtils.ofEmpty(table.selectColumns(), selectColumns, log,
                 message -> new MybatisTableErrorException("findByNameAndNotId", "selectColumns", message));
-        return MybatisSqlProvider.providingOfName(providerContext, tablename, name, id, tableOptional, SELECT_SQL_SUPPLY);
+        return MybatisSqlProvider.providingOfName(providerContext, tableName, name, id, tableOptional, SELECT_SQL_SUPPLY);
     }
 
     /**
@@ -85,7 +85,7 @@ public class MybatisInfoProvider implements MybatisSqlProvider {
      * <p>The find dynamic by entity unique method.</p>
      * @param <E>             {@link java.lang.Object} <p>The parameter can be of any type.</p>
      * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>The provider context parameter is <code>ProviderContext</code> type.</p>
-     * @param tablename       {@link java.lang.String} <p>The tablename parameter is <code>String</code> type.</p>
+     * @param tableName       {@link java.lang.String} <p>The tableName parameter is <code>String</code> type.</p>
      * @param entity          E <p>The entity parameter is <code>E</code> type.</p>
      * @param logic           {@link java.lang.Object} <p>The logic parameter is <code>Object</code> type.</p>
      * @return {@link java.lang.String} <p>The find dynamic by entity unique return object is <code>String</code> type.</p>
@@ -95,10 +95,10 @@ public class MybatisInfoProvider implements MybatisSqlProvider {
      * @see java.lang.Object
      * @see io.github.nichetoolkit.rest.RestException
      */
-    public static <E> String findDynamicByEntityUnique(ProviderContext providerContext, String tablename, E entity, Object logic) throws RestException {
+    public static <E> String findDynamicByEntityUnique(ProviderContext providerContext, String tableName, E entity, Object logic) throws RestException {
         OptionalUtils.ofEmpty(entity, "The entity param of 'findByEntity' method cannot be empty!", log, message -> new MybatisParamErrorException("findByEntity", "entity", message));
         ConsumerActuator<MybatisTable> tableOptional = tableOptional("findByEntity");
-        return MybatisSqlProvider.providingOfEntity(providerContext, tablename, entity, tableOptional, SELECT_SQL_SUPPLY);
+        return MybatisSqlProvider.providingOfEntity(providerContext, tableName, entity, tableOptional, SELECT_SQL_SUPPLY);
     }
 
     /**
@@ -107,7 +107,7 @@ public class MybatisInfoProvider implements MybatisSqlProvider {
      * @param <I>             {@link java.lang.Object} <p>The parameter can be of any type.</p>
      * @param <E>             {@link java.lang.Object} <p>The parameter can be of any type.</p>
      * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>The provider context parameter is <code>ProviderContext</code> type.</p>
-     * @param tablename       {@link java.lang.String} <p>The tablename parameter is <code>String</code> type.</p>
+     * @param tableName       {@link java.lang.String} <p>The tableName parameter is <code>String</code> type.</p>
      * @param entity          E <p>The entity parameter is <code>E</code> type.</p>
      * @param id              I <p>The id parameter is <code>I</code> type.</p>
      * @param logic           {@link java.lang.Object} <p>The logic parameter is <code>Object</code> type.</p>
@@ -118,10 +118,10 @@ public class MybatisInfoProvider implements MybatisSqlProvider {
      * @see java.lang.Object
      * @see io.github.nichetoolkit.rest.RestException
      */
-    public static <I, E> String findDynamicByEntityUniqueAndNotId(ProviderContext providerContext, String tablename, E entity, I id, Object logic) throws RestException {
+    public static <I, E> String findDynamicByEntityUniqueAndNotId(ProviderContext providerContext, String tableName, E entity, I id, Object logic) throws RestException {
         OptionalUtils.ofFalse(GeneralUtils.isNotEmpty(id) && GeneralUtils.isNotEmpty(entity), "The id and entity params of 'findByEntityAndNotId' method cannot be empty!", log, message -> new MybatisParamErrorException("findByEntityAndNotId", "id and entity", message));
         ConsumerActuator<MybatisTable> tableOptional = tableOptional("findByEntityAndNotId");
-        return MybatisSqlProvider.providingOfEntity(providerContext, tablename, entity, id, tableOptional, SELECT_SQL_SUPPLY);
+        return MybatisSqlProvider.providingOfEntity(providerContext, tableName, entity, id, tableOptional, SELECT_SQL_SUPPLY);
     }
 
     /**

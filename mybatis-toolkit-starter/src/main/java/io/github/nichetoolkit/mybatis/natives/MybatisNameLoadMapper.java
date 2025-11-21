@@ -33,6 +33,6 @@ public interface MybatisNameLoadMapper<E extends RestId<I>, I> extends MybatisMa
     @Override
     @Lang(MybatisSqlSourceCaching.class)
     @SelectProvider(MybatisSqlProviderResolver.class)
-    List<E> findDynamicByNameLoad(@Param("tablename") String tablename, @Param("name") String name, @Param("logic") Object logic, @Param("loadParams") RestLoad... loadParams);
+    List<E> findDynamicByNameLoad(@Param("tableName") String tableName, @Param("name") String name, @Param("logic") Object logic, @Param("loadParams") RestLoad... loadParams);
 
 }

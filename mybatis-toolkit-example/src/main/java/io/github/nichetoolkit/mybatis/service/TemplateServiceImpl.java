@@ -31,8 +31,8 @@ public class TemplateServiceImpl extends
     }
 
     @Override
-    protected String dynamicTablename(@NonNull String tablekey) throws RestException {
-        return "ntr_template".concat(tablekey);
+    protected String dynamicTableName(@NonNull String tableKey) throws RestException {
+        return "ntr_template".concat(tableKey);
     }
 
     @Override

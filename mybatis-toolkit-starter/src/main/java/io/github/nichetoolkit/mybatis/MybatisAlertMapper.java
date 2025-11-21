@@ -30,7 +30,7 @@ public interface MybatisAlertMapper<E extends RestId<I>, S, I> extends MybatisMa
     @Override
     @Lang(MybatisSqlSourceCaching.class)
     @UpdateProvider(MybatisSqlProviderResolver.class)
-    Integer alertDynamicById(@Param("tablename") String tablename, @Param("id") I id, @Param("status") S status);
+    Integer alertDynamicById(@Param("tableName") String tableName, @Param("id") I id, @Param("status") S status);
 
     @Override
     default Integer alertAll(@Param("idList") Collection<I> idList, @Param("status") S status) {
@@ -40,7 +40,7 @@ public interface MybatisAlertMapper<E extends RestId<I>, S, I> extends MybatisMa
     @Override
     @Lang(MybatisSqlSourceCaching.class)
     @UpdateProvider(MybatisSqlProviderResolver.class)
-    Integer alertDynamicAll(@Param("tablename") String tablename, @Param("idList") Collection<I> idList, @Param("status") S status);
+    Integer alertDynamicAll(@Param("tableName") String tableName, @Param("idList") Collection<I> idList, @Param("status") S status);
 
     @Override
     default Integer alertAllByWhere(@Param("whereSql") String whereSql, @Param("status") S status) {
@@ -50,6 +50,6 @@ public interface MybatisAlertMapper<E extends RestId<I>, S, I> extends MybatisMa
     @Override
     @Lang(MybatisSqlSourceCaching.class)
     @UpdateProvider(MybatisSqlProviderResolver.class)
-    Integer alertDynamicAllByWhere(@Param("tablename") String tablename, @Param("whereSql") String whereSql, @Param("status") S status);
+    Integer alertDynamicAllByWhere(@Param("tableName") String tableName, @Param("whereSql") String whereSql, @Param("status") S status);
 
 }

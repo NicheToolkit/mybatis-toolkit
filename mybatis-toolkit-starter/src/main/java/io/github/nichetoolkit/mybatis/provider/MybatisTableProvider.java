@@ -35,14 +35,14 @@ public class MybatisTableProvider implements MybatisSqlProvider {
      * <code>findColumns</code>
      * <p>The find columns method.</p>
      * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>The provider context parameter is <code>ProviderContext</code> type.</p>
-     * @param tablename       {@link java.lang.String} <p>The tablename parameter is <code>String</code> type.</p>
+     * @param tableName       {@link java.lang.String} <p>The tableName parameter is <code>String</code> type.</p>
      * @return {@link java.lang.String} <p>The find columns return object is <code>String</code> type.</p>
      * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
      * @see org.apache.ibatis.builder.annotation.ProviderContext
      * @see java.lang.String
      * @see io.github.nichetoolkit.rest.RestException
      */
-    public static String findColumns(ProviderContext providerContext, String tablename) throws RestException {
+    public static String findColumns(ProviderContext providerContext, String tableName) throws RestException {
         return findTableColumns(providerContext, null);
     }
 
@@ -50,15 +50,15 @@ public class MybatisTableProvider implements MybatisSqlProvider {
      * <code>findTableColumns</code>
      * <p>The find table columns method.</p>
      * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>The provider context parameter is <code>ProviderContext</code> type.</p>
-     * @param tablename       {@link java.lang.String} <p>The tablename parameter is <code>String</code> type.</p>
+     * @param tableName       {@link java.lang.String} <p>The tableName parameter is <code>String</code> type.</p>
      * @return {@link java.lang.String} <p>The find table columns return object is <code>String</code> type.</p>
      * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
      * @see org.apache.ibatis.builder.annotation.ProviderContext
      * @see java.lang.String
      * @see io.github.nichetoolkit.rest.RestException
      */
-    public static String findTableColumns(ProviderContext providerContext, String tablename) throws RestException {
-        return MybatisSqlProvider.providingOfTablename(providerContext, tablename);
+    public static String findTableColumns(ProviderContext providerContext, String tableName) throws RestException {
+        return MybatisSqlProvider.providingOfTableName(providerContext, tableName);
     }
 
     /**
@@ -81,7 +81,7 @@ public class MybatisTableProvider implements MybatisSqlProvider {
      * <code>createTableIndex</code>
      * <p>The create table index method.</p>
      * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>The provider context parameter is <code>ProviderContext</code> type.</p>
-     * @param tablename       {@link java.lang.String} <p>The tablename parameter is <code>String</code> type.</p>
+     * @param tableName       {@link java.lang.String} <p>The tableName parameter is <code>String</code> type.</p>
      * @param field           {@link io.github.nichetoolkit.rest.RestField} <p>The field parameter is <code>RestField</code> type.</p>
      * @return {@link java.lang.String} <p>The create table index return object is <code>String</code> type.</p>
      * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
@@ -90,10 +90,10 @@ public class MybatisTableProvider implements MybatisSqlProvider {
      * @see io.github.nichetoolkit.rest.RestField
      * @see io.github.nichetoolkit.rest.RestException
      */
-    public static String createTableIndex(ProviderContext providerContext, String tablename, RestField<?> field) throws RestException {
+    public static String createTableIndex(ProviderContext providerContext, String tableName, RestField<?> field) throws RestException {
         OptionalUtils.ofEmpty(field, "The field param of 'createIndex' method cannot be empty!", message -> new MybatisParamErrorException("createIndex", "field", message));
         OptionalUtils.ofEmpty(field.getKey(), "The field key param of 'createIndex' method cannot be empty!", message -> new MybatisParamErrorException("createIndex", "field key", message));
-        return MybatisSqlProvider.providingOfCreateIndex(providerContext, tablename, field);
+        return MybatisSqlProvider.providingOfCreateIndex(providerContext, tableName, field);
     }
 
     /**
@@ -116,7 +116,7 @@ public class MybatisTableProvider implements MybatisSqlProvider {
      * <code>dropTableIndex</code>
      * <p>The drop table index method.</p>
      * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>The provider context parameter is <code>ProviderContext</code> type.</p>
-     * @param tablename       {@link java.lang.String} <p>The tablename parameter is <code>String</code> type.</p>
+     * @param tableName       {@link java.lang.String} <p>The tableName parameter is <code>String</code> type.</p>
      * @param field           {@link io.github.nichetoolkit.rest.RestField} <p>The field parameter is <code>RestField</code> type.</p>
      * @return {@link java.lang.String} <p>The drop table index return object is <code>String</code> type.</p>
      * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
@@ -125,10 +125,10 @@ public class MybatisTableProvider implements MybatisSqlProvider {
      * @see io.github.nichetoolkit.rest.RestField
      * @see io.github.nichetoolkit.rest.RestException
      */
-    public static String dropTableIndex(ProviderContext providerContext, String tablename, RestField<?> field) throws RestException {
+    public static String dropTableIndex(ProviderContext providerContext, String tableName, RestField<?> field) throws RestException {
         OptionalUtils.ofEmpty(field, "The field param of 'dropIndex' method cannot be empty!", message -> new MybatisParamErrorException("dropIndex", "field", message));
         OptionalUtils.ofEmpty(field.getKey(), "The field key param of 'dropIndex' method cannot be empty!", message -> new MybatisParamErrorException("dropIndex", "field key", message));
-        return MybatisSqlProvider.providingOfDropIndex(providerContext, tablename, field);
+        return MybatisSqlProvider.providingOfDropIndex(providerContext, tableName, field);
     }
 
     /**
@@ -151,7 +151,7 @@ public class MybatisTableProvider implements MybatisSqlProvider {
      * <code>modifyTableColumn</code>
      * <p>The modify table column method.</p>
      * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>The provider context parameter is <code>ProviderContext</code> type.</p>
-     * @param tablename       {@link java.lang.String} <p>The tablename parameter is <code>String</code> type.</p>
+     * @param tableName       {@link java.lang.String} <p>The tableName parameter is <code>String</code> type.</p>
      * @param field           {@link io.github.nichetoolkit.rest.RestField} <p>The field parameter is <code>RestField</code> type.</p>
      * @return {@link java.lang.String} <p>The modify table column return object is <code>String</code> type.</p>
      * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
@@ -160,11 +160,11 @@ public class MybatisTableProvider implements MybatisSqlProvider {
      * @see io.github.nichetoolkit.rest.RestField
      * @see io.github.nichetoolkit.rest.RestException
      */
-    public static String modifyTableColumn(ProviderContext providerContext, String tablename, RestField<?> field) throws RestException {
+    public static String modifyTableColumn(ProviderContext providerContext, String tableName, RestField<?> field) throws RestException {
         OptionalUtils.ofEmpty(field, "The field param of 'modifyColumn' method cannot be empty!", message -> new MybatisParamErrorException("modifyColumn", "field", message));
         OptionalUtils.ofEmpty(field.getKey(), "The field key param of 'modifyColumn' method cannot be empty!", message -> new MybatisParamErrorException("modifyColumn", "field key", message));
         OptionalUtils.ofEmpty(field.getType(), "The field type param of 'modifyColumn' method cannot be empty!", message -> new MybatisParamErrorException("modifyColumn", "field type", message));
-        return MybatisSqlProvider.providingOfModifyColumn(providerContext, tablename, field);
+        return MybatisSqlProvider.providingOfModifyColumn(providerContext, tableName, field);
     }
 
     /**
@@ -187,7 +187,7 @@ public class MybatisTableProvider implements MybatisSqlProvider {
      * <code>addTableColumn</code>
      * <p>The add table column method.</p>
      * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>The provider context parameter is <code>ProviderContext</code> type.</p>
-     * @param tablename       {@link java.lang.String} <p>The tablename parameter is <code>String</code> type.</p>
+     * @param tableName       {@link java.lang.String} <p>The tableName parameter is <code>String</code> type.</p>
      * @param field           {@link io.github.nichetoolkit.rest.RestField} <p>The field parameter is <code>RestField</code> type.</p>
      * @return {@link java.lang.String} <p>The add table column return object is <code>String</code> type.</p>
      * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
@@ -196,11 +196,11 @@ public class MybatisTableProvider implements MybatisSqlProvider {
      * @see io.github.nichetoolkit.rest.RestField
      * @see io.github.nichetoolkit.rest.RestException
      */
-    public static String addTableColumn(ProviderContext providerContext, String tablename, RestField<?> field) throws RestException {
+    public static String addTableColumn(ProviderContext providerContext, String tableName, RestField<?> field) throws RestException {
         OptionalUtils.ofEmpty(field, "The field param of 'addColumn' method cannot be empty!", message -> new MybatisParamErrorException("addColumn", "field", message));
         OptionalUtils.ofEmpty(field.getKey(), "The field key param of 'addColumn' method cannot be empty!", message -> new MybatisParamErrorException("addColumn", "field key", message));
         OptionalUtils.ofEmpty(field.getType(), "The field type param of 'addColumn' method cannot be empty!", message -> new MybatisParamErrorException("addColumn", "field type", message));
-        return MybatisSqlProvider.providingOfAddColumn(providerContext, tablename, field);
+        return MybatisSqlProvider.providingOfAddColumn(providerContext, tableName, field);
     }
 
     /**
@@ -223,7 +223,7 @@ public class MybatisTableProvider implements MybatisSqlProvider {
      * <code>dropTableColumn</code>
      * <p>The drop table column method.</p>
      * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>The provider context parameter is <code>ProviderContext</code> type.</p>
-     * @param tablename       {@link java.lang.String} <p>The tablename parameter is <code>String</code> type.</p>
+     * @param tableName       {@link java.lang.String} <p>The tableName parameter is <code>String</code> type.</p>
      * @param field           {@link io.github.nichetoolkit.rest.RestField} <p>The field parameter is <code>RestField</code> type.</p>
      * @return {@link java.lang.String} <p>The drop table column return object is <code>String</code> type.</p>
      * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
@@ -232,10 +232,10 @@ public class MybatisTableProvider implements MybatisSqlProvider {
      * @see io.github.nichetoolkit.rest.RestField
      * @see io.github.nichetoolkit.rest.RestException
      */
-    public static String dropTableColumn(ProviderContext providerContext, String tablename, RestField<?> field) throws RestException {
+    public static String dropTableColumn(ProviderContext providerContext, String tableName, RestField<?> field) throws RestException {
         OptionalUtils.ofEmpty(field, "The field param of 'dropColumn' method cannot be empty!", message -> new MybatisParamErrorException("dropColumn", "field", message));
         OptionalUtils.ofEmpty(field.getKey(), "The field key param of 'dropColumn' method cannot be empty!", message -> new MybatisParamErrorException("dropColumn", "field key", message));
-        return MybatisSqlProvider.providingOfDropColumn(providerContext, tablename, field);
+        return MybatisSqlProvider.providingOfDropColumn(providerContext, tableName, field);
     }
 
 }

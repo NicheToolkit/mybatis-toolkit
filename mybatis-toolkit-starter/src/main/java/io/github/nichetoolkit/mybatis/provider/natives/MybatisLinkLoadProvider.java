@@ -39,7 +39,7 @@ public class MybatisLinkLoadProvider implements MybatisSqlProvider {
      * <p>The find dynamic by link id load method.</p>
      * @param <L>             {@link java.lang.Object} <p>The parameter can be of any type.</p>
      * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>The provider context parameter is <code>ProviderContext</code> type.</p>
-     * @param tablename       {@link java.lang.String} <p>The tablename parameter is <code>String</code> type.</p>
+     * @param tableName       {@link java.lang.String} <p>The tableName parameter is <code>String</code> type.</p>
      * @param linkId          L <p>The link id parameter is <code>L</code> type.</p>
      * @param linkName        {@link java.lang.String} <p>The link name parameter is <code>String</code> type.</p>
      * @param loadParams      {@link io.github.nichetoolkit.mybatis.load.RestLoad} <p>The load params parameter is <code>RestLoad</code> type.</p>
@@ -50,12 +50,12 @@ public class MybatisLinkLoadProvider implements MybatisSqlProvider {
      * @see io.github.nichetoolkit.mybatis.load.RestLoad
      * @see io.github.nichetoolkit.rest.RestException
      */
-    public static <L> String findDynamicByLinkIdLoad(ProviderContext providerContext, String tablename, L linkId, String linkName, RestLoad[] loadParams) throws RestException {
+    public static <L> String findDynamicByLinkIdLoad(ProviderContext providerContext, String tableName, L linkId, String linkName, RestLoad[] loadParams) throws RestException {
         OptionalUtils.ofEmpty(linkId, "The link id param of 'findByLinkIdLoad' method cannot be empty!", log, message -> new MybatisParamErrorException("findByLinkIdLoad", "linkId", message));
         String selectColumns = "The select columns of table with 'findByLinkIdLoad' method cannot be empty!";
         ConsumerActuator<MybatisTable> tableOptional = table -> OptionalUtils.ofEmpty(table.selectColumns(), selectColumns, log,
                 message -> new MybatisTableErrorException("findByLinkIdLoad", "selectColumns", message));
-        return MybatisSqlProvider.providingOfLinkId(providerContext, tablename, linkId, linkName, tableOptional, loadParams, ENTRY_SQL_SUPPLY);
+        return MybatisSqlProvider.providingOfLinkId(providerContext, tableName, linkId, linkName, tableOptional, loadParams, ENTRY_SQL_SUPPLY);
     }
 
     /**
@@ -63,7 +63,7 @@ public class MybatisLinkLoadProvider implements MybatisSqlProvider {
      * <p>The find dynamic all by link ids load method.</p>
      * @param <L>             {@link java.lang.Object} <p>The parameter can be of any type.</p>
      * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>The provider context parameter is <code>ProviderContext</code> type.</p>
-     * @param tablename       {@link java.lang.String} <p>The tablename parameter is <code>String</code> type.</p>
+     * @param tableName       {@link java.lang.String} <p>The tableName parameter is <code>String</code> type.</p>
      * @param linkIdList      {@link java.util.Collection} <p>The link id list parameter is <code>Collection</code> type.</p>
      * @param linkName        {@link java.lang.String} <p>The link name parameter is <code>String</code> type.</p>
      * @param loadParams      {@link io.github.nichetoolkit.mybatis.load.RestLoad} <p>The load params parameter is <code>RestLoad</code> type.</p>
@@ -75,9 +75,9 @@ public class MybatisLinkLoadProvider implements MybatisSqlProvider {
      * @see io.github.nichetoolkit.mybatis.load.RestLoad
      * @see io.github.nichetoolkit.rest.RestException
      */
-    public static <L> String findDynamicAllByLinkIdsLoad(ProviderContext providerContext, String tablename, Collection<L> linkIdList, String linkName, RestLoad[] loadParams) throws RestException {
+    public static <L> String findDynamicAllByLinkIdsLoad(ProviderContext providerContext, String tableName, Collection<L> linkIdList, String linkName, RestLoad[] loadParams) throws RestException {
         OptionalUtils.ofEmpty(linkIdList, "The link id list param of 'findAllByLinkIdsLoad' method cannot be empty!", log, message -> new MybatisParamErrorException("findAllByLinkIdsLoad", "linkIdList", message));
         ConsumerActuator<MybatisTable> tableOptional = table -> OptionalUtils.ofEmpty(table.selectColumns(), "The select columns of table with 'findAllByLinkIdsLoad' method cannot be empty!", message -> new MybatisTableErrorException("findAllByLinkIdsLoad", "selectColumns", message));
-        return MybatisSqlProvider.providingOfLinkIdAll(providerContext, tablename, linkIdList, linkName, tableOptional, loadParams, ENTRY_SQL_SUPPLY);
+        return MybatisSqlProvider.providingOfLinkIdAll(providerContext, tableName, linkIdList, linkName, tableOptional, loadParams, ENTRY_SQL_SUPPLY);
     }
 }

@@ -37,8 +37,8 @@ public class SimpleServiceImpl extends RestInfoService<SimpleModel, SimpleEntity
     }
 
     @Override
-    protected String dynamicTablename(@NonNull String tablekey) throws RestException {
-        return "ntr_simple".concat(tablekey);
+    protected String dynamicTableName(@NonNull String tableKey) throws RestException {
+        return "ntr_simple".concat(tableKey);
     }
 
     @Override

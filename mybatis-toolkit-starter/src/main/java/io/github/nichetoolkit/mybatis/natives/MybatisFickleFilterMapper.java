@@ -34,6 +34,6 @@ public interface MybatisFickleFilterMapper<E extends RestId<I>, I> extends Mybat
     @Override
     @Lang(MybatisSqlSourceCaching.class)
     @SelectProvider(MybatisSqlProviderResolver.class)
-    List<E> findDynamicAllByFickleLoadWhere(@Param("tablename") String tablename, @Param("whereSql") String whereSql, @Param("fickleParams") RestFickle<?>[] fickleParams, @Param("loadParams") RestLoad... loadParams);
+    List<E> findDynamicAllByFickleLoadWhere(@Param("tableName") String tableName, @Param("whereSql") String whereSql, @Param("fickleParams") RestFickle<?>[] fickleParams, @Param("loadParams") RestLoad... loadParams);
 
 }

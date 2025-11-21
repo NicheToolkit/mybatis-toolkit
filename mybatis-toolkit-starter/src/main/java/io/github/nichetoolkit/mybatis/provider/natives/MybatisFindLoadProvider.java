@@ -39,7 +39,7 @@ public class MybatisFindLoadProvider implements MybatisSqlProvider {
      * <p>The find dynamic by id load method.</p>
      * @param <I>             {@link java.lang.Object} <p>The parameter can be of any type.</p>
      * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>The provider context parameter is <code>ProviderContext</code> type.</p>
-     * @param tablename       {@link java.lang.String} <p>The tablename parameter is <code>String</code> type.</p>
+     * @param tableName       {@link java.lang.String} <p>The tableName parameter is <code>String</code> type.</p>
      * @param id              I <p>The id parameter is <code>I</code> type.</p>
      * @param loadParams      {@link io.github.nichetoolkit.mybatis.load.RestLoad} <p>The load params parameter is <code>RestLoad</code> type.</p>
      * @return {@link java.lang.String} <p>The find dynamic by id load return object is <code>String</code> type.</p>
@@ -49,11 +49,11 @@ public class MybatisFindLoadProvider implements MybatisSqlProvider {
      * @see io.github.nichetoolkit.mybatis.load.RestLoad
      * @see io.github.nichetoolkit.rest.RestException
      */
-    public static <I> String findDynamicByIdLoad(ProviderContext providerContext, String tablename, I id, RestLoad[] loadParams) throws RestException {
+    public static <I> String findDynamicByIdLoad(ProviderContext providerContext, String tableName, I id, RestLoad[] loadParams) throws RestException {
         OptionalUtils.ofEmpty(id, "The id param of 'findByIdLoad' method cannot be empty!", log, message -> new MybatisParamErrorException("findByIdLoad", "id", message));
         String selectColumns = "The select columns of table with 'findByIdLoad' method cannot be empty!";
         ConsumerActuator<MybatisTable> tableOptional = table -> OptionalUtils.ofEmpty(table.selectColumns(), selectColumns, log, message -> new MybatisTableErrorException("findByIdLoad", "selectColumns", message));
-        return MybatisSqlProvider.providingOfId(providerContext, tablename, id, tableOptional, loadParams, ENTRY_SQL_SUPPLY);
+        return MybatisSqlProvider.providingOfId(providerContext, tableName, id, tableOptional, loadParams, ENTRY_SQL_SUPPLY);
     }
 
     /**
@@ -61,7 +61,7 @@ public class MybatisFindLoadProvider implements MybatisSqlProvider {
      * <p>The find dynamic all load method.</p>
      * @param <I>             {@link java.lang.Object} <p>The parameter can be of any type.</p>
      * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>The provider context parameter is <code>ProviderContext</code> type.</p>
-     * @param tablename       {@link java.lang.String} <p>The tablename parameter is <code>String</code> type.</p>
+     * @param tableName       {@link java.lang.String} <p>The tableName parameter is <code>String</code> type.</p>
      * @param idList          {@link java.util.Collection} <p>The id list parameter is <code>Collection</code> type.</p>
      * @param loadParams      {@link io.github.nichetoolkit.mybatis.load.RestLoad} <p>The load params parameter is <code>RestLoad</code> type.</p>
      * @return {@link java.lang.String} <p>The find dynamic all load return object is <code>String</code> type.</p>
@@ -72,9 +72,9 @@ public class MybatisFindLoadProvider implements MybatisSqlProvider {
      * @see io.github.nichetoolkit.mybatis.load.RestLoad
      * @see io.github.nichetoolkit.rest.RestException
      */
-    public static <I> String findDynamicAllLoad(ProviderContext providerContext, String tablename, Collection<I> idList, RestLoad[] loadParams) throws RestException {
+    public static <I> String findDynamicAllLoad(ProviderContext providerContext, String tableName, Collection<I> idList, RestLoad[] loadParams) throws RestException {
         OptionalUtils.ofEmpty(idList, "The id list param of 'findAllLoad' method cannot be empty!", log, message -> new MybatisParamErrorException("findAllLoad", "idList", message));
         ConsumerActuator<MybatisTable> tableOptional = table -> OptionalUtils.ofEmpty(table.selectColumns(), "The select columns of table with 'findAllLoad' method cannot be empty!", message -> new MybatisTableErrorException("findAllLoad", "selectColumns", message));
-        return MybatisSqlProvider.providingOfAll(providerContext, tablename, idList, tableOptional, loadParams, ENTRY_SQL_SUPPLY);
+        return MybatisSqlProvider.providingOfAll(providerContext, tableName, idList, tableOptional, loadParams, ENTRY_SQL_SUPPLY);
     }
 }

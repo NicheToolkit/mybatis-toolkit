@@ -39,7 +39,7 @@ public class MybatisFindProvider implements MybatisSqlProvider {
      * <p>The find dynamic by id method.</p>
      * @param <I>             {@link java.lang.Object} <p>The parameter can be of any type.</p>
      * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>The provider context parameter is <code>ProviderContext</code> type.</p>
-     * @param tablename       {@link java.lang.String} <p>The tablename parameter is <code>String</code> type.</p>
+     * @param tableName       {@link java.lang.String} <p>The tableName parameter is <code>String</code> type.</p>
      * @param id              I <p>The id parameter is <code>I</code> type.</p>
      * @return {@link java.lang.String} <p>The find dynamic by id return object is <code>String</code> type.</p>
      * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
@@ -47,12 +47,12 @@ public class MybatisFindProvider implements MybatisSqlProvider {
      * @see java.lang.String
      * @see io.github.nichetoolkit.rest.RestException
      */
-    public static <I> String findDynamicById(ProviderContext providerContext, String tablename, I id) throws RestException {
+    public static <I> String findDynamicById(ProviderContext providerContext, String tableName, I id) throws RestException {
         OptionalUtils.ofEmpty(id, "The id param of 'findById' method cannot be empty!", log, message -> new MybatisParamErrorException("findById", "id", message));
         String selectColumns = "The select columns of table with 'findById' method cannot be empty!";
         ConsumerActuator<MybatisTable> tableOptional = table -> OptionalUtils.ofEmpty(table.selectColumns(), selectColumns, log,
                 message -> new MybatisTableErrorException("findById", "selectColumns", message));
-        return MybatisSqlProvider.providingOfId(providerContext, tablename, id, tableOptional, SELECT_SQL_SUPPLY);
+        return MybatisSqlProvider.providingOfId(providerContext, tableName, id, tableOptional, SELECT_SQL_SUPPLY);
     }
 
     /**
@@ -60,7 +60,7 @@ public class MybatisFindProvider implements MybatisSqlProvider {
      * <p>The find dynamic all method.</p>
      * @param <I>             {@link java.lang.Object} <p>The parameter can be of any type.</p>
      * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>The provider context parameter is <code>ProviderContext</code> type.</p>
-     * @param tablename       {@link java.lang.String} <p>The tablename parameter is <code>String</code> type.</p>
+     * @param tableName       {@link java.lang.String} <p>The tableName parameter is <code>String</code> type.</p>
      * @param idList          {@link java.util.Collection} <p>The id list parameter is <code>Collection</code> type.</p>
      * @return {@link java.lang.String} <p>The find dynamic all return object is <code>String</code> type.</p>
      * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
@@ -69,17 +69,17 @@ public class MybatisFindProvider implements MybatisSqlProvider {
      * @see java.util.Collection
      * @see io.github.nichetoolkit.rest.RestException
      */
-    public static <I> String findDynamicAll(ProviderContext providerContext, String tablename, Collection<I> idList) throws RestException {
+    public static <I> String findDynamicAll(ProviderContext providerContext, String tableName, Collection<I> idList) throws RestException {
         OptionalUtils.ofEmpty(idList, "The id list param of 'findByAll' method cannot be empty!", log, message -> new MybatisParamErrorException("findByAll", "idList", message));
         ConsumerActuator<MybatisTable> tableOptional = table -> OptionalUtils.ofEmpty(table.selectColumns(), "The select columns of table with 'findByAll' method cannot be empty!", message -> new MybatisTableErrorException("findByAll", "selectColumns", message));
-        return MybatisSqlProvider.providingOfAll(providerContext, tablename, idList, tableOptional, SELECT_SQL_SUPPLY);
+        return MybatisSqlProvider.providingOfAll(providerContext, tableName, idList, tableOptional, SELECT_SQL_SUPPLY);
     }
 
     /**
      * <code>findDynamicAllByWhere</code>
      * <p>The find dynamic all by where method.</p>
      * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>The provider context parameter is <code>ProviderContext</code> type.</p>
-     * @param tablename       {@link java.lang.String} <p>The tablename parameter is <code>String</code> type.</p>
+     * @param tableName       {@link java.lang.String} <p>The tableName parameter is <code>String</code> type.</p>
      * @param whereSql        {@link java.lang.String} <p>The where sql parameter is <code>String</code> type.</p>
      * @return {@link java.lang.String} <p>The find dynamic all by where return object is <code>String</code> type.</p>
      * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
@@ -87,10 +87,10 @@ public class MybatisFindProvider implements MybatisSqlProvider {
      * @see java.lang.String
      * @see io.github.nichetoolkit.rest.RestException
      */
-    public static String findDynamicAllByWhere(ProviderContext providerContext, String tablename, String whereSql) throws RestException {
+    public static String findDynamicAllByWhere(ProviderContext providerContext, String tableName, String whereSql) throws RestException {
         OptionalUtils.ofEmpty(whereSql, "The where sql param of 'findAllByWhere' method cannot be empty!", log, message -> new MybatisParamErrorException("findAllByWhere", "whereSql", message));
         ConsumerActuator<MybatisTable> tableOptional = table -> OptionalUtils.ofEmpty(table.selectColumns(), "The select columns of table with 'findAllByWhere' method cannot be empty!", log, message -> new MybatisTableErrorException("findAllByWhere", "selectColumns", message));
-        return MybatisSqlProvider.providingOfWhere(providerContext, tablename, whereSql, tableOptional, WHERE_SQL_SUPPLY);
+        return MybatisSqlProvider.providingOfWhere(providerContext, tableName, whereSql, tableOptional, WHERE_SQL_SUPPLY);
     }
 
 

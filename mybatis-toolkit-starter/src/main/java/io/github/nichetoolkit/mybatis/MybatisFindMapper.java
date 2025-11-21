@@ -30,7 +30,7 @@ public interface MybatisFindMapper<E extends RestId<I>, I> extends MybatisMapper
     @Override
     @Lang(MybatisSqlSourceCaching.class)
     @SelectProvider(MybatisSqlProviderResolver.class)
-    E findDynamicById(@Param("tablename") String tablename, @Param("id") I id);
+    E findDynamicById(@Param("tableName") String tableName, @Param("id") I id);
 
     @Override
     default List<E> findAll(@Param("idList") Collection<I> idList) {
@@ -40,7 +40,7 @@ public interface MybatisFindMapper<E extends RestId<I>, I> extends MybatisMapper
     @Override
     @Lang(MybatisSqlSourceCaching.class)
     @SelectProvider(MybatisSqlProviderResolver.class)
-    List<E> findDynamicAll(@Param("tablename") String tablename, @Param("idList") Collection<I> idList);
+    List<E> findDynamicAll(@Param("tableName") String tableName, @Param("idList") Collection<I> idList);
 
     @Override
     default List<E> findAllByWhere(@Param("whereSql") String whereSql) {
@@ -50,5 +50,5 @@ public interface MybatisFindMapper<E extends RestId<I>, I> extends MybatisMapper
     @Override
     @Lang(MybatisSqlSourceCaching.class)
     @SelectProvider(MybatisSqlProviderResolver.class)
-    List<E> findDynamicAllByWhere(@Param("tablename") String tablename, @Param("whereSql") String whereSql);
+    List<E> findDynamicAllByWhere(@Param("tableName") String tableName, @Param("whereSql") String whereSql);
 }
