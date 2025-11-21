@@ -4,7 +4,7 @@ import io.github.nichetoolkit.mybatis.MybatisAlertnessHandler;
 import io.github.nichetoolkit.mybatis.MybatisAutoLogicMark;
 import io.github.nichetoolkit.mybatis.MybatisColumnResolver;
 import io.github.nichetoolkit.mybatis.MybatisIdentityHandler;
-import io.github.nichetoolkit.rest.RestI18nResources;
+import io.github.nichetoolkit.rest.resource.RestI18nResources;
 import io.github.nichetoolkit.rice.DefaultAlertnessHandler;
 import io.github.nichetoolkit.rice.DefaultColumnResolver;
 import io.github.nichetoolkit.rice.DefaultIdentityHandler;
@@ -49,8 +49,8 @@ public class MybatisStarterAutoConfigure {
     /**
      * <code>mybatisI18nResources</code>
      * <p>The mybatis i 18 n resources method.</p>
-     * @return {@link io.github.nichetoolkit.rest.RestI18nResources} <p>The mybatis i 18 n resources return object is <code>RestI18nResources</code> type.</p>
-     * @see io.github.nichetoolkit.rest.RestI18nResources
+     * @return {@link io.github.nichetoolkit.rest.resource.RestI18nResources} <p>The mybatis i 18 n resources return object is <code>RestI18nResources</code> type.</p>
+     * @see io.github.nichetoolkit.rest.resource.RestI18nResources
      * @see org.springframework.context.annotation.Bean
      */
     @Bean
