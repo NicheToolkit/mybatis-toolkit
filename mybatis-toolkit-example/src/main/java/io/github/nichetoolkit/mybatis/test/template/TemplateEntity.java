@@ -45,13 +45,13 @@ public class TemplateEntity extends DefaultInfoEntity<TemplateEntity, TemplateMo
     @RestForceInsert("now()")
     private Date time;
     /**
-     * <code>status</code>
-     * {@link io.github.nichetoolkit.mybatis.test.template.TemplateAlertness} <p>The <code>status</code> field.</p>
+     * <code>state</code>
+     * {@link io.github.nichetoolkit.mybatis.test.template.TemplateAlertness} <p>The <code>state</code> field.</p>
      * @see io.github.nichetoolkit.mybatis.test.template.TemplateAlertness
      * @see io.github.nichetoolkit.mybatis.column.RestAlertKey
      */
     @RestAlertKey
-    private TemplateAlertness status;
+    private TemplateAlertness state;
 
     /**
      * <code>TemplateEntity</code>

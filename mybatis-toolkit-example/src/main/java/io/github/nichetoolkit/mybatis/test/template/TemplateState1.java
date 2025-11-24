@@ -14,7 +14,7 @@ import java.util.Optional;
  * @see io.github.nichetoolkit.rest.RestValue
  * @since Jdk1.8
  */
-public enum TemplateStatus1 implements RestValue<Integer,String> {
+public enum TemplateState1 implements RestValue<Integer,String> {
     /**
      * <code>NONE</code>
      * <p>The none template status 1 field.</p>
@@ -48,7 +48,7 @@ public enum TemplateStatus1 implements RestValue<Integer,String> {
      * @see java.lang.Integer
      * @see java.lang.String
      */
-    TemplateStatus1(Integer key, String value) {
+    TemplateState1(Integer key, String value) {
         this.key = key;
         this.value = value;
     }
@@ -68,25 +68,25 @@ public enum TemplateStatus1 implements RestValue<Integer,String> {
      * <code>parseKey</code>
      * <p>The parse key method.</p>
      * @param key {@link java.lang.Integer} <p>The key parameter is <code>Integer</code> type.</p>
-     * @return {@link io.github.nichetoolkit.mybatis.test.template.TemplateStatus1} <p>The parse key return object is <code>TemplateStatus1</code> type.</p>
+     * @return {@link TemplateState1} <p>The parse key return object is <code>TemplateStatus1</code> type.</p>
      * @see java.lang.Integer
      * @see com.fasterxml.jackson.annotation.JsonCreator
      */
     @JsonCreator
-    public static TemplateStatus1 parseKey(Integer key) {
-        TemplateStatus1 typeEnum = RestKey.parseKey(TemplateStatus1.class, key);
-        return Optional.ofNullable(typeEnum).orElse(TemplateStatus1.NONE);
+    public static TemplateState1 parseKey(Integer key) {
+        TemplateState1 typeEnum = RestKey.parseKey(TemplateState1.class, key);
+        return Optional.ofNullable(typeEnum).orElse(TemplateState1.NONE);
     }
 
     /**
      * <code>parseValue</code>
      * <p>The parse value method.</p>
      * @param value {@link java.lang.String} <p>The value parameter is <code>String</code> type.</p>
-     * @return {@link io.github.nichetoolkit.mybatis.test.template.TemplateStatus1} <p>The parse value return object is <code>TemplateStatus1</code> type.</p>
+     * @return {@link TemplateState1} <p>The parse value return object is <code>TemplateStatus1</code> type.</p>
      * @see java.lang.String
      */
-    public static TemplateStatus1 parseValue(String value) {
-        TemplateStatus1 typeEnum = RestValue.parseValue(TemplateStatus1.class, value);
-        return Optional.ofNullable(typeEnum).orElse(TemplateStatus1.NONE);
+    public static TemplateState1 parseValue(String value) {
+        TemplateState1 typeEnum = RestValue.parseValue(TemplateState1.class, value);
+        return Optional.ofNullable(typeEnum).orElse(TemplateState1.NONE);
     }
 }

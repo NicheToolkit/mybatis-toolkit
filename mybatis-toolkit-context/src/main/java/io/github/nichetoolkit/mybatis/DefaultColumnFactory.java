@@ -367,8 +367,8 @@ public class DefaultColumnFactory implements MybatisColumnFactory {
         RestAlertKey restAlertKey = field.getAnnotation(RestAlertKey.class);
         if (GeneralUtils.isNotEmpty(restAlertKey) && !fieldIgnored) {
             mybatisColumn.setAlertKey(true);
-            if (GeneralUtils.isNotEmpty(restLinkKey.value())) {
-                mybatisColumn.setAlertName(restLinkKey.value());
+            if (GeneralUtils.isNotEmpty(restAlertKey.value())) {
+                mybatisColumn.setAlertName(restAlertKey.value());
             }
         }
         RestLogicKey restLogicKey = field.getAnnotation(RestLogicKey.class);

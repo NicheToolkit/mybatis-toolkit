@@ -56,17 +56,17 @@ public class TemplateModel extends DefaultInfoModel<TemplateModel, TemplateEntit
 
     /**
      * <code>status1</code>
-     * {@link io.github.nichetoolkit.mybatis.test.template.TemplateStatus1} <p>The <code>status1</code> field.</p>
-     * @see io.github.nichetoolkit.mybatis.test.template.TemplateStatus1
+     * {@link TemplateState1} <p>The <code>status1</code> field.</p>
+     * @see TemplateState1
      */
-    private TemplateStatus1 status1;
+    private TemplateState1 status1;
 
     /**
      * <code>status2</code>
-     * {@link io.github.nichetoolkit.mybatis.test.template.TemplateStatus2} <p>The <code>status2</code> field.</p>
-     * @see io.github.nichetoolkit.mybatis.test.template.TemplateStatus2
+     * {@link TemplateState2} <p>The <code>status2</code> field.</p>
+     * @see TemplateState2
      */
-    private TemplateStatus2 status2;
+    private TemplateState2 status2;
 
     /**
      * <code>TemplateModel</code>

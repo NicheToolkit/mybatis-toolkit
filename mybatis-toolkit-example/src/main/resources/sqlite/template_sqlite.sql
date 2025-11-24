@@ -8,8 +8,8 @@ CREATE TABLE IF NOT EXISTS `ntr_template`
   `link_id1`     VARCHAR(64),
   `link_id2`     VARCHAR(64),
   `time` TIMESTAMP,
-  `status1` TINYINT,
-  `status2` TINYINT,
+  `state1` TINYINT,
+  `state2` TINYINT,
   `operate` TINYINT,
   `logic` TINYINT,
   `create_time` TIMESTAMP,
@@ -29,9 +29,9 @@ CREATE INDEX `IDX_NTR_TEMPLATE_TIME` ON `ntr_template` (`time`);
 
 CREATE INDEX `IDX_NTR_TEMPLATE_OPERATE` ON `ntr_template` (`operate`);
 
-CREATE INDEX `IDX_NTR_TEMPLATE_STATUS1` ON `ntr_template` (`status1`);
+CREATE INDEX `IDX_NTR_TEMPLATE_STATE1` ON `ntr_template` (`state1`);
 
-CREATE INDEX `IDX_NTR_TEMPLATE_STATUS2` ON `ntr_template` (`status2`);
+CREATE INDEX `IDX_NTR_TEMPLATE_STATE2` ON `ntr_template` (`state2`);
 
 CREATE INDEX `IDX_NTR_TEMPLATE_LOGIC` ON `ntr_template` (`logic`);
 
@@ -45,8 +45,8 @@ CREATE TABLE IF NOT EXISTS `ntr_template_dynamic`
   `link_id1`     VARCHAR(64),
   `link_id2`     VARCHAR(64),
   `time` TIMESTAMP,
-  `status1` TINYINT,
-  `status2` TINYINT,
+  `state1` TINYINT,
+  `state2` TINYINT,
   `operate` TINYINT,
   `logic` TINYINT,
   `create_time` TIMESTAMP,
@@ -66,9 +66,9 @@ CREATE INDEX `IDX_NTR_TEMPLATE_DYNAMIC_TIME` ON `ntr_template_dynamic` (`time`);
 
 CREATE INDEX `IDX_NTR_TEMPLATE_DYNAMIC_OPERATE` ON `ntr_template_dynamic` (`operate`);
 
-CREATE INDEX `IDX_NTR_TEMPLATE_DYNAMIC_STATUS1` ON `ntr_template_dynamic` (`status1`);
+CREATE INDEX `IDX_NTR_TEMPLATE_DYNAMIC_STATE1` ON `ntr_template_dynamic` (`state1`);
 
-CREATE INDEX `IDX_NTR_TEMPLATE_DYNAMIC_STATUS2` ON `ntr_template_dynamic` (`status2`);
+CREATE INDEX `IDX_NTR_TEMPLATE_DYNAMIC_STATE2` ON `ntr_template_dynamic` (`state2`);
 
 CREATE INDEX `IDX_NTR_TEMPLATE_DYNAMIC_LOGIC` ON `ntr_template_dynamic` (`logic`);
 

@@ -1,8 +1,8 @@
 package io.github.nichetoolkit.mybatis.service;
 
 import io.github.nichetoolkit.mybatis.MybatisExampleApplicationTests;
-import io.github.nichetoolkit.mybatis.test.template.TemplateStatus1;
-import io.github.nichetoolkit.mybatis.test.template.TemplateStatus2;
+import io.github.nichetoolkit.mybatis.test.template.TemplateState1;
+import io.github.nichetoolkit.mybatis.test.template.TemplateState2;
 import io.github.nichetoolkit.mybatis.test.template.*;
 import io.github.nichetoolkit.rest.RestException;
 import io.github.nichetoolkit.rest.RestKey;
@@ -139,8 +139,8 @@ class TemplateServiceTest extends MybatisExampleApplicationTests {
         templateModel.setDescription("description_" + GeneralUtils.uuid());
         templateModel.setLinkId1(testLinkId1);
         templateModel.setLinkId2(testLinkId2);
-        templateModel.setStatus1(TemplateStatus1.NONE);
-        templateModel.setStatus2(TemplateStatus2.NONE);
+        templateModel.setStatus1(TemplateState1.NONE);
+        templateModel.setStatus2(TemplateState2.NONE);
         TemplateModel save = templateService.save(templateModel);
         System.out.println(JsonUtils.parseJson(save));
     }
@@ -161,16 +161,16 @@ class TemplateServiceTest extends MybatisExampleApplicationTests {
         templateModel1.setDescription("description1_" + GeneralUtils.uuid());
         templateModel1.setLinkId1(testLinkId1_1);
         templateModel1.setLinkId2(testLinkId2_1);
-        templateModel1.setStatus1(TemplateStatus1.NONE);
-        templateModel1.setStatus2(TemplateStatus2.NONE);
+        templateModel1.setStatus1(TemplateState1.NONE);
+        templateModel1.setStatus2(TemplateState2.NONE);
 
         TemplateModel templateModel2 = new TemplateModel(new TemplateIdentity(testTemplatePk1_2, testTemplatePk2_2));
         templateModel2.setName("name2_" + GeneralUtils.uuid());
         templateModel2.setDescription("description2_" + GeneralUtils.uuid());
         templateModel2.setLinkId1(testLinkId1_2);
         templateModel2.setLinkId2(testLinkId2_2);
-        templateModel2.setStatus1(TemplateStatus1.NONE);
-        templateModel2.setStatus2(TemplateStatus2.NONE);
+        templateModel2.setStatus1(TemplateState1.NONE);
+        templateModel2.setStatus2(TemplateState2.NONE);
 
         List<TemplateModel> templateModels = templateService.saveAll(Arrays.asList(templateModel1, templateModel2));
         System.out.println(JsonUtils.parseJson(templateModels));
@@ -437,7 +437,7 @@ class TemplateServiceTest extends MybatisExampleApplicationTests {
     @Test
     public void alertById() throws RestException {
         TemplateIdentity identity = new TemplateIdentity(testTemplatePk1, testTemplatePk2);
-        TemplateAlertness alertness = new TemplateAlertness(TemplateStatus1.TEST, null);
+        TemplateAlertness alertness = new TemplateAlertness(TemplateState1.TEST, null);
         templateService.alertById(RestTableKey.of(tableKey), identity, alertness);
     }
 
@@ -454,7 +454,7 @@ class TemplateServiceTest extends MybatisExampleApplicationTests {
     public void alertAll() throws RestException {
         TemplateIdentity identity1 = new TemplateIdentity(null, testTemplatePk2_1);
         TemplateIdentity identity2 = new TemplateIdentity(testTemplatePk1_2, null);
-        TemplateAlertness alertness = new TemplateAlertness(null, TemplateStatus2.TEST);
+        TemplateAlertness alertness = new TemplateAlertness(null, TemplateState2.TEST);
         templateService.alertAll(RestTableKey.of(tableKey), Arrays.asList(identity1, identity2), alertness);
     }
 
@@ -471,7 +471,7 @@ class TemplateServiceTest extends MybatisExampleApplicationTests {
     public void alertAllWithFilter() throws RestException {
         TemplateFilter templateFilter = new TemplateFilter();
         templateFilter.setTableKey(tableKey);
-        templateFilter.setStatus(new TemplateAlertness(TemplateStatus1.TEST, TemplateStatus2.TEST));
+        templateFilter.setStates(new TemplateAlertness(TemplateState1.TEST, TemplateState2.TEST));
         TemplateIdentity identity = new TemplateIdentity(testTemplatePk1, testTemplatePk2);
         TemplateIdentity identity1 = new TemplateIdentity(testTemplatePk2_1, null);
         TemplateIdentity identity2 = new TemplateIdentity(null, testTemplatePk2_2);
@@ -491,7 +491,7 @@ class TemplateServiceTest extends MybatisExampleApplicationTests {
     @Test
     public void alertByLinkId() throws RestException {
         TemplateLinkage linkage = new TemplateLinkage(testLinkId1, testLinkId2);
-        TemplateAlertness alertness = new TemplateAlertness(null, TemplateStatus2.TEST);
+        TemplateAlertness alertness = new TemplateAlertness(null, TemplateState2.TEST);
         templateService.alertByLinkId(RestTableKey.of(tableKey), linkage, alertness);
     }
 
@@ -508,7 +508,7 @@ class TemplateServiceTest extends MybatisExampleApplicationTests {
     public void alertAllByLinkIds() throws RestException {
         TemplateLinkage linkage1 = new TemplateLinkage(testLinkId1_1, null);
         TemplateLinkage linkage2 = new TemplateLinkage(null, testLinkId2_2);
-        TemplateAlertness alertness = new TemplateAlertness(TemplateStatus1.TEST, null);
+        TemplateAlertness alertness = new TemplateAlertness(TemplateState1.TEST, null);
         templateService.alertAllByLinkIds(RestTableKey.of(tableKey), Arrays.asList(linkage1, linkage2), alertness);
     }
 
