@@ -92,7 +92,7 @@ public class TemplateModel extends DefaultInfoModel<TemplateModel, TemplateEntit
         BeanUtils.copyNonnullProperties(this,entity);
         entity.setOperate(this.operate.getKey());
         entity.setLinkage(new TemplateLinkage(this.linkId1,this.linkId2));
-        entity.setStatus(new TemplateAlertness(this.status1,this.status2));
+        entity.setState(new TemplateAlertness(this.status1,this.status2));
         return entity;
     }
 
