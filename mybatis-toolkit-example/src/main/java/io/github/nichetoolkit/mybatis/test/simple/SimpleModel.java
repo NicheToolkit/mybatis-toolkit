@@ -50,10 +50,10 @@ public class SimpleModel extends RestInfoModel<SimpleModel,SimpleEntity> impleme
 
     /**
      * <code>status</code>
-     * {@link io.github.nichetoolkit.mybatis.test.simple.SimpleStatus} <p>The <code>status</code> field.</p>
-     * @see io.github.nichetoolkit.mybatis.test.simple.SimpleStatus
+     * {@link SimpleState} <p>The <code>status</code> field.</p>
+     * @see SimpleState
      */
-    private SimpleStatus status;
+    private SimpleState status;
 
     /**
      * <code>SimpleModel</code>

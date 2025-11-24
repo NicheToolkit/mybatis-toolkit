@@ -76,7 +76,7 @@ public class SimpleEntity extends RestInfoEntity<SimpleEntity, SimpleModel> {
         SimpleModel simpleModel = new SimpleModel();
         BeanUtils.copyNonnullProperties(this,simpleModel);
         simpleModel.setOperate(OperateType.parseKey(this.operate));
-        simpleModel.setStatus(SimpleStatus.parseKey(this.status));
+        simpleModel.setStatus(SimpleState.parseKey(this.status));
         return simpleModel;
     }
 

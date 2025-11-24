@@ -3,6 +3,7 @@ package io.github.nichetoolkit.mybatis.test.simple;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import io.github.nichetoolkit.rest.RestKey;
+import io.github.nichetoolkit.rest.RestState;
 import io.github.nichetoolkit.rest.RestValue;
 
 import java.util.Optional;
@@ -14,7 +15,7 @@ import java.util.Optional;
  * @see io.github.nichetoolkit.rest.RestValue
  * @since Jdk1.8
  */
-public enum SimpleStatus implements RestValue<Integer,String> {
+public enum SimpleState implements RestValue<Integer,String>, RestState<Integer> {
     /**
      * <code>NONE</code>
      * <p>The none simple status field.</p>
@@ -48,7 +49,7 @@ public enum SimpleStatus implements RestValue<Integer,String> {
      * @see java.lang.Integer
      * @see java.lang.String
      */
-    SimpleStatus(Integer key, String value) {
+    SimpleState(Integer key, String value) {
         this.key = key;
         this.value = value;
     }
@@ -68,25 +69,25 @@ public enum SimpleStatus implements RestValue<Integer,String> {
      * <code>parseKey</code>
      * <p>The parse key method.</p>
      * @param key {@link java.lang.Integer} <p>The key parameter is <code>Integer</code> type.</p>
-     * @return {@link io.github.nichetoolkit.mybatis.test.simple.SimpleStatus} <p>The parse key return object is <code>SimpleStatus</code> type.</p>
+     * @return {@link SimpleState} <p>The parse key return object is <code>SimpleStatus</code> type.</p>
      * @see java.lang.Integer
      * @see com.fasterxml.jackson.annotation.JsonCreator
      */
     @JsonCreator
-    public static SimpleStatus parseKey(Integer key) {
-        SimpleStatus typeEnum = RestKey.parseKey(SimpleStatus.class, key);
-        return Optional.ofNullable(typeEnum).orElse(SimpleStatus.NONE);
+    public static SimpleState parseKey(Integer key) {
+        SimpleState typeEnum = RestKey.parseKey(SimpleState.class, key);
+        return Optional.ofNullable(typeEnum).orElse(SimpleState.NONE);
     }
 
     /**
      * <code>parseValue</code>
      * <p>The parse value method.</p>
      * @param value {@link java.lang.String} <p>The value parameter is <code>String</code> type.</p>
-     * @return {@link io.github.nichetoolkit.mybatis.test.simple.SimpleStatus} <p>The parse value return object is <code>SimpleStatus</code> type.</p>
+     * @return {@link SimpleState} <p>The parse value return object is <code>SimpleStatus</code> type.</p>
      * @see java.lang.String
      */
-    public static SimpleStatus parseValue(String value) {
-        SimpleStatus typeEnum = RestValue.parseValue(SimpleStatus.class, value);
-        return Optional.ofNullable(typeEnum).orElse(SimpleStatus.NONE);
+    public static SimpleState parseValue(String value) {
+        SimpleState typeEnum = RestValue.parseValue(SimpleState.class, value);
+        return Optional.ofNullable(typeEnum).orElse(SimpleState.NONE);
     }
 }

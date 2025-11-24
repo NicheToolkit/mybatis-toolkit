@@ -40,18 +40,18 @@ public class MybatisAlertLinkProvider implements MybatisSqlProvider {
      * @param tableName       {@link java.lang.String} <p>The table name parameter is <code>String</code> type.</p>
      * @param linkId          L <p>The link id parameter is <code>L</code> type.</p>
      * @param linkName        {@link java.lang.String} <p>The link name parameter is <code>String</code> type.</p>
-     * @param status          S <p>The status parameter is <code>S</code> type.</p>
-     * @param statusName      {@link java.lang.String} <p>The status name parameter is <code>String</code> type.</p>
+     * @param state          S <p>The state parameter is <code>S</code> type.</p>
+     * @param stateName      {@link java.lang.String} <p>The state name parameter is <code>String</code> type.</p>
      * @return {@link java.lang.String} <p>The alert dynamic by link id return object is <code>String</code> type.</p>
      * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
      * @see org.apache.ibatis.builder.annotation.ProviderContext
      * @see java.lang.String
      * @see io.github.nichetoolkit.rest.RestException
      */
-    public static <L, S> String alertDynamicByLinkId(ProviderContext providerContext, String tableName, L linkId, String linkName,  S status, String statusName) throws RestException {
+    public static <L, S> String alertDynamicByLinkId(ProviderContext providerContext, String tableName, L linkId, String linkName,  S state, String stateName) throws RestException {
         OptionalUtils.ofEmpty(linkId, "The link id param of 'alertByLinkId' method cannot be empty!", message -> new MybatisParamErrorException("alertByLinkId", "linkId", message));
-        OptionalUtils.ofEmpty(status, "The status param of 'alertByLinkId' method cannot be empty!", message -> new MybatisParamErrorException("alertByLinkId", "status", message));
-        return MybatisSqlProvider.providingOfLinkId(providerContext, tableName, linkId, linkName, status, statusName,ALERT_SQL_SUPPLY);
+        OptionalUtils.ofEmpty(state, "The state param of 'alertByLinkId' method cannot be empty!", message -> new MybatisParamErrorException("alertByLinkId", "state", message));
+        return MybatisSqlProvider.providingOfLinkId(providerContext, tableName, linkId, linkName, state, stateName,ALERT_SQL_SUPPLY);
     }
 
     /**
@@ -63,8 +63,8 @@ public class MybatisAlertLinkProvider implements MybatisSqlProvider {
      * @param tableName       {@link java.lang.String} <p>The table name parameter is <code>String</code> type.</p>
      * @param linkIdList      {@link java.util.Collection} <p>The link id list parameter is <code>Collection</code> type.</p>
      * @param linkName        {@link java.lang.String} <p>The link name parameter is <code>String</code> type.</p>
-     * @param status          S <p>The status parameter is <code>S</code> type.</p>
-     * @param statusName      {@link java.lang.String} <p>The status name parameter is <code>String</code> type.</p>
+     * @param state          S <p>The state parameter is <code>S</code> type.</p>
+     * @param stateName      {@link java.lang.String} <p>The state name parameter is <code>String</code> type.</p>
      * @return {@link java.lang.String} <p>The alert dynamic all by link ids return object is <code>String</code> type.</p>
      * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
      * @see org.apache.ibatis.builder.annotation.ProviderContext
@@ -72,10 +72,10 @@ public class MybatisAlertLinkProvider implements MybatisSqlProvider {
      * @see java.util.Collection
      * @see io.github.nichetoolkit.rest.RestException
      */
-    public static <L, S> String alertDynamicAllByLinkIds(ProviderContext providerContext, String tableName, Collection<L> linkIdList, String linkName, S status, String statusName) throws RestException {
+    public static <L, S> String alertDynamicAllByLinkIds(ProviderContext providerContext, String tableName, Collection<L> linkIdList, String linkName, S state, String stateName) throws RestException {
         OptionalUtils.ofEmpty(linkIdList, "The link id list param of 'alertAllByLinkIds' method cannot be empty!", message -> new MybatisParamErrorException("alertAllByLinkIds", "linkIdList", message));
-        OptionalUtils.ofEmpty(status, "The status param of 'alertAllByLinkIds' method cannot be empty!", message -> new MybatisParamErrorException("alertAllByLinkIds", "status", message));
-        return MybatisSqlProvider.providingOfLinkIdAll(providerContext, tableName, linkIdList, linkName, status, statusName,ALERT_SQL_SUPPLY);
+        OptionalUtils.ofEmpty(state, "The state param of 'alertAllByLinkIds' method cannot be empty!", message -> new MybatisParamErrorException("alertAllByLinkIds", "state", message));
+        return MybatisSqlProvider.providingOfLinkIdAll(providerContext, tableName, linkIdList, linkName, state, stateName,ALERT_SQL_SUPPLY);
     }
 
 }

@@ -32,28 +32,60 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+/**
+ * <code>MybatisSqlProvider</code>
+ * <p>The mybatis sql provider interface.</p>
+ * @author Cyan (snow22314@outlook.com)
+ * @since Jdk1.8
+ */
 public interface MybatisSqlProvider {
 
+    /**
+     * <code>databaseTypes</code>
+     * <p>The database types method.</p>
+     * @return {@link java.util.List} <p>The database types return object is <code>List</code> type.</p>
+     * @see java.util.List
+     */
     List<DatabaseType> databaseTypes();
 
+    /**
+     * <code>SELECT_SQL_SUPPLY</code>
+     * {@link io.github.nichetoolkit.mybatis.MybatisSqlSupply.SimpleSqlSupply} <p>The constant <code>SELECT_SQL_SUPPLY</code> field.</p>
+     * @see io.github.nichetoolkit.mybatis.MybatisSqlSupply.SimpleSqlSupply
+     */
     MybatisSqlSupply.SimpleSqlSupply SELECT_SQL_SUPPLY = (tableName, table, sqlBuilder) ->
             SqlBuilder.sqlBuilder()
                     .select().append(table.sqlOfSelectColumns())
                     .from().append(table.tableName(tableName))
                     .where(sqlBuilder).toString();
 
+    /**
+     * <code>ENTRY_SQL_SUPPLY</code>
+     * {@link io.github.nichetoolkit.mybatis.MybatisSqlSupply.EntrySqlSupply} <p>The constant <code>ENTRY_SQL_SUPPLY</code> field.</p>
+     * @see io.github.nichetoolkit.mybatis.MybatisSqlSupply.EntrySqlSupply
+     */
     MybatisSqlSupply.EntrySqlSupply ENTRY_SQL_SUPPLY = (tableName, table, keySqlBuilder, valueSqlBuilder) ->
             SqlBuilder.sqlBuilder()
                     .select().append(keySqlBuilder)
                     .from().append(table.tableName(tableName))
                     .where(valueSqlBuilder).toString();
 
+    /**
+     * <code>WHERE_SQL_SUPPLY</code>
+     * {@link io.github.nichetoolkit.mybatis.MybatisSqlSupply.SimpleSqlSupply} <p>The constant <code>WHERE_SQL_SUPPLY</code> field.</p>
+     * @see io.github.nichetoolkit.mybatis.MybatisSqlSupply.SimpleSqlSupply
+     */
     MybatisSqlSupply.SimpleSqlSupply WHERE_SQL_SUPPLY = (tableName, table, sqlBuilder) ->
             SqlBuilder.sqlBuilder()
                     .select().append(table.sqlOfSelectColumns())
                     .from().append(table.tableName(tableName))
                     .where(sqlBuilder).toString();
 
+    /**
+     * <code>SAVE_SQL_SUPPLY</code>
+     * {@link io.github.nichetoolkit.mybatis.MybatisSqlSupply.EntrySqlSupply} <p>The constant <code>SAVE_SQL_SUPPLY</code> field.</p>
+     * @see io.github.nichetoolkit.mybatis.MybatisSqlSupply.EntrySqlSupply
+     */
     MybatisSqlSupply.EntrySqlSupply SAVE_SQL_SUPPLY = (tableName, table, keySqlBuilder, valueSqlBuilder) -> {
         boolean mysqlIgnoreInsert = MybatisSqlProviderHolder.mysqlIgnoreInsert();
         SqlBuilder savesSqlBuilder = SqlBuilder.sqlBuilder();
@@ -67,6 +99,11 @@ public interface MybatisSqlProvider {
                 .values().append(valueSqlBuilder).toString();
     };
 
+    /**
+     * <code>REMOVE_SQL_SUPPLY</code>
+     * {@link io.github.nichetoolkit.mybatis.MybatisSqlSupply.SimpleSqlSupply} <p>The constant <code>REMOVE_SQL_SUPPLY</code> field.</p>
+     * @see io.github.nichetoolkit.mybatis.MybatisSqlSupply.SimpleSqlSupply
+     */
     MybatisSqlSupply.SimpleSqlSupply REMOVE_SQL_SUPPLY = (tableName, table, sqlBuilder) ->
             SqlBuilder.sqlBuilder()
                     .update().append(table.tableName(tableName))
@@ -74,6 +111,11 @@ public interface MybatisSqlProvider {
                     .comma().append(table.sqlOfForceUpdateColumns())
                     .where(sqlBuilder).toString();
 
+    /**
+     * <code>OPERATE_SQL_SUPPLY</code>
+     * {@link io.github.nichetoolkit.mybatis.MybatisSqlSupply.SimpleSqlSupply} <p>The constant <code>OPERATE_SQL_SUPPLY</code> field.</p>
+     * @see io.github.nichetoolkit.mybatis.MybatisSqlSupply.SimpleSqlSupply
+     */
     MybatisSqlSupply.SimpleSqlSupply OPERATE_SQL_SUPPLY = (tableName, table, sqlBuilder) ->
             SqlBuilder.sqlBuilder()
                     .update().append(table.tableName(tableName))
@@ -81,11 +123,21 @@ public interface MybatisSqlProvider {
                     .comma().append(table.sqlOfForceUpdateColumns())
                     .where(sqlBuilder).toString();
 
+    /**
+     * <code>DELETE_SQL_SUPPLY</code>
+     * {@link io.github.nichetoolkit.mybatis.MybatisSqlSupply.SimpleSqlSupply} <p>The constant <code>DELETE_SQL_SUPPLY</code> field.</p>
+     * @see io.github.nichetoolkit.mybatis.MybatisSqlSupply.SimpleSqlSupply
+     */
     MybatisSqlSupply.SimpleSqlSupply DELETE_SQL_SUPPLY = (tableName, table, sqlBuilder) ->
             SqlBuilder.sqlBuilder()
                     .delete().from().append(table.tableName(tableName))
                     .where(sqlBuilder).toString();
 
+    /**
+     * <code>ALERT_SQL_SUPPLY</code>
+     * {@link io.github.nichetoolkit.mybatis.MybatisSqlSupply.EntrySqlSupply} <p>The constant <code>ALERT_SQL_SUPPLY</code> field.</p>
+     * @see io.github.nichetoolkit.mybatis.MybatisSqlSupply.EntrySqlSupply
+     */
     MybatisSqlSupply.EntrySqlSupply ALERT_SQL_SUPPLY = (tableName, table, keySqlBuilder, valueSqlBuilder) ->
             SqlBuilder.sqlBuilder()
                     .update().append(table.tableName(tableName))
@@ -93,6 +145,17 @@ public interface MybatisSqlProvider {
                     .comma().append(table.sqlOfForceUpdateColumns())
                     .where(valueSqlBuilder).toString();
 
+    /**
+     * <code>reviseParameter</code>
+     * <p>The revise parameter method.</p>
+     * @param <P>       {@link java.lang.Object} <p>The parameter can be of any type.</p>
+     * @param parameter P <p>The parameter parameter is <code>P</code> type.</p>
+     * @return {@link java.lang.Object} <p>The revise parameter return object is <code>Object</code> type.</p>
+     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
+     * @see java.lang.Object
+     * @see java.lang.SuppressWarnings
+     * @see io.github.nichetoolkit.rest.RestException
+     */
     @SuppressWarnings("unchecked")
     static <P> Object reviseParameter(P parameter) throws RestException {
         if (GeneralUtils.isEmpty(parameter)) {
@@ -108,19 +171,46 @@ public interface MybatisSqlProvider {
         }
     }
 
-    static <S> void valueOfStatus(MybatisTable table, S status, String statusName, SqlBuilder valueBuilder) throws RestException {
-        if (GeneralUtils.isNotEmpty(statusName)) {
-            Optional.ofNullable(table.alertColumn(statusName)).ifPresent(column -> valueBuilder.append(column.columnName()).eq().value(status));
+    /**
+     * <code>valueOfState</code>
+     * <p>The value of state method.</p>
+     * @param <S>          {@link java.lang.Object} <p>The parameter can be of any type.</p>
+     * @param table        {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>The table parameter is <code>MybatisTable</code> type.</p>
+     * @param state        S <p>The state parameter is <code>S</code> type.</p>
+     * @param stateName    {@link java.lang.String} <p>The state name parameter is <code>String</code> type.</p>
+     * @param valueBuilder {@link io.github.nichetoolkit.mybatis.builder.SqlBuilder} <p>The value builder parameter is <code>SqlBuilder</code> type.</p>
+     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
+     * @see io.github.nichetoolkit.mybatis.MybatisTable
+     * @see java.lang.String
+     * @see io.github.nichetoolkit.mybatis.builder.SqlBuilder
+     * @see io.github.nichetoolkit.rest.RestException
+     */
+    static <S> void valueOfState(MybatisTable table, S state, String stateName, SqlBuilder valueBuilder) throws RestException {
+        if (GeneralUtils.isNotEmpty(stateName)) {
+            Optional.ofNullable(table.alertColumn(stateName)).ifPresent(column -> valueBuilder.append(column.columnName()).eq().value(state));
         } else {
             if (table.isSpecialAlertness()) {
-                valueOfParameter(table.alertnessColumns(), status, table.getAlertnessType());
-                String statusSql = sqlOfColumns(status, table.alertnessColumns(), false, true);
-                valueBuilder.append(statusSql);
+                valueOfParameter(table.alertnessColumns(), state, table.getAlertnessType());
+                String stateSql = sqlOfColumns(state, table.alertnessColumns(), false, true);
+                valueBuilder.append(stateSql);
+            } else if (RestState.class.isAssignableFrom(state.getClass())) {
+                String stateKey = ((RestState<?>) state).getName();
+                Object stateValue = ((RestState<?>) state).getState();
+                if (GeneralUtils.isNotEmpty(stateKey) && GeneralUtils.isNotEmpty(stateValue)) {
+                    Optional.ofNullable(table.alertColumn(stateKey)).ifPresent(column -> valueBuilder.append(column.columnName()).eq().value(stateValue));
+                } else if (GeneralUtils.isNotEmpty(stateValue)) {
+                    Optional.ofNullable(table.getAlertColumn()).ifPresent(column -> {
+                        valueBuilder.append(column.columnName()).eq().value(stateValue);
+                    });
+                } else {
+                    Optional.ofNullable(table.getAlertColumn()).ifPresent(column -> {
+                        valueBuilder.append(column.columnEqualsProperty());
+                    });
+                }
             } else {
-                Optional.ofNullable(table.getLinkColumn()).ifPresent(column -> valueBuilder.append(column.columnEqualsProperty()));
                 Optional.ofNullable(table.getAlertColumn()).ifPresent(column -> {
-                    if (RestKey.class.isAssignableFrom(status.getClass())) {
-                        valueBuilder.append(column.columnName()).eq().value(status);
+                    if (RestKey.class.isAssignableFrom(state.getClass())) {
+                        valueBuilder.append(column.columnName()).eq().value(state);
                     } else {
                         valueBuilder.append(column.columnEqualsProperty());
                     }
@@ -129,24 +219,16 @@ public interface MybatisSqlProvider {
         }
     }
 
-    static <S> String sqlOfStatus(MybatisTable table, S status) throws RestException {
-        SqlBuilder sqlBuilder = SqlBuilder.sqlBuilder();
-        if (table.isSpecialAlertness()) {
-            valueOfParameter(table.alertnessColumns(), status, table.getAlertnessType());
-            String statusSql = sqlOfColumns(status, table.alertnessColumns(), false, true);
-            sqlBuilder.append(statusSql);
-        } else {
-            Optional.ofNullable(table.getAlertColumn()).ifPresent(column -> {
-                if (RestKey.class.isAssignableFrom(status.getClass())) {
-                    sqlBuilder.append(column.columnName()).eq().value(status);
-                } else {
-                    sqlBuilder.append(column.columnEqualsProperty());
-                }
-            });
-        }
-        return sqlBuilder.toString();
-    }
-
+    /**
+     * <code>databaseTypeOfColumnsSql</code>
+     * <p>The database type of columns sql method.</p>
+     * @param tableName  {@link java.lang.String} <p>The table name parameter is <code>String</code> type.</p>
+     * @param sqlBuilder {@link io.github.nichetoolkit.mybatis.builder.SqlBuilder} <p>The sql builder parameter is <code>SqlBuilder</code> type.</p>
+     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
+     * @see java.lang.String
+     * @see io.github.nichetoolkit.mybatis.builder.SqlBuilder
+     * @see io.github.nichetoolkit.rest.RestException
+     */
     static void databaseTypeOfColumnsSql(String tableName, SqlBuilder sqlBuilder) throws RestException {
         DatabaseType databaseType = MybatisSqlProviderHolder.defaultDatabaseType();
         switch (databaseType) {
@@ -168,6 +250,18 @@ public interface MybatisSqlProvider {
         }
     }
 
+    /**
+     * <code>databaseTypeOfCreateIndexSql</code>
+     * <p>The database type of create index sql method.</p>
+     * @param tableName  {@link java.lang.String} <p>The table name parameter is <code>String</code> type.</p>
+     * @param sqlBuilder {@link io.github.nichetoolkit.mybatis.builder.SqlBuilder} <p>The sql builder parameter is <code>SqlBuilder</code> type.</p>
+     * @param field      {@link io.github.nichetoolkit.rest.RestField} <p>The field parameter is <code>RestField</code> type.</p>
+     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
+     * @see java.lang.String
+     * @see io.github.nichetoolkit.mybatis.builder.SqlBuilder
+     * @see io.github.nichetoolkit.rest.RestField
+     * @see io.github.nichetoolkit.rest.RestException
+     */
     static void databaseTypeOfCreateIndexSql(String tableName, SqlBuilder sqlBuilder, RestField<?> field) throws RestException {
         DatabaseType databaseType = MybatisSqlProviderHolder.defaultDatabaseType();
         switch (databaseType) {
@@ -189,6 +283,18 @@ public interface MybatisSqlProvider {
         }
     }
 
+    /**
+     * <code>databaseTypeOfDropIndexSql</code>
+     * <p>The database type of drop index sql method.</p>
+     * @param tableName  {@link java.lang.String} <p>The table name parameter is <code>String</code> type.</p>
+     * @param sqlBuilder {@link io.github.nichetoolkit.mybatis.builder.SqlBuilder} <p>The sql builder parameter is <code>SqlBuilder</code> type.</p>
+     * @param field      {@link io.github.nichetoolkit.rest.RestField} <p>The field parameter is <code>RestField</code> type.</p>
+     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
+     * @see java.lang.String
+     * @see io.github.nichetoolkit.mybatis.builder.SqlBuilder
+     * @see io.github.nichetoolkit.rest.RestField
+     * @see io.github.nichetoolkit.rest.RestException
+     */
     static void databaseTypeOfDropIndexSql(String tableName, SqlBuilder sqlBuilder, RestField<?> field) throws RestException {
         DatabaseType databaseType = MybatisSqlProviderHolder.defaultDatabaseType();
         switch (databaseType) {
@@ -209,6 +315,18 @@ public interface MybatisSqlProvider {
         }
     }
 
+    /**
+     * <code>databaseTypeOfModifyColumnSql</code>
+     * <p>The database type of modify column sql method.</p>
+     * @param tableName  {@link java.lang.String} <p>The table name parameter is <code>String</code> type.</p>
+     * @param sqlBuilder {@link io.github.nichetoolkit.mybatis.builder.SqlBuilder} <p>The sql builder parameter is <code>SqlBuilder</code> type.</p>
+     * @param field      {@link io.github.nichetoolkit.rest.RestField} <p>The field parameter is <code>RestField</code> type.</p>
+     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
+     * @see java.lang.String
+     * @see io.github.nichetoolkit.mybatis.builder.SqlBuilder
+     * @see io.github.nichetoolkit.rest.RestField
+     * @see io.github.nichetoolkit.rest.RestException
+     */
     static void databaseTypeOfModifyColumnSql(String tableName, SqlBuilder sqlBuilder, RestField<?> field) throws RestException {
         DatabaseType databaseType = MybatisSqlProviderHolder.defaultDatabaseType();
         switch (databaseType) {
@@ -267,6 +385,18 @@ public interface MybatisSqlProvider {
     }
 
 
+    /**
+     * <code>databaseTypeOfAddColumnSql</code>
+     * <p>The database type of add column sql method.</p>
+     * @param tableName  {@link java.lang.String} <p>The table name parameter is <code>String</code> type.</p>
+     * @param sqlBuilder {@link io.github.nichetoolkit.mybatis.builder.SqlBuilder} <p>The sql builder parameter is <code>SqlBuilder</code> type.</p>
+     * @param field      {@link io.github.nichetoolkit.rest.RestField} <p>The field parameter is <code>RestField</code> type.</p>
+     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
+     * @see java.lang.String
+     * @see io.github.nichetoolkit.mybatis.builder.SqlBuilder
+     * @see io.github.nichetoolkit.rest.RestField
+     * @see io.github.nichetoolkit.rest.RestException
+     */
     static void databaseTypeOfAddColumnSql(String tableName, SqlBuilder sqlBuilder, RestField<?> field) throws RestException {
         DatabaseType databaseType = MybatisSqlProviderHolder.defaultDatabaseType();
         switch (databaseType) {
@@ -309,6 +439,18 @@ public interface MybatisSqlProvider {
         }
     }
 
+    /**
+     * <code>databaseTypeOfDropColumnSql</code>
+     * <p>The database type of drop column sql method.</p>
+     * @param tableName  {@link java.lang.String} <p>The table name parameter is <code>String</code> type.</p>
+     * @param sqlBuilder {@link io.github.nichetoolkit.mybatis.builder.SqlBuilder} <p>The sql builder parameter is <code>SqlBuilder</code> type.</p>
+     * @param field      {@link io.github.nichetoolkit.rest.RestField} <p>The field parameter is <code>RestField</code> type.</p>
+     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
+     * @see java.lang.String
+     * @see io.github.nichetoolkit.mybatis.builder.SqlBuilder
+     * @see io.github.nichetoolkit.rest.RestField
+     * @see io.github.nichetoolkit.rest.RestException
+     */
     static void databaseTypeOfDropColumnSql(String tableName, SqlBuilder sqlBuilder, RestField<?> field) throws RestException {
         DatabaseType databaseType = MybatisSqlProviderHolder.defaultDatabaseType();
         switch (databaseType) {
@@ -325,6 +467,18 @@ public interface MybatisSqlProvider {
         }
     }
 
+    /**
+     * <code>providingOfTableName</code>
+     * <p>The providing of table name method.</p>
+     * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>The provider context parameter is <code>ProviderContext</code> type.</p>
+     * @param tableName       {@link java.lang.String} <p>The table name parameter is <code>String</code> type.</p>
+     * @return {@link java.lang.String} <p>The providing of table name return object is <code>String</code> type.</p>
+     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
+     * @see org.apache.ibatis.builder.annotation.ProviderContext
+     * @see java.lang.String
+     * @see org.springframework.lang.Nullable
+     * @see io.github.nichetoolkit.rest.RestException
+     */
     static String providingOfTableName(ProviderContext providerContext, @Nullable String tableName) throws RestException {
         SqlBuilder sqlBuilder = SqlBuilder.sqlBuilder();
         if (GeneralUtils.isNotEmpty(tableName)) {
@@ -338,6 +492,20 @@ public interface MybatisSqlProvider {
         }
     }
 
+    /**
+     * <code>providingOfCreateIndex</code>
+     * <p>The providing of create index method.</p>
+     * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>The provider context parameter is <code>ProviderContext</code> type.</p>
+     * @param tableName       {@link java.lang.String} <p>The table name parameter is <code>String</code> type.</p>
+     * @param field           {@link io.github.nichetoolkit.rest.RestField} <p>The field parameter is <code>RestField</code> type.</p>
+     * @return {@link java.lang.String} <p>The providing of create index return object is <code>String</code> type.</p>
+     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
+     * @see org.apache.ibatis.builder.annotation.ProviderContext
+     * @see java.lang.String
+     * @see org.springframework.lang.Nullable
+     * @see io.github.nichetoolkit.rest.RestField
+     * @see io.github.nichetoolkit.rest.RestException
+     */
     static String providingOfCreateIndex(ProviderContext providerContext, @Nullable String tableName, RestField<?> field) throws RestException {
         SqlBuilder sqlBuilder = SqlBuilder.sqlBuilder();
         if (GeneralUtils.isNotEmpty(tableName)) {
@@ -351,6 +519,20 @@ public interface MybatisSqlProvider {
         }
     }
 
+    /**
+     * <code>providingOfDropIndex</code>
+     * <p>The providing of drop index method.</p>
+     * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>The provider context parameter is <code>ProviderContext</code> type.</p>
+     * @param tableName       {@link java.lang.String} <p>The table name parameter is <code>String</code> type.</p>
+     * @param field           {@link io.github.nichetoolkit.rest.RestField} <p>The field parameter is <code>RestField</code> type.</p>
+     * @return {@link java.lang.String} <p>The providing of drop index return object is <code>String</code> type.</p>
+     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
+     * @see org.apache.ibatis.builder.annotation.ProviderContext
+     * @see java.lang.String
+     * @see org.springframework.lang.Nullable
+     * @see io.github.nichetoolkit.rest.RestField
+     * @see io.github.nichetoolkit.rest.RestException
+     */
     static String providingOfDropIndex(ProviderContext providerContext, @Nullable String tableName, RestField<?> field) throws RestException {
         SqlBuilder sqlBuilder = SqlBuilder.sqlBuilder();
         if (GeneralUtils.isNotEmpty(tableName)) {
@@ -364,6 +546,20 @@ public interface MybatisSqlProvider {
         }
     }
 
+    /**
+     * <code>providingOfModifyColumn</code>
+     * <p>The providing of modify column method.</p>
+     * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>The provider context parameter is <code>ProviderContext</code> type.</p>
+     * @param tableName       {@link java.lang.String} <p>The table name parameter is <code>String</code> type.</p>
+     * @param field           {@link io.github.nichetoolkit.rest.RestField} <p>The field parameter is <code>RestField</code> type.</p>
+     * @return {@link java.lang.String} <p>The providing of modify column return object is <code>String</code> type.</p>
+     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
+     * @see org.apache.ibatis.builder.annotation.ProviderContext
+     * @see java.lang.String
+     * @see org.springframework.lang.Nullable
+     * @see io.github.nichetoolkit.rest.RestField
+     * @see io.github.nichetoolkit.rest.RestException
+     */
     static String providingOfModifyColumn(ProviderContext providerContext, @Nullable String tableName, RestField<?> field) throws RestException {
         SqlBuilder sqlBuilder = SqlBuilder.sqlBuilder();
         if (GeneralUtils.isNotEmpty(tableName)) {
@@ -377,6 +573,20 @@ public interface MybatisSqlProvider {
         }
     }
 
+    /**
+     * <code>providingOfAddColumn</code>
+     * <p>The providing of add column method.</p>
+     * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>The provider context parameter is <code>ProviderContext</code> type.</p>
+     * @param tableName       {@link java.lang.String} <p>The table name parameter is <code>String</code> type.</p>
+     * @param field           {@link io.github.nichetoolkit.rest.RestField} <p>The field parameter is <code>RestField</code> type.</p>
+     * @return {@link java.lang.String} <p>The providing of add column return object is <code>String</code> type.</p>
+     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
+     * @see org.apache.ibatis.builder.annotation.ProviderContext
+     * @see java.lang.String
+     * @see org.springframework.lang.Nullable
+     * @see io.github.nichetoolkit.rest.RestField
+     * @see io.github.nichetoolkit.rest.RestException
+     */
     static String providingOfAddColumn(ProviderContext providerContext, @Nullable String tableName, RestField<?> field) throws RestException {
         SqlBuilder sqlBuilder = SqlBuilder.sqlBuilder();
         if (GeneralUtils.isNotEmpty(tableName)) {
@@ -390,6 +600,20 @@ public interface MybatisSqlProvider {
         }
     }
 
+    /**
+     * <code>providingOfDropColumn</code>
+     * <p>The providing of drop column method.</p>
+     * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>The provider context parameter is <code>ProviderContext</code> type.</p>
+     * @param tableName       {@link java.lang.String} <p>The table name parameter is <code>String</code> type.</p>
+     * @param field           {@link io.github.nichetoolkit.rest.RestField} <p>The field parameter is <code>RestField</code> type.</p>
+     * @return {@link java.lang.String} <p>The providing of drop column return object is <code>String</code> type.</p>
+     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
+     * @see org.apache.ibatis.builder.annotation.ProviderContext
+     * @see java.lang.String
+     * @see org.springframework.lang.Nullable
+     * @see io.github.nichetoolkit.rest.RestField
+     * @see io.github.nichetoolkit.rest.RestException
+     */
     static String providingOfDropColumn(ProviderContext providerContext, @Nullable String tableName, RestField<?> field) throws RestException {
         SqlBuilder sqlBuilder = SqlBuilder.sqlBuilder();
         if (GeneralUtils.isNotEmpty(tableName)) {
@@ -403,6 +627,27 @@ public interface MybatisSqlProvider {
         }
     }
 
+    /**
+     * <code>providingOfIdOrParams</code>
+     * <p>The providing of id or params method.</p>
+     * @param <I>             {@link java.lang.Object} <p>The parameter can be of any type.</p>
+     * @param <S>             {@link java.lang.Object} <p>The parameter can be of any type.</p>
+     * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>The provider context parameter is <code>ProviderContext</code> type.</p>
+     * @param tableName       {@link java.lang.String} <p>The table name parameter is <code>String</code> type.</p>
+     * @param idParameter     I <p>The id parameter parameter is <code>I</code> type.</p>
+     * @param tableOptional   {@link io.github.nichetoolkit.rest.actuator.ConsumerActuator} <p>The table optional parameter is <code>ConsumerActuator</code> type.</p>
+     * @param params          {@link io.github.nichetoolkit.mybatis.load.RestParam} <p>The params parameter is <code>RestParam</code> type.</p>
+     * @param sqlSupply       {@link io.github.nichetoolkit.mybatis.MybatisSqlSupply.SimpleSqlSupply} <p>The sql supply parameter is <code>SimpleSqlSupply</code> type.</p>
+     * @return {@link java.lang.String} <p>The providing of id or params return object is <code>String</code> type.</p>
+     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
+     * @see org.apache.ibatis.builder.annotation.ProviderContext
+     * @see java.lang.String
+     * @see org.springframework.lang.Nullable
+     * @see io.github.nichetoolkit.rest.actuator.ConsumerActuator
+     * @see io.github.nichetoolkit.mybatis.load.RestParam
+     * @see io.github.nichetoolkit.mybatis.MybatisSqlSupply.SimpleSqlSupply
+     * @see io.github.nichetoolkit.rest.RestException
+     */
     static <I, S> String providingOfIdOrParams(ProviderContext providerContext, @Nullable String tableName, I idParameter, ConsumerActuator<MybatisTable> tableOptional, RestParam[] params, MybatisSqlSupply.SimpleSqlSupply sqlSupply) throws RestException {
         Object identity = reviseParameter(idParameter);
         return MybatisSqlScript.caching(providerContext, (table, sqlScript) -> {
@@ -417,6 +662,29 @@ public interface MybatisSqlProvider {
         });
     }
 
+    /**
+     * <code>providingOfIdOrParams</code>
+     * <p>The providing of id or params method.</p>
+     * @param <I>             {@link java.lang.Object} <p>The parameter can be of any type.</p>
+     * @param <S>             {@link java.lang.Object} <p>The parameter can be of any type.</p>
+     * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>The provider context parameter is <code>ProviderContext</code> type.</p>
+     * @param tableName       {@link java.lang.String} <p>The table name parameter is <code>String</code> type.</p>
+     * @param idParameter     I <p>The id parameter parameter is <code>I</code> type.</p>
+     * @param tableOptional   {@link io.github.nichetoolkit.rest.actuator.ConsumerActuator} <p>The table optional parameter is <code>ConsumerActuator</code> type.</p>
+     * @param params          {@link io.github.nichetoolkit.mybatis.load.RestParam} <p>The params parameter is <code>RestParam</code> type.</p>
+     * @param loadParams      {@link io.github.nichetoolkit.mybatis.load.RestLoad} <p>The load params parameter is <code>RestLoad</code> type.</p>
+     * @param sqlSupply       {@link io.github.nichetoolkit.mybatis.MybatisSqlSupply.EntrySqlSupply} <p>The sql supply parameter is <code>EntrySqlSupply</code> type.</p>
+     * @return {@link java.lang.String} <p>The providing of id or params return object is <code>String</code> type.</p>
+     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
+     * @see org.apache.ibatis.builder.annotation.ProviderContext
+     * @see java.lang.String
+     * @see org.springframework.lang.Nullable
+     * @see io.github.nichetoolkit.rest.actuator.ConsumerActuator
+     * @see io.github.nichetoolkit.mybatis.load.RestParam
+     * @see io.github.nichetoolkit.mybatis.load.RestLoad
+     * @see io.github.nichetoolkit.mybatis.MybatisSqlSupply.EntrySqlSupply
+     * @see io.github.nichetoolkit.rest.RestException
+     */
     static <I, S> String providingOfIdOrParams(ProviderContext providerContext, @Nullable String tableName, I idParameter, ConsumerActuator<MybatisTable> tableOptional, RestParam[] params, RestLoad[] loadParams, MybatisSqlSupply.EntrySqlSupply sqlSupply) throws RestException {
         return providingOfIdOrParams(providerContext, tableName, idParameter, tableOptional, params,
                 (tableNameValue, tableValue, valueBuilder) -> {
@@ -429,6 +697,27 @@ public interface MybatisSqlProvider {
                 });
     }
 
+    /**
+     * <code>providingOfId</code>
+     * <p>The providing of id method.</p>
+     * @param <I>             {@link java.lang.Object} <p>The parameter can be of any type.</p>
+     * @param <S>             {@link java.lang.Object} <p>The parameter can be of any type.</p>
+     * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>The provider context parameter is <code>ProviderContext</code> type.</p>
+     * @param tableName       {@link java.lang.String} <p>The table name parameter is <code>String</code> type.</p>
+     * @param idParameter     I <p>The id parameter parameter is <code>I</code> type.</p>
+     * @param tableOptional   {@link io.github.nichetoolkit.rest.actuator.ConsumerActuator} <p>The table optional parameter is <code>ConsumerActuator</code> type.</p>
+     * @param loadParams      {@link io.github.nichetoolkit.mybatis.load.RestLoad} <p>The load params parameter is <code>RestLoad</code> type.</p>
+     * @param sqlSupply       {@link io.github.nichetoolkit.mybatis.MybatisSqlSupply.EntrySqlSupply} <p>The sql supply parameter is <code>EntrySqlSupply</code> type.</p>
+     * @return {@link java.lang.String} <p>The providing of id return object is <code>String</code> type.</p>
+     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
+     * @see org.apache.ibatis.builder.annotation.ProviderContext
+     * @see java.lang.String
+     * @see org.springframework.lang.Nullable
+     * @see io.github.nichetoolkit.rest.actuator.ConsumerActuator
+     * @see io.github.nichetoolkit.mybatis.load.RestLoad
+     * @see io.github.nichetoolkit.mybatis.MybatisSqlSupply.EntrySqlSupply
+     * @see io.github.nichetoolkit.rest.RestException
+     */
     static <I, S> String providingOfId(ProviderContext providerContext, @Nullable String tableName, I idParameter, ConsumerActuator<MybatisTable> tableOptional, RestLoad[] loadParams, MybatisSqlSupply.EntrySqlSupply sqlSupply) throws RestException {
         return providingOfId(providerContext, tableName, idParameter, tableOptional,
                 (MybatisSqlSupply.EntrySqlSupply) (tableNameValue, tableValue, keyBuilder, valueBuilder) -> {
@@ -437,6 +726,29 @@ public interface MybatisSqlProvider {
                 });
     }
 
+    /**
+     * <code>providingOfId</code>
+     * <p>The providing of id method.</p>
+     * @param <I>             {@link java.lang.Object} <p>The parameter can be of any type.</p>
+     * @param <S>             {@link java.lang.Object} <p>The parameter can be of any type.</p>
+     * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>The provider context parameter is <code>ProviderContext</code> type.</p>
+     * @param tableName       {@link java.lang.String} <p>The table name parameter is <code>String</code> type.</p>
+     * @param idParameter     I <p>The id parameter parameter is <code>I</code> type.</p>
+     * @param tableOptional   {@link io.github.nichetoolkit.rest.actuator.ConsumerActuator} <p>The table optional parameter is <code>ConsumerActuator</code> type.</p>
+     * @param fickleParams    {@link io.github.nichetoolkit.mybatis.fickle.RestFickle} <p>The fickle params parameter is <code>RestFickle</code> type.</p>
+     * @param loadParams      {@link io.github.nichetoolkit.mybatis.load.RestLoad} <p>The load params parameter is <code>RestLoad</code> type.</p>
+     * @param sqlSupply       {@link io.github.nichetoolkit.mybatis.MybatisSqlSupply.EntrySqlSupply} <p>The sql supply parameter is <code>EntrySqlSupply</code> type.</p>
+     * @return {@link java.lang.String} <p>The providing of id return object is <code>String</code> type.</p>
+     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
+     * @see org.apache.ibatis.builder.annotation.ProviderContext
+     * @see java.lang.String
+     * @see org.springframework.lang.Nullable
+     * @see io.github.nichetoolkit.rest.actuator.ConsumerActuator
+     * @see io.github.nichetoolkit.mybatis.fickle.RestFickle
+     * @see io.github.nichetoolkit.mybatis.load.RestLoad
+     * @see io.github.nichetoolkit.mybatis.MybatisSqlSupply.EntrySqlSupply
+     * @see io.github.nichetoolkit.rest.RestException
+     */
     static <I, S> String providingOfId(ProviderContext providerContext, @Nullable String tableName, I idParameter, ConsumerActuator<MybatisTable> tableOptional, RestFickle<?>[] fickleParams, RestLoad[] loadParams, MybatisSqlSupply.EntrySqlSupply sqlSupply) throws RestException {
         return providingOfId(providerContext, tableName, idParameter, tableOptional,
                 (MybatisSqlSupply.EntrySqlSupply) (tableNameValue, tableValue, keyBuilder, valueBuilder) -> {
@@ -446,6 +758,27 @@ public interface MybatisSqlProvider {
                 });
     }
 
+    /**
+     * <code>providingOfId</code>
+     * <p>The providing of id method.</p>
+     * @param <I>             {@link java.lang.Object} <p>The parameter can be of any type.</p>
+     * @param <S>             {@link java.lang.Object} <p>The parameter can be of any type.</p>
+     * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>The provider context parameter is <code>ProviderContext</code> type.</p>
+     * @param tableName       {@link java.lang.String} <p>The table name parameter is <code>String</code> type.</p>
+     * @param idParameter     I <p>The id parameter parameter is <code>I</code> type.</p>
+     * @param tableOptional   {@link io.github.nichetoolkit.rest.actuator.ConsumerActuator} <p>The table optional parameter is <code>ConsumerActuator</code> type.</p>
+     * @param fickleParams    {@link io.github.nichetoolkit.mybatis.fickle.RestFickle} <p>The fickle params parameter is <code>RestFickle</code> type.</p>
+     * @param sqlSupply       {@link io.github.nichetoolkit.mybatis.MybatisSqlSupply.EntrySqlSupply} <p>The sql supply parameter is <code>EntrySqlSupply</code> type.</p>
+     * @return {@link java.lang.String} <p>The providing of id return object is <code>String</code> type.</p>
+     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
+     * @see org.apache.ibatis.builder.annotation.ProviderContext
+     * @see java.lang.String
+     * @see org.springframework.lang.Nullable
+     * @see io.github.nichetoolkit.rest.actuator.ConsumerActuator
+     * @see io.github.nichetoolkit.mybatis.fickle.RestFickle
+     * @see io.github.nichetoolkit.mybatis.MybatisSqlSupply.EntrySqlSupply
+     * @see io.github.nichetoolkit.rest.RestException
+     */
     static <I, S> String providingOfId(ProviderContext providerContext, @Nullable String tableName, I idParameter, ConsumerActuator<MybatisTable> tableOptional, RestFickle<?>[] fickleParams, MybatisSqlSupply.EntrySqlSupply sqlSupply) throws RestException {
         return providingOfId(providerContext, tableName, idParameter, tableOptional,
                 (tableNameValue, tableValue, keyBuilder, valueBuilder) -> {
@@ -454,16 +787,53 @@ public interface MybatisSqlProvider {
                 });
     }
 
-    static <I, S> String providingOfId(ProviderContext providerContext, @Nullable String tableName, I idParameter, S statusParameter, String statusName, MybatisSqlSupply.EntrySqlSupply sqlSupply) throws RestException {
-        Object status = reviseParameter(statusParameter);
+    /**
+     * <code>providingOfId</code>
+     * <p>The providing of id method.</p>
+     * @param <I>             {@link java.lang.Object} <p>The parameter can be of any type.</p>
+     * @param <S>             {@link java.lang.Object} <p>The parameter can be of any type.</p>
+     * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>The provider context parameter is <code>ProviderContext</code> type.</p>
+     * @param tableName       {@link java.lang.String} <p>The table name parameter is <code>String</code> type.</p>
+     * @param idParameter     I <p>The id parameter parameter is <code>I</code> type.</p>
+     * @param stateParameter  S <p>The state parameter parameter is <code>S</code> type.</p>
+     * @param stateName       {@link java.lang.String} <p>The state name parameter is <code>String</code> type.</p>
+     * @param sqlSupply       {@link io.github.nichetoolkit.mybatis.MybatisSqlSupply.EntrySqlSupply} <p>The sql supply parameter is <code>EntrySqlSupply</code> type.</p>
+     * @return {@link java.lang.String} <p>The providing of id return object is <code>String</code> type.</p>
+     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
+     * @see org.apache.ibatis.builder.annotation.ProviderContext
+     * @see java.lang.String
+     * @see org.springframework.lang.Nullable
+     * @see io.github.nichetoolkit.mybatis.MybatisSqlSupply.EntrySqlSupply
+     * @see io.github.nichetoolkit.rest.RestException
+     */
+    static <I, S> String providingOfId(ProviderContext providerContext, @Nullable String tableName, I idParameter, S stateParameter, String stateName, MybatisSqlSupply.EntrySqlSupply sqlSupply) throws RestException {
+        Object state = reviseParameter(stateParameter);
         return providingOfId(providerContext, tableName, idParameter, tableIgnored -> {
         }, (tableNameValue, tableValue, sqlBuilder) -> {
             SqlBuilder keyBuilder = SqlBuilder.sqlBuilder();
-            valueOfStatus(tableValue, status, statusName, keyBuilder);
+            valueOfState(tableValue, state, stateName, keyBuilder);
             return sqlSupply.supply(tableNameValue, tableValue, keyBuilder, sqlBuilder);
         });
     }
 
+    /**
+     * <code>providingOfId</code>
+     * <p>The providing of id method.</p>
+     * @param <I>             {@link java.lang.Object} <p>The parameter can be of any type.</p>
+     * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>The provider context parameter is <code>ProviderContext</code> type.</p>
+     * @param tableName       {@link java.lang.String} <p>The table name parameter is <code>String</code> type.</p>
+     * @param idParameter     I <p>The id parameter parameter is <code>I</code> type.</p>
+     * @param tableOptional   {@link io.github.nichetoolkit.rest.actuator.ConsumerActuator} <p>The table optional parameter is <code>ConsumerActuator</code> type.</p>
+     * @param sqlSupply       {@link io.github.nichetoolkit.mybatis.MybatisSqlSupply.EntrySqlSupply} <p>The sql supply parameter is <code>EntrySqlSupply</code> type.</p>
+     * @return {@link java.lang.String} <p>The providing of id return object is <code>String</code> type.</p>
+     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
+     * @see org.apache.ibatis.builder.annotation.ProviderContext
+     * @see java.lang.String
+     * @see org.springframework.lang.Nullable
+     * @see io.github.nichetoolkit.rest.actuator.ConsumerActuator
+     * @see io.github.nichetoolkit.mybatis.MybatisSqlSupply.EntrySqlSupply
+     * @see io.github.nichetoolkit.rest.RestException
+     */
     static <I> String providingOfId(ProviderContext providerContext, @Nullable String tableName, I idParameter, ConsumerActuator<MybatisTable> tableOptional, MybatisSqlSupply.EntrySqlSupply sqlSupply) throws RestException {
         return providingOfId(providerContext, tableName, idParameter, tableOptional,
                 (tableNameValue, tableValue, valueBuilder) -> {
@@ -473,6 +843,24 @@ public interface MybatisSqlProvider {
                 });
     }
 
+    /**
+     * <code>providingOfId</code>
+     * <p>The providing of id method.</p>
+     * @param <I>             {@link java.lang.Object} <p>The parameter can be of any type.</p>
+     * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>The provider context parameter is <code>ProviderContext</code> type.</p>
+     * @param tableName       {@link java.lang.String} <p>The table name parameter is <code>String</code> type.</p>
+     * @param idParameter     I <p>The id parameter parameter is <code>I</code> type.</p>
+     * @param tableOptional   {@link io.github.nichetoolkit.rest.actuator.ConsumerActuator} <p>The table optional parameter is <code>ConsumerActuator</code> type.</p>
+     * @param sqlSupply       {@link io.github.nichetoolkit.mybatis.MybatisSqlSupply.SimpleSqlSupply} <p>The sql supply parameter is <code>SimpleSqlSupply</code> type.</p>
+     * @return {@link java.lang.String} <p>The providing of id return object is <code>String</code> type.</p>
+     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
+     * @see org.apache.ibatis.builder.annotation.ProviderContext
+     * @see java.lang.String
+     * @see org.springframework.lang.Nullable
+     * @see io.github.nichetoolkit.rest.actuator.ConsumerActuator
+     * @see io.github.nichetoolkit.mybatis.MybatisSqlSupply.SimpleSqlSupply
+     * @see io.github.nichetoolkit.rest.RestException
+     */
     static <I> String providingOfId(ProviderContext providerContext, @Nullable String tableName, I idParameter, ConsumerActuator<MybatisTable> tableOptional, MybatisSqlSupply.SimpleSqlSupply sqlSupply) throws RestException {
         Object identity = reviseParameter(idParameter);
         return MybatisSqlScript.caching(providerContext, (table, sqlScript) -> {
@@ -483,6 +871,28 @@ public interface MybatisSqlProvider {
         });
     }
 
+    /**
+     * <code>providingOfAll</code>
+     * <p>The providing of all method.</p>
+     * @param <I>             {@link java.lang.Object} <p>The parameter can be of any type.</p>
+     * @param <S>             {@link java.lang.Object} <p>The parameter can be of any type.</p>
+     * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>The provider context parameter is <code>ProviderContext</code> type.</p>
+     * @param tableName       {@link java.lang.String} <p>The table name parameter is <code>String</code> type.</p>
+     * @param idList          {@link java.util.Collection} <p>The id list parameter is <code>Collection</code> type.</p>
+     * @param tableOptional   {@link io.github.nichetoolkit.rest.actuator.ConsumerActuator} <p>The table optional parameter is <code>ConsumerActuator</code> type.</p>
+     * @param fickleParams    {@link io.github.nichetoolkit.mybatis.fickle.RestFickle} <p>The fickle params parameter is <code>RestFickle</code> type.</p>
+     * @param sqlSupply       {@link io.github.nichetoolkit.mybatis.MybatisSqlSupply.EntrySqlSupply} <p>The sql supply parameter is <code>EntrySqlSupply</code> type.</p>
+     * @return {@link java.lang.String} <p>The providing of all return object is <code>String</code> type.</p>
+     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
+     * @see org.apache.ibatis.builder.annotation.ProviderContext
+     * @see java.lang.String
+     * @see org.springframework.lang.Nullable
+     * @see java.util.Collection
+     * @see io.github.nichetoolkit.rest.actuator.ConsumerActuator
+     * @see io.github.nichetoolkit.mybatis.fickle.RestFickle
+     * @see io.github.nichetoolkit.mybatis.MybatisSqlSupply.EntrySqlSupply
+     * @see io.github.nichetoolkit.rest.RestException
+     */
     static <I, S> String providingOfAll(ProviderContext providerContext, @Nullable String tableName, Collection<I> idList, ConsumerActuator<MybatisTable> tableOptional, RestFickle<?>[] fickleParams, MybatisSqlSupply.EntrySqlSupply sqlSupply) throws RestException {
         return providingOfAll(providerContext, tableName, idList, tableOptional,
                 (tableNameValue, tableValue, keyBuilder, valueBuilder) -> {
@@ -491,6 +901,30 @@ public interface MybatisSqlProvider {
                 });
     }
 
+    /**
+     * <code>providingOfAll</code>
+     * <p>The providing of all method.</p>
+     * @param <I>             {@link java.lang.Object} <p>The parameter can be of any type.</p>
+     * @param <S>             {@link java.lang.Object} <p>The parameter can be of any type.</p>
+     * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>The provider context parameter is <code>ProviderContext</code> type.</p>
+     * @param tableName       {@link java.lang.String} <p>The table name parameter is <code>String</code> type.</p>
+     * @param idList          {@link java.util.Collection} <p>The id list parameter is <code>Collection</code> type.</p>
+     * @param tableOptional   {@link io.github.nichetoolkit.rest.actuator.ConsumerActuator} <p>The table optional parameter is <code>ConsumerActuator</code> type.</p>
+     * @param fickleParams    {@link io.github.nichetoolkit.mybatis.fickle.RestFickle} <p>The fickle params parameter is <code>RestFickle</code> type.</p>
+     * @param loadParams      {@link io.github.nichetoolkit.mybatis.load.RestLoad} <p>The load params parameter is <code>RestLoad</code> type.</p>
+     * @param sqlSupply       {@link io.github.nichetoolkit.mybatis.MybatisSqlSupply.EntrySqlSupply} <p>The sql supply parameter is <code>EntrySqlSupply</code> type.</p>
+     * @return {@link java.lang.String} <p>The providing of all return object is <code>String</code> type.</p>
+     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
+     * @see org.apache.ibatis.builder.annotation.ProviderContext
+     * @see java.lang.String
+     * @see org.springframework.lang.Nullable
+     * @see java.util.Collection
+     * @see io.github.nichetoolkit.rest.actuator.ConsumerActuator
+     * @see io.github.nichetoolkit.mybatis.fickle.RestFickle
+     * @see io.github.nichetoolkit.mybatis.load.RestLoad
+     * @see io.github.nichetoolkit.mybatis.MybatisSqlSupply.EntrySqlSupply
+     * @see io.github.nichetoolkit.rest.RestException
+     */
     static <I, S> String providingOfAll(ProviderContext providerContext, @Nullable String tableName, Collection<I> idList, ConsumerActuator<MybatisTable> tableOptional, RestFickle<?>[] fickleParams, RestLoad[] loadParams, MybatisSqlSupply.EntrySqlSupply sqlSupply) throws RestException {
         return providingOfAll(providerContext, tableName, idList, tableOptional,
                 (tableNameValue, tableValue, keyBuilder, valueBuilder) -> {
@@ -500,6 +934,28 @@ public interface MybatisSqlProvider {
                 });
     }
 
+    /**
+     * <code>providingOfAll</code>
+     * <p>The providing of all method.</p>
+     * @param <I>             {@link java.lang.Object} <p>The parameter can be of any type.</p>
+     * @param <S>             {@link java.lang.Object} <p>The parameter can be of any type.</p>
+     * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>The provider context parameter is <code>ProviderContext</code> type.</p>
+     * @param tableName       {@link java.lang.String} <p>The table name parameter is <code>String</code> type.</p>
+     * @param idList          {@link java.util.Collection} <p>The id list parameter is <code>Collection</code> type.</p>
+     * @param tableOptional   {@link io.github.nichetoolkit.rest.actuator.ConsumerActuator} <p>The table optional parameter is <code>ConsumerActuator</code> type.</p>
+     * @param loadParams      {@link io.github.nichetoolkit.mybatis.load.RestLoad} <p>The load params parameter is <code>RestLoad</code> type.</p>
+     * @param sqlSupply       {@link io.github.nichetoolkit.mybatis.MybatisSqlSupply.EntrySqlSupply} <p>The sql supply parameter is <code>EntrySqlSupply</code> type.</p>
+     * @return {@link java.lang.String} <p>The providing of all return object is <code>String</code> type.</p>
+     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
+     * @see org.apache.ibatis.builder.annotation.ProviderContext
+     * @see java.lang.String
+     * @see org.springframework.lang.Nullable
+     * @see java.util.Collection
+     * @see io.github.nichetoolkit.rest.actuator.ConsumerActuator
+     * @see io.github.nichetoolkit.mybatis.load.RestLoad
+     * @see io.github.nichetoolkit.mybatis.MybatisSqlSupply.EntrySqlSupply
+     * @see io.github.nichetoolkit.rest.RestException
+     */
     static <I, S> String providingOfAll(ProviderContext providerContext, @Nullable String tableName, Collection<I> idList, ConsumerActuator<MybatisTable> tableOptional, RestLoad[] loadParams, MybatisSqlSupply.EntrySqlSupply sqlSupply) throws RestException {
         return providingOfAll(providerContext, tableName, idList, tableOptional,
                 (tableNameValue, tableValue, keyBuilder, valueBuilder) -> {
@@ -508,17 +964,56 @@ public interface MybatisSqlProvider {
                 });
     }
 
-    static <I, S> String providingOfAll(ProviderContext providerContext, @Nullable String tableName, Collection<I> idList, S statusParameter, String statusName, MybatisSqlSupply.EntrySqlSupply sqlSupply) throws RestException {
-        Object status = reviseParameter(statusParameter);
+    /**
+     * <code>providingOfAll</code>
+     * <p>The providing of all method.</p>
+     * @param <I>             {@link java.lang.Object} <p>The parameter can be of any type.</p>
+     * @param <S>             {@link java.lang.Object} <p>The parameter can be of any type.</p>
+     * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>The provider context parameter is <code>ProviderContext</code> type.</p>
+     * @param tableName       {@link java.lang.String} <p>The table name parameter is <code>String</code> type.</p>
+     * @param idList          {@link java.util.Collection} <p>The id list parameter is <code>Collection</code> type.</p>
+     * @param stateParameter  S <p>The state parameter parameter is <code>S</code> type.</p>
+     * @param stateName       {@link java.lang.String} <p>The state name parameter is <code>String</code> type.</p>
+     * @param sqlSupply       {@link io.github.nichetoolkit.mybatis.MybatisSqlSupply.EntrySqlSupply} <p>The sql supply parameter is <code>EntrySqlSupply</code> type.</p>
+     * @return {@link java.lang.String} <p>The providing of all return object is <code>String</code> type.</p>
+     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
+     * @see org.apache.ibatis.builder.annotation.ProviderContext
+     * @see java.lang.String
+     * @see org.springframework.lang.Nullable
+     * @see java.util.Collection
+     * @see io.github.nichetoolkit.mybatis.MybatisSqlSupply.EntrySqlSupply
+     * @see io.github.nichetoolkit.rest.RestException
+     */
+    static <I, S> String providingOfAll(ProviderContext providerContext, @Nullable String tableName, Collection<I> idList, S stateParameter, String stateName, MybatisSqlSupply.EntrySqlSupply sqlSupply) throws RestException {
+        Object state = reviseParameter(stateParameter);
         return providingOfAll(providerContext, tableName, idList, tableIgnored -> {
         }, (tableNameValue, tableValue, sqlBuilder) -> {
             SqlBuilder keyBuilder = SqlBuilder.sqlBuilder();
-            valueOfStatus(tableValue, status, statusName, keyBuilder);
+            valueOfState(tableValue, state, stateName, keyBuilder);
             return sqlSupply.supply(tableNameValue, tableValue, keyBuilder, sqlBuilder);
         });
     }
 
 
+    /**
+     * <code>providingOfAll</code>
+     * <p>The providing of all method.</p>
+     * @param <I>             {@link java.lang.Object} <p>The parameter can be of any type.</p>
+     * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>The provider context parameter is <code>ProviderContext</code> type.</p>
+     * @param tableName       {@link java.lang.String} <p>The table name parameter is <code>String</code> type.</p>
+     * @param idList          {@link java.util.Collection} <p>The id list parameter is <code>Collection</code> type.</p>
+     * @param tableOptional   {@link io.github.nichetoolkit.rest.actuator.ConsumerActuator} <p>The table optional parameter is <code>ConsumerActuator</code> type.</p>
+     * @param sqlSupply       {@link io.github.nichetoolkit.mybatis.MybatisSqlSupply.EntrySqlSupply} <p>The sql supply parameter is <code>EntrySqlSupply</code> type.</p>
+     * @return {@link java.lang.String} <p>The providing of all return object is <code>String</code> type.</p>
+     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
+     * @see org.apache.ibatis.builder.annotation.ProviderContext
+     * @see java.lang.String
+     * @see org.springframework.lang.Nullable
+     * @see java.util.Collection
+     * @see io.github.nichetoolkit.rest.actuator.ConsumerActuator
+     * @see io.github.nichetoolkit.mybatis.MybatisSqlSupply.EntrySqlSupply
+     * @see io.github.nichetoolkit.rest.RestException
+     */
     static <I> String providingOfAll(ProviderContext providerContext, @Nullable String tableName, Collection<I> idList, ConsumerActuator<MybatisTable> tableOptional, MybatisSqlSupply.EntrySqlSupply sqlSupply) throws RestException {
         return providingOfAll(providerContext, tableName, idList, tableOptional,
                 (tableNameValue, tableValue, valueBuilder) -> {
@@ -528,6 +1023,25 @@ public interface MybatisSqlProvider {
                 });
     }
 
+    /**
+     * <code>providingOfAll</code>
+     * <p>The providing of all method.</p>
+     * @param <I>             {@link java.lang.Object} <p>The parameter can be of any type.</p>
+     * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>The provider context parameter is <code>ProviderContext</code> type.</p>
+     * @param tableName       {@link java.lang.String} <p>The table name parameter is <code>String</code> type.</p>
+     * @param idList          {@link java.util.Collection} <p>The id list parameter is <code>Collection</code> type.</p>
+     * @param tableOptional   {@link io.github.nichetoolkit.rest.actuator.ConsumerActuator} <p>The table optional parameter is <code>ConsumerActuator</code> type.</p>
+     * @param sqlSupply       {@link io.github.nichetoolkit.mybatis.MybatisSqlSupply.SimpleSqlSupply} <p>The sql supply parameter is <code>SimpleSqlSupply</code> type.</p>
+     * @return {@link java.lang.String} <p>The providing of all return object is <code>String</code> type.</p>
+     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
+     * @see org.apache.ibatis.builder.annotation.ProviderContext
+     * @see java.lang.String
+     * @see org.springframework.lang.Nullable
+     * @see java.util.Collection
+     * @see io.github.nichetoolkit.rest.actuator.ConsumerActuator
+     * @see io.github.nichetoolkit.mybatis.MybatisSqlSupply.SimpleSqlSupply
+     * @see io.github.nichetoolkit.rest.RestException
+     */
     static <I> String providingOfAll(ProviderContext providerContext, @Nullable String tableName, Collection<I> idList, ConsumerActuator<MybatisTable> tableOptional, MybatisSqlSupply.SimpleSqlSupply sqlSupply) throws RestException {
         return MybatisSqlScript.caching(providerContext, (table, sqlScript) -> {
             tableOptional.actuate(table);
@@ -537,6 +1051,28 @@ public interface MybatisSqlProvider {
         });
     }
 
+    /**
+     * <code>providingOfWhere</code>
+     * <p>The providing of where method.</p>
+     * @param <S>               {@link java.lang.Object} <p>The parameter can be of any type.</p>
+     * @param providerContext   {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>The provider context parameter is <code>ProviderContext</code> type.</p>
+     * @param tableName         {@link java.lang.String} <p>The table name parameter is <code>String</code> type.</p>
+     * @param whereSqlParameter {@link java.lang.String} <p>The where sql parameter parameter is <code>String</code> type.</p>
+     * @param tableOptional     {@link io.github.nichetoolkit.rest.actuator.ConsumerActuator} <p>The table optional parameter is <code>ConsumerActuator</code> type.</p>
+     * @param fickleParams      {@link io.github.nichetoolkit.mybatis.fickle.RestFickle} <p>The fickle params parameter is <code>RestFickle</code> type.</p>
+     * @param loadParams        {@link io.github.nichetoolkit.mybatis.load.RestLoad} <p>The load params parameter is <code>RestLoad</code> type.</p>
+     * @param sqlSupply         {@link io.github.nichetoolkit.mybatis.MybatisSqlSupply.EntrySqlSupply} <p>The sql supply parameter is <code>EntrySqlSupply</code> type.</p>
+     * @return {@link java.lang.String} <p>The providing of where return object is <code>String</code> type.</p>
+     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
+     * @see org.apache.ibatis.builder.annotation.ProviderContext
+     * @see java.lang.String
+     * @see org.springframework.lang.Nullable
+     * @see io.github.nichetoolkit.rest.actuator.ConsumerActuator
+     * @see io.github.nichetoolkit.mybatis.fickle.RestFickle
+     * @see io.github.nichetoolkit.mybatis.load.RestLoad
+     * @see io.github.nichetoolkit.mybatis.MybatisSqlSupply.EntrySqlSupply
+     * @see io.github.nichetoolkit.rest.RestException
+     */
     static <S> String providingOfWhere(ProviderContext providerContext, @Nullable String tableName, String whereSqlParameter, ConsumerActuator<MybatisTable> tableOptional, RestFickle<?>[] fickleParams, RestLoad[] loadParams, MybatisSqlSupply.EntrySqlSupply sqlSupply) throws RestException {
         return providingOfWhere(providerContext, tableName, whereSqlParameter, tableOptional,
                 (tableNameValue, tableValue, keyBuilder, valueBuilder) -> {
@@ -546,6 +1082,26 @@ public interface MybatisSqlProvider {
                 });
     }
 
+    /**
+     * <code>providingOfWhere</code>
+     * <p>The providing of where method.</p>
+     * @param <S>               {@link java.lang.Object} <p>The parameter can be of any type.</p>
+     * @param providerContext   {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>The provider context parameter is <code>ProviderContext</code> type.</p>
+     * @param tableName         {@link java.lang.String} <p>The table name parameter is <code>String</code> type.</p>
+     * @param whereSqlParameter {@link java.lang.String} <p>The where sql parameter parameter is <code>String</code> type.</p>
+     * @param tableOptional     {@link io.github.nichetoolkit.rest.actuator.ConsumerActuator} <p>The table optional parameter is <code>ConsumerActuator</code> type.</p>
+     * @param fickleParams      {@link io.github.nichetoolkit.mybatis.fickle.RestFickle} <p>The fickle params parameter is <code>RestFickle</code> type.</p>
+     * @param sqlSupply         {@link io.github.nichetoolkit.mybatis.MybatisSqlSupply.EntrySqlSupply} <p>The sql supply parameter is <code>EntrySqlSupply</code> type.</p>
+     * @return {@link java.lang.String} <p>The providing of where return object is <code>String</code> type.</p>
+     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
+     * @see org.apache.ibatis.builder.annotation.ProviderContext
+     * @see java.lang.String
+     * @see org.springframework.lang.Nullable
+     * @see io.github.nichetoolkit.rest.actuator.ConsumerActuator
+     * @see io.github.nichetoolkit.mybatis.fickle.RestFickle
+     * @see io.github.nichetoolkit.mybatis.MybatisSqlSupply.EntrySqlSupply
+     * @see io.github.nichetoolkit.rest.RestException
+     */
     static <S> String providingOfWhere(ProviderContext providerContext, @Nullable String tableName, String whereSqlParameter, ConsumerActuator<MybatisTable> tableOptional, RestFickle<?>[] fickleParams, MybatisSqlSupply.EntrySqlSupply sqlSupply) throws RestException {
         return providingOfWhere(providerContext, tableName, whereSqlParameter, tableOptional,
                 (tableNameValue, tableValue, keyBuilder, valueBuilder) -> {
@@ -554,6 +1110,26 @@ public interface MybatisSqlProvider {
                 });
     }
 
+    /**
+     * <code>providingOfWhere</code>
+     * <p>The providing of where method.</p>
+     * @param <S>               {@link java.lang.Object} <p>The parameter can be of any type.</p>
+     * @param providerContext   {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>The provider context parameter is <code>ProviderContext</code> type.</p>
+     * @param tableName         {@link java.lang.String} <p>The table name parameter is <code>String</code> type.</p>
+     * @param whereSqlParameter {@link java.lang.String} <p>The where sql parameter parameter is <code>String</code> type.</p>
+     * @param tableOptional     {@link io.github.nichetoolkit.rest.actuator.ConsumerActuator} <p>The table optional parameter is <code>ConsumerActuator</code> type.</p>
+     * @param loadParams        {@link io.github.nichetoolkit.mybatis.load.RestLoad} <p>The load params parameter is <code>RestLoad</code> type.</p>
+     * @param sqlSupply         {@link io.github.nichetoolkit.mybatis.MybatisSqlSupply.EntrySqlSupply} <p>The sql supply parameter is <code>EntrySqlSupply</code> type.</p>
+     * @return {@link java.lang.String} <p>The providing of where return object is <code>String</code> type.</p>
+     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
+     * @see org.apache.ibatis.builder.annotation.ProviderContext
+     * @see java.lang.String
+     * @see org.springframework.lang.Nullable
+     * @see io.github.nichetoolkit.rest.actuator.ConsumerActuator
+     * @see io.github.nichetoolkit.mybatis.load.RestLoad
+     * @see io.github.nichetoolkit.mybatis.MybatisSqlSupply.EntrySqlSupply
+     * @see io.github.nichetoolkit.rest.RestException
+     */
     static <S> String providingOfWhere(ProviderContext providerContext, @Nullable String tableName, String whereSqlParameter, ConsumerActuator<MybatisTable> tableOptional, RestLoad[] loadParams, MybatisSqlSupply.EntrySqlSupply sqlSupply) throws RestException {
         return providingOfWhere(providerContext, tableName, whereSqlParameter, tableOptional,
                 (tableNameValue, tableValue, keyBuilder, valueBuilder) -> {
@@ -562,16 +1138,52 @@ public interface MybatisSqlProvider {
                 });
     }
 
-    static <S> String providingOfWhere(ProviderContext providerContext, @Nullable String tableName, String whereSqlParameter, S statusParameter, String statusName, MybatisSqlSupply.EntrySqlSupply sqlSupply) throws RestException {
-        Object status = reviseParameter(statusParameter);
+    /**
+     * <code>providingOfWhere</code>
+     * <p>The providing of where method.</p>
+     * @param <S>               {@link java.lang.Object} <p>The parameter can be of any type.</p>
+     * @param providerContext   {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>The provider context parameter is <code>ProviderContext</code> type.</p>
+     * @param tableName         {@link java.lang.String} <p>The table name parameter is <code>String</code> type.</p>
+     * @param whereSqlParameter {@link java.lang.String} <p>The where sql parameter parameter is <code>String</code> type.</p>
+     * @param stateParameter    S <p>The state parameter parameter is <code>S</code> type.</p>
+     * @param stateName         {@link java.lang.String} <p>The state name parameter is <code>String</code> type.</p>
+     * @param sqlSupply         {@link io.github.nichetoolkit.mybatis.MybatisSqlSupply.EntrySqlSupply} <p>The sql supply parameter is <code>EntrySqlSupply</code> type.</p>
+     * @return {@link java.lang.String} <p>The providing of where return object is <code>String</code> type.</p>
+     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
+     * @see org.apache.ibatis.builder.annotation.ProviderContext
+     * @see java.lang.String
+     * @see org.springframework.lang.Nullable
+     * @see io.github.nichetoolkit.mybatis.MybatisSqlSupply.EntrySqlSupply
+     * @see io.github.nichetoolkit.rest.RestException
+     */
+    static <S> String providingOfWhere(ProviderContext providerContext, @Nullable String tableName, String whereSqlParameter, S stateParameter, String stateName, MybatisSqlSupply.EntrySqlSupply sqlSupply) throws RestException {
+        Object state = reviseParameter(stateParameter);
         return providingOfWhere(providerContext, tableName, whereSqlParameter, tableIgnored -> {
         }, (tableNameValue, tableValue, sqlBuilder) -> {
             SqlBuilder keyBuilder = SqlBuilder.sqlBuilder();
-            valueOfStatus(tableValue, status, statusName, keyBuilder);
+            valueOfState(tableValue, state, stateName, keyBuilder);
             return sqlSupply.supply(tableNameValue, tableValue, keyBuilder, sqlBuilder);
         });
     }
 
+    /**
+     * <code>providingOfWhere</code>
+     * <p>The providing of where method.</p>
+     * @param <I>               {@link java.lang.Object} <p>The parameter can be of any type.</p>
+     * @param providerContext   {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>The provider context parameter is <code>ProviderContext</code> type.</p>
+     * @param tableName         {@link java.lang.String} <p>The table name parameter is <code>String</code> type.</p>
+     * @param whereSqlParameter {@link java.lang.String} <p>The where sql parameter parameter is <code>String</code> type.</p>
+     * @param tableOptional     {@link io.github.nichetoolkit.rest.actuator.ConsumerActuator} <p>The table optional parameter is <code>ConsumerActuator</code> type.</p>
+     * @param sqlSupply         {@link io.github.nichetoolkit.mybatis.MybatisSqlSupply.EntrySqlSupply} <p>The sql supply parameter is <code>EntrySqlSupply</code> type.</p>
+     * @return {@link java.lang.String} <p>The providing of where return object is <code>String</code> type.</p>
+     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
+     * @see org.apache.ibatis.builder.annotation.ProviderContext
+     * @see java.lang.String
+     * @see org.springframework.lang.Nullable
+     * @see io.github.nichetoolkit.rest.actuator.ConsumerActuator
+     * @see io.github.nichetoolkit.mybatis.MybatisSqlSupply.EntrySqlSupply
+     * @see io.github.nichetoolkit.rest.RestException
+     */
     static <I> String providingOfWhere(ProviderContext providerContext, @Nullable String tableName, String whereSqlParameter, ConsumerActuator<MybatisTable> tableOptional, MybatisSqlSupply.EntrySqlSupply sqlSupply) throws RestException {
         return providingOfWhere(providerContext, tableName, whereSqlParameter, tableOptional,
                 (tableNameValue, tableValue, valueBuilder) -> {
@@ -581,6 +1193,24 @@ public interface MybatisSqlProvider {
                 });
     }
 
+    /**
+     * <code>providingOfWhere</code>
+     * <p>The providing of where method.</p>
+     * @param <I>               {@link java.lang.Object} <p>The parameter can be of any type.</p>
+     * @param providerContext   {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>The provider context parameter is <code>ProviderContext</code> type.</p>
+     * @param tableName         {@link java.lang.String} <p>The table name parameter is <code>String</code> type.</p>
+     * @param whereSqlParameter {@link java.lang.String} <p>The where sql parameter parameter is <code>String</code> type.</p>
+     * @param tableOptional     {@link io.github.nichetoolkit.rest.actuator.ConsumerActuator} <p>The table optional parameter is <code>ConsumerActuator</code> type.</p>
+     * @param sqlSupply         {@link io.github.nichetoolkit.mybatis.MybatisSqlSupply.SimpleSqlSupply} <p>The sql supply parameter is <code>SimpleSqlSupply</code> type.</p>
+     * @return {@link java.lang.String} <p>The providing of where return object is <code>String</code> type.</p>
+     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
+     * @see org.apache.ibatis.builder.annotation.ProviderContext
+     * @see java.lang.String
+     * @see org.springframework.lang.Nullable
+     * @see io.github.nichetoolkit.rest.actuator.ConsumerActuator
+     * @see io.github.nichetoolkit.mybatis.MybatisSqlSupply.SimpleSqlSupply
+     * @see io.github.nichetoolkit.rest.RestException
+     */
     static <I> String providingOfWhere(ProviderContext providerContext, @Nullable String tableName, String whereSqlParameter, ConsumerActuator<MybatisTable> tableOptional, MybatisSqlSupply.SimpleSqlSupply sqlSupply) throws RestException {
         return MybatisSqlScript.caching(providerContext, (table, sqlScript) -> {
             tableOptional.actuate(table);
@@ -588,6 +1218,27 @@ public interface MybatisSqlProvider {
         });
     }
 
+    /**
+     * <code>providingOfLinkId</code>
+     * <p>The providing of link id method.</p>
+     * @param <L>             {@link java.lang.Object} <p>The parameter can be of any type.</p>
+     * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>The provider context parameter is <code>ProviderContext</code> type.</p>
+     * @param tableName       {@link java.lang.String} <p>The table name parameter is <code>String</code> type.</p>
+     * @param linkIdParameter L <p>The link id parameter parameter is <code>L</code> type.</p>
+     * @param linkName        {@link java.lang.String} <p>The link name parameter is <code>String</code> type.</p>
+     * @param tableOptional   {@link io.github.nichetoolkit.rest.actuator.ConsumerActuator} <p>The table optional parameter is <code>ConsumerActuator</code> type.</p>
+     * @param fickleParams    {@link io.github.nichetoolkit.mybatis.fickle.RestFickle} <p>The fickle params parameter is <code>RestFickle</code> type.</p>
+     * @param sqlSupply       {@link io.github.nichetoolkit.mybatis.MybatisSqlSupply.EntrySqlSupply} <p>The sql supply parameter is <code>EntrySqlSupply</code> type.</p>
+     * @return {@link java.lang.String} <p>The providing of link id return object is <code>String</code> type.</p>
+     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
+     * @see org.apache.ibatis.builder.annotation.ProviderContext
+     * @see java.lang.String
+     * @see org.springframework.lang.Nullable
+     * @see io.github.nichetoolkit.rest.actuator.ConsumerActuator
+     * @see io.github.nichetoolkit.mybatis.fickle.RestFickle
+     * @see io.github.nichetoolkit.mybatis.MybatisSqlSupply.EntrySqlSupply
+     * @see io.github.nichetoolkit.rest.RestException
+     */
     static <L> String providingOfLinkId(ProviderContext providerContext, @Nullable String tableName, L linkIdParameter, String linkName, ConsumerActuator<MybatisTable> tableOptional, RestFickle<?>[] fickleParams, MybatisSqlSupply.EntrySqlSupply sqlSupply) throws RestException {
         return providingOfLinkId(providerContext, tableName, linkIdParameter, linkName, tableOptional,
                 (tableNameValue, tableValue, keyBuilder, valueBuilder) -> {
@@ -596,6 +1247,27 @@ public interface MybatisSqlProvider {
                 });
     }
 
+    /**
+     * <code>providingOfLinkId</code>
+     * <p>The providing of link id method.</p>
+     * @param <L>             {@link java.lang.Object} <p>The parameter can be of any type.</p>
+     * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>The provider context parameter is <code>ProviderContext</code> type.</p>
+     * @param tableName       {@link java.lang.String} <p>The table name parameter is <code>String</code> type.</p>
+     * @param linkIdParameter L <p>The link id parameter parameter is <code>L</code> type.</p>
+     * @param linkName        {@link java.lang.String} <p>The link name parameter is <code>String</code> type.</p>
+     * @param tableOptional   {@link io.github.nichetoolkit.rest.actuator.ConsumerActuator} <p>The table optional parameter is <code>ConsumerActuator</code> type.</p>
+     * @param loadParams      {@link io.github.nichetoolkit.mybatis.load.RestLoad} <p>The load params parameter is <code>RestLoad</code> type.</p>
+     * @param sqlSupply       {@link io.github.nichetoolkit.mybatis.MybatisSqlSupply.EntrySqlSupply} <p>The sql supply parameter is <code>EntrySqlSupply</code> type.</p>
+     * @return {@link java.lang.String} <p>The providing of link id return object is <code>String</code> type.</p>
+     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
+     * @see org.apache.ibatis.builder.annotation.ProviderContext
+     * @see java.lang.String
+     * @see org.springframework.lang.Nullable
+     * @see io.github.nichetoolkit.rest.actuator.ConsumerActuator
+     * @see io.github.nichetoolkit.mybatis.load.RestLoad
+     * @see io.github.nichetoolkit.mybatis.MybatisSqlSupply.EntrySqlSupply
+     * @see io.github.nichetoolkit.rest.RestException
+     */
     static <L> String providingOfLinkId(ProviderContext providerContext, @Nullable String tableName, L linkIdParameter, String linkName, ConsumerActuator<MybatisTable> tableOptional, RestLoad[] loadParams, MybatisSqlSupply.EntrySqlSupply sqlSupply) throws RestException {
         return providingOfLinkId(providerContext, tableName, linkIdParameter, linkName, tableOptional,
                 (tableNameValue, tableValue, keyBuilder, valueBuilder) -> {
@@ -604,6 +1276,29 @@ public interface MybatisSqlProvider {
                 });
     }
 
+    /**
+     * <code>providingOfLinkId</code>
+     * <p>The providing of link id method.</p>
+     * @param <L>             {@link java.lang.Object} <p>The parameter can be of any type.</p>
+     * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>The provider context parameter is <code>ProviderContext</code> type.</p>
+     * @param tableName       {@link java.lang.String} <p>The table name parameter is <code>String</code> type.</p>
+     * @param linkIdParameter L <p>The link id parameter parameter is <code>L</code> type.</p>
+     * @param linkName        {@link java.lang.String} <p>The link name parameter is <code>String</code> type.</p>
+     * @param tableOptional   {@link io.github.nichetoolkit.rest.actuator.ConsumerActuator} <p>The table optional parameter is <code>ConsumerActuator</code> type.</p>
+     * @param fickleParams    {@link io.github.nichetoolkit.mybatis.fickle.RestFickle} <p>The fickle params parameter is <code>RestFickle</code> type.</p>
+     * @param loadParams      {@link io.github.nichetoolkit.mybatis.load.RestLoad} <p>The load params parameter is <code>RestLoad</code> type.</p>
+     * @param sqlSupply       {@link io.github.nichetoolkit.mybatis.MybatisSqlSupply.EntrySqlSupply} <p>The sql supply parameter is <code>EntrySqlSupply</code> type.</p>
+     * @return {@link java.lang.String} <p>The providing of link id return object is <code>String</code> type.</p>
+     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
+     * @see org.apache.ibatis.builder.annotation.ProviderContext
+     * @see java.lang.String
+     * @see org.springframework.lang.Nullable
+     * @see io.github.nichetoolkit.rest.actuator.ConsumerActuator
+     * @see io.github.nichetoolkit.mybatis.fickle.RestFickle
+     * @see io.github.nichetoolkit.mybatis.load.RestLoad
+     * @see io.github.nichetoolkit.mybatis.MybatisSqlSupply.EntrySqlSupply
+     * @see io.github.nichetoolkit.rest.RestException
+     */
     static <L> String providingOfLinkId(ProviderContext providerContext, @Nullable String tableName, L linkIdParameter, String linkName, ConsumerActuator<MybatisTable> tableOptional, RestFickle<?>[] fickleParams, RestLoad[] loadParams, MybatisSqlSupply.EntrySqlSupply sqlSupply) throws RestException {
         return providingOfLinkId(providerContext, tableName, linkIdParameter, linkName, tableOptional,
                 (tableNameValue, tableValue, keyBuilder, valueBuilder) -> {
@@ -613,16 +1308,55 @@ public interface MybatisSqlProvider {
                 });
     }
 
-    static <L, S> String providingOfLinkId(ProviderContext providerContext, @Nullable String tableName, L linkIdParameter, String linkName, S statusParameter, String statusName, MybatisSqlSupply.EntrySqlSupply sqlSupply) throws RestException {
-        Object status = reviseParameter(statusParameter);
+    /**
+     * <code>providingOfLinkId</code>
+     * <p>The providing of link id method.</p>
+     * @param <L>             {@link java.lang.Object} <p>The parameter can be of any type.</p>
+     * @param <S>             {@link java.lang.Object} <p>The parameter can be of any type.</p>
+     * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>The provider context parameter is <code>ProviderContext</code> type.</p>
+     * @param tableName       {@link java.lang.String} <p>The table name parameter is <code>String</code> type.</p>
+     * @param linkIdParameter L <p>The link id parameter parameter is <code>L</code> type.</p>
+     * @param linkName        {@link java.lang.String} <p>The link name parameter is <code>String</code> type.</p>
+     * @param stateParameter  S <p>The state parameter parameter is <code>S</code> type.</p>
+     * @param stateName       {@link java.lang.String} <p>The state name parameter is <code>String</code> type.</p>
+     * @param sqlSupply       {@link io.github.nichetoolkit.mybatis.MybatisSqlSupply.EntrySqlSupply} <p>The sql supply parameter is <code>EntrySqlSupply</code> type.</p>
+     * @return {@link java.lang.String} <p>The providing of link id return object is <code>String</code> type.</p>
+     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
+     * @see org.apache.ibatis.builder.annotation.ProviderContext
+     * @see java.lang.String
+     * @see org.springframework.lang.Nullable
+     * @see io.github.nichetoolkit.mybatis.MybatisSqlSupply.EntrySqlSupply
+     * @see io.github.nichetoolkit.rest.RestException
+     */
+    static <L, S> String providingOfLinkId(ProviderContext providerContext, @Nullable String tableName, L linkIdParameter, String linkName, S stateParameter, String stateName, MybatisSqlSupply.EntrySqlSupply sqlSupply) throws RestException {
+        Object state = reviseParameter(stateParameter);
         return providingOfLinkId(providerContext, tableName, linkIdParameter, linkName, tableIgnored -> {
         }, (tableNameValue, tableValue, sqlBuilder) -> {
             SqlBuilder keyBuilder = SqlBuilder.sqlBuilder();
-            valueOfStatus(tableValue, status, statusName, keyBuilder);
+            valueOfState(tableValue, state, stateName, keyBuilder);
             return sqlSupply.supply(tableNameValue, tableValue, keyBuilder, sqlBuilder);
         });
     }
 
+    /**
+     * <code>providingOfLinkId</code>
+     * <p>The providing of link id method.</p>
+     * @param <L>             {@link java.lang.Object} <p>The parameter can be of any type.</p>
+     * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>The provider context parameter is <code>ProviderContext</code> type.</p>
+     * @param tableName       {@link java.lang.String} <p>The table name parameter is <code>String</code> type.</p>
+     * @param linkIdParameter L <p>The link id parameter parameter is <code>L</code> type.</p>
+     * @param linkName        {@link java.lang.String} <p>The link name parameter is <code>String</code> type.</p>
+     * @param tableOptional   {@link io.github.nichetoolkit.rest.actuator.ConsumerActuator} <p>The table optional parameter is <code>ConsumerActuator</code> type.</p>
+     * @param sqlSupply       {@link io.github.nichetoolkit.mybatis.MybatisSqlSupply.EntrySqlSupply} <p>The sql supply parameter is <code>EntrySqlSupply</code> type.</p>
+     * @return {@link java.lang.String} <p>The providing of link id return object is <code>String</code> type.</p>
+     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
+     * @see org.apache.ibatis.builder.annotation.ProviderContext
+     * @see java.lang.String
+     * @see org.springframework.lang.Nullable
+     * @see io.github.nichetoolkit.rest.actuator.ConsumerActuator
+     * @see io.github.nichetoolkit.mybatis.MybatisSqlSupply.EntrySqlSupply
+     * @see io.github.nichetoolkit.rest.RestException
+     */
     static <L> String providingOfLinkId(ProviderContext providerContext, @Nullable String tableName, L linkIdParameter, String linkName, ConsumerActuator<MybatisTable> tableOptional, MybatisSqlSupply.EntrySqlSupply sqlSupply) throws RestException {
         return providingOfLinkId(providerContext, tableName, linkIdParameter, linkName, tableOptional,
                 (tableNameValue, tableValue, valueBuilder) -> {
@@ -632,6 +1366,25 @@ public interface MybatisSqlProvider {
                 });
     }
 
+    /**
+     * <code>providingOfLinkId</code>
+     * <p>The providing of link id method.</p>
+     * @param <L>             {@link java.lang.Object} <p>The parameter can be of any type.</p>
+     * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>The provider context parameter is <code>ProviderContext</code> type.</p>
+     * @param tableName       {@link java.lang.String} <p>The table name parameter is <code>String</code> type.</p>
+     * @param linkIdParameter L <p>The link id parameter parameter is <code>L</code> type.</p>
+     * @param linkName        {@link java.lang.String} <p>The link name parameter is <code>String</code> type.</p>
+     * @param tableOptional   {@link io.github.nichetoolkit.rest.actuator.ConsumerActuator} <p>The table optional parameter is <code>ConsumerActuator</code> type.</p>
+     * @param sqlSupply       {@link io.github.nichetoolkit.mybatis.MybatisSqlSupply.SimpleSqlSupply} <p>The sql supply parameter is <code>SimpleSqlSupply</code> type.</p>
+     * @return {@link java.lang.String} <p>The providing of link id return object is <code>String</code> type.</p>
+     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
+     * @see org.apache.ibatis.builder.annotation.ProviderContext
+     * @see java.lang.String
+     * @see org.springframework.lang.Nullable
+     * @see io.github.nichetoolkit.rest.actuator.ConsumerActuator
+     * @see io.github.nichetoolkit.mybatis.MybatisSqlSupply.SimpleSqlSupply
+     * @see io.github.nichetoolkit.rest.RestException
+     */
     static <L> String providingOfLinkId(ProviderContext providerContext, @Nullable String tableName, L linkIdParameter, String linkName, ConsumerActuator<MybatisTable> tableOptional, MybatisSqlSupply.SimpleSqlSupply sqlSupply) throws RestException {
         Object linkId = reviseParameter(linkIdParameter);
         return MybatisSqlScript.caching(providerContext, (table, sqlScript) -> {
@@ -642,6 +1395,28 @@ public interface MybatisSqlProvider {
         });
     }
 
+    /**
+     * <code>providingOfLinkIdAll</code>
+     * <p>The providing of link id all method.</p>
+     * @param <L>             {@link java.lang.Object} <p>The parameter can be of any type.</p>
+     * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>The provider context parameter is <code>ProviderContext</code> type.</p>
+     * @param tableName       {@link java.lang.String} <p>The table name parameter is <code>String</code> type.</p>
+     * @param linkIdList      {@link java.util.Collection} <p>The link id list parameter is <code>Collection</code> type.</p>
+     * @param linkName        {@link java.lang.String} <p>The link name parameter is <code>String</code> type.</p>
+     * @param tableOptional   {@link io.github.nichetoolkit.rest.actuator.ConsumerActuator} <p>The table optional parameter is <code>ConsumerActuator</code> type.</p>
+     * @param fickleParams    {@link io.github.nichetoolkit.mybatis.fickle.RestFickle} <p>The fickle params parameter is <code>RestFickle</code> type.</p>
+     * @param sqlSupply       {@link io.github.nichetoolkit.mybatis.MybatisSqlSupply.EntrySqlSupply} <p>The sql supply parameter is <code>EntrySqlSupply</code> type.</p>
+     * @return {@link java.lang.String} <p>The providing of link id all return object is <code>String</code> type.</p>
+     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
+     * @see org.apache.ibatis.builder.annotation.ProviderContext
+     * @see java.lang.String
+     * @see org.springframework.lang.Nullable
+     * @see java.util.Collection
+     * @see io.github.nichetoolkit.rest.actuator.ConsumerActuator
+     * @see io.github.nichetoolkit.mybatis.fickle.RestFickle
+     * @see io.github.nichetoolkit.mybatis.MybatisSqlSupply.EntrySqlSupply
+     * @see io.github.nichetoolkit.rest.RestException
+     */
     static <L> String providingOfLinkIdAll(ProviderContext providerContext, @Nullable String tableName, Collection<L> linkIdList, String linkName, ConsumerActuator<MybatisTable> tableOptional, RestFickle<?>[] fickleParams, MybatisSqlSupply.EntrySqlSupply sqlSupply) throws RestException {
         return providingOfLinkIdAll(providerContext, tableName, linkIdList, linkName, tableOptional,
                 (tableNameValue, tableValue, keyBuilder, valueBuilder) -> {
@@ -650,6 +1425,30 @@ public interface MybatisSqlProvider {
                 });
     }
 
+    /**
+     * <code>providingOfLinkIdAll</code>
+     * <p>The providing of link id all method.</p>
+     * @param <L>             {@link java.lang.Object} <p>The parameter can be of any type.</p>
+     * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>The provider context parameter is <code>ProviderContext</code> type.</p>
+     * @param tableName       {@link java.lang.String} <p>The table name parameter is <code>String</code> type.</p>
+     * @param linkIdList      {@link java.util.Collection} <p>The link id list parameter is <code>Collection</code> type.</p>
+     * @param linkName        {@link java.lang.String} <p>The link name parameter is <code>String</code> type.</p>
+     * @param tableOptional   {@link io.github.nichetoolkit.rest.actuator.ConsumerActuator} <p>The table optional parameter is <code>ConsumerActuator</code> type.</p>
+     * @param fickleParams    {@link io.github.nichetoolkit.mybatis.fickle.RestFickle} <p>The fickle params parameter is <code>RestFickle</code> type.</p>
+     * @param loadParams      {@link io.github.nichetoolkit.mybatis.load.RestLoad} <p>The load params parameter is <code>RestLoad</code> type.</p>
+     * @param sqlSupply       {@link io.github.nichetoolkit.mybatis.MybatisSqlSupply.EntrySqlSupply} <p>The sql supply parameter is <code>EntrySqlSupply</code> type.</p>
+     * @return {@link java.lang.String} <p>The providing of link id all return object is <code>String</code> type.</p>
+     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
+     * @see org.apache.ibatis.builder.annotation.ProviderContext
+     * @see java.lang.String
+     * @see org.springframework.lang.Nullable
+     * @see java.util.Collection
+     * @see io.github.nichetoolkit.rest.actuator.ConsumerActuator
+     * @see io.github.nichetoolkit.mybatis.fickle.RestFickle
+     * @see io.github.nichetoolkit.mybatis.load.RestLoad
+     * @see io.github.nichetoolkit.mybatis.MybatisSqlSupply.EntrySqlSupply
+     * @see io.github.nichetoolkit.rest.RestException
+     */
     static <L> String providingOfLinkIdAll(ProviderContext providerContext, @Nullable String tableName, Collection<L> linkIdList, String linkName, ConsumerActuator<MybatisTable> tableOptional, RestFickle<?>[] fickleParams, RestLoad[] loadParams, MybatisSqlSupply.EntrySqlSupply sqlSupply) throws RestException {
         return providingOfLinkIdAll(providerContext, tableName, linkIdList, linkName, tableOptional,
                 (tableNameValue, tableValue, keyBuilder, valueBuilder) -> {
@@ -659,6 +1458,28 @@ public interface MybatisSqlProvider {
                 });
     }
 
+    /**
+     * <code>providingOfLinkIdAll</code>
+     * <p>The providing of link id all method.</p>
+     * @param <L>             {@link java.lang.Object} <p>The parameter can be of any type.</p>
+     * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>The provider context parameter is <code>ProviderContext</code> type.</p>
+     * @param tableName       {@link java.lang.String} <p>The table name parameter is <code>String</code> type.</p>
+     * @param linkIdList      {@link java.util.Collection} <p>The link id list parameter is <code>Collection</code> type.</p>
+     * @param linkName        {@link java.lang.String} <p>The link name parameter is <code>String</code> type.</p>
+     * @param tableOptional   {@link io.github.nichetoolkit.rest.actuator.ConsumerActuator} <p>The table optional parameter is <code>ConsumerActuator</code> type.</p>
+     * @param loadParams      {@link io.github.nichetoolkit.mybatis.load.RestLoad} <p>The load params parameter is <code>RestLoad</code> type.</p>
+     * @param sqlSupply       {@link io.github.nichetoolkit.mybatis.MybatisSqlSupply.EntrySqlSupply} <p>The sql supply parameter is <code>EntrySqlSupply</code> type.</p>
+     * @return {@link java.lang.String} <p>The providing of link id all return object is <code>String</code> type.</p>
+     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
+     * @see org.apache.ibatis.builder.annotation.ProviderContext
+     * @see java.lang.String
+     * @see org.springframework.lang.Nullable
+     * @see java.util.Collection
+     * @see io.github.nichetoolkit.rest.actuator.ConsumerActuator
+     * @see io.github.nichetoolkit.mybatis.load.RestLoad
+     * @see io.github.nichetoolkit.mybatis.MybatisSqlSupply.EntrySqlSupply
+     * @see io.github.nichetoolkit.rest.RestException
+     */
     static <L> String providingOfLinkIdAll(ProviderContext providerContext, @Nullable String tableName, Collection<L> linkIdList, String linkName, ConsumerActuator<MybatisTable> tableOptional, RestLoad[] loadParams, MybatisSqlSupply.EntrySqlSupply sqlSupply) throws RestException {
         return providingOfLinkIdAll(providerContext, tableName, linkIdList, linkName, tableOptional,
                 (tableNameValue, tableValue, keyBuilder, valueBuilder) -> {
@@ -667,16 +1488,57 @@ public interface MybatisSqlProvider {
                 });
     }
 
-    static <L, S> String providingOfLinkIdAll(ProviderContext providerContext, @Nullable String tableName, Collection<L> linkIdList, String linkName, S statusParameter, String statusName, MybatisSqlSupply.EntrySqlSupply sqlSupply) throws RestException {
-        Object status = reviseParameter(statusParameter);
+    /**
+     * <code>providingOfLinkIdAll</code>
+     * <p>The providing of link id all method.</p>
+     * @param <L>             {@link java.lang.Object} <p>The parameter can be of any type.</p>
+     * @param <S>             {@link java.lang.Object} <p>The parameter can be of any type.</p>
+     * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>The provider context parameter is <code>ProviderContext</code> type.</p>
+     * @param tableName       {@link java.lang.String} <p>The table name parameter is <code>String</code> type.</p>
+     * @param linkIdList      {@link java.util.Collection} <p>The link id list parameter is <code>Collection</code> type.</p>
+     * @param linkName        {@link java.lang.String} <p>The link name parameter is <code>String</code> type.</p>
+     * @param stateParameter  S <p>The state parameter parameter is <code>S</code> type.</p>
+     * @param stateName       {@link java.lang.String} <p>The state name parameter is <code>String</code> type.</p>
+     * @param sqlSupply       {@link io.github.nichetoolkit.mybatis.MybatisSqlSupply.EntrySqlSupply} <p>The sql supply parameter is <code>EntrySqlSupply</code> type.</p>
+     * @return {@link java.lang.String} <p>The providing of link id all return object is <code>String</code> type.</p>
+     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
+     * @see org.apache.ibatis.builder.annotation.ProviderContext
+     * @see java.lang.String
+     * @see org.springframework.lang.Nullable
+     * @see java.util.Collection
+     * @see io.github.nichetoolkit.mybatis.MybatisSqlSupply.EntrySqlSupply
+     * @see io.github.nichetoolkit.rest.RestException
+     */
+    static <L, S> String providingOfLinkIdAll(ProviderContext providerContext, @Nullable String tableName, Collection<L> linkIdList, String linkName, S stateParameter, String stateName, MybatisSqlSupply.EntrySqlSupply sqlSupply) throws RestException {
+        Object state = reviseParameter(stateParameter);
         return providingOfLinkIdAll(providerContext, tableName, linkIdList, linkName, tableIgnored -> {
         }, (tableNameValue, tableValue, sqlBuilder) -> {
             SqlBuilder keyBuilder = SqlBuilder.sqlBuilder();
-            valueOfStatus(tableValue, status, statusName, keyBuilder);
+            valueOfState(tableValue, state, stateName, keyBuilder);
             return sqlSupply.supply(tableNameValue, tableValue, keyBuilder, sqlBuilder);
         });
     }
 
+    /**
+     * <code>providingOfLinkIdAll</code>
+     * <p>The providing of link id all method.</p>
+     * @param <L>             {@link java.lang.Object} <p>The parameter can be of any type.</p>
+     * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>The provider context parameter is <code>ProviderContext</code> type.</p>
+     * @param tableName       {@link java.lang.String} <p>The table name parameter is <code>String</code> type.</p>
+     * @param linkIdList      {@link java.util.Collection} <p>The link id list parameter is <code>Collection</code> type.</p>
+     * @param linkName        {@link java.lang.String} <p>The link name parameter is <code>String</code> type.</p>
+     * @param tableOptional   {@link io.github.nichetoolkit.rest.actuator.ConsumerActuator} <p>The table optional parameter is <code>ConsumerActuator</code> type.</p>
+     * @param sqlSupply       {@link io.github.nichetoolkit.mybatis.MybatisSqlSupply.EntrySqlSupply} <p>The sql supply parameter is <code>EntrySqlSupply</code> type.</p>
+     * @return {@link java.lang.String} <p>The providing of link id all return object is <code>String</code> type.</p>
+     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
+     * @see org.apache.ibatis.builder.annotation.ProviderContext
+     * @see java.lang.String
+     * @see org.springframework.lang.Nullable
+     * @see java.util.Collection
+     * @see io.github.nichetoolkit.rest.actuator.ConsumerActuator
+     * @see io.github.nichetoolkit.mybatis.MybatisSqlSupply.EntrySqlSupply
+     * @see io.github.nichetoolkit.rest.RestException
+     */
     static <L> String providingOfLinkIdAll(ProviderContext providerContext, @Nullable String tableName, Collection<L> linkIdList, String linkName, ConsumerActuator<MybatisTable> tableOptional, MybatisSqlSupply.EntrySqlSupply sqlSupply) throws RestException {
         return providingOfLinkIdAll(providerContext, tableName, linkIdList, linkName, tableOptional,
                 (tableNameValue, tableValue, valueBuilder) -> {
@@ -686,6 +1548,26 @@ public interface MybatisSqlProvider {
                 });
     }
 
+    /**
+     * <code>providingOfLinkIdAll</code>
+     * <p>The providing of link id all method.</p>
+     * @param <L>             {@link java.lang.Object} <p>The parameter can be of any type.</p>
+     * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>The provider context parameter is <code>ProviderContext</code> type.</p>
+     * @param tableName       {@link java.lang.String} <p>The table name parameter is <code>String</code> type.</p>
+     * @param linkIdList      {@link java.util.Collection} <p>The link id list parameter is <code>Collection</code> type.</p>
+     * @param linkName        {@link java.lang.String} <p>The link name parameter is <code>String</code> type.</p>
+     * @param tableOptional   {@link io.github.nichetoolkit.rest.actuator.ConsumerActuator} <p>The table optional parameter is <code>ConsumerActuator</code> type.</p>
+     * @param sqlSupply       {@link io.github.nichetoolkit.mybatis.MybatisSqlSupply.SimpleSqlSupply} <p>The sql supply parameter is <code>SimpleSqlSupply</code> type.</p>
+     * @return {@link java.lang.String} <p>The providing of link id all return object is <code>String</code> type.</p>
+     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
+     * @see org.apache.ibatis.builder.annotation.ProviderContext
+     * @see java.lang.String
+     * @see org.springframework.lang.Nullable
+     * @see java.util.Collection
+     * @see io.github.nichetoolkit.rest.actuator.ConsumerActuator
+     * @see io.github.nichetoolkit.mybatis.MybatisSqlSupply.SimpleSqlSupply
+     * @see io.github.nichetoolkit.rest.RestException
+     */
     static <L> String providingOfLinkIdAll(ProviderContext providerContext, @Nullable String tableName, Collection<L> linkIdList, String linkName, ConsumerActuator<MybatisTable> tableOptional, MybatisSqlSupply.SimpleSqlSupply sqlSupply) throws RestException {
         return MybatisSqlScript.caching(providerContext, (table, sqlScript) -> {
             tableOptional.actuate(table);
@@ -695,6 +1577,25 @@ public interface MybatisSqlProvider {
         });
     }
 
+    /**
+     * <code>providingOfName</code>
+     * <p>The providing of name method.</p>
+     * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>The provider context parameter is <code>ProviderContext</code> type.</p>
+     * @param tableName       {@link java.lang.String} <p>The table name parameter is <code>String</code> type.</p>
+     * @param name            {@link java.lang.String} <p>The name parameter is <code>String</code> type.</p>
+     * @param tableOptional   {@link io.github.nichetoolkit.rest.actuator.ConsumerActuator} <p>The table optional parameter is <code>ConsumerActuator</code> type.</p>
+     * @param loadParams      {@link io.github.nichetoolkit.mybatis.load.RestLoad} <p>The load params parameter is <code>RestLoad</code> type.</p>
+     * @param sqlSupply       {@link io.github.nichetoolkit.mybatis.MybatisSqlSupply.EntrySqlSupply} <p>The sql supply parameter is <code>EntrySqlSupply</code> type.</p>
+     * @return {@link java.lang.String} <p>The providing of name return object is <code>String</code> type.</p>
+     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
+     * @see org.apache.ibatis.builder.annotation.ProviderContext
+     * @see java.lang.String
+     * @see org.springframework.lang.Nullable
+     * @see io.github.nichetoolkit.rest.actuator.ConsumerActuator
+     * @see io.github.nichetoolkit.mybatis.load.RestLoad
+     * @see io.github.nichetoolkit.mybatis.MybatisSqlSupply.EntrySqlSupply
+     * @see io.github.nichetoolkit.rest.RestException
+     */
     static String providingOfName(ProviderContext providerContext, @Nullable String tableName, String name, ConsumerActuator<MybatisTable> tableOptional, RestLoad[] loadParams, MybatisSqlSupply.EntrySqlSupply sqlSupply) throws RestException {
         return providingOfName(providerContext, tableName, name, tableOptional,
                 (tableNameValue, tableValue, keyBuilder, valueBuilder) -> {
@@ -703,6 +1604,23 @@ public interface MybatisSqlProvider {
                 });
     }
 
+    /**
+     * <code>providingOfName</code>
+     * <p>The providing of name method.</p>
+     * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>The provider context parameter is <code>ProviderContext</code> type.</p>
+     * @param tableName       {@link java.lang.String} <p>The table name parameter is <code>String</code> type.</p>
+     * @param name            {@link java.lang.String} <p>The name parameter is <code>String</code> type.</p>
+     * @param tableOptional   {@link io.github.nichetoolkit.rest.actuator.ConsumerActuator} <p>The table optional parameter is <code>ConsumerActuator</code> type.</p>
+     * @param sqlSupply       {@link io.github.nichetoolkit.mybatis.MybatisSqlSupply.EntrySqlSupply} <p>The sql supply parameter is <code>EntrySqlSupply</code> type.</p>
+     * @return {@link java.lang.String} <p>The providing of name return object is <code>String</code> type.</p>
+     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
+     * @see org.apache.ibatis.builder.annotation.ProviderContext
+     * @see java.lang.String
+     * @see org.springframework.lang.Nullable
+     * @see io.github.nichetoolkit.rest.actuator.ConsumerActuator
+     * @see io.github.nichetoolkit.mybatis.MybatisSqlSupply.EntrySqlSupply
+     * @see io.github.nichetoolkit.rest.RestException
+     */
     static String providingOfName(ProviderContext providerContext, @Nullable String tableName, String name, ConsumerActuator<MybatisTable> tableOptional, MybatisSqlSupply.EntrySqlSupply sqlSupply) throws RestException {
         return providingOfName(providerContext, tableName, name, tableOptional,
                 (tableNameValue, tableValue, valueBuilder) -> {
@@ -712,6 +1630,24 @@ public interface MybatisSqlProvider {
                 });
     }
 
+    /**
+     * <code>providingOfName</code>
+     * <p>The providing of name method.</p>
+     * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>The provider context parameter is <code>ProviderContext</code> type.</p>
+     * @param tableName       {@link java.lang.String} <p>The table name parameter is <code>String</code> type.</p>
+     * @param name            {@link java.lang.String} <p>The name parameter is <code>String</code> type.</p>
+     * @param tableOptional   {@link io.github.nichetoolkit.rest.actuator.ConsumerActuator} <p>The table optional parameter is <code>ConsumerActuator</code> type.</p>
+     * @param sqlSupply       {@link io.github.nichetoolkit.mybatis.MybatisSqlSupply.SimpleSqlSupply} <p>The sql supply parameter is <code>SimpleSqlSupply</code> type.</p>
+     * @return {@link java.lang.String} <p>The providing of name return object is <code>String</code> type.</p>
+     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
+     * @see org.apache.ibatis.builder.annotation.ProviderContext
+     * @see java.lang.String
+     * @see org.springframework.lang.Nullable
+     * @see io.github.nichetoolkit.rest.actuator.ConsumerActuator
+     * @see io.github.nichetoolkit.mybatis.MybatisSqlSupply.SimpleSqlSupply
+     * @see java.lang.SuppressWarnings
+     * @see io.github.nichetoolkit.rest.RestException
+     */
     @SuppressWarnings("Duplicates")
     static String providingOfName(ProviderContext providerContext, @Nullable String tableName, String name, ConsumerActuator<MybatisTable> tableOptional, MybatisSqlSupply.SimpleSqlSupply sqlSupply) throws RestException {
         return MybatisSqlScript.caching(providerContext, (table, sqlScript) -> {
@@ -729,6 +1665,26 @@ public interface MybatisSqlProvider {
         });
     }
 
+    /**
+     * <code>providingOfName</code>
+     * <p>The providing of name method.</p>
+     * @param <I>             {@link java.lang.Object} <p>The parameter can be of any type.</p>
+     * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>The provider context parameter is <code>ProviderContext</code> type.</p>
+     * @param tableName       {@link java.lang.String} <p>The table name parameter is <code>String</code> type.</p>
+     * @param name            {@link java.lang.String} <p>The name parameter is <code>String</code> type.</p>
+     * @param idParameter     I <p>The id parameter parameter is <code>I</code> type.</p>
+     * @param tableOptional   {@link io.github.nichetoolkit.rest.actuator.ConsumerActuator} <p>The table optional parameter is <code>ConsumerActuator</code> type.</p>
+     * @param sqlSupply       {@link io.github.nichetoolkit.mybatis.MybatisSqlSupply.SimpleSqlSupply} <p>The sql supply parameter is <code>SimpleSqlSupply</code> type.</p>
+     * @return {@link java.lang.String} <p>The providing of name return object is <code>String</code> type.</p>
+     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
+     * @see org.apache.ibatis.builder.annotation.ProviderContext
+     * @see java.lang.String
+     * @see org.springframework.lang.Nullable
+     * @see io.github.nichetoolkit.rest.actuator.ConsumerActuator
+     * @see io.github.nichetoolkit.mybatis.MybatisSqlSupply.SimpleSqlSupply
+     * @see java.lang.SuppressWarnings
+     * @see io.github.nichetoolkit.rest.RestException
+     */
     @SuppressWarnings("Duplicates")
     static <I> String providingOfName(ProviderContext providerContext, @Nullable String tableName, String name, I idParameter, ConsumerActuator<MybatisTable> tableOptional, MybatisSqlSupply.SimpleSqlSupply sqlSupply) throws RestException {
         Object identity = reviseParameter(idParameter);
@@ -755,6 +1711,25 @@ public interface MybatisSqlProvider {
         });
     }
 
+    /**
+     * <code>providingOfEntity</code>
+     * <p>The providing of entity method.</p>
+     * @param <E>             {@link java.lang.Object} <p>The parameter can be of any type.</p>
+     * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>The provider context parameter is <code>ProviderContext</code> type.</p>
+     * @param tableName       {@link java.lang.String} <p>The table name parameter is <code>String</code> type.</p>
+     * @param entityParameter E <p>The entity parameter parameter is <code>E</code> type.</p>
+     * @param tableOptional   {@link io.github.nichetoolkit.rest.actuator.ConsumerActuator} <p>The table optional parameter is <code>ConsumerActuator</code> type.</p>
+     * @param sqlSupply       {@link io.github.nichetoolkit.mybatis.MybatisSqlSupply.SimpleSqlSupply} <p>The sql supply parameter is <code>SimpleSqlSupply</code> type.</p>
+     * @return {@link java.lang.String} <p>The providing of entity return object is <code>String</code> type.</p>
+     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
+     * @see org.apache.ibatis.builder.annotation.ProviderContext
+     * @see java.lang.String
+     * @see org.springframework.lang.Nullable
+     * @see io.github.nichetoolkit.rest.actuator.ConsumerActuator
+     * @see io.github.nichetoolkit.mybatis.MybatisSqlSupply.SimpleSqlSupply
+     * @see java.lang.SuppressWarnings
+     * @see io.github.nichetoolkit.rest.RestException
+     */
     @SuppressWarnings("Duplicates")
     static <E> String providingOfEntity(ProviderContext providerContext, @Nullable String tableName, E entityParameter, ConsumerActuator<MybatisTable> tableOptional, MybatisSqlSupply.SimpleSqlSupply sqlSupply) throws RestException {
         Object entity = reviseParameter(entityParameter);
@@ -781,6 +1756,27 @@ public interface MybatisSqlProvider {
         });
     }
 
+    /**
+     * <code>providingOfEntity</code>
+     * <p>The providing of entity method.</p>
+     * @param <E>             {@link java.lang.Object} <p>The parameter can be of any type.</p>
+     * @param <I>             {@link java.lang.Object} <p>The parameter can be of any type.</p>
+     * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>The provider context parameter is <code>ProviderContext</code> type.</p>
+     * @param tableName       {@link java.lang.String} <p>The table name parameter is <code>String</code> type.</p>
+     * @param entityParameter E <p>The entity parameter parameter is <code>E</code> type.</p>
+     * @param idParameter     I <p>The id parameter parameter is <code>I</code> type.</p>
+     * @param tableOptional   {@link io.github.nichetoolkit.rest.actuator.ConsumerActuator} <p>The table optional parameter is <code>ConsumerActuator</code> type.</p>
+     * @param sqlSupply       {@link io.github.nichetoolkit.mybatis.MybatisSqlSupply.SimpleSqlSupply} <p>The sql supply parameter is <code>SimpleSqlSupply</code> type.</p>
+     * @return {@link java.lang.String} <p>The providing of entity return object is <code>String</code> type.</p>
+     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
+     * @see org.apache.ibatis.builder.annotation.ProviderContext
+     * @see java.lang.String
+     * @see org.springframework.lang.Nullable
+     * @see io.github.nichetoolkit.rest.actuator.ConsumerActuator
+     * @see io.github.nichetoolkit.mybatis.MybatisSqlSupply.SimpleSqlSupply
+     * @see java.lang.SuppressWarnings
+     * @see io.github.nichetoolkit.rest.RestException
+     */
     @SuppressWarnings("Duplicates")
     static <E, I> String providingOfEntity(ProviderContext providerContext, @Nullable String tableName, E entityParameter, I idParameter, ConsumerActuator<MybatisTable> tableOptional, MybatisSqlSupply.SimpleSqlSupply sqlSupply) throws RestException {
         Object identity = reviseParameter(idParameter);
@@ -814,6 +1810,25 @@ public interface MybatisSqlProvider {
         });
     }
 
+    /**
+     * <code>providingOfSave</code>
+     * <p>The providing of save method.</p>
+     * @param <E>             {@link java.lang.Object} <p>The parameter can be of any type.</p>
+     * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>The provider context parameter is <code>ProviderContext</code> type.</p>
+     * @param tableNameValue  {@link java.lang.String} <p>The table name value parameter is <code>String</code> type.</p>
+     * @param entityParameter E <p>The entity parameter parameter is <code>E</code> type.</p>
+     * @param tableOptional   {@link io.github.nichetoolkit.rest.actuator.ConsumerActuator} <p>The table optional parameter is <code>ConsumerActuator</code> type.</p>
+     * @param sqlSupply       {@link io.github.nichetoolkit.mybatis.MybatisSqlSupply.EntrySqlSupply} <p>The sql supply parameter is <code>EntrySqlSupply</code> type.</p>
+     * @return {@link java.lang.String} <p>The providing of save return object is <code>String</code> type.</p>
+     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
+     * @see org.apache.ibatis.builder.annotation.ProviderContext
+     * @see java.lang.String
+     * @see org.springframework.lang.Nullable
+     * @see io.github.nichetoolkit.rest.actuator.ConsumerActuator
+     * @see io.github.nichetoolkit.mybatis.MybatisSqlSupply.EntrySqlSupply
+     * @see java.lang.SuppressWarnings
+     * @see io.github.nichetoolkit.rest.RestException
+     */
     @SuppressWarnings("Duplicates")
     static <E> String providingOfSave(ProviderContext providerContext, @Nullable String tableNameValue, E entityParameter, ConsumerActuator<MybatisTable> tableOptional, MybatisSqlSupply.EntrySqlSupply sqlSupply) throws RestException {
         DatabaseType databaseType = MybatisSqlProviderHolder.defaultDatabaseType();
@@ -833,6 +1848,25 @@ public interface MybatisSqlProvider {
     }
 
 
+    /**
+     * <code>providingOfAllSave</code>
+     * <p>The providing of all save method.</p>
+     * @param <E>             {@link java.lang.Object} <p>The parameter can be of any type.</p>
+     * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>The provider context parameter is <code>ProviderContext</code> type.</p>
+     * @param tableNameValue  {@link java.lang.String} <p>The table name value parameter is <code>String</code> type.</p>
+     * @param entityList      {@link java.util.Collection} <p>The entity list parameter is <code>Collection</code> type.</p>
+     * @param tableOptional   {@link io.github.nichetoolkit.rest.actuator.ConsumerActuator} <p>The table optional parameter is <code>ConsumerActuator</code> type.</p>
+     * @param sqlSupply       {@link io.github.nichetoolkit.mybatis.MybatisSqlSupply.EntrySqlSupply} <p>The sql supply parameter is <code>EntrySqlSupply</code> type.</p>
+     * @return {@link java.lang.String} <p>The providing of all save return object is <code>String</code> type.</p>
+     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
+     * @see org.apache.ibatis.builder.annotation.ProviderContext
+     * @see java.lang.String
+     * @see org.springframework.lang.Nullable
+     * @see java.util.Collection
+     * @see io.github.nichetoolkit.rest.actuator.ConsumerActuator
+     * @see io.github.nichetoolkit.mybatis.MybatisSqlSupply.EntrySqlSupply
+     * @see io.github.nichetoolkit.rest.RestException
+     */
     static <E> String providingOfAllSave(ProviderContext providerContext, @Nullable String tableNameValue, Collection<E> entityList, ConsumerActuator<MybatisTable> tableOptional, MybatisSqlSupply.EntrySqlSupply sqlSupply) throws RestException {
         DatabaseType databaseType = MybatisSqlProviderHolder.defaultDatabaseType();
         return MybatisSqlScript.caching(providerContext, (table, sqlScript) -> {
@@ -850,6 +1884,22 @@ public interface MybatisSqlProvider {
         });
     }
 
+    /**
+     * <code>databaseTypeOfSql</code>
+     * <p>The database type of sql method.</p>
+     * @param tableName     {@link java.lang.String} <p>The table name parameter is <code>String</code> type.</p>
+     * @param table         {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>The table parameter is <code>MybatisTable</code> type.</p>
+     * @param sqlBuilder    {@link io.github.nichetoolkit.mybatis.builder.SqlBuilder} <p>The sql builder parameter is <code>SqlBuilder</code> type.</p>
+     * @param fickleColumns {@link java.util.List} <p>The fickle columns parameter is <code>List</code> type.</p>
+     * @param databaseType  {@link io.github.nichetoolkit.mybatis.enums.DatabaseType} <p>The database type parameter is <code>DatabaseType</code> type.</p>
+     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
+     * @see java.lang.String
+     * @see io.github.nichetoolkit.mybatis.MybatisTable
+     * @see io.github.nichetoolkit.mybatis.builder.SqlBuilder
+     * @see java.util.List
+     * @see io.github.nichetoolkit.mybatis.enums.DatabaseType
+     * @see io.github.nichetoolkit.rest.RestException
+     */
     static void databaseTypeOfSql(String tableName, MybatisTable table, SqlBuilder sqlBuilder, List<MybatisColumn> fickleColumns, DatabaseType databaseType) throws RestException {
         switch (databaseType) {
             case SQLITE:
@@ -867,6 +1917,18 @@ public interface MybatisSqlProvider {
     }
 
 
+    /**
+     * <code>valueOfParameter</code>
+     * <p>The value of parameter method.</p>
+     * @param mybatisColumns {@link java.util.Collection} <p>The mybatis columns parameter is <code>Collection</code> type.</p>
+     * @param parameter      {@link java.lang.Object} <p>The parameter parameter is <code>Object</code> type.</p>
+     * @param parameterType  {@link java.lang.Class} <p>The parameter type parameter is <code>Class</code> type.</p>
+     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
+     * @see java.util.Collection
+     * @see java.lang.Object
+     * @see java.lang.Class
+     * @see io.github.nichetoolkit.rest.RestException
+     */
     static void valueOfParameter(Collection<MybatisColumn> mybatisColumns, Object parameter, Class<?> parameterType) throws RestException {
         Boolean isPresent = parameter.getClass() == parameterType;
         OptionalUtils.ofFalse(isPresent, "The type of parameter is not " + parameterType.getName(), parameterType.getName(), MybatisParamErrorException::new);
@@ -876,6 +1938,18 @@ public interface MybatisSqlProvider {
         OptionalUtils.ofFalse(logicalOr, "The field values of parameter can not all be empty, " + parameterType.getName(), MybatisParamErrorException::new);
     }
 
+    /**
+     * <code>sliceOfColumns</code>
+     * <p>The slice of columns method.</p>
+     * @param <I>            {@link java.lang.Object} <p>The parameter can be of any type.</p>
+     * @param mybatisColumns {@link java.util.Collection} <p>The mybatis columns parameter is <code>Collection</code> type.</p>
+     * @param idList         {@link java.util.Collection} <p>The id list parameter is <code>Collection</code> type.</p>
+     * @return {@link java.util.Map} <p>The slice of columns return object is <code>Map</code> type.</p>
+     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
+     * @see java.util.Collection
+     * @see java.util.Map
+     * @see io.github.nichetoolkit.rest.RestException
+     */
     static <I> Map<Integer, List<I>> sliceOfColumns(Collection<MybatisColumn> mybatisColumns, Collection<I> idList) throws RestException {
         List<MybatisField> mybatisFields = RestStream.stream(mybatisColumns).map(MybatisColumn::getField).collect(RestCollectors.toList());
         /*
@@ -894,6 +1968,14 @@ public interface MybatisSqlProvider {
         }));
     }
 
+    /**
+     * <code>sqlOfLoad</code>
+     * <p>The sql of load method.</p>
+     * @param load {@link io.github.nichetoolkit.mybatis.load.RestLoad} <p>The load parameter is <code>RestLoad</code> type.</p>
+     * @return {@link java.lang.String} <p>The sql of load return object is <code>String</code> type.</p>
+     * @see io.github.nichetoolkit.mybatis.load.RestLoad
+     * @see java.lang.String
+     */
     static String sqlOfLoad(RestLoad load) {
         /* "'{\"key\":\"" + loadKey + "\",\"value\":', " + true + ", '}', "; */
         SqlBuilder sqlBuilder = SqlBuilder.sqlBuilder();
@@ -906,6 +1988,14 @@ public interface MybatisSqlProvider {
         return sqlBuilder.toString();
     }
 
+    /**
+     * <code>sqlOfFickle</code>
+     * <p>The sql of fickle method.</p>
+     * @param columnName {@link java.lang.String} <p>The column name parameter is <code>String</code> type.</p>
+     * @param fickleName {@link java.lang.String} <p>The fickle name parameter is <code>String</code> type.</p>
+     * @return {@link java.lang.String} <p>The sql of fickle return object is <code>String</code> type.</p>
+     * @see java.lang.String
+     */
     static String sqlOfFickle(String columnName, String fickleName) {
         /* "'{\"key\":\"" + columnName + "\",\"name\":\"" + fickleName + "\",\"value\":', " + columnName + ", '}', "; */
         SqlBuilder sqlBuilder = SqlBuilder.sqlBuilder();
@@ -916,6 +2006,18 @@ public interface MybatisSqlProvider {
         return sqlBuilder.toString();
     }
 
+    /**
+     * <code>keyOfLoad</code>
+     * <p>The key of load method.</p>
+     * @param table      {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>The table parameter is <code>MybatisTable</code> type.</p>
+     * @param loadParams {@link io.github.nichetoolkit.mybatis.load.RestLoad} <p>The load params parameter is <code>RestLoad</code> type.</p>
+     * @param keyBuilder {@link io.github.nichetoolkit.mybatis.builder.SqlBuilder} <p>The key builder parameter is <code>SqlBuilder</code> type.</p>
+     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
+     * @see io.github.nichetoolkit.mybatis.MybatisTable
+     * @see io.github.nichetoolkit.mybatis.load.RestLoad
+     * @see io.github.nichetoolkit.mybatis.builder.SqlBuilder
+     * @see io.github.nichetoolkit.rest.RestException
+     */
     static void keyOfLoad(MybatisTable table, RestLoad[] loadParams, SqlBuilder keyBuilder) throws RestException {
         MybatisTableStyle mybatisTableStyle = MybatisContextHolder.defaultTableStyle();
         RestOptional.ofEmptyable(loadParams).isNotEmpty(params -> {
@@ -927,6 +2029,18 @@ public interface MybatisSqlProvider {
         });
     }
 
+    /**
+     * <code>keyOfFickle</code>
+     * <p>The key of fickle method.</p>
+     * @param table        {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>The table parameter is <code>MybatisTable</code> type.</p>
+     * @param fickleParams {@link io.github.nichetoolkit.mybatis.fickle.RestFickle} <p>The fickle params parameter is <code>RestFickle</code> type.</p>
+     * @param keyBuilder   {@link io.github.nichetoolkit.mybatis.builder.SqlBuilder} <p>The key builder parameter is <code>SqlBuilder</code> type.</p>
+     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
+     * @see io.github.nichetoolkit.mybatis.MybatisTable
+     * @see io.github.nichetoolkit.mybatis.fickle.RestFickle
+     * @see io.github.nichetoolkit.mybatis.builder.SqlBuilder
+     * @see io.github.nichetoolkit.rest.RestException
+     */
     static void keyOfFickle(MybatisTable table, RestFickle<?>[] fickleParams, SqlBuilder keyBuilder) throws RestException {
         MybatisTableStyle mybatisTableStyle = MybatisContextHolder.defaultTableStyle();
         RestOptional.ofEmptyable(fickleParams).isNotEmpty(params -> {
@@ -940,6 +2054,20 @@ public interface MybatisSqlProvider {
         });
     }
 
+    /**
+     * <code>valueOfLinkId</code>
+     * <p>The value of link id method.</p>
+     * @param table        {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>The table parameter is <code>MybatisTable</code> type.</p>
+     * @param linkId       {@link java.lang.Object} <p>The link id parameter is <code>Object</code> type.</p>
+     * @param linkName     {@link java.lang.String} <p>The link name parameter is <code>String</code> type.</p>
+     * @param valueBuilder {@link io.github.nichetoolkit.mybatis.builder.SqlBuilder} <p>The value builder parameter is <code>SqlBuilder</code> type.</p>
+     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
+     * @see io.github.nichetoolkit.mybatis.MybatisTable
+     * @see java.lang.Object
+     * @see java.lang.String
+     * @see io.github.nichetoolkit.mybatis.builder.SqlBuilder
+     * @see io.github.nichetoolkit.rest.RestException
+     */
     static void valueOfLinkId(MybatisTable table, Object linkId, String linkName, SqlBuilder valueBuilder) throws RestException {
         if (GeneralUtils.isNotEmpty(linkName)) {
             Optional.ofNullable(table.linkColumn(linkName)).ifPresent(column -> valueBuilder.append(column.columnName()).eq().value(linkId));
@@ -955,6 +2083,23 @@ public interface MybatisSqlProvider {
     }
 
 
+    /**
+     * <code>valuesOfLinkId</code>
+     * <p>The values of link id method.</p>
+     * @param <L>          {@link java.lang.Object} <p>The parameter can be of any type.</p>
+     * @param table        {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>The table parameter is <code>MybatisTable</code> type.</p>
+     * @param linkIdList   {@link java.util.Collection} <p>The link id list parameter is <code>Collection</code> type.</p>
+     * @param linkName     {@link java.lang.String} <p>The link name parameter is <code>String</code> type.</p>
+     * @param valueBuilder {@link io.github.nichetoolkit.mybatis.builder.SqlBuilder} <p>The value builder parameter is <code>SqlBuilder</code> type.</p>
+     * @param sqlScript    {@link io.github.nichetoolkit.mybatis.MybatisSqlScript} <p>The sql script parameter is <code>MybatisSqlScript</code> type.</p>
+     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
+     * @see io.github.nichetoolkit.mybatis.MybatisTable
+     * @see java.util.Collection
+     * @see java.lang.String
+     * @see io.github.nichetoolkit.mybatis.builder.SqlBuilder
+     * @see io.github.nichetoolkit.mybatis.MybatisSqlScript
+     * @see io.github.nichetoolkit.rest.RestException
+     */
     static <L> void valuesOfLinkId(MybatisTable table, Collection<L> linkIdList, String linkName, SqlBuilder valueBuilder, MybatisSqlScript sqlScript) throws RestException {
         if (GeneralUtils.isNotEmpty(linkName)) {
             Optional.ofNullable(table.linkColumn(linkName)).ifPresent(column -> {
@@ -977,12 +2122,37 @@ public interface MybatisSqlProvider {
         }
     }
 
+    /**
+     * <code>valuesOfParams</code>
+     * <p>The values of params method.</p>
+     * @param <I>          {@link java.lang.Object} <p>The parameter can be of any type.</p>
+     * @param table        {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>The table parameter is <code>MybatisTable</code> type.</p>
+     * @param params       {@link io.github.nichetoolkit.mybatis.load.RestParam} <p>The params parameter is <code>RestParam</code> type.</p>
+     * @param valueBuilder {@link io.github.nichetoolkit.mybatis.builder.SqlBuilder} <p>The value builder parameter is <code>SqlBuilder</code> type.</p>
+     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
+     * @see io.github.nichetoolkit.mybatis.MybatisTable
+     * @see io.github.nichetoolkit.mybatis.load.RestParam
+     * @see io.github.nichetoolkit.mybatis.builder.SqlBuilder
+     * @see io.github.nichetoolkit.rest.RestException
+     */
     static <I> void valuesOfParams(MybatisTable table, RestParam[] params, SqlBuilder valueBuilder) throws RestException {
         String collect = RestStream.stream(params).map(param -> SqlBuilder.sqlBuilder().append(param.getKey()).eq().value(param.getValue()).toString())
                 .collect(RestCollectors.joining(SQLConstants.BLANK + SQLConstants.AND + SQLConstants.BLANK));
         valueBuilder.append(collect);
     }
 
+    /**
+     * <code>valueOfIdentity</code>
+     * <p>The value of identity method.</p>
+     * @param table        {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>The table parameter is <code>MybatisTable</code> type.</p>
+     * @param identity     {@link java.lang.Object} <p>The identity parameter is <code>Object</code> type.</p>
+     * @param valueBuilder {@link io.github.nichetoolkit.mybatis.builder.SqlBuilder} <p>The value builder parameter is <code>SqlBuilder</code> type.</p>
+     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
+     * @see io.github.nichetoolkit.mybatis.MybatisTable
+     * @see java.lang.Object
+     * @see io.github.nichetoolkit.mybatis.builder.SqlBuilder
+     * @see io.github.nichetoolkit.rest.RestException
+     */
     static void valueOfIdentity(MybatisTable table, Object identity, SqlBuilder valueBuilder) throws RestException {
         if (table.isSpecialIdentity()) {
             valueOfParameter(table.identityColumns(), identity, table.getIdentityType());
@@ -993,6 +2163,21 @@ public interface MybatisSqlProvider {
         }
     }
 
+    /**
+     * <code>valuesOfIdentity</code>
+     * <p>The values of identity method.</p>
+     * @param <I>          {@link java.lang.Object} <p>The parameter can be of any type.</p>
+     * @param table        {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>The table parameter is <code>MybatisTable</code> type.</p>
+     * @param idList       {@link java.util.Collection} <p>The id list parameter is <code>Collection</code> type.</p>
+     * @param valueBuilder {@link io.github.nichetoolkit.mybatis.builder.SqlBuilder} <p>The value builder parameter is <code>SqlBuilder</code> type.</p>
+     * @param sqlScript    {@link io.github.nichetoolkit.mybatis.MybatisSqlScript} <p>The sql script parameter is <code>MybatisSqlScript</code> type.</p>
+     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
+     * @see io.github.nichetoolkit.mybatis.MybatisTable
+     * @see java.util.Collection
+     * @see io.github.nichetoolkit.mybatis.builder.SqlBuilder
+     * @see io.github.nichetoolkit.mybatis.MybatisSqlScript
+     * @see io.github.nichetoolkit.rest.RestException
+     */
     static <I> void valuesOfIdentity(MybatisTable table, Collection<I> idList, SqlBuilder valueBuilder, MybatisSqlScript sqlScript) throws RestException {
         if (table.isSpecialIdentity()) {
             RestStream.stream(idList).forEach(id -> valueOfParameter(table.identityColumns(), id, table.getIdentityType()));
@@ -1005,6 +2190,20 @@ public interface MybatisSqlProvider {
         }
     }
 
+    /**
+     * <code>sqlOfColumns</code>
+     * <p>The sql of columns method.</p>
+     * @param <I>            {@link java.lang.Object} <p>The parameter can be of any type.</p>
+     * @param parameter      I <p>The parameter parameter is <code>I</code> type.</p>
+     * @param mybatisColumns {@link java.util.Collection} <p>The mybatis columns parameter is <code>Collection</code> type.</p>
+     * @param andOrComma     boolean <p>The and or comma parameter is <code>boolean</code> type.</p>
+     * @param isEquals       boolean <p>The is equals parameter is <code>boolean</code> type.</p>
+     * @return {@link java.lang.String} <p>The sql of columns return object is <code>String</code> type.</p>
+     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
+     * @see java.util.Collection
+     * @see java.lang.String
+     * @see io.github.nichetoolkit.rest.RestException
+     */
     static <I> String sqlOfColumns(I parameter, Collection<MybatisColumn> mybatisColumns, boolean andOrComma, boolean isEquals) throws RestException {
         SqlBuilder sqlBuilder = new SqlBuilder();
         boolean isNotFirstValue = false;
@@ -1038,6 +2237,22 @@ public interface MybatisSqlProvider {
         return sqlBuilder.toString();
     }
 
+    /**
+     * <code>sqlOfColumns</code>
+     * <p>The sql of columns method.</p>
+     * @param <I>             {@link java.lang.Object} <p>The parameter can be of any type.</p>
+     * @param columnsSliceMap {@link java.util.Map} <p>The columns slice map parameter is <code>Map</code> type.</p>
+     * @param columns         {@link java.util.List} <p>The columns parameter is <code>List</code> type.</p>
+     * @param sqlScript       {@link io.github.nichetoolkit.mybatis.MybatisSqlScript} <p>The sql script parameter is <code>MybatisSqlScript</code> type.</p>
+     * @return {@link java.lang.String} <p>The sql of columns return object is <code>String</code> type.</p>
+     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
+     * @see java.util.Map
+     * @see java.util.List
+     * @see io.github.nichetoolkit.mybatis.MybatisSqlScript
+     * @see java.lang.String
+     * @see java.lang.SuppressWarnings
+     * @see io.github.nichetoolkit.rest.RestException
+     */
     /*
      * mybatisFields: {a,b,c}, index: 0,1,2 indexValue: 1,2,4
      * 0: {}, 1: {a}, 2: {b}, 3: {a,b}, 4: {c} 5: {a,c}, 6: {b,c}, 7: {a,b,c}
@@ -1107,6 +2322,21 @@ public interface MybatisSqlProvider {
         return sqlBuilder.toString();
     }
 
+    /**
+     * <code>insertOfSaveSql</code>
+     * <p>The insert of save sql method.</p>
+     * @param tableName           {@link java.lang.String} <p>The table name parameter is <code>String</code> type.</p>
+     * @param table               {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>The table parameter is <code>MybatisTable</code> type.</p>
+     * @param fickleColumns       {@link java.util.List} <p>The fickle columns parameter is <code>List</code> type.</p>
+     * @param conflictOrDuplicate boolean <p>The conflict or duplicate parameter is <code>boolean</code> type.</p>
+     * @return {@link java.lang.String} <p>The insert of save sql return object is <code>String</code> type.</p>
+     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
+     * @see java.lang.String
+     * @see org.springframework.lang.Nullable
+     * @see io.github.nichetoolkit.mybatis.MybatisTable
+     * @see java.util.List
+     * @see io.github.nichetoolkit.rest.RestException
+     */
     static String insertOfSaveSql(@Nullable String tableName, MybatisTable table, List<MybatisColumn> fickleColumns, boolean conflictOrDuplicate) throws RestException {
         SqlBuilder sqlBuilder = SqlBuilder.sqlBuilder();
         List<MybatisColumn> updatedColumns = table.updateColumns();
@@ -1141,6 +2371,20 @@ public interface MybatisSqlProvider {
         return sqlBuilder.toString();
     }
 
+    /**
+     * <code>fickleOfEntityColumns</code>
+     * <p>The fickle of entity columns method.</p>
+     * @param <E>             {@link java.lang.Object} <p>The parameter can be of any type.</p>
+     * @param tableName       {@link java.lang.String} <p>The table name parameter is <code>String</code> type.</p>
+     * @param table           {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>The table parameter is <code>MybatisTable</code> type.</p>
+     * @param entityParameter E <p>The entity parameter parameter is <code>E</code> type.</p>
+     * @return {@link java.util.List} <p>The fickle of entity columns return object is <code>List</code> type.</p>
+     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
+     * @see java.lang.String
+     * @see io.github.nichetoolkit.mybatis.MybatisTable
+     * @see java.util.List
+     * @see io.github.nichetoolkit.rest.RestException
+     */
     static <E> List<MybatisColumn> fickleOfEntityColumns(String tableName, MybatisTable table, E entityParameter) throws RestException {
         List<MybatisColumn> fickleKeyColumns = new ArrayList<>();
         if (GeneralUtils.isNotEmpty(table.fickleValueColumn())) {
@@ -1155,6 +2399,21 @@ public interface MybatisSqlProvider {
         return fickleKeyColumns;
     }
 
+    /**
+     * <code>fickleOfEntitiesColumns</code>
+     * <p>The fickle of entities columns method.</p>
+     * @param <E>        {@link java.lang.Object} <p>The parameter can be of any type.</p>
+     * @param tableName  {@link java.lang.String} <p>The table name parameter is <code>String</code> type.</p>
+     * @param table      {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>The table parameter is <code>MybatisTable</code> type.</p>
+     * @param entityList {@link java.util.Collection} <p>The entity list parameter is <code>Collection</code> type.</p>
+     * @return {@link java.util.List} <p>The fickle of entities columns return object is <code>List</code> type.</p>
+     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
+     * @see java.lang.String
+     * @see io.github.nichetoolkit.mybatis.MybatisTable
+     * @see java.util.Collection
+     * @see java.util.List
+     * @see io.github.nichetoolkit.rest.RestException
+     */
     static <E> List<MybatisColumn> fickleOfEntitiesColumns(String tableName, MybatisTable table, Collection<E> entityList) throws RestException {
         List<MybatisColumn> fickleKeyColumns = new ArrayList<>();
         if (GeneralUtils.isNotEmpty(table.fickleValueColumn())) {
@@ -1172,6 +2431,20 @@ public interface MybatisSqlProvider {
         return fickleKeyColumns;
     }
 
+    /**
+     * <code>fickleOfEntityKeyColumns</code>
+     * <p>The fickle of entity key columns method.</p>
+     * @param <E>              {@link java.lang.Object} <p>The parameter can be of any type.</p>
+     * @param table            {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>The table parameter is <code>MybatisTable</code> type.</p>
+     * @param tableColumns     {@link java.util.List} <p>The table columns parameter is <code>List</code> type.</p>
+     * @param entityParameter  E <p>The entity parameter parameter is <code>E</code> type.</p>
+     * @param fickleKeyColumns {@link java.util.List} <p>The fickle key columns parameter is <code>List</code> type.</p>
+     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
+     * @see io.github.nichetoolkit.mybatis.MybatisTable
+     * @see java.util.List
+     * @see java.lang.SuppressWarnings
+     * @see io.github.nichetoolkit.rest.RestException
+     */
     @SuppressWarnings("unchecked")
     static <E> void fickleOfEntityKeyColumns(MybatisTable table, List<String> tableColumns, E entityParameter, List<MybatisColumn> fickleKeyColumns) throws RestException {
         if (GeneralUtils.isNotEmpty(table.fickleValueColumn()) && GeneralUtils.isNotEmpty(tableColumns)) {
@@ -1229,6 +2502,20 @@ public interface MybatisSqlProvider {
         }
     }
 
+    /**
+     * <code>fickleOfEntityValueColumns</code>
+     * <p>The fickle of entity value columns method.</p>
+     * @param <E>              {@link java.lang.Object} <p>The parameter can be of any type.</p>
+     * @param table            {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>The table parameter is <code>MybatisTable</code> type.</p>
+     * @param fickleKeyColumns {@link java.util.List} <p>The fickle key columns parameter is <code>List</code> type.</p>
+     * @param entityParameter  E <p>The entity parameter parameter is <code>E</code> type.</p>
+     * @return {@link java.util.List} <p>The fickle of entity value columns return object is <code>List</code> type.</p>
+     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
+     * @see io.github.nichetoolkit.mybatis.MybatisTable
+     * @see java.util.List
+     * @see java.lang.SuppressWarnings
+     * @see io.github.nichetoolkit.rest.RestException
+     */
     @SuppressWarnings("unchecked")
     static <E> List<MybatisColumn> fickleOfEntityValueColumns(MybatisTable table, List<MybatisColumn> fickleKeyColumns, E entityParameter) throws RestException {
         if (GeneralUtils.isNotEmpty(table.fickleValueColumn()) && GeneralUtils.isNotEmpty(fickleKeyColumns)) {
@@ -1288,6 +2575,18 @@ public interface MybatisSqlProvider {
         return Collections.emptyList();
     }
 
+    /**
+     * <code>sqlOfInsert</code>
+     * <p>The sql of insert method.</p>
+     * @param table            {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>The table parameter is <code>MybatisTable</code> type.</p>
+     * @param fickleKeyColumns {@link java.util.List} <p>The fickle key columns parameter is <code>List</code> type.</p>
+     * @return {@link java.lang.String} <p>The sql of insert return object is <code>String</code> type.</p>
+     * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
+     * @see io.github.nichetoolkit.mybatis.MybatisTable
+     * @see java.util.List
+     * @see java.lang.String
+     * @see io.github.nichetoolkit.rest.RestException
+     */
     static String sqlOfInsert(MybatisTable table, List<MybatisColumn> fickleKeyColumns) throws RestException {
         SqlBuilder sqlBuilder = SqlBuilder.sqlBuilder().braceLt();
         String sqlOfInsert = table.insertColumns().stream().map(column -> column.prefixVariable(EntityConstants.ENTITY_PREFIX))

@@ -25,83 +25,83 @@ import java.util.Collection;
 public interface MybatisAlertLinkMapper<E extends RestId<I>, L, S, I> extends MybatisMapper<E>, MybatisAlertMapper<E, S, I>, AlertLinkMapper<L, S, I> {
 
     @Override
-    default Integer alertByLinkId(@Param("linkId") L linkId, @Param("status") S status) {
-        return alertByLinkId(linkId, null, status, null);
+    default Integer alertByLinkId(@Param("linkId") L linkId, @Param("state") S state) {
+        return alertByLinkId(linkId, null, state, null);
     }
 
     @Override
-    default Integer alertDynamicByLinkId(@Param("tableName") String tableName, @Param("linkId") L linkId, @Param("status") S status) {
-        return alertDynamicByLinkId(tableName, linkId, null, status, null);
+    default Integer alertDynamicByLinkId(@Param("tableName") String tableName, @Param("linkId") L linkId, @Param("state") S state) {
+        return alertDynamicByLinkId(tableName, linkId, null, state, null);
     }
 
     @Override
-    default Integer alertAllByLinkIds(@Param("linkIdList") Collection<L> linkIdList, @Param("status") S status) {
-        return alertAllByLinkIds(linkIdList, null, status, null);
+    default Integer alertAllByLinkIds(@Param("linkIdList") Collection<L> linkIdList, @Param("state") S state) {
+        return alertAllByLinkIds(linkIdList, null, state, null);
     }
 
     @Override
-    default Integer alertDynamicAllByLinkIds(@Param("tableName") String tableName, @Param("linkIdList") Collection<L> linkIdList, @Param("status") S status) {
-        return alertDynamicAllByLinkIds(tableName, linkIdList, null, status, null);
+    default Integer alertDynamicAllByLinkIds(@Param("tableName") String tableName, @Param("linkIdList") Collection<L> linkIdList, @Param("state") S state) {
+        return alertDynamicAllByLinkIds(tableName, linkIdList, null, state, null);
     }
 
     @Override
-    default Integer alertByLinkId(@Param("linkId") L linkId, @Param("linkName") String linkName, @Param("status") S status) {
-        return alertDynamicByLinkId(null, linkId, linkName, status, null);
+    default Integer alertByLinkId(@Param("linkId") L linkId, @Param("linkName") String linkName, @Param("state") S state) {
+        return alertDynamicByLinkId(null, linkId, linkName, state, null);
     }
 
     @Override
-    default Integer alertDynamicByLinkId(@Param("tableName") String tableName, @Param("linkId") L linkId, @Param("linkName") String linkName, @Param("status") S status) {
-        return alertDynamicByLinkId(tableName, linkId, linkName, status, null);
+    default Integer alertDynamicByLinkId(@Param("tableName") String tableName, @Param("linkId") L linkId, @Param("linkName") String linkName, @Param("state") S state) {
+        return alertDynamicByLinkId(tableName, linkId, linkName, state, null);
     }
 
     @Override
-    default Integer alertAllByLinkIds(@Param("linkIdList") Collection<L> linkIdList, @Param("linkName") String linkName, @Param("status") S status) {
-        return alertDynamicAllByLinkIds(null, linkIdList, linkName, status);
+    default Integer alertAllByLinkIds(@Param("linkIdList") Collection<L> linkIdList, @Param("linkName") String linkName, @Param("state") S state) {
+        return alertDynamicAllByLinkIds(null, linkIdList, linkName, state);
     }
 
     @Override
-    default Integer alertDynamicAllByLinkIds(@Param("tableName") String tableName, @Param("linkIdList") Collection<L> linkIdList, @Param("linkName") String linkName, @Param("status") S status) {
-        return alertDynamicAllByLinkIds(tableName, linkIdList, linkName, status, null);
+    default Integer alertDynamicAllByLinkIds(@Param("tableName") String tableName, @Param("linkIdList") Collection<L> linkIdList, @Param("linkName") String linkName, @Param("state") S state) {
+        return alertDynamicAllByLinkIds(tableName, linkIdList, linkName, state, null);
     }
 
     @Override
-    default Integer alertByLinkId(@Param("linkId") L linkId, @Param("status") S status, @Param("statusName") String statusName) {
-        return alertByLinkId(linkId, null, status, statusName);
+    default Integer alertByLinkId(@Param("linkId") L linkId, @Param("state") S state, @Param("stateName") String stateName) {
+        return alertByLinkId(linkId, null, state, stateName);
     }
 
     @Override
-    default Integer alertDynamicByLinkId(@Param("tableName") String tableName, @Param("linkId") L linkId, @Param("status") S status, @Param("statusName") String statusName) {
-        return alertDynamicByLinkId(tableName, linkId, null, status, statusName);
+    default Integer alertDynamicByLinkId(@Param("tableName") String tableName, @Param("linkId") L linkId, @Param("state") S state, @Param("stateName") String stateName) {
+        return alertDynamicByLinkId(tableName, linkId, null, state, stateName);
     }
 
     @Override
-    default Integer alertAllByLinkIds(@Param("linkIdList") Collection<L> linkIdList, @Param("status") S status, @Param("statusName") String statusName) {
-        return alertAllByLinkIds(linkIdList, null, status, statusName);
+    default Integer alertAllByLinkIds(@Param("linkIdList") Collection<L> linkIdList, @Param("state") S state, @Param("stateName") String stateName) {
+        return alertAllByLinkIds(linkIdList, null, state, stateName);
     }
 
     @Override
-    default Integer alertDynamicAllByLinkIds(@Param("tableName") String tableName, @Param("linkIdList") Collection<L> linkIdList, @Param("status") S status, @Param("statusName") String statusName) {
-        return alertDynamicAllByLinkIds(tableName, linkIdList, null, status, statusName);
+    default Integer alertDynamicAllByLinkIds(@Param("tableName") String tableName, @Param("linkIdList") Collection<L> linkIdList, @Param("state") S state, @Param("stateName") String stateName) {
+        return alertDynamicAllByLinkIds(tableName, linkIdList, null, state, stateName);
     }
 
     @Override
-    default Integer alertByLinkId(@Param("linkId") L linkId, @Param("linkName") String linkName, @Param("status") S status, @Param("statusName") String statusName) {
-        return alertDynamicByLinkId(null, linkId, linkName, status, statusName);
-    }
-
-    @Override
-    @Lang(MybatisSqlSourceCaching.class)
-    @UpdateProvider(MybatisSqlProviderResolver.class)
-    Integer alertDynamicByLinkId(@Param("tableName") String tableName, @Param("linkId") L linkId, @Param("linkName") String linkName, @Param("status") S status, @Param("statusName") String statusName);
-
-    @Override
-    default Integer alertAllByLinkIds(@Param("linkIdList") Collection<L> linkIdList, @Param("linkName") String linkName, @Param("status") S status, @Param("statusName") String statusName) {
-        return alertDynamicAllByLinkIds(null, linkIdList, linkName, status, statusName);
+    default Integer alertByLinkId(@Param("linkId") L linkId, @Param("linkName") String linkName, @Param("state") S state, @Param("stateName") String stateName) {
+        return alertDynamicByLinkId(null, linkId, linkName, state, stateName);
     }
 
     @Override
     @Lang(MybatisSqlSourceCaching.class)
     @UpdateProvider(MybatisSqlProviderResolver.class)
-    Integer alertDynamicAllByLinkIds(@Param("tableName") String tableName, @Param("linkIdList") Collection<L> linkIdList, @Param("linkName") String linkName, @Param("status") S status, @Param("statusName") String statusName);
+    Integer alertDynamicByLinkId(@Param("tableName") String tableName, @Param("linkId") L linkId, @Param("linkName") String linkName, @Param("state") S state, @Param("stateName") String stateName);
+
+    @Override
+    default Integer alertAllByLinkIds(@Param("linkIdList") Collection<L> linkIdList, @Param("linkName") String linkName, @Param("state") S state, @Param("stateName") String stateName) {
+        return alertDynamicAllByLinkIds(null, linkIdList, linkName, state, stateName);
+    }
+
+    @Override
+    @Lang(MybatisSqlSourceCaching.class)
+    @UpdateProvider(MybatisSqlProviderResolver.class)
+    Integer alertDynamicAllByLinkIds(@Param("tableName") String tableName, @Param("linkIdList") Collection<L> linkIdList, @Param("linkName") String linkName, @Param("state") S state, @Param("stateName") String stateName);
 
 }
