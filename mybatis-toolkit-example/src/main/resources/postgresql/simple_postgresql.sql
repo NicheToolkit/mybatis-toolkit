@@ -28,7 +28,7 @@ CREATE INDEX "IDX_NTR_SIMPLE_STATE1" ON "public"."ntr_simple" USING btree (
 );
 
 CREATE INDEX "IDX_NTR_SIMPLE_STATE2" ON "public"."ntr_simple" USING btree (
-  "state2" "pg_catalog"."int4_ops" ASC NULLS LAST
+  "state2" COLLATE "pg_catalog"."default" "pg_catalog"."text_ops" ASC NULLS LAST
 );
 
 CREATE INDEX "IDX_NTR_SIMPLE_OPERATE" ON "public"."ntr_simple" USING btree (
@@ -68,7 +68,7 @@ CREATE INDEX "IDX_NTR_SIMPLE_DYNAMIC_STATE1" ON "public"."ntr_simple_dynamic" US
 );
 
 CREATE INDEX "IDX_NTR_SIMPLE_DYNAMIC_STATE2" ON "public"."ntr_simple_dynamic" USING btree (
-    "state2" "pg_catalog"."int4_ops" ASC NULLS LAST
+    "state2" COLLATE "pg_catalog"."default" "pg_catalog"."text_ops" ASC NULLS LAST
 );
 
 CREATE INDEX "IDX_NTR_SIMPLE_DYNAMIC_OPERATE" ON "public"."ntr_simple_dynamic" USING btree (
