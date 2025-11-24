@@ -5,6 +5,7 @@ import io.github.nichetoolkit.mybatis.MybatisExampleApplicationTests;
 import io.github.nichetoolkit.mybatis.test.simple.SimpleState1;
 import io.github.nichetoolkit.mybatis.test.simple.SimpleFilter;
 import io.github.nichetoolkit.mybatis.test.simple.SimpleModel;
+import io.github.nichetoolkit.mybatis.test.simple.SimpleState2;
 import io.github.nichetoolkit.rest.RestException;
 import io.github.nichetoolkit.rest.RestKey;
 import io.github.nichetoolkit.rest.util.DateUtils;
@@ -103,7 +104,8 @@ class SimpleServiceTest extends MybatisExampleApplicationTests {
         simpleModel.setName("name_" + GeneralUtils.uuid());
         simpleModel.setDescription("description_" + GeneralUtils.uuid());
         simpleModel.setLinkId(testLinkId);
-        simpleModel.setStatus(SimpleState1.NONE);
+        simpleModel.setState1(SimpleState1.NONE);
+        simpleModel.setState2(SimpleState2.NONE);
         SimpleModel save = simpleService.save(simpleModel);
         System.out.println(JsonUtils.parseJson(save));
     }
@@ -140,7 +142,8 @@ class SimpleServiceTest extends MybatisExampleApplicationTests {
             simpleModel.setName("name" + i + "_" + GeneralUtils.uuid());
             simpleModel.setDescription("description" + i + "_" + GeneralUtils.uuid());
             simpleModel.setLinkId(i / 2 == 0 ? testLinkId1 : testLinkId2);
-            simpleModel.setStatus(SimpleState1.NONE);
+            simpleModel.setState1(SimpleState1.NONE);
+            simpleModel.setState2(SimpleState2.NONE);
             simpleModelList.add(simpleModel);
         }
         long currentTimeMillis1 = System.currentTimeMillis();
@@ -419,7 +422,7 @@ class SimpleServiceTest extends MybatisExampleApplicationTests {
     public void alertAllWithFilter() throws RestException {
         SimpleFilter simpleFilter = new SimpleFilter();
         simpleFilter.setTableKey(tableKey);
-        simpleFilter.setStatus(SimpleState1.TEST);
+        simpleFilter.setState(SimpleState1.TEST);
         simpleFilter.setIds(testId, testId1, testId1);
         simpleService.alertAllWithFilter(simpleFilter);
     }
