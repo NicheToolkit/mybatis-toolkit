@@ -8,18 +8,6 @@ import org.apache.ibatis.annotations.UpdateProvider;
 
 import java.util.Collection;
 
-/**
- * <code>MybatisAlertMapper</code>
- * <p>The mybatis alert mapper interface.</p>
- * @param <E> {@link io.github.nichetoolkit.rice.RestId} <p>The generic parameter is <code>RestId</code> type.</p>
- * @param <S> {@link java.lang.Object} <p>The parameter can be of any type.</p>
- * @param <I> {@link java.lang.Object} <p>The parameter can be of any type.</p>
- * @author Cyan (snow22314@outlook.com)
- * @see io.github.nichetoolkit.rice.RestId
- * @see io.github.nichetoolkit.mybatis.MybatisMapper
- * @see io.github.nichetoolkit.rice.mapper.AlertMapper
- * @since Jdk1.8
- */
 public interface MybatisAlertMapper<E extends RestId<I>, S, I> extends MybatisMapper<E>, AlertMapper<S, I> {
 
     @Override
@@ -28,9 +16,9 @@ public interface MybatisAlertMapper<E extends RestId<I>, S, I> extends MybatisMa
     }
 
     @Override
-    @Lang(MybatisSqlSourceCaching.class)
-    @UpdateProvider(MybatisSqlProviderResolver.class)
-    Integer alertDynamicById(@Param("tableName") String tableName, @Param("id") I id, @Param("status") S status);
+    default Integer alertDynamicById(@Param("tableName") String tableName, @Param("id") I id, @Param("status") S status) {
+        return alertDynamicById(tableName, id, status, null);
+    }
 
     @Override
     default Integer alertAll(@Param("idList") Collection<I> idList, @Param("status") S status) {
@@ -38,9 +26,9 @@ public interface MybatisAlertMapper<E extends RestId<I>, S, I> extends MybatisMa
     }
 
     @Override
-    @Lang(MybatisSqlSourceCaching.class)
-    @UpdateProvider(MybatisSqlProviderResolver.class)
-    Integer alertDynamicAll(@Param("tableName") String tableName, @Param("idList") Collection<I> idList, @Param("status") S status);
+    default Integer alertDynamicAll(@Param("tableName") String tableName, @Param("idList") Collection<I> idList, @Param("status") S status) {
+        return alertDynamicAll(tableName, idList, status, null);
+    }
 
     @Override
     default Integer alertAllByWhere(@Param("whereSql") String whereSql, @Param("status") S status) {
@@ -48,8 +36,39 @@ public interface MybatisAlertMapper<E extends RestId<I>, S, I> extends MybatisMa
     }
 
     @Override
+    default Integer alertDynamicAllByWhere(@Param("tableName") String tableName, @Param("whereSql") String whereSql, @Param("status") S status) {
+        return alertDynamicAllByWhere(tableName, whereSql, status, null);
+    }
+
+    @Override
+    default Integer alertById(@Param("id") I id, @Param("status") S status, @Param("statusName") String statusName) {
+        return alertDynamicById(null, id, status, statusName);
+    }
+
+    @Override
     @Lang(MybatisSqlSourceCaching.class)
     @UpdateProvider(MybatisSqlProviderResolver.class)
-    Integer alertDynamicAllByWhere(@Param("tableName") String tableName, @Param("whereSql") String whereSql, @Param("status") S status);
+    Integer alertDynamicById(@Param("tableName") String tableName, @Param("id") I id, @Param("status") S status, @Param("statusName") String statusName);
+
+
+    @Override
+    default Integer alertAll(@Param("idList") Collection<I> idList, @Param("status") S status, @Param("statusName") String statusName) {
+        return alertDynamicAll(null, idList, status, statusName);
+    }
+
+    @Override
+    @Lang(MybatisSqlSourceCaching.class)
+    @UpdateProvider(MybatisSqlProviderResolver.class)
+    Integer alertDynamicAll(@Param("tableName") String tableName, @Param("idList") Collection<I> idList, @Param("status") S status, @Param("statusName") String statusName);
+
+    @Override
+    default Integer alertAllByWhere(@Param("whereSql") String whereSql, @Param("status") S status, @Param("statusName") String statusName) {
+        return alertDynamicAllByWhere(null, whereSql, status, statusName);
+    }
+
+    @Override
+    @Lang(MybatisSqlSourceCaching.class)
+    @UpdateProvider(MybatisSqlProviderResolver.class)
+    Integer alertDynamicAllByWhere(@Param("tableName") String tableName, @Param("whereSql") String whereSql, @Param("status") S status, @Param("statusName") String statusName);
 
 }

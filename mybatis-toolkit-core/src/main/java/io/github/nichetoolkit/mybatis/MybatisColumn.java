@@ -64,6 +64,13 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
     protected String linkName;
 
     /**
+     * <code>alertName</code>
+     * {@link java.lang.String} <p>The <code>alertName</code> field.</p>
+     * @see java.lang.String
+     */
+    protected String alertName;
+
+    /**
      * <code>paramName</code>
      * {@link java.lang.String} <p>The <code>paramName</code> field.</p>
      * @see java.lang.String
@@ -761,7 +768,7 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
      * <code>excluded</code>
      * <p>The excluded method.</p>
      * @param excludedType {@link io.github.nichetoolkit.mybatis.enums.ExcludedType} <p>The excluded type parameter is <code>ExcludedType</code> type.</p>
-     * @param tableName    {@link java.lang.String} <p>The tableName parameter is <code>String</code> type.</p>
+     * @param tableName    {@link java.lang.String} <p>The table name parameter is <code>String</code> type.</p>
      * @return {@link java.lang.String} <p>The excluded return object is <code>String</code> type.</p>
      * @see io.github.nichetoolkit.mybatis.enums.ExcludedType
      * @see java.lang.String

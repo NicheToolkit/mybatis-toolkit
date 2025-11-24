@@ -26,33 +26,33 @@ public interface MybatisAlertLinkMapper<E extends RestId<I>, L, S, I> extends My
 
     @Override
     default Integer alertByLinkId(@Param("linkId") L linkId, @Param("status") S status) {
-        return alertByLinkId(linkId, null, status);
+        return alertByLinkId(linkId, null, status, null);
     }
 
     @Override
     default Integer alertDynamicByLinkId(@Param("tableName") String tableName, @Param("linkId") L linkId, @Param("status") S status) {
-        return alertDynamicByLinkId(tableName, linkId, null, status);
+        return alertDynamicByLinkId(tableName, linkId, null, status, null);
     }
 
     @Override
     default Integer alertAllByLinkIds(@Param("linkIdList") Collection<L> linkIdList, @Param("status") S status) {
-        return alertAllByLinkIds(linkIdList, null, status);
+        return alertAllByLinkIds(linkIdList, null, status, null);
     }
 
     @Override
     default Integer alertDynamicAllByLinkIds(@Param("tableName") String tableName, @Param("linkIdList") Collection<L> linkIdList, @Param("status") S status) {
-        return alertDynamicAllByLinkIds(tableName, linkIdList, null, status);
+        return alertDynamicAllByLinkIds(tableName, linkIdList, null, status, null);
     }
 
     @Override
     default Integer alertByLinkId(@Param("linkId") L linkId, @Param("linkName") String linkName, @Param("status") S status) {
-        return alertDynamicByLinkId(null, linkId, linkName, status);
+        return alertDynamicByLinkId(null, linkId, linkName, status, null);
     }
 
     @Override
-    @Lang(MybatisSqlSourceCaching.class)
-    @UpdateProvider(MybatisSqlProviderResolver.class)
-    Integer alertDynamicByLinkId(@Param("tableName") String tableName, @Param("linkId") L linkId, @Param("linkName") String linkName, @Param("status") S status);
+    default Integer alertDynamicByLinkId(@Param("tableName") String tableName, @Param("linkId") L linkId, @Param("linkName") String linkName, @Param("status") S status) {
+        return alertDynamicByLinkId(tableName, linkId, linkName, status, null);
+    }
 
     @Override
     default Integer alertAllByLinkIds(@Param("linkIdList") Collection<L> linkIdList, @Param("linkName") String linkName, @Param("status") S status) {
@@ -60,8 +60,48 @@ public interface MybatisAlertLinkMapper<E extends RestId<I>, L, S, I> extends My
     }
 
     @Override
+    default Integer alertDynamicAllByLinkIds(@Param("tableName") String tableName, @Param("linkIdList") Collection<L> linkIdList, @Param("linkName") String linkName, @Param("status") S status) {
+        return alertDynamicAllByLinkIds(tableName, linkIdList, linkName, status, null);
+    }
+
+    @Override
+    default Integer alertByLinkId(@Param("linkId") L linkId, @Param("status") S status, @Param("statusName") String statusName) {
+        return alertByLinkId(linkId, null, status, statusName);
+    }
+
+    @Override
+    default Integer alertDynamicByLinkId(@Param("tableName") String tableName, @Param("linkId") L linkId, @Param("status") S status, @Param("statusName") String statusName) {
+        return alertDynamicByLinkId(tableName, linkId, null, status, statusName);
+    }
+
+    @Override
+    default Integer alertAllByLinkIds(@Param("linkIdList") Collection<L> linkIdList, @Param("status") S status, @Param("statusName") String statusName) {
+        return alertAllByLinkIds(linkIdList, null, status, statusName);
+    }
+
+    @Override
+    default Integer alertDynamicAllByLinkIds(@Param("tableName") String tableName, @Param("linkIdList") Collection<L> linkIdList, @Param("status") S status, @Param("statusName") String statusName) {
+        return alertDynamicAllByLinkIds(tableName, linkIdList, null, status, statusName);
+    }
+
+    @Override
+    default Integer alertByLinkId(@Param("linkId") L linkId, @Param("linkName") String linkName, @Param("status") S status, @Param("statusName") String statusName) {
+        return alertDynamicByLinkId(null, linkId, linkName, status, statusName);
+    }
+
+    @Override
     @Lang(MybatisSqlSourceCaching.class)
     @UpdateProvider(MybatisSqlProviderResolver.class)
-    Integer alertDynamicAllByLinkIds(@Param("tableName") String tableName, @Param("linkIdList") Collection<L> linkIdList, @Param("linkName") String linkName, @Param("status") S status);
+    Integer alertDynamicByLinkId(@Param("tableName") String tableName, @Param("linkId") L linkId, @Param("linkName") String linkName, @Param("status") S status, @Param("statusName") String statusName);
+
+    @Override
+    default Integer alertAllByLinkIds(@Param("linkIdList") Collection<L> linkIdList, @Param("linkName") String linkName, @Param("status") S status, @Param("statusName") String statusName) {
+        return alertDynamicAllByLinkIds(null, linkIdList, linkName, status, statusName);
+    }
+
+    @Override
+    @Lang(MybatisSqlSourceCaching.class)
+    @UpdateProvider(MybatisSqlProviderResolver.class)
+    Integer alertDynamicAllByLinkIds(@Param("tableName") String tableName, @Param("linkIdList") Collection<L> linkIdList, @Param("linkName") String linkName, @Param("status") S status, @Param("statusName") String statusName);
 
 }

@@ -144,6 +144,13 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
      * @see java.util.Map
      */
     private Map<String, MybatisColumn> linkColumns = new HashMap<>();
+
+    /**
+     * <code>alertColumns</code>
+     * {@link java.util.Map} <p>The <code>alertColumns</code> field.</p>
+     * @see java.util.Map
+     */
+    private Map<String, MybatisColumn> alertColumns = new HashMap<>();
     /**
      * <code>identityColumns</code>
      * {@link java.util.List} <p>The <code>identityColumns</code> field.</p>
@@ -511,8 +518,8 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
 
     /**
      * <code>tableName</code>
-     * <p>The tableName method.</p>
-     * @return {@link java.lang.String} <p>The tableName return object is <code>String</code> type.</p>
+     * <p>The table name method.</p>
+     * @return {@link java.lang.String} <p>The table name return object is <code>String</code> type.</p>
      * @see java.lang.String
      */
     public String tableName() {
@@ -523,9 +530,9 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
 
     /**
      * <code>tableName</code>
-     * <p>The tableName method.</p>
-     * @param tableName {@link java.lang.String} <p>The tableName parameter is <code>String</code> type.</p>
-     * @return {@link java.lang.String} <p>The tableName return object is <code>String</code> type.</p>
+     * <p>The table name method.</p>
+     * @param tableName {@link java.lang.String} <p>The table name parameter is <code>String</code> type.</p>
+     * @return {@link java.lang.String} <p>The table name return object is <code>String</code> type.</p>
      * @see java.lang.String
      */
     public String tableName(String tableName) {
@@ -534,9 +541,9 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
 
     /**
      * <code>tableNameAsAlias</code>
-     * <p>The tableName as alias method.</p>
-     * @param tableName {@link java.lang.String} <p>The tableName parameter is <code>String</code> type.</p>
-     * @return {@link java.lang.String} <p>The tableName as alias return object is <code>String</code> type.</p>
+     * <p>The table name as alias method.</p>
+     * @param tableName {@link java.lang.String} <p>The table name parameter is <code>String</code> type.</p>
+     * @return {@link java.lang.String} <p>The table name as alias return object is <code>String</code> type.</p>
      * @see java.lang.String
      */
     public String tableNameAsAlias(String tableName) {
@@ -621,6 +628,10 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
                 if (column.isAlertKey() || (GeneralUtils.isNotEmpty(this.alertKeys) && this.alertKeys.contains(fieldName))) {
                     this.alertnessColumns.remove(column);
                     refreshColumn(this.alertnessColumns, column);
+                    if (GeneralUtils.isEmpty(column.getAlertName())) {
+                        column.setAlertName(fieldName);
+                    }
+                    alertColumns.put(column.getAlertName(), column);
                 } else {
                     alertKeyColumns.remove(column);
                     alertKeyColumns.add(0, column);
@@ -631,6 +642,10 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
                     column.setAlertKey(true);
                     alertKeyColumns.remove(column);
                     alertKeyColumns.add(0, column);
+                    if (GeneralUtils.isEmpty(column.getAlertName())) {
+                        column.setAlertName(fieldName);
+                    }
+                    alertColumns.put(column.getAlertName(), column);
                 }
             }
             if (column.isLoadEntity()) {
@@ -709,6 +724,13 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
             if (GeneralUtils.isEmpty(this.alertnessColumns)) {
                 if (GeneralUtils.isNotEmpty(alertKeyColumns)) {
                     this.alertnessColumns = new ArrayList<>(alertKeyColumns);
+                    Map<String, MybatisColumn> collected = alertKeyColumns.stream().peek(column -> {
+                        if (GeneralUtils.isEmpty(column.getAlertName())) {
+                            String fieldName = column.getField().fieldName();
+                            column.setAlertName(fieldName);
+                        }
+                    }).collect(Collectors.toMap(MybatisColumn::getAlertName, Function.identity()));
+                    this.alertColumns = new HashMap<>(collected);
                 } else {
                     throw new MybatisLinkageLackError("The special alertness columns must be not empty, alertness type: " + this.alertnessType.getName());
                 }
@@ -1040,6 +1062,18 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
     }
 
     /**
+     * <code>alertColumn</code>
+     * <p>The alert column method.</p>
+     * @param alertName {@link java.lang.String} <p>The alert name parameter is <code>String</code> type.</p>
+     * @return {@link io.github.nichetoolkit.mybatis.MybatisColumn} <p>The alert column return object is <code>MybatisColumn</code> type.</p>
+     * @see java.lang.String
+     * @see io.github.nichetoolkit.mybatis.MybatisColumn
+     */
+    public MybatisColumn alertColumn(String alertName) {
+        return this.alertColumns.get(alertName);
+    }
+
+    /**
      * <code>linkColumns</code>
      * <p>The link columns method.</p>
      * @return {@link java.util.Map} <p>The link columns return object is <code>Map</code> type.</p>
@@ -1047,6 +1081,17 @@ public class MybatisTable extends MybatisProperty<MybatisTable> {
      */
     public Map<String, MybatisColumn> linkColumns() {
         return this.linkColumns;
+    }
+
+
+    /**
+     * <code>alertColumns</code>
+     * <p>The alert columns method.</p>
+     * @return {@link java.util.Map} <p>The alert columns return object is <code>Map</code> type.</p>
+     * @see java.util.Map
+     */
+    public Map<String, MybatisColumn> alertColumns() {
+        return this.alertColumns;
     }
 
     /**

@@ -86,12 +86,12 @@ public interface MybatisSqlProvider {
                     .delete().from().append(table.tableName(tableName))
                     .where(sqlBuilder).toString();
 
-    MybatisSqlSupply.AlertSqlSupply ALERT_SQL_SUPPLY = (tableName, table, sqlBuilder, status) ->
+    MybatisSqlSupply.EntrySqlSupply ALERT_SQL_SUPPLY = (tableName, table, keySqlBuilder, valueSqlBuilder) ->
             SqlBuilder.sqlBuilder()
                     .update().append(table.tableName(tableName))
-                    .set().append(sqlOfStatus(table, status))
+                    .set().append(keySqlBuilder)
                     .comma().append(table.sqlOfForceUpdateColumns())
-                    .where(sqlBuilder).toString();
+                    .where(valueSqlBuilder).toString();
 
     @SuppressWarnings("unchecked")
     static <P> Object reviseParameter(P parameter) throws RestException {
@@ -105,6 +105,27 @@ public interface MybatisSqlProvider {
             return firstParam.orElseThrow(MybatisParamErrorException::new);
         } else {
             return parameter;
+        }
+    }
+
+    static <S> void valueOfStatus(MybatisTable table, S status, String statusName, SqlBuilder valueBuilder) throws RestException {
+        if (GeneralUtils.isNotEmpty(statusName)) {
+            Optional.ofNullable(table.alertColumn(statusName)).ifPresent(column -> valueBuilder.append(column.columnName()).eq().value(status));
+        } else {
+            if (table.isSpecialAlertness()) {
+                valueOfParameter(table.alertnessColumns(), status, table.getAlertnessType());
+                String statusSql = sqlOfColumns(status, table.alertnessColumns(), false, true);
+                valueBuilder.append(statusSql);
+            } else {
+                Optional.ofNullable(table.getLinkColumn()).ifPresent(column -> valueBuilder.append(column.columnEqualsProperty()));
+                Optional.ofNullable(table.getAlertColumn()).ifPresent(column -> {
+                    if (RestKey.class.isAssignableFrom(status.getClass())) {
+                        valueBuilder.append(column.columnName()).eq().value(status);
+                    } else {
+                        valueBuilder.append(column.columnEqualsProperty());
+                    }
+                });
+            }
         }
     }
 
@@ -389,7 +410,7 @@ public interface MybatisSqlProvider {
             SqlBuilder valueBuilder = SqlBuilder.sqlBuilder();
             if (GeneralUtils.isNotEmpty(identity)) {
                 valueOfIdentity(table, identity, valueBuilder);
-            } else if (GeneralUtils.isNotEmpty(params)){
+            } else if (GeneralUtils.isNotEmpty(params)) {
                 valuesOfParams(table, params, valueBuilder);
             }
             return sqlSupply.supply(tableName, table, valueBuilder);
@@ -410,7 +431,7 @@ public interface MybatisSqlProvider {
 
     static <I, S> String providingOfId(ProviderContext providerContext, @Nullable String tableName, I idParameter, ConsumerActuator<MybatisTable> tableOptional, RestLoad[] loadParams, MybatisSqlSupply.EntrySqlSupply sqlSupply) throws RestException {
         return providingOfId(providerContext, tableName, idParameter, tableOptional,
-                (MybatisSqlSupply.EntrySqlSupply)  (tableNameValue, tableValue, keyBuilder, valueBuilder) -> {
+                (MybatisSqlSupply.EntrySqlSupply) (tableNameValue, tableValue, keyBuilder, valueBuilder) -> {
                     keyOfLoad(tableValue, loadParams, keyBuilder);
                     return sqlSupply.supply(tableNameValue, tableValue, keyBuilder, valueBuilder);
                 });
@@ -418,7 +439,7 @@ public interface MybatisSqlProvider {
 
     static <I, S> String providingOfId(ProviderContext providerContext, @Nullable String tableName, I idParameter, ConsumerActuator<MybatisTable> tableOptional, RestFickle<?>[] fickleParams, RestLoad[] loadParams, MybatisSqlSupply.EntrySqlSupply sqlSupply) throws RestException {
         return providingOfId(providerContext, tableName, idParameter, tableOptional,
-                (MybatisSqlSupply.EntrySqlSupply)  (tableNameValue, tableValue, keyBuilder, valueBuilder) -> {
+                (MybatisSqlSupply.EntrySqlSupply) (tableNameValue, tableValue, keyBuilder, valueBuilder) -> {
                     keyOfFickle(tableValue, fickleParams, keyBuilder);
                     keyOfLoad(tableValue, loadParams, keyBuilder);
                     return sqlSupply.supply(tableNameValue, tableValue, keyBuilder, valueBuilder);
@@ -427,16 +448,20 @@ public interface MybatisSqlProvider {
 
     static <I, S> String providingOfId(ProviderContext providerContext, @Nullable String tableName, I idParameter, ConsumerActuator<MybatisTable> tableOptional, RestFickle<?>[] fickleParams, MybatisSqlSupply.EntrySqlSupply sqlSupply) throws RestException {
         return providingOfId(providerContext, tableName, idParameter, tableOptional,
-                (MybatisSqlSupply.EntrySqlSupply ) (tableNameValue, tableValue, keyBuilder, valueBuilder) -> {
+                (tableNameValue, tableValue, keyBuilder, valueBuilder) -> {
                     keyOfFickle(tableValue, fickleParams, keyBuilder);
                     return sqlSupply.supply(tableNameValue, tableValue, keyBuilder, valueBuilder);
                 });
     }
 
-    static <I, S> String providingOfId(ProviderContext providerContext, @Nullable String tableName, I idParameter, S statusParameter, MybatisSqlSupply.AlertSqlSupply sqlSupply) throws RestException {
+    static <I, S> String providingOfId(ProviderContext providerContext, @Nullable String tableName, I idParameter, S statusParameter, String statusName, MybatisSqlSupply.EntrySqlSupply sqlSupply) throws RestException {
         Object status = reviseParameter(statusParameter);
         return providingOfId(providerContext, tableName, idParameter, tableIgnored -> {
-        }, (tableNameValue, tableValue, sqlBuilder) -> sqlSupply.supply(tableNameValue, tableValue, sqlBuilder, status));
+        }, (tableNameValue, tableValue, sqlBuilder) -> {
+            SqlBuilder keyBuilder = SqlBuilder.sqlBuilder();
+            valueOfStatus(tableValue, status, statusName, keyBuilder);
+            return sqlSupply.supply(tableNameValue, tableValue, keyBuilder, sqlBuilder);
+        });
     }
 
     static <I> String providingOfId(ProviderContext providerContext, @Nullable String tableName, I idParameter, ConsumerActuator<MybatisTable> tableOptional, MybatisSqlSupply.EntrySqlSupply sqlSupply) throws RestException {
@@ -460,7 +485,7 @@ public interface MybatisSqlProvider {
 
     static <I, S> String providingOfAll(ProviderContext providerContext, @Nullable String tableName, Collection<I> idList, ConsumerActuator<MybatisTable> tableOptional, RestFickle<?>[] fickleParams, MybatisSqlSupply.EntrySqlSupply sqlSupply) throws RestException {
         return providingOfAll(providerContext, tableName, idList, tableOptional,
-                (MybatisSqlSupply.EntrySqlSupply) (tableNameValue, tableValue, keyBuilder, valueBuilder) -> {
+                (tableNameValue, tableValue, keyBuilder, valueBuilder) -> {
                     keyOfFickle(tableValue, fickleParams, keyBuilder);
                     return sqlSupply.supply(tableNameValue, tableValue, keyBuilder, valueBuilder);
                 });
@@ -468,7 +493,7 @@ public interface MybatisSqlProvider {
 
     static <I, S> String providingOfAll(ProviderContext providerContext, @Nullable String tableName, Collection<I> idList, ConsumerActuator<MybatisTable> tableOptional, RestFickle<?>[] fickleParams, RestLoad[] loadParams, MybatisSqlSupply.EntrySqlSupply sqlSupply) throws RestException {
         return providingOfAll(providerContext, tableName, idList, tableOptional,
-                (MybatisSqlSupply.EntrySqlSupply) (tableNameValue, tableValue, keyBuilder, valueBuilder) -> {
+                (tableNameValue, tableValue, keyBuilder, valueBuilder) -> {
                     keyOfFickle(tableValue, fickleParams, keyBuilder);
                     keyOfLoad(tableValue, loadParams, keyBuilder);
                     return sqlSupply.supply(tableNameValue, tableValue, keyBuilder, valueBuilder);
@@ -477,16 +502,20 @@ public interface MybatisSqlProvider {
 
     static <I, S> String providingOfAll(ProviderContext providerContext, @Nullable String tableName, Collection<I> idList, ConsumerActuator<MybatisTable> tableOptional, RestLoad[] loadParams, MybatisSqlSupply.EntrySqlSupply sqlSupply) throws RestException {
         return providingOfAll(providerContext, tableName, idList, tableOptional,
-                (MybatisSqlSupply.EntrySqlSupply) (tableNameValue, tableValue, keyBuilder, valueBuilder) -> {
+                (tableNameValue, tableValue, keyBuilder, valueBuilder) -> {
                     keyOfLoad(tableValue, loadParams, keyBuilder);
                     return sqlSupply.supply(tableNameValue, tableValue, keyBuilder, valueBuilder);
                 });
     }
 
-    static <I, S> String providingOfAll(ProviderContext providerContext, @Nullable String tableName, Collection<I> idList, S statusParameter, MybatisSqlSupply.AlertSqlSupply sqlSupply) throws RestException {
+    static <I, S> String providingOfAll(ProviderContext providerContext, @Nullable String tableName, Collection<I> idList, S statusParameter, String statusName, MybatisSqlSupply.EntrySqlSupply sqlSupply) throws RestException {
         Object status = reviseParameter(statusParameter);
         return providingOfAll(providerContext, tableName, idList, tableIgnored -> {
-        }, (tableNameValue, tableValue, sqlBuilder) -> sqlSupply.supply(tableNameValue, tableValue, sqlBuilder, status));
+        }, (tableNameValue, tableValue, sqlBuilder) -> {
+            SqlBuilder keyBuilder = SqlBuilder.sqlBuilder();
+            valueOfStatus(tableValue, status, statusName, keyBuilder);
+            return sqlSupply.supply(tableNameValue, tableValue, keyBuilder, sqlBuilder);
+        });
     }
 
 
@@ -508,9 +537,9 @@ public interface MybatisSqlProvider {
         });
     }
 
-    static <S> String providingOfWhere(ProviderContext providerContext, @Nullable String tableName, String whereSqlParameter, ConsumerActuator<MybatisTable> tableOptional, RestFickle<?>[] fickleParams,RestLoad[] loadParams, MybatisSqlSupply.EntrySqlSupply sqlSupply) throws RestException {
+    static <S> String providingOfWhere(ProviderContext providerContext, @Nullable String tableName, String whereSqlParameter, ConsumerActuator<MybatisTable> tableOptional, RestFickle<?>[] fickleParams, RestLoad[] loadParams, MybatisSqlSupply.EntrySqlSupply sqlSupply) throws RestException {
         return providingOfWhere(providerContext, tableName, whereSqlParameter, tableOptional,
-                (MybatisSqlSupply.EntrySqlSupply) (tableNameValue, tableValue, keyBuilder, valueBuilder) -> {
+                (tableNameValue, tableValue, keyBuilder, valueBuilder) -> {
                     keyOfFickle(tableValue, fickleParams, keyBuilder);
                     keyOfLoad(tableValue, loadParams, keyBuilder);
                     return sqlSupply.supply(tableNameValue, tableValue, keyBuilder, valueBuilder);
@@ -519,7 +548,7 @@ public interface MybatisSqlProvider {
 
     static <S> String providingOfWhere(ProviderContext providerContext, @Nullable String tableName, String whereSqlParameter, ConsumerActuator<MybatisTable> tableOptional, RestFickle<?>[] fickleParams, MybatisSqlSupply.EntrySqlSupply sqlSupply) throws RestException {
         return providingOfWhere(providerContext, tableName, whereSqlParameter, tableOptional,
-                (MybatisSqlSupply.EntrySqlSupply) (tableNameValue, tableValue, keyBuilder, valueBuilder) -> {
+                (tableNameValue, tableValue, keyBuilder, valueBuilder) -> {
                     keyOfFickle(tableValue, fickleParams, keyBuilder);
                     return sqlSupply.supply(tableNameValue, tableValue, keyBuilder, valueBuilder);
                 });
@@ -527,16 +556,20 @@ public interface MybatisSqlProvider {
 
     static <S> String providingOfWhere(ProviderContext providerContext, @Nullable String tableName, String whereSqlParameter, ConsumerActuator<MybatisTable> tableOptional, RestLoad[] loadParams, MybatisSqlSupply.EntrySqlSupply sqlSupply) throws RestException {
         return providingOfWhere(providerContext, tableName, whereSqlParameter, tableOptional,
-                (MybatisSqlSupply.EntrySqlSupply) (tableNameValue, tableValue, keyBuilder, valueBuilder) -> {
+                (tableNameValue, tableValue, keyBuilder, valueBuilder) -> {
                     keyOfLoad(tableValue, loadParams, keyBuilder);
                     return sqlSupply.supply(tableNameValue, tableValue, keyBuilder, valueBuilder);
                 });
     }
 
-    static <S> String providingOfWhere(ProviderContext providerContext, @Nullable String tableName, String whereSqlParameter, S statusParameter, MybatisSqlSupply.AlertSqlSupply sqlSupply) throws RestException {
+    static <S> String providingOfWhere(ProviderContext providerContext, @Nullable String tableName, String whereSqlParameter, S statusParameter, String statusName, MybatisSqlSupply.EntrySqlSupply sqlSupply) throws RestException {
         Object status = reviseParameter(statusParameter);
         return providingOfWhere(providerContext, tableName, whereSqlParameter, tableIgnored -> {
-        }, (tableNameValue, tableValue, sqlBuilder) -> sqlSupply.supply(tableNameValue, tableValue, sqlBuilder, status));
+        }, (tableNameValue, tableValue, sqlBuilder) -> {
+            SqlBuilder keyBuilder = SqlBuilder.sqlBuilder();
+            valueOfStatus(tableValue, status, statusName, keyBuilder);
+            return sqlSupply.supply(tableNameValue, tableValue, keyBuilder, sqlBuilder);
+        });
     }
 
     static <I> String providingOfWhere(ProviderContext providerContext, @Nullable String tableName, String whereSqlParameter, ConsumerActuator<MybatisTable> tableOptional, MybatisSqlSupply.EntrySqlSupply sqlSupply) throws RestException {
@@ -557,7 +590,7 @@ public interface MybatisSqlProvider {
 
     static <L> String providingOfLinkId(ProviderContext providerContext, @Nullable String tableName, L linkIdParameter, String linkName, ConsumerActuator<MybatisTable> tableOptional, RestFickle<?>[] fickleParams, MybatisSqlSupply.EntrySqlSupply sqlSupply) throws RestException {
         return providingOfLinkId(providerContext, tableName, linkIdParameter, linkName, tableOptional,
-                (MybatisSqlSupply.EntrySqlSupply) (tableNameValue, tableValue, keyBuilder, valueBuilder) -> {
+                (tableNameValue, tableValue, keyBuilder, valueBuilder) -> {
                     keyOfFickle(tableValue, fickleParams, keyBuilder);
                     return sqlSupply.supply(tableNameValue, tableValue, keyBuilder, valueBuilder);
                 });
@@ -565,7 +598,7 @@ public interface MybatisSqlProvider {
 
     static <L> String providingOfLinkId(ProviderContext providerContext, @Nullable String tableName, L linkIdParameter, String linkName, ConsumerActuator<MybatisTable> tableOptional, RestLoad[] loadParams, MybatisSqlSupply.EntrySqlSupply sqlSupply) throws RestException {
         return providingOfLinkId(providerContext, tableName, linkIdParameter, linkName, tableOptional,
-                (MybatisSqlSupply.EntrySqlSupply) (tableNameValue, tableValue, keyBuilder, valueBuilder) -> {
+                (tableNameValue, tableValue, keyBuilder, valueBuilder) -> {
                     keyOfLoad(tableValue, loadParams, keyBuilder);
                     return sqlSupply.supply(tableNameValue, tableValue, keyBuilder, valueBuilder);
                 });
@@ -573,17 +606,21 @@ public interface MybatisSqlProvider {
 
     static <L> String providingOfLinkId(ProviderContext providerContext, @Nullable String tableName, L linkIdParameter, String linkName, ConsumerActuator<MybatisTable> tableOptional, RestFickle<?>[] fickleParams, RestLoad[] loadParams, MybatisSqlSupply.EntrySqlSupply sqlSupply) throws RestException {
         return providingOfLinkId(providerContext, tableName, linkIdParameter, linkName, tableOptional,
-                (MybatisSqlSupply.EntrySqlSupply) (tableNameValue, tableValue, keyBuilder, valueBuilder) -> {
+                (tableNameValue, tableValue, keyBuilder, valueBuilder) -> {
                     keyOfFickle(tableValue, fickleParams, keyBuilder);
                     keyOfLoad(tableValue, loadParams, keyBuilder);
                     return sqlSupply.supply(tableNameValue, tableValue, keyBuilder, valueBuilder);
                 });
     }
 
-    static <L, S> String providingOfLinkId(ProviderContext providerContext, @Nullable String tableName, L linkIdParameter, String linkName, S statusParameter, MybatisSqlSupply.AlertSqlSupply sqlSupply) throws RestException {
+    static <L, S> String providingOfLinkId(ProviderContext providerContext, @Nullable String tableName, L linkIdParameter, String linkName, S statusParameter, String statusName, MybatisSqlSupply.EntrySqlSupply sqlSupply) throws RestException {
         Object status = reviseParameter(statusParameter);
         return providingOfLinkId(providerContext, tableName, linkIdParameter, linkName, tableIgnored -> {
-        }, (tableNameValue, tableValue, sqlBuilder) -> sqlSupply.supply(tableNameValue, tableValue, sqlBuilder, status));
+        }, (tableNameValue, tableValue, sqlBuilder) -> {
+            SqlBuilder keyBuilder = SqlBuilder.sqlBuilder();
+            valueOfStatus(tableValue, status, statusName, keyBuilder);
+            return sqlSupply.supply(tableNameValue, tableValue, keyBuilder, sqlBuilder);
+        });
     }
 
     static <L> String providingOfLinkId(ProviderContext providerContext, @Nullable String tableName, L linkIdParameter, String linkName, ConsumerActuator<MybatisTable> tableOptional, MybatisSqlSupply.EntrySqlSupply sqlSupply) throws RestException {
@@ -607,7 +644,7 @@ public interface MybatisSqlProvider {
 
     static <L> String providingOfLinkIdAll(ProviderContext providerContext, @Nullable String tableName, Collection<L> linkIdList, String linkName, ConsumerActuator<MybatisTable> tableOptional, RestFickle<?>[] fickleParams, MybatisSqlSupply.EntrySqlSupply sqlSupply) throws RestException {
         return providingOfLinkIdAll(providerContext, tableName, linkIdList, linkName, tableOptional,
-                (MybatisSqlSupply.EntrySqlSupply) (tableNameValue, tableValue, keyBuilder, valueBuilder) -> {
+                (tableNameValue, tableValue, keyBuilder, valueBuilder) -> {
                     keyOfFickle(tableValue, fickleParams, keyBuilder);
                     return sqlSupply.supply(tableNameValue, tableValue, keyBuilder, valueBuilder);
                 });
@@ -615,7 +652,7 @@ public interface MybatisSqlProvider {
 
     static <L> String providingOfLinkIdAll(ProviderContext providerContext, @Nullable String tableName, Collection<L> linkIdList, String linkName, ConsumerActuator<MybatisTable> tableOptional, RestFickle<?>[] fickleParams, RestLoad[] loadParams, MybatisSqlSupply.EntrySqlSupply sqlSupply) throws RestException {
         return providingOfLinkIdAll(providerContext, tableName, linkIdList, linkName, tableOptional,
-                (MybatisSqlSupply.EntrySqlSupply) (tableNameValue, tableValue, keyBuilder, valueBuilder) -> {
+                (tableNameValue, tableValue, keyBuilder, valueBuilder) -> {
                     keyOfFickle(tableValue, fickleParams, keyBuilder);
                     keyOfLoad(tableValue, loadParams, keyBuilder);
                     return sqlSupply.supply(tableNameValue, tableValue, keyBuilder, valueBuilder);
@@ -624,16 +661,20 @@ public interface MybatisSqlProvider {
 
     static <L> String providingOfLinkIdAll(ProviderContext providerContext, @Nullable String tableName, Collection<L> linkIdList, String linkName, ConsumerActuator<MybatisTable> tableOptional, RestLoad[] loadParams, MybatisSqlSupply.EntrySqlSupply sqlSupply) throws RestException {
         return providingOfLinkIdAll(providerContext, tableName, linkIdList, linkName, tableOptional,
-                (MybatisSqlSupply.EntrySqlSupply) (tableNameValue, tableValue, keyBuilder, valueBuilder) -> {
+                (tableNameValue, tableValue, keyBuilder, valueBuilder) -> {
                     keyOfLoad(tableValue, loadParams, keyBuilder);
                     return sqlSupply.supply(tableNameValue, tableValue, keyBuilder, valueBuilder);
                 });
     }
 
-    static <L, S> String providingOfLinkIdAll(ProviderContext providerContext, @Nullable String tableName, Collection<L> linkIdList, String linkName, S statusParameter, MybatisSqlSupply.AlertSqlSupply sqlSupply) throws RestException {
+    static <L, S> String providingOfLinkIdAll(ProviderContext providerContext, @Nullable String tableName, Collection<L> linkIdList, String linkName, S statusParameter, String statusName, MybatisSqlSupply.EntrySqlSupply sqlSupply) throws RestException {
         Object status = reviseParameter(statusParameter);
         return providingOfLinkIdAll(providerContext, tableName, linkIdList, linkName, tableIgnored -> {
-        }, (tableNameValue, tableValue, sqlBuilder) -> sqlSupply.supply(tableNameValue, tableValue, sqlBuilder, status));
+        }, (tableNameValue, tableValue, sqlBuilder) -> {
+            SqlBuilder keyBuilder = SqlBuilder.sqlBuilder();
+            valueOfStatus(tableValue, status, statusName, keyBuilder);
+            return sqlSupply.supply(tableNameValue, tableValue, keyBuilder, sqlBuilder);
+        });
     }
 
     static <L> String providingOfLinkIdAll(ProviderContext providerContext, @Nullable String tableName, Collection<L> linkIdList, String linkName, ConsumerActuator<MybatisTable> tableOptional, MybatisSqlSupply.EntrySqlSupply sqlSupply) throws RestException {
@@ -654,7 +695,7 @@ public interface MybatisSqlProvider {
         });
     }
 
-    static String providingOfName(ProviderContext providerContext, @Nullable String tableName, String name, ConsumerActuator<MybatisTable> tableOptional,RestLoad[] loadParams, MybatisSqlSupply.EntrySqlSupply sqlSupply) throws RestException {
+    static String providingOfName(ProviderContext providerContext, @Nullable String tableName, String name, ConsumerActuator<MybatisTable> tableOptional, RestLoad[] loadParams, MybatisSqlSupply.EntrySqlSupply sqlSupply) throws RestException {
         return providingOfName(providerContext, tableName, name, tableOptional,
                 (tableNameValue, tableValue, keyBuilder, valueBuilder) -> {
                     keyOfLoad(tableValue, loadParams, keyBuilder);
@@ -774,11 +815,11 @@ public interface MybatisSqlProvider {
     }
 
     @SuppressWarnings("Duplicates")
-    static <E> String providingOfSave(ProviderContext providerContext, @Nullable String tableName, E entityParameter, ConsumerActuator<MybatisTable> tableOptional, MybatisSqlSupply.EntrySqlSupply sqlSupply) throws RestException {
+    static <E> String providingOfSave(ProviderContext providerContext, @Nullable String tableNameValue, E entityParameter, ConsumerActuator<MybatisTable> tableOptional, MybatisSqlSupply.EntrySqlSupply sqlSupply) throws RestException {
         DatabaseType databaseType = MybatisSqlProviderHolder.defaultDatabaseType();
         return MybatisSqlScript.caching(providerContext, (table, sqlScript) -> {
             tableOptional.actuate(table);
-            String tableName = table.tableName(tableName);
+            String tableName = table.tableName(tableNameValue);
             List<MybatisColumn> insertColumns = table.insertColumns();
             List<MybatisColumn> fickleKeyColumns = fickleOfEntityColumns(tableName, table, entityParameter);
             insertColumns.addAll(fickleKeyColumns);
@@ -792,11 +833,11 @@ public interface MybatisSqlProvider {
     }
 
 
-    static <E> String providingOfAllSave(ProviderContext providerContext, @Nullable String tableName, Collection<E> entityList, ConsumerActuator<MybatisTable> tableOptional, MybatisSqlSupply.EntrySqlSupply sqlSupply) throws RestException {
+    static <E> String providingOfAllSave(ProviderContext providerContext, @Nullable String tableNameValue, Collection<E> entityList, ConsumerActuator<MybatisTable> tableOptional, MybatisSqlSupply.EntrySqlSupply sqlSupply) throws RestException {
         DatabaseType databaseType = MybatisSqlProviderHolder.defaultDatabaseType();
         return MybatisSqlScript.caching(providerContext, (table, sqlScript) -> {
             tableOptional.actuate(table);
-            String tableName = table.tableName(tableName);
+            String tableName = table.tableName(tableNameValue);
             List<MybatisColumn> insertColumns = table.insertColumns();
             List<MybatisColumn> fickleKeyColumns = fickleOfEntitiesColumns(tableName, table, entityList);
             insertColumns.addAll(fickleKeyColumns);
@@ -912,6 +953,7 @@ public interface MybatisSqlProvider {
             }
         }
     }
+
 
     static <L> void valuesOfLinkId(MybatisTable table, Collection<L> linkIdList, String linkName, SqlBuilder valueBuilder, MybatisSqlScript sqlScript) throws RestException {
         if (GeneralUtils.isNotEmpty(linkName)) {
