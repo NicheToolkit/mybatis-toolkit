@@ -29,24 +29,24 @@ import java.util.*;
 @Getter
 @SuperBuilder
 @NoArgsConstructor
-public class SimpleFilter extends RestFilter implements StateFilter<SimpleState> {
+public class SimpleFilter extends RestFilter implements StateFilter<SimpleState1> {
 
     /**
      * <code>state</code>
-     * {@link io.github.nichetoolkit.mybatis.test.simple.SimpleState} <p>The <code>state</code> field.</p>
-     * @see io.github.nichetoolkit.mybatis.test.simple.SimpleState
+     * {@link SimpleState1} <p>The <code>state</code> field.</p>
+     * @see SimpleState1
      */
-    private SimpleState state;
+    private SimpleState1 state;
 
     /**
      * <code>states</code>
      * {@link java.util.Set} <p>The <code>states</code> field.</p>
      * @see java.util.Set
      */
-    private Set<SimpleState> states;
+    private Set<SimpleState1> states;
 
     @Override
-    public List<SimpleState> getStates() {
+    public List<SimpleState1> getStates() {
         if (GeneralUtils.isNotEmpty(states)) {
             return new ArrayList<>(states);
         }
@@ -54,18 +54,18 @@ public class SimpleFilter extends RestFilter implements StateFilter<SimpleState>
     }
 
     @Override
-    public void setStates(@NonNull Collection<SimpleState> states) {
+    public void setStates(@NonNull Collection<SimpleState1> states) {
         this.states = new HashSet<>(states);
     }
 
     /**
      * <code>setStates</code>
      * <p>The set states setter method.</p>
-     * @param states {@link io.github.nichetoolkit.mybatis.test.simple.SimpleState} <p>The states parameter is <code>SimpleState</code> type.</p>
-     * @see io.github.nichetoolkit.mybatis.test.simple.SimpleState
+     * @param states {@link SimpleState1} <p>The states parameter is <code>SimpleState</code> type.</p>
+     * @see SimpleState1
      * @see org.springframework.lang.NonNull
      */
-    public void setStates(@NonNull SimpleState... states) {
+    public void setStates(@NonNull SimpleState1... states) {
         this.states = new HashSet<>(Arrays.asList(states));
     }
 
@@ -77,7 +77,7 @@ public class SimpleFilter extends RestFilter implements StateFilter<SimpleState>
      * @see io.github.nichetoolkit.rice.filter.StateFilter
      * @see io.github.nichetoolkit.rest.RestException
      */
-    public StateFilter<SimpleState> toStateSql() throws RestException {
+    public StateFilter<SimpleState1> toStateSql() throws RestException {
         return toStateSql("state");
     }
 }

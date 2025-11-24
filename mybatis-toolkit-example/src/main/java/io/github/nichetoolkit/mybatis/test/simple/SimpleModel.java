@@ -21,6 +21,7 @@ import java.util.Date;
  * @see io.github.nichetoolkit.rice.RestTableKey
  * @see lombok.Setter
  * @see lombok.Getter
+ * @see lombok.experimental.SuperBuilder
  * @see com.fasterxml.jackson.annotation.JsonInclude
  * @see com.fasterxml.jackson.annotation.JsonIgnoreProperties
  * @since Jdk1.8
@@ -49,11 +50,18 @@ public class SimpleModel extends RestInfoModel<SimpleModel,SimpleEntity> impleme
     private Date time;
 
     /**
-     * <code>status</code>
-     * {@link SimpleState} <p>The <code>status</code> field.</p>
-     * @see SimpleState
+     * <code>state1</code>
+     * {@link io.github.nichetoolkit.mybatis.test.simple.SimpleState1} <p>The <code>state1</code> field.</p>
+     * @see io.github.nichetoolkit.mybatis.test.simple.SimpleState1
      */
-    private SimpleState status;
+    private SimpleState1 state1;
+
+    /**
+     * <code>state2</code>
+     * {@link io.github.nichetoolkit.mybatis.test.simple.SimpleState2} <p>The <code>state2</code> field.</p>
+     * @see io.github.nichetoolkit.mybatis.test.simple.SimpleState2
+     */
+    private SimpleState2 state2;
 
     /**
      * <code>SimpleModel</code>
@@ -77,7 +85,8 @@ public class SimpleModel extends RestInfoModel<SimpleModel,SimpleEntity> impleme
         SimpleEntity entity = new SimpleEntity();
         BeanUtils.copyNonnullProperties(this,entity);
         entity.setOperate(this.operate.getKey());
-        entity.setStatus(this.status.getKey());
+        entity.setState1(this.state1.getKey());
+        entity.setState2(this.state2.getKey());
         return entity;
     }
 

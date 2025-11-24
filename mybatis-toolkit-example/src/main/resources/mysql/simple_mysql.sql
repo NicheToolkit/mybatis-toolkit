@@ -6,7 +6,8 @@ CREATE TABLE IF NOT EXISTS `ntr_simple`
   `description` VARCHAR(256),
   `link_id`     VARCHAR(64),
   `time` TIMESTAMP,
-  `status` TINYINT,
+  `state1` TINYINT,
+  `state2` VARCHAR(32),
   `operate` TINYINT,
   `logic` TINYINT,
   `create_time` TIMESTAMP,
@@ -18,7 +19,9 @@ ALTER TABLE `ntr_simple` ADD INDEX IDX_NTR_SIMPLE_LINK_ID (`link_id`);
 
 ALTER TABLE `ntr_simple` ADD INDEX IDX_NTR_SIMPLE_TIME (`time`);
 
-ALTER TABLE `ntr_simple` ADD INDEX IDX_NTR_SIMPLE_STATUS (`status`);
+ALTER TABLE `ntr_simple` ADD INDEX IDX_NTR_SIMPLE_STATE1 (`state1`);
+
+ALTER TABLE `ntr_simple` ADD INDEX IDX_NTR_SIMPLE_STATE2 (`state2`);
 
 ALTER TABLE `ntr_simple` ADD INDEX IDX_NTR_SIMPLE_OPERATE (`operate`);
 
@@ -32,7 +35,8 @@ CREATE TABLE IF NOT EXISTS `ntr_simple_dynamic`
   `description` VARCHAR(256),
   `link_id`     VARCHAR(64),
   `time` TIMESTAMP,
-  `status` TINYINT,
+  `state1` TINYINT,
+  `state2` VARCHAR(32),
   `operate` TINYINT,
   `logic` TINYINT,
   `create_time` TIMESTAMP,
@@ -44,7 +48,9 @@ ALTER TABLE `ntr_simple_dynamic` ADD INDEX IDX_NTR_SIMPLE_DYNAMIC_LINK_ID (`link
 
 ALTER TABLE `ntr_simple_dynamic` ADD INDEX IDX_NTR_SIMPLE_DYNAMIC_TIME (`time`);
 
-ALTER TABLE `ntr_simple_dynamic` ADD INDEX IDX_NTR_SIMPLE_DYNAMIC_STATUS (`status`);
+ALTER TABLE `ntr_simple_dynamic` ADD INDEX IDX_NTR_SIMPLE_DYNAMIC_STATE1 (`state1`);
+
+ALTER TABLE `ntr_simple_dynamic` ADD INDEX IDX_NTR_SIMPLE_DYNAMIC_STATE2 (`state2`);
 
 ALTER TABLE `ntr_simple_dynamic` ADD INDEX IDX_NTR_SIMPLE_DYNAMIC_OPERATE (`operate`);
 
