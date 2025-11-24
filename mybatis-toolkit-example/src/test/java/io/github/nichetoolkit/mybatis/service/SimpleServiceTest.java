@@ -8,6 +8,7 @@ import io.github.nichetoolkit.mybatis.test.simple.SimpleModel;
 import io.github.nichetoolkit.mybatis.test.simple.SimpleState2;
 import io.github.nichetoolkit.rest.RestException;
 import io.github.nichetoolkit.rest.RestKey;
+import io.github.nichetoolkit.rest.RestState;
 import io.github.nichetoolkit.rest.util.DateUtils;
 import io.github.nichetoolkit.rest.util.GeneralUtils;
 import io.github.nichetoolkit.rest.util.JsonUtils;
@@ -392,7 +393,10 @@ class SimpleServiceTest extends MybatisExampleApplicationTests {
     @Order(18)
     @Test
     public void alertById() throws RestException {
-        simpleService.alertById(RestTableKey.of(tableKey), testId, SimpleState1.TEST);
+//        simpleService.alertById(RestTableKey.of(tableKey), testId, SimpleState1.TEST);
+//        simpleService.alertById(RestTableKey.of(tableKey), testId, SimpleState2.TEST);
+
+        simpleService.alertById(RestTableKey.of(tableKey), testId, RestState.of("simpleState2",SimpleState2.TEST));
     }
 
     /**
