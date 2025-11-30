@@ -2,8 +2,8 @@ package io.github.nichetoolkit.mybatis.defaults;
 
 import io.github.nichetoolkit.mybatis.MybatisTable;
 import io.github.nichetoolkit.mybatis.MybatisTableFactory;
-import org.springframework.lang.NonNull;
-import org.springframework.lang.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -13,7 +13,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * <p>The default caching table factory class.</p>
  * @author Cyan (snow22314@outlook.com)
  * @see io.github.nichetoolkit.mybatis.MybatisTableFactory
- * @since Jdk1.8
+ * @since Jdk17
  */
 public class DefaultCachingTableFactory implements MybatisTableFactory {
 

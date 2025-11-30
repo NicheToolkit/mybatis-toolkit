@@ -16,7 +16,7 @@ import io.github.nichetoolkit.rice.InfoEntity;
  * @see io.github.nichetoolkit.mybatis.MybatisInfoMapper
  * @see io.github.nichetoolkit.rice.InfoEntity
  * @see io.github.nichetoolkit.mybatis.MybatisMapper
- * @since Jdk1.8
+ * @since Jdk17
  */
 public interface MybatisInfoRecord<M extends MybatisInfoMapper<E, I>, E extends InfoEntity<I>, I> extends MybatisMapper<E> {
 

@@ -22,7 +22,7 @@ import java.util.List;
  * @see io.github.nichetoolkit.rice.RestId
  * @see io.github.nichetoolkit.mybatis.MybatisMapper
  * @see io.github.nichetoolkit.rice.mapper.natives.FindFickleMapper
- * @since Jdk1.8
+ * @since Jdk17
  */
 public interface MybatisFindFickleMapper<E extends RestId<I>, I> extends MybatisMapper<E>, FindFickleMapper<E, I> {
 

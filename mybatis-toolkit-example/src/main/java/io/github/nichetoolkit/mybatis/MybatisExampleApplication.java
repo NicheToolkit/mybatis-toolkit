@@ -13,7 +13,7 @@ import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
  * @see org.springframework.boot.web.servlet.support.SpringBootServletInitializer
  * @see org.springframework.boot.autoconfigure.SpringBootApplication
  * @see io.github.nichetoolkit.mybatis.scan.EnableMybatisConfiguration
- * @since Jdk1.8
+ * @since Jdk17
  */
 @SpringBootApplication
 @EnableMybatisConfiguration

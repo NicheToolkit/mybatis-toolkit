@@ -1,7 +1,7 @@
 package io.github.nichetoolkit.mybatis.handler;
 
-import com.fasterxml.jackson.databind.type.CollectionType;
-import com.fasterxml.jackson.databind.type.TypeFactory;
+import io.github.nichetoolkit.rest.holder.ObjectMapperHolder;
+import tools.jackson.databind.type.CollectionType;
 import io.github.nichetoolkit.mybatis.fickle.RestFickle;
 import io.github.nichetoolkit.rest.util.JsonUtils;
 
@@ -12,16 +12,16 @@ import java.util.List;
  * <p>The fickle list type handler class.</p>
  * @author Cyan (snow22314@outlook.com)
  * @see io.github.nichetoolkit.mybatis.handler.FickleResultTypeHandler
- * @since Jdk1.8
+ * @since Jdk17
  */
 public class FickleListTypeHandler extends FickleResultTypeHandler {
 
     /**
      * <code>COLLECTION_TYPE</code>
-     * {@link com.fasterxml.jackson.databind.type.CollectionType} <p>The constant <code>COLLECTION_TYPE</code> field.</p>
-     * @see com.fasterxml.jackson.databind.type.CollectionType
+     * {@link tools.jackson.databind.type.CollectionType} <p>The constant <code>COLLECTION_TYPE</code> field.</p>
+     * @see tools.jackson.databind.type.CollectionType
      */
-    private static final CollectionType COLLECTION_TYPE = TypeFactory.defaultInstance().constructCollectionType(List.class, RestFickle.OfRestFickle.class);
+    private static final CollectionType COLLECTION_TYPE = ObjectMapperHolder.typeFactory().constructCollectionType(List.class, RestFickle.OfRestFickle.class);
 
     /**
      * <code>FickleListTypeHandler</code>

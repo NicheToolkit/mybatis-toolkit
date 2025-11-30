@@ -1,12 +1,12 @@
 package io.github.nichetoolkit.mybatis.defaults;
 
 
-import com.fasterxml.jackson.databind.JavaType;
+import tools.jackson.databind.JavaType;
 import io.github.nichetoolkit.mybatis.MybatisColumn;
 import io.github.nichetoolkit.mybatis.MybatisColumnFactory;
 import io.github.nichetoolkit.mybatis.MybatisField;
 import io.github.nichetoolkit.mybatis.MybatisTable;
-import org.springframework.lang.NonNull;
+import org.jspecify.annotations.NonNull;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,7 +16,7 @@ import java.util.Optional;
  * <p>The default column factory chain class.</p>
  * @author Cyan (snow22314@outlook.com)
  * @see io.github.nichetoolkit.mybatis.MybatisColumnFactory.Chain
- * @since Jdk1.8
+ * @since Jdk17
  */
 public class DefaultColumnFactoryChain implements MybatisColumnFactory.Chain {
     /**

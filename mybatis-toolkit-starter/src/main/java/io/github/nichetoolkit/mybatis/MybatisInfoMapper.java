@@ -17,7 +17,7 @@ import java.util.List;
  * @see io.github.nichetoolkit.rice.RestInfo
  * @see io.github.nichetoolkit.mybatis.MybatisSuperMapper
  * @see io.github.nichetoolkit.rice.mapper.InfoMapper
- * @since Jdk1.8
+ * @since Jdk17
  */
 public interface MybatisInfoMapper<E extends RestInfo<I>, I> extends MybatisSuperMapper<E, I>, InfoMapper<E, I> {
 

@@ -1,15 +1,15 @@
 package io.github.nichetoolkit.mybatis;
 
 import io.github.nichetoolkit.rest.RestOrder;
-import org.springframework.lang.NonNull;
-import org.springframework.lang.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 
 /**
  * <code>MybatisTableFactory</code>
  * <p>The mybatis table factory interface.</p>
  * @author Cyan (snow22314@outlook.com)
  * @see io.github.nichetoolkit.rest.RestOrder
- * @since Jdk1.8
+ * @since Jdk17
  */
 public interface MybatisTableFactory extends RestOrder {
 
@@ -19,7 +19,7 @@ public interface MybatisTableFactory extends RestOrder {
      * @param entityType {@link java.lang.Class} <p>The entity type parameter is <code>Class</code> type.</p>
      * @return boolean <p>The supports return object is <code>boolean</code> type.</p>
      * @see java.lang.Class
-     * @see org.springframework.lang.NonNull
+     * @see org.jspecify.annotations.NonNull
      */
     boolean supports(@NonNull Class<?> entityType);
 
@@ -34,8 +34,8 @@ public interface MybatisTableFactory extends RestOrder {
      * @param chain          {@link io.github.nichetoolkit.mybatis.MybatisTableFactory.Chain} <p>The chain parameter is <code>Chain</code> type.</p>
      * @return {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>The create table return object is <code>MybatisTable</code> type.</p>
      * @see java.lang.Class
-     * @see org.springframework.lang.NonNull
-     * @see org.springframework.lang.Nullable
+     * @see org.jspecify.annotations.NonNull
+     * @see org.jspecify.annotations.Nullable
      * @see io.github.nichetoolkit.mybatis.MybatisTableFactory.Chain
      */
     MybatisTable createTable(@NonNull Class<?> entityType, @Nullable Class<?> identityType, @Nullable Class<?> linkageType, @Nullable Class<?> alertnessType, @Nullable Class<?> ficklenessType, Chain chain);
@@ -44,7 +44,7 @@ public interface MybatisTableFactory extends RestOrder {
      * <code>Chain</code>
      * <p>The chain interface.</p>
      * @author Cyan (snow22314@outlook.com)
-     * @since Jdk1.8
+     * @since Jdk17
      */
     interface Chain {
         /**
@@ -57,8 +57,8 @@ public interface MybatisTableFactory extends RestOrder {
          * @param ficklenessType {@link java.lang.Class} <p>The fickleness type parameter is <code>Class</code> type.</p>
          * @return {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>The create table return object is <code>MybatisTable</code> type.</p>
          * @see java.lang.Class
-         * @see org.springframework.lang.NonNull
-         * @see org.springframework.lang.Nullable
+         * @see org.jspecify.annotations.NonNull
+         * @see org.jspecify.annotations.Nullable
          */
         MybatisTable createTable(@NonNull Class<?> entityType, @Nullable Class<?> identityType, @Nullable Class<?> linkageType, @Nullable Class<?> alertnessType, @Nullable Class<?> ficklenessType);
     }

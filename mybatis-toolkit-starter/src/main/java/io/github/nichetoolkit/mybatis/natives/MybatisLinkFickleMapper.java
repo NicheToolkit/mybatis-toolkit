@@ -23,7 +23,7 @@ import java.util.List;
  * @see io.github.nichetoolkit.rice.RestId
  * @see io.github.nichetoolkit.mybatis.MybatisMapper
  * @see io.github.nichetoolkit.rice.mapper.natives.LinkFickleMapper
- * @since Jdk1.8
+ * @since Jdk17
  */
 public interface MybatisLinkFickleMapper<E extends RestId<I>, L, I> extends MybatisMapper<E>, LinkFickleMapper<E, L, I> {
 

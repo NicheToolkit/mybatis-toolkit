@@ -1,7 +1,7 @@
 package io.github.nichetoolkit.mybatis;
 
-import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.type.TypeFactory;
+import io.github.nichetoolkit.rest.holder.ObjectMapperHolder;
+import tools.jackson.databind.JavaType;
 import io.github.nichetoolkit.mybatis.column.*;
 import io.github.nichetoolkit.mybatis.defaults.DefaultColumnFactoryChain;
 import io.github.nichetoolkit.mybatis.defaults.DefaultTableFactoryChain;
@@ -14,8 +14,8 @@ import io.github.nichetoolkit.rest.util.GeneralUtils;
 import io.github.nichetoolkit.rest.util.OptionalUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.support.SpringFactoriesLoader;
-import org.springframework.lang.NonNull;
-import org.springframework.lang.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 
 import java.lang.reflect.*;
 import java.util.*;
@@ -28,7 +28,7 @@ import java.util.function.Function;
  * <p>The mybatis factory class.</p>
  * @author Cyan (snow22314@outlook.com)
  * @see lombok.extern.slf4j.Slf4j
- * @since Jdk1.8
+ * @since Jdk17
  */
 @Slf4j
 public abstract class MybatisFactory {
@@ -82,9 +82,9 @@ public abstract class MybatisFactory {
      * @return {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>The create table return object is <code>MybatisTable</code> type.</p>
      * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
      * @see java.lang.Class
-     * @see org.springframework.lang.NonNull
+     * @see org.jspecify.annotations.NonNull
      * @see java.lang.reflect.Method
-     * @see org.springframework.lang.Nullable
+     * @see org.jspecify.annotations.Nullable
      * @see io.github.nichetoolkit.mybatis.MybatisTable
      * @see java.lang.SuppressWarnings
      * @see io.github.nichetoolkit.rest.RestException
@@ -112,8 +112,8 @@ public abstract class MybatisFactory {
      * @param ficklenessType {@link java.lang.Class} <p>The fickleness type parameter is <code>Class</code> type.</p>
      * @return {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>The create table return object is <code>MybatisTable</code> type.</p>
      * @see java.lang.Class
-     * @see org.springframework.lang.NonNull
-     * @see org.springframework.lang.Nullable
+     * @see org.jspecify.annotations.NonNull
+     * @see org.jspecify.annotations.Nullable
      * @see io.github.nichetoolkit.mybatis.MybatisTable
      * @see java.lang.SuppressWarnings
      */
@@ -245,13 +245,11 @@ public abstract class MybatisFactory {
         Class<?> fieldType = declaredField.getType();
         Type genericType = declaredField.getGenericType();
         Class<?> entityType = null;
-        if (genericType instanceof ParameterizedType) {
-            ParameterizedType parameterizedType = (ParameterizedType) genericType;
+        if (genericType instanceof ParameterizedType parameterizedType) {
             Type rawType = parameterizedType.getRawType();
-            if (!(rawType instanceof Class)) {
+            if (!(rawType instanceof Class<?> rawClass)) {
                 return;
             }
-            Class<?> rawClass = (Class<?>) rawType;
             if (Collection.class.isAssignableFrom(rawClass)) {
                 Type[] typeArguments = parameterizedType.getActualTypeArguments();
                 Type actualType = typeArguments[0];
@@ -299,25 +297,22 @@ public abstract class MybatisFactory {
         Type genericType = declaredField.getGenericType();
         boolean isPresentFickleType = false;
         JavaType fickleType = null;
-        if (genericType instanceof ParameterizedType) {
-            ParameterizedType parameterizedType = (ParameterizedType) genericType;
+        if (genericType instanceof ParameterizedType parameterizedType) {
             Type rawType = parameterizedType.getRawType();
-            if (!(rawType instanceof Class)) {
+            if (!(rawType instanceof Class<?> rawClass)) {
                 return;
             }
-            Class<?> rawClass = (Class<?>) rawType;
             if (Collection.class.isAssignableFrom(rawClass)) {
                 Type[] typeArguments = parameterizedType.getActualTypeArguments();
                 Type actualType = typeArguments[0];
-                if (actualType instanceof ParameterizedType) {
-                    ParameterizedType actualParameterizedType = (ParameterizedType) actualType;
+                if (actualType instanceof ParameterizedType actualParameterizedType) {
                     Type actualRawType = actualParameterizedType.getRawType();
                     if (!(actualRawType instanceof Class)) {
                         return;
                     }
                     if (RestFickle.class.isAssignableFrom((Class<?>) actualRawType)) {
                         isPresentFickleType = true;
-                        fickleType = TypeFactory.defaultInstance().constructCollectionType(List.class, RestFickle.class);
+                        fickleType = ObjectMapperHolder.typeFactory().constructCollectionType(List.class, RestFickle.class);
                     }
                 }
 
@@ -328,31 +323,28 @@ public abstract class MybatisFactory {
                 if (!(keyOfActualType instanceof Class)) {
                     return;
                 }
-                if (valueOfActualType instanceof ParameterizedType) {
-                    ParameterizedType actualParameterizedType = (ParameterizedType) valueOfActualType;
+                if (valueOfActualType instanceof ParameterizedType actualParameterizedType) {
                     Type valueActualRawType = actualParameterizedType.getRawType();
                     if (!(valueActualRawType instanceof Class)) {
                         return;
                     }
                     if (String.class.isAssignableFrom((Class<?>) keyOfActualType) && RestFickle.class.isAssignableFrom((Class<?>) valueActualRawType)) {
                         isPresentFickleType = true;
-                        fickleType = TypeFactory.defaultInstance().constructMapType(Map.class, String.class, RestFickle.class);
+                        fickleType = ObjectMapperHolder.typeFactory().constructMapType(Map.class, String.class, RestFickle.class);
                     }
                 }
 
             }
-        } else if (genericType instanceof GenericArrayType) {
-            GenericArrayType genericArrayType = (GenericArrayType) genericType;
+        } else if (genericType instanceof GenericArrayType genericArrayType) {
             Type genericComponentType = genericArrayType.getGenericComponentType();
-            if (genericComponentType instanceof ParameterizedType) {
-                ParameterizedType arrayParameterizedType = (ParameterizedType) genericComponentType;
+            if (genericComponentType instanceof ParameterizedType arrayParameterizedType) {
                 Type arrayRawType = arrayParameterizedType.getRawType();
                 if (!(arrayRawType instanceof Class)) {
                     return;
                 }
                 if (RestFickle.class.isAssignableFrom((Class<?>) arrayRawType)) {
                     isPresentFickleType = true;
-                    fickleType = TypeFactory.defaultInstance().constructArrayType(RestFickle.class);
+                    fickleType = ObjectMapperHolder.typeFactory().constructArrayType(RestFickle.class);
                 }
             }
 
@@ -448,7 +440,7 @@ public abstract class MybatisFactory {
      * <code>Instance</code>
      * <p>The instance class.</p>
      * @author Cyan (snow22314@outlook.com)
-     * @since Jdk1.8
+     * @since Jdk17
      */
     static class Instance {
         /**

@@ -23,7 +23,7 @@ import java.util.List;
  * @see io.github.nichetoolkit.mybatis.MybatisSqlProvider
  * @see lombok.extern.slf4j.Slf4j
  * @see org.springframework.stereotype.Component
- * @since Jdk1.8
+ * @since Jdk17
  */
 @Slf4j
 @Component
@@ -38,7 +38,7 @@ public class MybatisInfoProvider implements MybatisSqlProvider {
      * <code>findDynamicByName</code>
      * <p>The find dynamic by name method.</p>
      * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>The provider context parameter is <code>ProviderContext</code> type.</p>
-     * @param tableName       {@link java.lang.String} <p>The tableName parameter is <code>String</code> type.</p>
+     * @param tableName       {@link java.lang.String} <p>The table name parameter is <code>String</code> type.</p>
      * @param name            {@link java.lang.String} <p>The name parameter is <code>String</code> type.</p>
      * @param logic           {@link java.lang.Object} <p>The logic parameter is <code>Object</code> type.</p>
      * @return {@link java.lang.String} <p>The find dynamic by name return object is <code>String</code> type.</p>
@@ -61,7 +61,7 @@ public class MybatisInfoProvider implements MybatisSqlProvider {
      * <p>The find dynamic by name and not id method.</p>
      * @param <I>             {@link java.lang.Object} <p>The parameter can be of any type.</p>
      * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>The provider context parameter is <code>ProviderContext</code> type.</p>
-     * @param tableName       {@link java.lang.String} <p>The tableName parameter is <code>String</code> type.</p>
+     * @param tableName       {@link java.lang.String} <p>The table name parameter is <code>String</code> type.</p>
      * @param name            {@link java.lang.String} <p>The name parameter is <code>String</code> type.</p>
      * @param id              I <p>The id parameter is <code>I</code> type.</p>
      * @param logic           {@link java.lang.Object} <p>The logic parameter is <code>Object</code> type.</p>
@@ -85,7 +85,7 @@ public class MybatisInfoProvider implements MybatisSqlProvider {
      * <p>The find dynamic by entity unique method.</p>
      * @param <E>             {@link java.lang.Object} <p>The parameter can be of any type.</p>
      * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>The provider context parameter is <code>ProviderContext</code> type.</p>
-     * @param tableName       {@link java.lang.String} <p>The tableName parameter is <code>String</code> type.</p>
+     * @param tableName       {@link java.lang.String} <p>The table name parameter is <code>String</code> type.</p>
      * @param entity          E <p>The entity parameter is <code>E</code> type.</p>
      * @param logic           {@link java.lang.Object} <p>The logic parameter is <code>Object</code> type.</p>
      * @return {@link java.lang.String} <p>The find dynamic by entity unique return object is <code>String</code> type.</p>
@@ -107,7 +107,7 @@ public class MybatisInfoProvider implements MybatisSqlProvider {
      * @param <I>             {@link java.lang.Object} <p>The parameter can be of any type.</p>
      * @param <E>             {@link java.lang.Object} <p>The parameter can be of any type.</p>
      * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>The provider context parameter is <code>ProviderContext</code> type.</p>
-     * @param tableName       {@link java.lang.String} <p>The tableName parameter is <code>String</code> type.</p>
+     * @param tableName       {@link java.lang.String} <p>The table name parameter is <code>String</code> type.</p>
      * @param entity          E <p>The entity parameter is <code>E</code> type.</p>
      * @param id              I <p>The id parameter is <code>I</code> type.</p>
      * @param logic           {@link java.lang.Object} <p>The logic parameter is <code>Object</code> type.</p>

@@ -2,8 +2,8 @@ package io.github.nichetoolkit.mybatis;
 
 import io.github.nichetoolkit.rest.RestOrder;
 import org.springframework.core.io.support.SpringFactoriesLoader;
-import org.springframework.lang.NonNull;
-import org.springframework.lang.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 
 import java.lang.reflect.Method;
 import java.util.List;
@@ -15,7 +15,7 @@ import java.util.Optional;
  * <p>The mybatis class finder interface.</p>
  * @author Cyan (snow22314@outlook.com)
  * @see io.github.nichetoolkit.rest.RestOrder
- * @since Jdk1.8
+ * @since Jdk17
  */
 public interface MybatisClassFinder extends RestOrder {
 
@@ -135,9 +135,9 @@ public interface MybatisClassFinder extends RestOrder {
      * @param mapperMethod {@link java.lang.reflect.Method} <p>The mapper method parameter is <code>Method</code> type.</p>
      * @return {@link java.util.Optional} <p>The find entity return object is <code>Optional</code> type.</p>
      * @see java.lang.Class
-     * @see org.springframework.lang.NonNull
+     * @see org.jspecify.annotations.NonNull
      * @see java.lang.reflect.Method
-     * @see org.springframework.lang.Nullable
+     * @see org.jspecify.annotations.Nullable
      * @see java.util.Optional
      */
     Optional<Class<?>> findEntity(@NonNull Class<?> mapperType, @Nullable Method mapperMethod);
@@ -150,9 +150,9 @@ public interface MybatisClassFinder extends RestOrder {
      * @param entityType   {@link java.lang.Class} <p>The entity type parameter is <code>Class</code> type.</p>
      * @return {@link java.util.Optional} <p>The find identity return object is <code>Optional</code> type.</p>
      * @see java.lang.Class
-     * @see org.springframework.lang.NonNull
+     * @see org.jspecify.annotations.NonNull
      * @see java.lang.reflect.Method
-     * @see org.springframework.lang.Nullable
+     * @see org.jspecify.annotations.Nullable
      * @see java.util.Optional
      */
     Optional<Class<?>> findIdentity(@NonNull Class<?> mapperType, @Nullable Method mapperMethod, @NonNull Class<?> entityType);
@@ -165,9 +165,9 @@ public interface MybatisClassFinder extends RestOrder {
      * @param entityType   {@link java.lang.Class} <p>The entity type parameter is <code>Class</code> type.</p>
      * @return {@link java.util.Optional} <p>The find linkage return object is <code>Optional</code> type.</p>
      * @see java.lang.Class
-     * @see org.springframework.lang.NonNull
+     * @see org.jspecify.annotations.NonNull
      * @see java.lang.reflect.Method
-     * @see org.springframework.lang.Nullable
+     * @see org.jspecify.annotations.Nullable
      * @see java.util.Optional
      */
     Optional<Class<?>> findLinkage(@NonNull Class<?> mapperType, @Nullable Method mapperMethod, @NonNull Class<?> entityType);
@@ -180,9 +180,9 @@ public interface MybatisClassFinder extends RestOrder {
      * @param entityType   {@link java.lang.Class} <p>The entity type parameter is <code>Class</code> type.</p>
      * @return {@link java.util.Optional} <p>The find alertness return object is <code>Optional</code> type.</p>
      * @see java.lang.Class
-     * @see org.springframework.lang.NonNull
+     * @see org.jspecify.annotations.NonNull
      * @see java.lang.reflect.Method
-     * @see org.springframework.lang.Nullable
+     * @see org.jspecify.annotations.Nullable
      * @see java.util.Optional
      */
     Optional<Class<?>> findAlertness(@NonNull Class<?> mapperType, @Nullable Method mapperMethod, @NonNull Class<?> entityType);
@@ -196,9 +196,9 @@ public interface MybatisClassFinder extends RestOrder {
      * @param entityType   {@link java.lang.Class} <p>The entity type parameter is <code>Class</code> type.</p>
      * @return {@link java.util.Optional} <p>The find fickleness return object is <code>Optional</code> type.</p>
      * @see java.lang.Class
-     * @see org.springframework.lang.NonNull
+     * @see org.jspecify.annotations.NonNull
      * @see java.lang.reflect.Method
-     * @see org.springframework.lang.Nullable
+     * @see org.jspecify.annotations.Nullable
      * @see java.util.Optional
      */
     Optional<Class<?>> findFickleness(@NonNull Class<?> mapperType, @Nullable Method mapperMethod, @NonNull Class<?> entityType);
@@ -252,7 +252,7 @@ public interface MybatisClassFinder extends RestOrder {
      * <code>ClassFinderInstance</code>
      * <p>The class finder instance class.</p>
      * @author Cyan (snow22314@outlook.com)
-     * @since Jdk1.8
+     * @since Jdk17
      */
     class ClassFinderInstance {
         /**

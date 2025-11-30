@@ -2,16 +2,14 @@ package io.github.nichetoolkit.mybatis.test.load;
 
 
 import io.github.nichetoolkit.rest.util.BeanUtils;
-import lombok.experimental.SuperBuilder;
 
 /**
  * <code>LoadLink1Model</code>
  * <p>The load link 1 model class.</p>
  * @author Cyan (snow22314@outlook.com)
  * @see io.github.nichetoolkit.mybatis.test.load.LoadLinkModel
- * @since Jdk1.8
+ * @since Jdk17
  */
-@SuperBuilder
 public class LoadLink1Model extends LoadLinkModel<LoadLink1Model, LoadLink1Entity> {
 
     /**

@@ -18,7 +18,7 @@ import java.util.Set;
  * <p>The load auto result map handler class.</p>
  * @author Cyan (snow22314@outlook.com)
  * @see io.github.nichetoolkit.mybatis.handler.AutoResultMapHandler
- * @since Jdk1.8
+ * @since Jdk17
  */
 public class LoadAutoResultMapHandler implements AutoResultMapHandler {
 

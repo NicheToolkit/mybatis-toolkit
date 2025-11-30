@@ -28,7 +28,7 @@ import java.util.List;
  * @author Cyan (snow22314@outlook.com)
  * @see io.github.nichetoolkit.mybatis.MybatisExampleApplicationTests
  * @see org.junit.jupiter.api.TestMethodOrder
- * @since Jdk1.8
+ * @since Jdk17
  */
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class TemplateServiceTest extends MybatisExampleApplicationTests {

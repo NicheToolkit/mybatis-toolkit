@@ -16,7 +16,8 @@ import org.springframework.context.annotation.Bean;
  * @see lombok.extern.slf4j.Slf4j
  * @see org.springframework.boot.autoconfigure.AutoConfiguration
  * @see org.springframework.boot.autoconfigure.AutoConfigureAfter
- * @since Jdk1.8
+ * @see org.springframework.boot.autoconfigure.ImportAutoConfiguration
+ * @since Jdk17
  */
 @Slf4j
 @AutoConfiguration

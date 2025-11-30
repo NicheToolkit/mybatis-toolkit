@@ -16,7 +16,7 @@ import io.github.nichetoolkit.rice.IdEntity;
  * @see io.github.nichetoolkit.mybatis.MybatisSuperMapper
  * @see io.github.nichetoolkit.rice.IdEntity
  * @see io.github.nichetoolkit.mybatis.MybatisMapper
- * @since Jdk1.8
+ * @since Jdk17
  */
 public interface MybatisSuperRecord<M extends MybatisSuperMapper<E, I>, E extends IdEntity<I>, I> extends MybatisMapper<E> {
 

@@ -10,7 +10,7 @@ import org.apache.ibatis.annotations.Mapper;
  * @author Cyan (snow22314@outlook.com)
  * @see io.github.nichetoolkit.mybatis.MybatisInfoMapper
  * @see org.apache.ibatis.annotations.Mapper
- * @since Jdk1.8
+ * @since Jdk17
  */
 @Mapper
 public interface CommonMapper extends MybatisInfoMapper<CommonEntity, String> {

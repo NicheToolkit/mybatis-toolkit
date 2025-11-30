@@ -23,7 +23,7 @@ import java.util.List;
  * @see io.github.nichetoolkit.mybatis.MybatisSqlProvider
  * @see lombok.extern.slf4j.Slf4j
  * @see org.springframework.stereotype.Component
- * @since Jdk1.8
+ * @since Jdk17
  */
 @Slf4j
 @Component
@@ -39,7 +39,7 @@ public class MybatisRemoveProvider implements MybatisSqlProvider {
      * <p>The remove dynamic by id method.</p>
      * @param <I>             {@link java.lang.Object} <p>The parameter can be of any type.</p>
      * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>The provider context parameter is <code>ProviderContext</code> type.</p>
-     * @param tableName       {@link java.lang.String} <p>The tableName parameter is <code>String</code> type.</p>
+     * @param tableName       {@link java.lang.String} <p>The table name parameter is <code>String</code> type.</p>
      * @param id              I <p>The id parameter is <code>I</code> type.</p>
      * @param logic           {@link java.lang.Object} <p>The logic parameter is <code>Object</code> type.</p>
      * @return {@link java.lang.String} <p>The remove dynamic by id return object is <code>String</code> type.</p>
@@ -63,7 +63,7 @@ public class MybatisRemoveProvider implements MybatisSqlProvider {
      * <p>The remove dynamic all method.</p>
      * @param <I>             {@link java.lang.Object} <p>The parameter can be of any type.</p>
      * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>The provider context parameter is <code>ProviderContext</code> type.</p>
-     * @param tableName       {@link java.lang.String} <p>The tableName parameter is <code>String</code> type.</p>
+     * @param tableName       {@link java.lang.String} <p>The table name parameter is <code>String</code> type.</p>
      * @param idList          {@link java.util.Collection} <p>The id list parameter is <code>Collection</code> type.</p>
      * @param logic           {@link java.lang.Object} <p>The logic parameter is <code>Object</code> type.</p>
      * @return {@link java.lang.String} <p>The remove dynamic all return object is <code>String</code> type.</p>
@@ -87,7 +87,7 @@ public class MybatisRemoveProvider implements MybatisSqlProvider {
      * <code>removeDynamicAllByWhere</code>
      * <p>The remove dynamic all by where method.</p>
      * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>The provider context parameter is <code>ProviderContext</code> type.</p>
-     * @param tableName       {@link java.lang.String} <p>The tableName parameter is <code>String</code> type.</p>
+     * @param tableName       {@link java.lang.String} <p>The table name parameter is <code>String</code> type.</p>
      * @param whereSql        {@link java.lang.String} <p>The where sql parameter is <code>String</code> type.</p>
      * @param logic           {@link java.lang.Object} <p>The logic parameter is <code>Object</code> type.</p>
      * @return {@link java.lang.String} <p>The remove dynamic all by where return object is <code>String</code> type.</p>

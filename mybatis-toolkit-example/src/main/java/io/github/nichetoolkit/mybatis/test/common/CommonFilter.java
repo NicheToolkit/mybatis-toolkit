@@ -12,7 +12,7 @@ import lombok.experimental.SuperBuilder;
  * @see io.github.nichetoolkit.rice.RestFilter
  * @see lombok.experimental.SuperBuilder
  * @see lombok.NoArgsConstructor
- * @since Jdk1.8
+ * @since Jdk17
  */
 @SuperBuilder
 @NoArgsConstructor

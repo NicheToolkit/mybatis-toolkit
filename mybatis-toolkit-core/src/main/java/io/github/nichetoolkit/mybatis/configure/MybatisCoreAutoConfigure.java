@@ -11,7 +11,8 @@ import org.springframework.boot.autoconfigure.AutoConfigureAfter;
  * @author Cyan (snow22314@outlook.com)
  * @see lombok.extern.slf4j.Slf4j
  * @see org.springframework.boot.autoconfigure.AutoConfiguration
- * @since Jdk1.8
+ * @see org.springframework.boot.autoconfigure.AutoConfigureAfter
+ * @since Jdk17
  */
 @Slf4j
 @AutoConfiguration

@@ -13,7 +13,7 @@ import io.github.nichetoolkit.rice.service.SingleService;
  * @see io.github.nichetoolkit.rice.service.FilterService
  * @see io.github.nichetoolkit.rice.service.SingleService
  * @see io.github.nichetoolkit.rice.service.QueryFickleService
- * @since Jdk1.8
+ * @since Jdk17
  */
 public interface FickleEntryService extends FilterService<FickleEntryModel, FickleEntryFilter, String, String>,
         SingleService<FickleEntryModel, String, String>,

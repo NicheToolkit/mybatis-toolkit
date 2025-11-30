@@ -12,7 +12,7 @@ import java.util.List;
  * <p>The load array type handler class.</p>
  * @author Cyan (snow22314@outlook.com)
  * @see io.github.nichetoolkit.mybatis.handler.LoadResultTypeHandler
- * @since Jdk1.8
+ * @since Jdk17
  */
 public class LoadArrayTypeHandler extends LoadResultTypeHandler {
 

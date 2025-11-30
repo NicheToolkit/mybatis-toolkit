@@ -5,8 +5,8 @@ import io.github.nichetoolkit.rest.reflect.DefaultGenericArrayType;
 import io.github.nichetoolkit.rest.reflect.DefaultParameterizedType;
 import io.github.nichetoolkit.rest.reflect.DefaultWildcardType;
 import io.github.nichetoolkit.rest.reflect.RestGenericTypes;
-import org.springframework.lang.NonNull;
-import org.springframework.lang.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
@@ -18,7 +18,7 @@ import java.util.function.Predicate;
  * <p>The mybatis entity class finder class.</p>
  * @author Cyan (snow22314@outlook.com)
  * @see io.github.nichetoolkit.mybatis.MybatisClassFinder
- * @since Jdk1.8
+ * @since Jdk17
  */
 public abstract class MybatisEntityClassFinder implements MybatisClassFinder {
 

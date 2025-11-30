@@ -19,7 +19,7 @@ import java.util.*;
  * @see lombok.Setter
  * @see lombok.Getter
  * @see org.springframework.boot.context.properties.ConfigurationProperties
- * @since Jdk1.8
+ * @since Jdk17
  */
 @Setter
 @Getter

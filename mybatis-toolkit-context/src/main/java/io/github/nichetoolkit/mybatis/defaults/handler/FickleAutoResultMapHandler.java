@@ -1,8 +1,8 @@
 package io.github.nichetoolkit.mybatis.defaults.handler;
 
-import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.type.CollectionType;
-import com.fasterxml.jackson.databind.type.MapType;
+import tools.jackson.databind.JavaType;
+import tools.jackson.databind.type.CollectionType;
+import tools.jackson.databind.type.MapType;
 import io.github.nichetoolkit.mybatis.MybatisColumn;
 import io.github.nichetoolkit.mybatis.MybatisTable;
 import io.github.nichetoolkit.mybatis.handler.*;
@@ -17,7 +17,7 @@ import java.util.List;
  * <p>The fickle auto result map handler class.</p>
  * @author Cyan (snow22314@outlook.com)
  * @see io.github.nichetoolkit.mybatis.handler.AutoResultMapHandler
- * @since Jdk1.8
+ * @since Jdk17
  */
 public class FickleAutoResultMapHandler implements AutoResultMapHandler {
 

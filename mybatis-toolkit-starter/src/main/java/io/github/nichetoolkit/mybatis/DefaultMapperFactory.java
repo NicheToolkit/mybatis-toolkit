@@ -1,10 +1,8 @@
 package io.github.nichetoolkit.mybatis;
 
 import io.github.nichetoolkit.rice.IdEntity;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.binding.MapperRegistry;
 import org.mybatis.spring.SqlSessionTemplate;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * <code>DefaultMapperFactory</code>
@@ -16,7 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @see io.github.nichetoolkit.mybatis.MybatisSuperMapper
  * @see io.github.nichetoolkit.rice.IdEntity
  * @see io.github.nichetoolkit.mybatis.MybatisMapperFactory
- * @since Jdk1.8
+ * @since Jdk17
  */
 public class DefaultMapperFactory<M extends MybatisSuperMapper<E, I>, E extends IdEntity<I>, I> extends MybatisMapperFactory<M,E,I> {
 

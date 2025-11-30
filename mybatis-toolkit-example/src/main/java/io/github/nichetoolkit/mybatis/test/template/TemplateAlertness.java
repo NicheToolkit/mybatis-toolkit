@@ -16,8 +16,9 @@ import java.util.Optional;
  * @see java.io.Serializable
  * @see lombok.Setter
  * @see lombok.Getter
+ * @see lombok.experimental.SuperBuilder
  * @see io.github.nichetoolkit.mybatis.table.RestAlertness
- * @since Jdk1.8
+ * @since Jdk17
  */
 @Setter
 @Getter
@@ -61,10 +62,10 @@ public class TemplateAlertness implements Serializable {
     /**
      * <code>TemplateAlertness</code>
      * <p>Instantiates a new template alertness.</p>
-     * @param state1 {@link TemplateState1} <p>The state 1 parameter is <code>TemplateState1</code> type.</p>
-     * @param state2 {@link TemplateState2} <p>The state 2 parameter is <code>TemplateState2</code> type.</p>
-     * @see TemplateState1
-     * @see TemplateState2
+     * @param state1 {@link io.github.nichetoolkit.mybatis.test.template.TemplateState1} <p>The state 1 parameter is <code>TemplateState1</code> type.</p>
+     * @param state2 {@link io.github.nichetoolkit.mybatis.test.template.TemplateState2} <p>The state 2 parameter is <code>TemplateState2</code> type.</p>
+     * @see io.github.nichetoolkit.mybatis.test.template.TemplateState1
+     * @see io.github.nichetoolkit.mybatis.test.template.TemplateState2
      */
     public TemplateAlertness(TemplateState1 state1, TemplateState2 state2) {
         this.state1 = Optional.ofNullable(state1).map(TemplateState1::getKey).orElse(null);

@@ -18,7 +18,7 @@ import org.apache.ibatis.annotations.Mapper;
  * @see io.github.nichetoolkit.mybatis.MybatisOperateLinkMapper
  * @see io.github.nichetoolkit.mybatis.natives.MybatisFindLoadMapper
  * @see org.apache.ibatis.annotations.Mapper
- * @since Jdk1.8
+ * @since Jdk17
  */
 @Mapper
 public interface LoadMapper extends MybatisInfoMapper<LoadEntity, LoadIdentity>,

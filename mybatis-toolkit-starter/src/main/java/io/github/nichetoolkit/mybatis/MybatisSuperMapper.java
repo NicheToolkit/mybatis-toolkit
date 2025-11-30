@@ -17,7 +17,7 @@ import io.github.nichetoolkit.rice.mapper.SuperMapper;
  * @see io.github.nichetoolkit.mybatis.MybatisDeleteMapper
  * @see io.github.nichetoolkit.mybatis.MybatisColumnMapper
  * @see io.github.nichetoolkit.rice.mapper.SuperMapper
- * @since Jdk1.8
+ * @since Jdk17
  */
 public interface MybatisSuperMapper<E extends RestId<I>, I> extends MybatisMapper<E>, MybatisSaveMapper<E, I>, MybatisFindMapper<E, I>,MybatisFindParamMapper<E, I>, MybatisDeleteMapper<E, I>, MybatisColumnMapper<E, I>, SuperMapper<E, I> {
 

@@ -15,7 +15,7 @@ import org.apache.ibatis.annotations.Mapper;
  * @see io.github.nichetoolkit.mybatis.MybatisRemoveLinkMapper
  * @see io.github.nichetoolkit.mybatis.MybatisOperateLinkMapper
  * @see org.apache.ibatis.annotations.Mapper
- * @since Jdk1.8
+ * @since Jdk17
  */
 @Mapper
 public interface SimpleMapper extends MybatisInfoMapper<SimpleEntity, String>,

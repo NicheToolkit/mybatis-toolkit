@@ -15,7 +15,7 @@ import io.github.nichetoolkit.rice.service.*;
  * @see io.github.nichetoolkit.rice.service.DeleteLinkService
  * @see io.github.nichetoolkit.rice.service.RemoveLinkService
  * @see io.github.nichetoolkit.rice.service.OperateLinkService
- * @since Jdk1.8
+ * @since Jdk17
  */
 public interface LoadLink2Service extends FilterService<LoadLink2Model, RestFilter, String, String>, SingleService<LoadLink2Model, String, String>, QueryLinkService<LoadLink2Model,String,String>,
         AlertLinkService<String, String>, DeleteLinkService<String, String>, RemoveLinkService<String, String>, OperateLinkService<String, String> {

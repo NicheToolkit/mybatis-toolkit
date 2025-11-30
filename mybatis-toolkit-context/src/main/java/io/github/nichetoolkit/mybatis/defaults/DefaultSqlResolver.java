@@ -18,7 +18,7 @@ import java.util.stream.Stream;
  * <p>The default sql resolver class.</p>
  * @author Cyan (snow22314@outlook.com)
  * @see io.github.nichetoolkit.mybatis.MybatisSqlScriptResolver
- * @since Jdk1.8
+ * @since Jdk17
  */
 public abstract class DefaultSqlResolver implements MybatisSqlScriptResolver {
     /**

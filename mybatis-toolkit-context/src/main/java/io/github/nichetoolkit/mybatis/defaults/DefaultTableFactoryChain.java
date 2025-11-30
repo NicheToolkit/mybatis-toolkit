@@ -2,8 +2,8 @@ package io.github.nichetoolkit.mybatis.defaults;
 
 import io.github.nichetoolkit.mybatis.MybatisTable;
 import io.github.nichetoolkit.mybatis.MybatisTableFactory;
-import org.springframework.lang.NonNull;
-import org.springframework.lang.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 
 import java.util.List;
 
@@ -12,7 +12,7 @@ import java.util.List;
  * <p>The default table factory chain class.</p>
  * @author Cyan (snow22314@outlook.com)
  * @see io.github.nichetoolkit.mybatis.MybatisTableFactory.Chain
- * @since Jdk1.8
+ * @since Jdk17
  */
 public class DefaultTableFactoryChain implements MybatisTableFactory.Chain {
     /**

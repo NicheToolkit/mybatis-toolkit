@@ -14,7 +14,7 @@ import java.util.List;
  * @see lombok.Setter
  * @see lombok.Getter
  * @see lombok.experimental.Accessors
- * @since Jdk1.8
+ * @since Jdk17
  */
 @Setter
 @Getter

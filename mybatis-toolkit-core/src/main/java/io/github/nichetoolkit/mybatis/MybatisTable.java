@@ -34,7 +34,7 @@ import java.util.stream.Stream;
  * @author Cyan (snow22314@outlook.com)
  * @see io.github.nichetoolkit.mybatis.MybatisProperty
  * @see lombok.Getter
- * @since Jdk1.8
+ * @since Jdk17
  */
 @Getter
 public class MybatisTable extends MybatisProperty<MybatisTable> {

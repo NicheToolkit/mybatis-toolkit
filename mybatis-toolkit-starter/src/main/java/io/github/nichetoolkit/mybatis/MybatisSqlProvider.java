@@ -1,9 +1,10 @@
 package io.github.nichetoolkit.mybatis;
 
-import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.type.ArrayType;
-import com.fasterxml.jackson.databind.type.CollectionType;
-import com.fasterxml.jackson.databind.type.MapType;
+import io.github.nichetoolkit.rest.util.JacksonUtils;
+import tools.jackson.databind.JavaType;
+import tools.jackson.databind.type.ArrayType;
+import tools.jackson.databind.type.CollectionType;
+import tools.jackson.databind.type.MapType;
 import io.github.nichetoolkit.mybatis.builder.SqlBuilder;
 import io.github.nichetoolkit.mybatis.consts.EntityConstants;
 import io.github.nichetoolkit.mybatis.consts.SQLConstants;
@@ -21,11 +22,10 @@ import io.github.nichetoolkit.rest.holder.ApplicationContextHolder;
 import io.github.nichetoolkit.rest.stream.RestCollectors;
 import io.github.nichetoolkit.rest.stream.RestStream;
 import io.github.nichetoolkit.rest.util.GeneralUtils;
-import io.github.nichetoolkit.rest.util.JsonPurityUtils;
 import io.github.nichetoolkit.rest.util.OptionalUtils;
 import io.github.nichetoolkit.rice.enums.OperateType;
 import org.apache.ibatis.builder.annotation.ProviderContext;
-import org.springframework.lang.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import java.util.*;
 import java.util.function.Function;
@@ -36,7 +36,7 @@ import java.util.stream.IntStream;
  * <code>MybatisSqlProvider</code>
  * <p>The mybatis sql provider interface.</p>
  * @author Cyan (snow22314@outlook.com)
- * @since Jdk1.8
+ * @since Jdk17
  */
 public interface MybatisSqlProvider {
 
@@ -476,7 +476,7 @@ public interface MybatisSqlProvider {
      * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
      * @see org.apache.ibatis.builder.annotation.ProviderContext
      * @see java.lang.String
-     * @see org.springframework.lang.Nullable
+     * @see org.jspecify.annotations.Nullable
      * @see io.github.nichetoolkit.rest.RestException
      */
     static String providingOfTableName(ProviderContext providerContext, @Nullable String tableName) throws RestException {
@@ -502,7 +502,7 @@ public interface MybatisSqlProvider {
      * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
      * @see org.apache.ibatis.builder.annotation.ProviderContext
      * @see java.lang.String
-     * @see org.springframework.lang.Nullable
+     * @see org.jspecify.annotations.Nullable
      * @see io.github.nichetoolkit.rest.RestField
      * @see io.github.nichetoolkit.rest.RestException
      */
@@ -529,7 +529,7 @@ public interface MybatisSqlProvider {
      * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
      * @see org.apache.ibatis.builder.annotation.ProviderContext
      * @see java.lang.String
-     * @see org.springframework.lang.Nullable
+     * @see org.jspecify.annotations.Nullable
      * @see io.github.nichetoolkit.rest.RestField
      * @see io.github.nichetoolkit.rest.RestException
      */
@@ -556,7 +556,7 @@ public interface MybatisSqlProvider {
      * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
      * @see org.apache.ibatis.builder.annotation.ProviderContext
      * @see java.lang.String
-     * @see org.springframework.lang.Nullable
+     * @see org.jspecify.annotations.Nullable
      * @see io.github.nichetoolkit.rest.RestField
      * @see io.github.nichetoolkit.rest.RestException
      */
@@ -583,7 +583,7 @@ public interface MybatisSqlProvider {
      * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
      * @see org.apache.ibatis.builder.annotation.ProviderContext
      * @see java.lang.String
-     * @see org.springframework.lang.Nullable
+     * @see org.jspecify.annotations.Nullable
      * @see io.github.nichetoolkit.rest.RestField
      * @see io.github.nichetoolkit.rest.RestException
      */
@@ -610,7 +610,7 @@ public interface MybatisSqlProvider {
      * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
      * @see org.apache.ibatis.builder.annotation.ProviderContext
      * @see java.lang.String
-     * @see org.springframework.lang.Nullable
+     * @see org.jspecify.annotations.Nullable
      * @see io.github.nichetoolkit.rest.RestField
      * @see io.github.nichetoolkit.rest.RestException
      */
@@ -642,7 +642,7 @@ public interface MybatisSqlProvider {
      * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
      * @see org.apache.ibatis.builder.annotation.ProviderContext
      * @see java.lang.String
-     * @see org.springframework.lang.Nullable
+     * @see org.jspecify.annotations.Nullable
      * @see io.github.nichetoolkit.rest.actuator.ConsumerActuator
      * @see io.github.nichetoolkit.mybatis.load.RestParam
      * @see io.github.nichetoolkit.mybatis.MybatisSqlSupply.SimpleSqlSupply
@@ -678,7 +678,7 @@ public interface MybatisSqlProvider {
      * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
      * @see org.apache.ibatis.builder.annotation.ProviderContext
      * @see java.lang.String
-     * @see org.springframework.lang.Nullable
+     * @see org.jspecify.annotations.Nullable
      * @see io.github.nichetoolkit.rest.actuator.ConsumerActuator
      * @see io.github.nichetoolkit.mybatis.load.RestParam
      * @see io.github.nichetoolkit.mybatis.load.RestLoad
@@ -712,7 +712,7 @@ public interface MybatisSqlProvider {
      * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
      * @see org.apache.ibatis.builder.annotation.ProviderContext
      * @see java.lang.String
-     * @see org.springframework.lang.Nullable
+     * @see org.jspecify.annotations.Nullable
      * @see io.github.nichetoolkit.rest.actuator.ConsumerActuator
      * @see io.github.nichetoolkit.mybatis.load.RestLoad
      * @see io.github.nichetoolkit.mybatis.MybatisSqlSupply.EntrySqlSupply
@@ -742,7 +742,7 @@ public interface MybatisSqlProvider {
      * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
      * @see org.apache.ibatis.builder.annotation.ProviderContext
      * @see java.lang.String
-     * @see org.springframework.lang.Nullable
+     * @see org.jspecify.annotations.Nullable
      * @see io.github.nichetoolkit.rest.actuator.ConsumerActuator
      * @see io.github.nichetoolkit.mybatis.fickle.RestFickle
      * @see io.github.nichetoolkit.mybatis.load.RestLoad
@@ -773,7 +773,7 @@ public interface MybatisSqlProvider {
      * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
      * @see org.apache.ibatis.builder.annotation.ProviderContext
      * @see java.lang.String
-     * @see org.springframework.lang.Nullable
+     * @see org.jspecify.annotations.Nullable
      * @see io.github.nichetoolkit.rest.actuator.ConsumerActuator
      * @see io.github.nichetoolkit.mybatis.fickle.RestFickle
      * @see io.github.nichetoolkit.mybatis.MybatisSqlSupply.EntrySqlSupply
@@ -802,7 +802,7 @@ public interface MybatisSqlProvider {
      * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
      * @see org.apache.ibatis.builder.annotation.ProviderContext
      * @see java.lang.String
-     * @see org.springframework.lang.Nullable
+     * @see org.jspecify.annotations.Nullable
      * @see io.github.nichetoolkit.mybatis.MybatisSqlSupply.EntrySqlSupply
      * @see io.github.nichetoolkit.rest.RestException
      */
@@ -829,7 +829,7 @@ public interface MybatisSqlProvider {
      * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
      * @see org.apache.ibatis.builder.annotation.ProviderContext
      * @see java.lang.String
-     * @see org.springframework.lang.Nullable
+     * @see org.jspecify.annotations.Nullable
      * @see io.github.nichetoolkit.rest.actuator.ConsumerActuator
      * @see io.github.nichetoolkit.mybatis.MybatisSqlSupply.EntrySqlSupply
      * @see io.github.nichetoolkit.rest.RestException
@@ -856,7 +856,7 @@ public interface MybatisSqlProvider {
      * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
      * @see org.apache.ibatis.builder.annotation.ProviderContext
      * @see java.lang.String
-     * @see org.springframework.lang.Nullable
+     * @see org.jspecify.annotations.Nullable
      * @see io.github.nichetoolkit.rest.actuator.ConsumerActuator
      * @see io.github.nichetoolkit.mybatis.MybatisSqlSupply.SimpleSqlSupply
      * @see io.github.nichetoolkit.rest.RestException
@@ -886,7 +886,7 @@ public interface MybatisSqlProvider {
      * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
      * @see org.apache.ibatis.builder.annotation.ProviderContext
      * @see java.lang.String
-     * @see org.springframework.lang.Nullable
+     * @see org.jspecify.annotations.Nullable
      * @see java.util.Collection
      * @see io.github.nichetoolkit.rest.actuator.ConsumerActuator
      * @see io.github.nichetoolkit.mybatis.fickle.RestFickle
@@ -917,7 +917,7 @@ public interface MybatisSqlProvider {
      * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
      * @see org.apache.ibatis.builder.annotation.ProviderContext
      * @see java.lang.String
-     * @see org.springframework.lang.Nullable
+     * @see org.jspecify.annotations.Nullable
      * @see java.util.Collection
      * @see io.github.nichetoolkit.rest.actuator.ConsumerActuator
      * @see io.github.nichetoolkit.mybatis.fickle.RestFickle
@@ -949,7 +949,7 @@ public interface MybatisSqlProvider {
      * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
      * @see org.apache.ibatis.builder.annotation.ProviderContext
      * @see java.lang.String
-     * @see org.springframework.lang.Nullable
+     * @see org.jspecify.annotations.Nullable
      * @see java.util.Collection
      * @see io.github.nichetoolkit.rest.actuator.ConsumerActuator
      * @see io.github.nichetoolkit.mybatis.load.RestLoad
@@ -979,7 +979,7 @@ public interface MybatisSqlProvider {
      * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
      * @see org.apache.ibatis.builder.annotation.ProviderContext
      * @see java.lang.String
-     * @see org.springframework.lang.Nullable
+     * @see org.jspecify.annotations.Nullable
      * @see java.util.Collection
      * @see io.github.nichetoolkit.mybatis.MybatisSqlSupply.EntrySqlSupply
      * @see io.github.nichetoolkit.rest.RestException
@@ -1008,7 +1008,7 @@ public interface MybatisSqlProvider {
      * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
      * @see org.apache.ibatis.builder.annotation.ProviderContext
      * @see java.lang.String
-     * @see org.springframework.lang.Nullable
+     * @see org.jspecify.annotations.Nullable
      * @see java.util.Collection
      * @see io.github.nichetoolkit.rest.actuator.ConsumerActuator
      * @see io.github.nichetoolkit.mybatis.MybatisSqlSupply.EntrySqlSupply
@@ -1036,7 +1036,7 @@ public interface MybatisSqlProvider {
      * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
      * @see org.apache.ibatis.builder.annotation.ProviderContext
      * @see java.lang.String
-     * @see org.springframework.lang.Nullable
+     * @see org.jspecify.annotations.Nullable
      * @see java.util.Collection
      * @see io.github.nichetoolkit.rest.actuator.ConsumerActuator
      * @see io.github.nichetoolkit.mybatis.MybatisSqlSupply.SimpleSqlSupply
@@ -1066,7 +1066,7 @@ public interface MybatisSqlProvider {
      * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
      * @see org.apache.ibatis.builder.annotation.ProviderContext
      * @see java.lang.String
-     * @see org.springframework.lang.Nullable
+     * @see org.jspecify.annotations.Nullable
      * @see io.github.nichetoolkit.rest.actuator.ConsumerActuator
      * @see io.github.nichetoolkit.mybatis.fickle.RestFickle
      * @see io.github.nichetoolkit.mybatis.load.RestLoad
@@ -1096,7 +1096,7 @@ public interface MybatisSqlProvider {
      * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
      * @see org.apache.ibatis.builder.annotation.ProviderContext
      * @see java.lang.String
-     * @see org.springframework.lang.Nullable
+     * @see org.jspecify.annotations.Nullable
      * @see io.github.nichetoolkit.rest.actuator.ConsumerActuator
      * @see io.github.nichetoolkit.mybatis.fickle.RestFickle
      * @see io.github.nichetoolkit.mybatis.MybatisSqlSupply.EntrySqlSupply
@@ -1124,7 +1124,7 @@ public interface MybatisSqlProvider {
      * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
      * @see org.apache.ibatis.builder.annotation.ProviderContext
      * @see java.lang.String
-     * @see org.springframework.lang.Nullable
+     * @see org.jspecify.annotations.Nullable
      * @see io.github.nichetoolkit.rest.actuator.ConsumerActuator
      * @see io.github.nichetoolkit.mybatis.load.RestLoad
      * @see io.github.nichetoolkit.mybatis.MybatisSqlSupply.EntrySqlSupply
@@ -1152,7 +1152,7 @@ public interface MybatisSqlProvider {
      * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
      * @see org.apache.ibatis.builder.annotation.ProviderContext
      * @see java.lang.String
-     * @see org.springframework.lang.Nullable
+     * @see org.jspecify.annotations.Nullable
      * @see io.github.nichetoolkit.mybatis.MybatisSqlSupply.EntrySqlSupply
      * @see io.github.nichetoolkit.rest.RestException
      */
@@ -1179,7 +1179,7 @@ public interface MybatisSqlProvider {
      * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
      * @see org.apache.ibatis.builder.annotation.ProviderContext
      * @see java.lang.String
-     * @see org.springframework.lang.Nullable
+     * @see org.jspecify.annotations.Nullable
      * @see io.github.nichetoolkit.rest.actuator.ConsumerActuator
      * @see io.github.nichetoolkit.mybatis.MybatisSqlSupply.EntrySqlSupply
      * @see io.github.nichetoolkit.rest.RestException
@@ -1206,7 +1206,7 @@ public interface MybatisSqlProvider {
      * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
      * @see org.apache.ibatis.builder.annotation.ProviderContext
      * @see java.lang.String
-     * @see org.springframework.lang.Nullable
+     * @see org.jspecify.annotations.Nullable
      * @see io.github.nichetoolkit.rest.actuator.ConsumerActuator
      * @see io.github.nichetoolkit.mybatis.MybatisSqlSupply.SimpleSqlSupply
      * @see io.github.nichetoolkit.rest.RestException
@@ -1233,7 +1233,7 @@ public interface MybatisSqlProvider {
      * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
      * @see org.apache.ibatis.builder.annotation.ProviderContext
      * @see java.lang.String
-     * @see org.springframework.lang.Nullable
+     * @see org.jspecify.annotations.Nullable
      * @see io.github.nichetoolkit.rest.actuator.ConsumerActuator
      * @see io.github.nichetoolkit.mybatis.fickle.RestFickle
      * @see io.github.nichetoolkit.mybatis.MybatisSqlSupply.EntrySqlSupply
@@ -1262,7 +1262,7 @@ public interface MybatisSqlProvider {
      * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
      * @see org.apache.ibatis.builder.annotation.ProviderContext
      * @see java.lang.String
-     * @see org.springframework.lang.Nullable
+     * @see org.jspecify.annotations.Nullable
      * @see io.github.nichetoolkit.rest.actuator.ConsumerActuator
      * @see io.github.nichetoolkit.mybatis.load.RestLoad
      * @see io.github.nichetoolkit.mybatis.MybatisSqlSupply.EntrySqlSupply
@@ -1292,7 +1292,7 @@ public interface MybatisSqlProvider {
      * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
      * @see org.apache.ibatis.builder.annotation.ProviderContext
      * @see java.lang.String
-     * @see org.springframework.lang.Nullable
+     * @see org.jspecify.annotations.Nullable
      * @see io.github.nichetoolkit.rest.actuator.ConsumerActuator
      * @see io.github.nichetoolkit.mybatis.fickle.RestFickle
      * @see io.github.nichetoolkit.mybatis.load.RestLoad
@@ -1324,7 +1324,7 @@ public interface MybatisSqlProvider {
      * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
      * @see org.apache.ibatis.builder.annotation.ProviderContext
      * @see java.lang.String
-     * @see org.springframework.lang.Nullable
+     * @see org.jspecify.annotations.Nullable
      * @see io.github.nichetoolkit.mybatis.MybatisSqlSupply.EntrySqlSupply
      * @see io.github.nichetoolkit.rest.RestException
      */
@@ -1352,7 +1352,7 @@ public interface MybatisSqlProvider {
      * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
      * @see org.apache.ibatis.builder.annotation.ProviderContext
      * @see java.lang.String
-     * @see org.springframework.lang.Nullable
+     * @see org.jspecify.annotations.Nullable
      * @see io.github.nichetoolkit.rest.actuator.ConsumerActuator
      * @see io.github.nichetoolkit.mybatis.MybatisSqlSupply.EntrySqlSupply
      * @see io.github.nichetoolkit.rest.RestException
@@ -1380,7 +1380,7 @@ public interface MybatisSqlProvider {
      * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
      * @see org.apache.ibatis.builder.annotation.ProviderContext
      * @see java.lang.String
-     * @see org.springframework.lang.Nullable
+     * @see org.jspecify.annotations.Nullable
      * @see io.github.nichetoolkit.rest.actuator.ConsumerActuator
      * @see io.github.nichetoolkit.mybatis.MybatisSqlSupply.SimpleSqlSupply
      * @see io.github.nichetoolkit.rest.RestException
@@ -1410,7 +1410,7 @@ public interface MybatisSqlProvider {
      * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
      * @see org.apache.ibatis.builder.annotation.ProviderContext
      * @see java.lang.String
-     * @see org.springframework.lang.Nullable
+     * @see org.jspecify.annotations.Nullable
      * @see java.util.Collection
      * @see io.github.nichetoolkit.rest.actuator.ConsumerActuator
      * @see io.github.nichetoolkit.mybatis.fickle.RestFickle
@@ -1441,7 +1441,7 @@ public interface MybatisSqlProvider {
      * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
      * @see org.apache.ibatis.builder.annotation.ProviderContext
      * @see java.lang.String
-     * @see org.springframework.lang.Nullable
+     * @see org.jspecify.annotations.Nullable
      * @see java.util.Collection
      * @see io.github.nichetoolkit.rest.actuator.ConsumerActuator
      * @see io.github.nichetoolkit.mybatis.fickle.RestFickle
@@ -1473,7 +1473,7 @@ public interface MybatisSqlProvider {
      * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
      * @see org.apache.ibatis.builder.annotation.ProviderContext
      * @see java.lang.String
-     * @see org.springframework.lang.Nullable
+     * @see org.jspecify.annotations.Nullable
      * @see java.util.Collection
      * @see io.github.nichetoolkit.rest.actuator.ConsumerActuator
      * @see io.github.nichetoolkit.mybatis.load.RestLoad
@@ -1504,7 +1504,7 @@ public interface MybatisSqlProvider {
      * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
      * @see org.apache.ibatis.builder.annotation.ProviderContext
      * @see java.lang.String
-     * @see org.springframework.lang.Nullable
+     * @see org.jspecify.annotations.Nullable
      * @see java.util.Collection
      * @see io.github.nichetoolkit.mybatis.MybatisSqlSupply.EntrySqlSupply
      * @see io.github.nichetoolkit.rest.RestException
@@ -1533,7 +1533,7 @@ public interface MybatisSqlProvider {
      * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
      * @see org.apache.ibatis.builder.annotation.ProviderContext
      * @see java.lang.String
-     * @see org.springframework.lang.Nullable
+     * @see org.jspecify.annotations.Nullable
      * @see java.util.Collection
      * @see io.github.nichetoolkit.rest.actuator.ConsumerActuator
      * @see io.github.nichetoolkit.mybatis.MybatisSqlSupply.EntrySqlSupply
@@ -1562,7 +1562,7 @@ public interface MybatisSqlProvider {
      * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
      * @see org.apache.ibatis.builder.annotation.ProviderContext
      * @see java.lang.String
-     * @see org.springframework.lang.Nullable
+     * @see org.jspecify.annotations.Nullable
      * @see java.util.Collection
      * @see io.github.nichetoolkit.rest.actuator.ConsumerActuator
      * @see io.github.nichetoolkit.mybatis.MybatisSqlSupply.SimpleSqlSupply
@@ -1590,7 +1590,7 @@ public interface MybatisSqlProvider {
      * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
      * @see org.apache.ibatis.builder.annotation.ProviderContext
      * @see java.lang.String
-     * @see org.springframework.lang.Nullable
+     * @see org.jspecify.annotations.Nullable
      * @see io.github.nichetoolkit.rest.actuator.ConsumerActuator
      * @see io.github.nichetoolkit.mybatis.load.RestLoad
      * @see io.github.nichetoolkit.mybatis.MybatisSqlSupply.EntrySqlSupply
@@ -1616,7 +1616,7 @@ public interface MybatisSqlProvider {
      * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
      * @see org.apache.ibatis.builder.annotation.ProviderContext
      * @see java.lang.String
-     * @see org.springframework.lang.Nullable
+     * @see org.jspecify.annotations.Nullable
      * @see io.github.nichetoolkit.rest.actuator.ConsumerActuator
      * @see io.github.nichetoolkit.mybatis.MybatisSqlSupply.EntrySqlSupply
      * @see io.github.nichetoolkit.rest.RestException
@@ -1642,7 +1642,7 @@ public interface MybatisSqlProvider {
      * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
      * @see org.apache.ibatis.builder.annotation.ProviderContext
      * @see java.lang.String
-     * @see org.springframework.lang.Nullable
+     * @see org.jspecify.annotations.Nullable
      * @see io.github.nichetoolkit.rest.actuator.ConsumerActuator
      * @see io.github.nichetoolkit.mybatis.MybatisSqlSupply.SimpleSqlSupply
      * @see java.lang.SuppressWarnings
@@ -1679,7 +1679,7 @@ public interface MybatisSqlProvider {
      * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
      * @see org.apache.ibatis.builder.annotation.ProviderContext
      * @see java.lang.String
-     * @see org.springframework.lang.Nullable
+     * @see org.jspecify.annotations.Nullable
      * @see io.github.nichetoolkit.rest.actuator.ConsumerActuator
      * @see io.github.nichetoolkit.mybatis.MybatisSqlSupply.SimpleSqlSupply
      * @see java.lang.SuppressWarnings
@@ -1724,7 +1724,7 @@ public interface MybatisSqlProvider {
      * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
      * @see org.apache.ibatis.builder.annotation.ProviderContext
      * @see java.lang.String
-     * @see org.springframework.lang.Nullable
+     * @see org.jspecify.annotations.Nullable
      * @see io.github.nichetoolkit.rest.actuator.ConsumerActuator
      * @see io.github.nichetoolkit.mybatis.MybatisSqlSupply.SimpleSqlSupply
      * @see java.lang.SuppressWarnings
@@ -1771,7 +1771,7 @@ public interface MybatisSqlProvider {
      * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
      * @see org.apache.ibatis.builder.annotation.ProviderContext
      * @see java.lang.String
-     * @see org.springframework.lang.Nullable
+     * @see org.jspecify.annotations.Nullable
      * @see io.github.nichetoolkit.rest.actuator.ConsumerActuator
      * @see io.github.nichetoolkit.mybatis.MybatisSqlSupply.SimpleSqlSupply
      * @see java.lang.SuppressWarnings
@@ -1823,7 +1823,7 @@ public interface MybatisSqlProvider {
      * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
      * @see org.apache.ibatis.builder.annotation.ProviderContext
      * @see java.lang.String
-     * @see org.springframework.lang.Nullable
+     * @see org.jspecify.annotations.Nullable
      * @see io.github.nichetoolkit.rest.actuator.ConsumerActuator
      * @see io.github.nichetoolkit.mybatis.MybatisSqlSupply.EntrySqlSupply
      * @see java.lang.SuppressWarnings
@@ -1861,7 +1861,7 @@ public interface MybatisSqlProvider {
      * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
      * @see org.apache.ibatis.builder.annotation.ProviderContext
      * @see java.lang.String
-     * @see org.springframework.lang.Nullable
+     * @see org.jspecify.annotations.Nullable
      * @see java.util.Collection
      * @see io.github.nichetoolkit.rest.actuator.ConsumerActuator
      * @see io.github.nichetoolkit.mybatis.MybatisSqlSupply.EntrySqlSupply
@@ -2019,11 +2019,10 @@ public interface MybatisSqlProvider {
      * @see io.github.nichetoolkit.rest.RestException
      */
     static void keyOfLoad(MybatisTable table, RestLoad[] loadParams, SqlBuilder keyBuilder) throws RestException {
-        MybatisTableStyle mybatisTableStyle = MybatisContextHolder.defaultTableStyle();
         RestOptional.ofEmptyable(loadParams).isNotEmpty(params -> {
             List<String> keys = RestStream.stream(params).filter(RestLoad::getValue).map(RestLoad::getKey).distinct().collect(RestCollectors.toList());
             if (GeneralUtils.isNotEmpty(keys)) {
-                String keysJson = JsonPurityUtils.parseJson(keys);
+                String keysJson = JacksonUtils.parseJson(keys);
                 keyBuilder.comma().value(keysJson).as(EntityConstants.LOADS);
             }
         });
@@ -2332,7 +2331,7 @@ public interface MybatisSqlProvider {
      * @return {@link java.lang.String} <p>The insert of save sql return object is <code>String</code> type.</p>
      * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
      * @see java.lang.String
-     * @see org.springframework.lang.Nullable
+     * @see org.jspecify.annotations.Nullable
      * @see io.github.nichetoolkit.mybatis.MybatisTable
      * @see java.util.List
      * @see io.github.nichetoolkit.rest.RestException

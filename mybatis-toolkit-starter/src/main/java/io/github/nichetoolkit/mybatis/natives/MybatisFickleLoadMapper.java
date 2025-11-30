@@ -24,7 +24,7 @@ import java.util.List;
  * @see io.github.nichetoolkit.rice.RestId
  * @see io.github.nichetoolkit.mybatis.MybatisMapper
  * @see io.github.nichetoolkit.rice.mapper.natives.FickleLoadMapper
- * @since Jdk1.8
+ * @since Jdk17
  */
 public interface MybatisFickleLoadMapper<E extends RestId<I>, L, I> extends MybatisMapper<E>, FickleLoadMapper<E, I> {
 

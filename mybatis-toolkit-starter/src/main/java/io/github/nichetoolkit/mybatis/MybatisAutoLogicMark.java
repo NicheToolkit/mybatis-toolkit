@@ -10,7 +10,7 @@ import io.github.nichetoolkit.rice.configure.RiceServiceProperties;
  * <p>The mybatis auto logic mark class.</p>
  * @author Cyan (snow22314@outlook.com)
  * @see io.github.nichetoolkit.rice.DefaultLogicMark
- * @since Jdk1.8
+ * @since Jdk17
  */
 public class MybatisAutoLogicMark extends DefaultLogicMark {
 

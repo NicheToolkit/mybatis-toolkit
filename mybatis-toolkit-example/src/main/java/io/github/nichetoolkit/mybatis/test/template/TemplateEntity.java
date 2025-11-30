@@ -20,8 +20,9 @@ import java.util.Date;
  * @see io.github.nichetoolkit.rice.DefaultInfoEntity
  * @see lombok.Setter
  * @see lombok.Getter
+ * @see lombok.experimental.SuperBuilder
  * @see io.github.nichetoolkit.mybatis.table.RestEntity
- * @since Jdk1.8
+ * @since Jdk17
  */
 @Setter
 @Getter

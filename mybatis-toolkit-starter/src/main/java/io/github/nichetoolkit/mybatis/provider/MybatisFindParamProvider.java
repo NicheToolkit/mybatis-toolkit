@@ -25,7 +25,7 @@ import java.util.List;
  * @see io.github.nichetoolkit.mybatis.MybatisSqlProvider
  * @see lombok.extern.slf4j.Slf4j
  * @see org.springframework.stereotype.Component
- * @since Jdk1.8
+ * @since Jdk17
  */
 @Slf4j
 @Component
@@ -41,7 +41,7 @@ public class MybatisFindParamProvider implements MybatisSqlProvider {
      * <p>The find dynamic all by id or params method.</p>
      * @param <I>             {@link java.lang.Object} <p>The parameter can be of any type.</p>
      * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>The provider context parameter is <code>ProviderContext</code> type.</p>
-     * @param tableName       {@link java.lang.String} <p>The tableName parameter is <code>String</code> type.</p>
+     * @param tableName       {@link java.lang.String} <p>The table name parameter is <code>String</code> type.</p>
      * @param id              I <p>The id parameter is <code>I</code> type.</p>
      * @param params          {@link io.github.nichetoolkit.mybatis.load.RestParam} <p>The params parameter is <code>RestParam</code> type.</p>
      * @return {@link java.lang.String} <p>The find dynamic all by id or params return object is <code>String</code> type.</p>
@@ -60,7 +60,7 @@ public class MybatisFindParamProvider implements MybatisSqlProvider {
      * <p>The find dynamic all load by id or params method.</p>
      * @param <I>             {@link java.lang.Object} <p>The parameter can be of any type.</p>
      * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>The provider context parameter is <code>ProviderContext</code> type.</p>
-     * @param tableName       {@link java.lang.String} <p>The tableName parameter is <code>String</code> type.</p>
+     * @param tableName       {@link java.lang.String} <p>The table name parameter is <code>String</code> type.</p>
      * @param id              I <p>The id parameter is <code>I</code> type.</p>
      * @param params          {@link io.github.nichetoolkit.mybatis.load.RestParam} <p>The params parameter is <code>RestParam</code> type.</p>
      * @param loadParams      {@link io.github.nichetoolkit.mybatis.load.RestLoad} <p>The load params parameter is <code>RestLoad</code> type.</p>

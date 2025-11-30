@@ -9,7 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
-import org.springframework.lang.NonNull;
+import org.jspecify.annotations.NonNull;
 
 import java.util.*;
 
@@ -23,7 +23,7 @@ import java.util.*;
  * @see lombok.Getter
  * @see lombok.experimental.SuperBuilder
  * @see lombok.NoArgsConstructor
- * @since Jdk1.8
+ * @since Jdk17
  */
 @Setter
 @Getter
@@ -33,8 +33,8 @@ public class SimpleFilter extends RestFilter implements StateFilter<SimpleState1
 
     /**
      * <code>state</code>
-     * {@link SimpleState1} <p>The <code>state</code> field.</p>
-     * @see SimpleState1
+     * {@link io.github.nichetoolkit.mybatis.test.simple.SimpleState1} <p>The <code>state</code> field.</p>
+     * @see io.github.nichetoolkit.mybatis.test.simple.SimpleState1
      */
     private SimpleState1 state;
 
@@ -61,9 +61,9 @@ public class SimpleFilter extends RestFilter implements StateFilter<SimpleState1
     /**
      * <code>setStates</code>
      * <p>The set states setter method.</p>
-     * @param states {@link SimpleState1} <p>The states parameter is <code>SimpleState</code> type.</p>
-     * @see SimpleState1
-     * @see org.springframework.lang.NonNull
+     * @param states {@link io.github.nichetoolkit.mybatis.test.simple.SimpleState1} <p>The states parameter is <code>SimpleState1</code> type.</p>
+     * @see io.github.nichetoolkit.mybatis.test.simple.SimpleState1
+     * @see org.jspecify.annotations.NonNull
      */
     public void setStates(@NonNull SimpleState1... states) {
         this.states = new HashSet<>(Arrays.asList(states));

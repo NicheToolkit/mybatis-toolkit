@@ -12,7 +12,7 @@ import org.apache.ibatis.annotations.Mapper;
  * @see io.github.nichetoolkit.mybatis.MybatisInfoMapper
  * @see io.github.nichetoolkit.mybatis.natives.MybatisFindFickleMapper
  * @see org.apache.ibatis.annotations.Mapper
- * @since Jdk1.8
+ * @since Jdk17
  */
 @Mapper
 public interface FickleEntryMapper extends MybatisInfoMapper<FickleEntryEntity, String>, MybatisFindFickleMapper<FickleEntryEntity,String> {

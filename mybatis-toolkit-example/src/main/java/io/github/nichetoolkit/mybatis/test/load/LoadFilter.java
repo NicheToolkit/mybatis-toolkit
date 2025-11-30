@@ -10,7 +10,9 @@ import lombok.experimental.SuperBuilder;
  * <p>The load filter class.</p>
  * @author Cyan (snow22314@outlook.com)
  * @see io.github.nichetoolkit.rice.DefaultFilter
- * @since Jdk1.8
+ * @see lombok.experimental.SuperBuilder
+ * @see lombok.NoArgsConstructor
+ * @since Jdk17
  */
 @SuperBuilder
 @NoArgsConstructor

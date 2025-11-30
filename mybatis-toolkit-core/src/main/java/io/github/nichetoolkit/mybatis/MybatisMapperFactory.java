@@ -12,7 +12,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
-import org.springframework.lang.NonNull;
+import org.jspecify.annotations.NonNull;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -29,7 +29,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @see org.springframework.context.ApplicationContextAware
  * @see org.springframework.context.ApplicationListener
  * @see lombok.extern.slf4j.Slf4j
- * @since Jdk1.8
+ * @since Jdk17
  */
 @Slf4j
 public abstract class MybatisMapperFactory<M extends SuperMapper<E, I>, E extends IdEntity<I>, I> implements ApplicationContextAware, ApplicationListener<ContextRefreshedEvent> {
@@ -187,7 +187,7 @@ public abstract class MybatisMapperFactory<M extends SuperMapper<E, I>, E extend
      * <code>MybatisMapperFactoryInstance</code>
      * <p>The mybatis mapper factory instance class.</p>
      * @author Cyan (snow22314@outlook.com)
-     * @since Jdk1.8
+     * @since Jdk17
      */
     private static class MybatisMapperFactoryInstance {
         /**

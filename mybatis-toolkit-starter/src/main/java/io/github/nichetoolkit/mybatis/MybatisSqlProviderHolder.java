@@ -13,11 +13,10 @@ import io.github.nichetoolkit.rest.util.OptionalUtils;
 import io.github.nichetoolkit.rice.RestServiceFitter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.core.io.support.SpringFactoriesLoader;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -29,7 +28,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @see io.github.nichetoolkit.rice.RestServiceFitter
  * @see lombok.extern.slf4j.Slf4j
  * @see lombok.Setter
- * @since Jdk1.8
+ * @since Jdk17
  */
 @Slf4j
 @Setter
@@ -44,7 +43,7 @@ public class MybatisSqlProviderHolder implements RestFulfilledFitter<MybatisSqlP
      * <code>tableProperties</code>
      * {@link io.github.nichetoolkit.mybatis.configure.MybatisTableProperties} <p>The <code>tableProperties</code> field.</p>
      * @see io.github.nichetoolkit.mybatis.configure.MybatisTableProperties
-     * @see javax.annotation.Resource
+     * @see jakarta.annotation.Resource
      */
     @Resource
     private MybatisTableProperties tableProperties;
@@ -71,7 +70,7 @@ public class MybatisSqlProviderHolder implements RestFulfilledFitter<MybatisSqlP
      * <p>The set sql providers setter method.</p>
      * @param sqlProviders {@link java.util.Collection} <p>The sql providers parameter is <code>Collection</code> type.</p>
      * @see java.util.Collection
-     * @see javax.annotation.Resource
+     * @see jakarta.annotation.Resource
      * @see org.springframework.boot.autoconfigure.condition.ConditionalOnBean
      */
     @Resource

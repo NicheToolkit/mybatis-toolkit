@@ -1,13 +1,12 @@
 package io.github.nichetoolkit.mybatis;
 
-import com.fasterxml.jackson.databind.JavaType;
+import tools.jackson.databind.JavaType;
 import io.github.nichetoolkit.mybatis.configure.MybatisTableProperties;
 import io.github.nichetoolkit.mybatis.consts.ScriptConstants;
 import io.github.nichetoolkit.mybatis.column.*;
-import io.github.nichetoolkit.rest.RestOrder;
 import io.github.nichetoolkit.rest.util.GeneralUtils;
 import org.apache.ibatis.type.JdbcType;
-import org.springframework.lang.NonNull;
+import org.jspecify.annotations.NonNull;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -19,7 +18,7 @@ import java.util.Optional;
  * <p>The default column factory class.</p>
  * @author Cyan (snow22314@outlook.com)
  * @see io.github.nichetoolkit.mybatis.MybatisColumnFactory
- * @since Jdk1.8
+ * @since Jdk17
  */
 public class DefaultColumnFactory implements MybatisColumnFactory {
 

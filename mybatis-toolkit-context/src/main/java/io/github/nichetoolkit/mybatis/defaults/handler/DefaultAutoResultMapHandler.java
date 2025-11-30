@@ -22,7 +22,7 @@ import java.util.regex.Matcher;
  * <p>The default auto result map handler class.</p>
  * @author Cyan (snow22314@outlook.com)
  * @see io.github.nichetoolkit.mybatis.handler.AutoResultMapHandler
- * @since Jdk1.8
+ * @since Jdk17
  */
 public class DefaultAutoResultMapHandler implements AutoResultMapHandler {
 

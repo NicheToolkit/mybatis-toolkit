@@ -17,7 +17,7 @@ import java.util.List;
  * @see io.github.nichetoolkit.mybatis.MybatisMapper
  * @see io.github.nichetoolkit.rice.mapper.TableMapper
  * @see org.apache.ibatis.annotations.Mapper
- * @since Jdk1.8
+ * @since Jdk17
  */
 @Mapper
 public interface MybatisTableMapper extends MybatisMapper<String>, TableMapper {

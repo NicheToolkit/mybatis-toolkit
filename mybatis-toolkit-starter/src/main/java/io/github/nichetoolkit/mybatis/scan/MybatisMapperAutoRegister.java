@@ -17,7 +17,7 @@ import org.springframework.boot.autoconfigure.AutoConfigurationPackages;
 import org.springframework.context.annotation.ImportBeanDefinitionRegistrar;
 import org.springframework.core.annotation.AnnotationAttributes;
 import org.springframework.core.type.AnnotationMetadata;
-import org.springframework.lang.NonNull;
+import org.jspecify.annotations.NonNull;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
 
@@ -28,13 +28,36 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+/**
+ * <code>MybatisMapperAutoRegister</code>
+ * <p>The mybatis mapper auto register class.</p>
+ * @author Cyan (snow22314@outlook.com)
+ * @see org.springframework.beans.factory.BeanFactoryAware
+ * @see org.springframework.context.annotation.ImportBeanDefinitionRegistrar
+ * @see lombok.extern.slf4j.Slf4j
+ * @since Jdk17
+ */
 @Slf4j
 public class MybatisMapperAutoRegister implements BeanFactoryAware, ImportBeanDefinitionRegistrar {
 
+    /**
+     * <code>BASE_PACKAGES</code>
+     * {@link java.lang.String} <p>The constant <code>BASE_PACKAGES</code> field.</p>
+     * @see java.lang.String
+     */
     private static final String BASE_PACKAGES = "io.github.nichetoolkit.mybatis";
 
+    /**
+     * <code>beanFactory</code>
+     * {@link org.springframework.beans.factory.BeanFactory} <p>The <code>beanFactory</code> field.</p>
+     * @see org.springframework.beans.factory.BeanFactory
+     */
     private BeanFactory beanFactory;
 
+    /**
+     * <code>MybatisMapperAutoRegister</code>
+     * <p>Instantiates a new mybatis mapper auto register.</p>
+     */
     public MybatisMapperAutoRegister() {
     }
 
@@ -54,6 +77,14 @@ public class MybatisMapperAutoRegister implements BeanFactoryAware, ImportBeanDe
         }
     }
 
+    /**
+     * <code>registerBeanDefinitionAnnotation</code>
+     * <p>The register bean definition annotation method.</p>
+     * @param packages {@link java.util.List} <p>The packages parameter is <code>List</code> type.</p>
+     * @param registry {@link org.springframework.beans.factory.support.BeanDefinitionRegistry} <p>The registry parameter is <code>BeanDefinitionRegistry</code> type.</p>
+     * @see java.util.List
+     * @see org.springframework.beans.factory.support.BeanDefinitionRegistry
+     */
     private void registerBeanDefinitionAnnotation(List<String> packages, BeanDefinitionRegistry registry) {
         BeanDefinitionBuilder builder = BeanDefinitionBuilder.genericBeanDefinition(MapperScannerConfigurer.class);
         builder.addPropertyValue("processPropertyPlaceHolders", true);
@@ -67,6 +98,18 @@ public class MybatisMapperAutoRegister implements BeanFactoryAware, ImportBeanDe
     }
 
 
+    /**
+     * <code>registerBeanDefinitions</code>
+     * <p>The register bean definitions method.</p>
+     * @param annoMeta  {@link org.springframework.core.type.AnnotationMetadata} <p>The anno meta parameter is <code>AnnotationMetadata</code> type.</p>
+     * @param annoAttrs {@link org.springframework.core.annotation.AnnotationAttributes} <p>The anno attrs parameter is <code>AnnotationAttributes</code> type.</p>
+     * @param registry  {@link org.springframework.beans.factory.support.BeanDefinitionRegistry} <p>The registry parameter is <code>BeanDefinitionRegistry</code> type.</p>
+     * @param beanName  {@link java.lang.String} <p>The bean name parameter is <code>String</code> type.</p>
+     * @see org.springframework.core.type.AnnotationMetadata
+     * @see org.springframework.core.annotation.AnnotationAttributes
+     * @see org.springframework.beans.factory.support.BeanDefinitionRegistry
+     * @see java.lang.String
+     */
     void registerBeanDefinitions(AnnotationMetadata annoMeta, AnnotationAttributes annoAttrs, BeanDefinitionRegistry registry, String beanName) {
         BeanDefinitionBuilder builder = BeanDefinitionBuilder.genericBeanDefinition(MapperScannerConfigurer.class);
         builder.addPropertyValue("processPropertyPlaceHolders", annoAttrs.getBoolean("processPropertyPlaceHolders"));
@@ -122,10 +165,27 @@ public class MybatisMapperAutoRegister implements BeanFactoryAware, ImportBeanDe
         registry.registerBeanDefinition(beanName, builder.getBeanDefinition());
     }
 
+    /**
+     * <code>generateBaseBeanName</code>
+     * <p>The generate base bean name method.</p>
+     * @param importingClassMetadata {@link org.springframework.core.type.AnnotationMetadata} <p>The importing class metadata parameter is <code>AnnotationMetadata</code> type.</p>
+     * @param index                  int <p>The index parameter is <code>int</code> type.</p>
+     * @return {@link java.lang.String} <p>The generate base bean name return object is <code>String</code> type.</p>
+     * @see org.springframework.core.type.AnnotationMetadata
+     * @see java.lang.String
+     */
     private static String generateBaseBeanName(AnnotationMetadata importingClassMetadata, int index) {
         return importingClassMetadata.getClassName() + "#" + MapperScannerRegistrar.class.getSimpleName() + "#" + index;
     }
 
+    /**
+     * <code>getDefaultBasePackage</code>
+     * <p>The get default base package getter method.</p>
+     * @param importingClassMetadata {@link org.springframework.core.type.AnnotationMetadata} <p>The importing class metadata parameter is <code>AnnotationMetadata</code> type.</p>
+     * @return {@link java.lang.String} <p>The get default base package return object is <code>String</code> type.</p>
+     * @see org.springframework.core.type.AnnotationMetadata
+     * @see java.lang.String
+     */
     private static String getDefaultBasePackage(AnnotationMetadata importingClassMetadata) {
         return ClassUtils.getPackageName(importingClassMetadata.getClassName());
     }

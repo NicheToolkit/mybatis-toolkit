@@ -9,8 +9,8 @@ import io.github.nichetoolkit.mybatis.RestMapper;
 import io.github.nichetoolkit.mybatis.table.RestEntity;
 import io.github.nichetoolkit.mybatis.table.RestLinkage;
 import io.github.nichetoolkit.rest.util.GeneralUtils;
-import org.springframework.lang.NonNull;
-import org.springframework.lang.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 
 import java.lang.reflect.Method;
 import java.util.Optional;
@@ -20,7 +20,7 @@ import java.util.Optional;
  * <p>The default entity class finder class.</p>
  * @author Cyan (snow22314@outlook.com)
  * @see io.github.nichetoolkit.mybatis.MybatisEntityClassFinder
- * @since Jdk1.8
+ * @since Jdk17
  */
 public class DefaultEntityClassFinder extends MybatisEntityClassFinder {
 

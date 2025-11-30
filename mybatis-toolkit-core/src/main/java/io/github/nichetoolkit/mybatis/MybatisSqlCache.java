@@ -10,7 +10,7 @@ import org.apache.ibatis.builder.annotation.ProviderContext;
  * <code>MybatisSqlCache</code>
  * <p>The mybatis sql cache class.</p>
  * @author Cyan (snow22314@outlook.com)
- * @since Jdk1.8
+ * @since Jdk17
  */
 public final class MybatisSqlCache {
     /**
@@ -40,6 +40,7 @@ public final class MybatisSqlCache {
     /**
      * <code>refreshed</code>
      * <p>The <code>refreshed</code> field.</p>
+     * @see lombok.Getter
      */
     @Getter
     private boolean refreshed;
@@ -86,6 +87,13 @@ public final class MybatisSqlCache {
             this.sqlScript = sqlScript;
         }
     }
+
+    /**
+     * <code>context</code>
+     * <p>The context method.</p>
+     * @return {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>The context return object is <code>ProviderContext</code> type.</p>
+     * @see org.apache.ibatis.builder.annotation.ProviderContext
+     */
     public ProviderContext context() {
         return context;
     }

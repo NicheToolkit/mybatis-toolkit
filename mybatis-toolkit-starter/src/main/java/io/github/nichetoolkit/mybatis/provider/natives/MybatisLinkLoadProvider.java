@@ -24,7 +24,7 @@ import java.util.List;
  * @see io.github.nichetoolkit.mybatis.MybatisSqlProvider
  * @see lombok.extern.slf4j.Slf4j
  * @see org.springframework.stereotype.Component
- * @since Jdk1.8
+ * @since Jdk17
  */
 @Slf4j
 @Component
@@ -39,7 +39,7 @@ public class MybatisLinkLoadProvider implements MybatisSqlProvider {
      * <p>The find dynamic by link id load method.</p>
      * @param <L>             {@link java.lang.Object} <p>The parameter can be of any type.</p>
      * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>The provider context parameter is <code>ProviderContext</code> type.</p>
-     * @param tableName       {@link java.lang.String} <p>The tableName parameter is <code>String</code> type.</p>
+     * @param tableName       {@link java.lang.String} <p>The table name parameter is <code>String</code> type.</p>
      * @param linkId          L <p>The link id parameter is <code>L</code> type.</p>
      * @param linkName        {@link java.lang.String} <p>The link name parameter is <code>String</code> type.</p>
      * @param loadParams      {@link io.github.nichetoolkit.mybatis.load.RestLoad} <p>The load params parameter is <code>RestLoad</code> type.</p>
@@ -63,7 +63,7 @@ public class MybatisLinkLoadProvider implements MybatisSqlProvider {
      * <p>The find dynamic all by link ids load method.</p>
      * @param <L>             {@link java.lang.Object} <p>The parameter can be of any type.</p>
      * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>The provider context parameter is <code>ProviderContext</code> type.</p>
-     * @param tableName       {@link java.lang.String} <p>The tableName parameter is <code>String</code> type.</p>
+     * @param tableName       {@link java.lang.String} <p>The table name parameter is <code>String</code> type.</p>
      * @param linkIdList      {@link java.util.Collection} <p>The link id list parameter is <code>Collection</code> type.</p>
      * @param linkName        {@link java.lang.String} <p>The link name parameter is <code>String</code> type.</p>
      * @param loadParams      {@link io.github.nichetoolkit.mybatis.load.RestLoad} <p>The load params parameter is <code>RestLoad</code> type.</p>

@@ -5,7 +5,7 @@ import io.github.nichetoolkit.mybatis.enums.StyleType;
 import io.github.nichetoolkit.mybatis.fickle.RestFickle;
 import io.github.nichetoolkit.rest.error.lack.InterfaceLackError;
 import org.springframework.core.io.support.SpringFactoriesLoader;
-import org.springframework.lang.NonNull;
+import org.jspecify.annotations.NonNull;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
@@ -16,7 +16,7 @@ import java.util.Map;
  * <code>MybatisTableStyle</code>
  * <p>The mybatis table style interface.</p>
  * @author Cyan (snow22314@outlook.com)
- * @since Jdk1.8
+ * @since Jdk17
  */
 public interface MybatisTableStyle {
 
@@ -98,7 +98,7 @@ public interface MybatisTableStyle {
      * @param styleType {@link io.github.nichetoolkit.mybatis.enums.StyleType} <p>The style type parameter is <code>StyleType</code> type.</p>
      * @return {@link io.github.nichetoolkit.mybatis.MybatisTableStyle} <p>The style return object is <code>MybatisTableStyle</code> type.</p>
      * @see io.github.nichetoolkit.mybatis.enums.StyleType
-     * @see org.springframework.lang.NonNull
+     * @see org.jspecify.annotations.NonNull
      */
     static MybatisTableStyle style(@NonNull StyleType styleType) {
         return style(styleType.getKey());
@@ -110,7 +110,7 @@ public interface MybatisTableStyle {
      * @param styleName {@link java.lang.String} <p>The style name parameter is <code>String</code> type.</p>
      * @return {@link io.github.nichetoolkit.mybatis.MybatisTableStyle} <p>The style return object is <code>MybatisTableStyle</code> type.</p>
      * @see java.lang.String
-     * @see org.springframework.lang.NonNull
+     * @see org.jspecify.annotations.NonNull
      */
     static MybatisTableStyle style(@NonNull String styleName) {
         if (STYLE_MAP.containsKey(styleName)) {
@@ -126,7 +126,7 @@ public interface MybatisTableStyle {
      * @param fieldName {@link java.lang.String} <p>The field name parameter is <code>String</code> type.</p>
      * @return {@link java.lang.String} <p>The column name return object is <code>String</code> type.</p>
      * @see java.lang.String
-     * @see org.springframework.lang.NonNull
+     * @see org.jspecify.annotations.NonNull
      */
     String columnName(@NonNull String fieldName);
 

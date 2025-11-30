@@ -3,21 +3,21 @@ package io.github.nichetoolkit.mybatis;
 import io.github.nichetoolkit.mybatis.builder.SqlBuilder;
 import io.github.nichetoolkit.rest.RestException;
 import io.github.nichetoolkit.rest.RestOrder;
-import org.springframework.lang.Nullable;
+import org.jspecify.annotations.Nullable;
 
 /**
  * <code>MybatisSqlSupply</code>
  * <p>The mybatis sql supply interface.</p>
  * @author Cyan (snow22314@outlook.com)
  * @see io.github.nichetoolkit.rest.RestOrder
- * @since Jdk1.8
+ * @since Jdk17
  */
 public interface MybatisSqlSupply extends RestOrder {
 
     /**
      * <code>supply</code>
      * <p>The supply method.</p>
-     * @param tableName       {@link java.lang.String} <p>The tableName parameter is <code>String</code> type.</p>
+     * @param tableName       {@link java.lang.String} <p>The table name parameter is <code>String</code> type.</p>
      * @param table           {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>The table parameter is <code>MybatisTable</code> type.</p>
      * @param sqlScript       {@link io.github.nichetoolkit.mybatis.MybatisSqlScript} <p>The sql script parameter is <code>MybatisSqlScript</code> type.</p>
      * @param keySqlBuilder   {@link io.github.nichetoolkit.mybatis.builder.SqlBuilder} <p>The key sql builder parameter is <code>SqlBuilder</code> type.</p>
@@ -26,7 +26,7 @@ public interface MybatisSqlSupply extends RestOrder {
      * @return {@link java.lang.String} <p>The supply return object is <code>String</code> type.</p>
      * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
      * @see java.lang.String
-     * @see org.springframework.lang.Nullable
+     * @see org.jspecify.annotations.Nullable
      * @see io.github.nichetoolkit.mybatis.MybatisTable
      * @see io.github.nichetoolkit.mybatis.MybatisSqlScript
      * @see io.github.nichetoolkit.mybatis.builder.SqlBuilder
@@ -39,7 +39,7 @@ public interface MybatisSqlSupply extends RestOrder {
      * <code>SupplySqlSupply</code>
      * <p>The supply sql supply interface.</p>
      * @author Cyan (snow22314@outlook.com)
-     * @since Jdk1.8
+     * @since Jdk17
      */
     interface SupplySqlSupply extends MybatisSqlSupply {
 
@@ -51,7 +51,7 @@ public interface MybatisSqlSupply extends RestOrder {
         /**
          * <code>supply</code>
          * <p>The supply method.</p>
-         * @param tableName       {@link java.lang.String} <p>The tableName parameter is <code>String</code> type.</p>
+         * @param tableName       {@link java.lang.String} <p>The table name parameter is <code>String</code> type.</p>
          * @param mybatisTable    {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>The mybatis table parameter is <code>MybatisTable</code> type.</p>
          * @param sqlScript       {@link io.github.nichetoolkit.mybatis.MybatisSqlScript} <p>The sql script parameter is <code>MybatisSqlScript</code> type.</p>
          * @param sqlSupply       {@link io.github.nichetoolkit.mybatis.MybatisSqlSupply} <p>The sql supply parameter is <code>MybatisSqlSupply</code> type.</p>
@@ -61,7 +61,7 @@ public interface MybatisSqlSupply extends RestOrder {
          * @return {@link java.lang.String} <p>The supply return object is <code>String</code> type.</p>
          * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
          * @see java.lang.String
-         * @see org.springframework.lang.Nullable
+         * @see org.jspecify.annotations.Nullable
          * @see io.github.nichetoolkit.mybatis.MybatisTable
          * @see io.github.nichetoolkit.mybatis.MybatisSqlScript
          * @see io.github.nichetoolkit.mybatis.builder.SqlBuilder
@@ -75,7 +75,7 @@ public interface MybatisSqlSupply extends RestOrder {
      * <code>ParameterSqlSupply</code>
      * <p>The parameter sql supply interface.</p>
      * @author Cyan (snow22314@outlook.com)
-     * @since Jdk1.8
+     * @since Jdk17
      */
     interface ParameterSqlSupply extends MybatisSqlSupply {
 
@@ -87,7 +87,7 @@ public interface MybatisSqlSupply extends RestOrder {
         /**
          * <code>supply</code>
          * <p>The supply method.</p>
-         * @param tableName       {@link java.lang.String} <p>The tableName parameter is <code>String</code> type.</p>
+         * @param tableName       {@link java.lang.String} <p>The table name parameter is <code>String</code> type.</p>
          * @param mybatisTable    {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>The mybatis table parameter is <code>MybatisTable</code> type.</p>
          * @param keySqlBuilder   {@link io.github.nichetoolkit.mybatis.builder.SqlBuilder} <p>The key sql builder parameter is <code>SqlBuilder</code> type.</p>
          * @param valueSqlBuilder {@link io.github.nichetoolkit.mybatis.builder.SqlBuilder} <p>The value sql builder parameter is <code>SqlBuilder</code> type.</p>
@@ -95,7 +95,7 @@ public interface MybatisSqlSupply extends RestOrder {
          * @return {@link java.lang.String} <p>The supply return object is <code>String</code> type.</p>
          * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
          * @see java.lang.String
-         * @see org.springframework.lang.Nullable
+         * @see org.jspecify.annotations.Nullable
          * @see io.github.nichetoolkit.mybatis.MybatisTable
          * @see io.github.nichetoolkit.mybatis.builder.SqlBuilder
          * @see java.lang.Object
@@ -109,7 +109,7 @@ public interface MybatisSqlSupply extends RestOrder {
      * <p>The value sql supply interface.</p>
      * @author Cyan (snow22314@outlook.com)
      * @see io.github.nichetoolkit.mybatis.MybatisSqlSupply.ParameterSqlSupply
-     * @since Jdk1.8
+     * @since Jdk17
      */
     interface ValueSqlSupply extends ParameterSqlSupply {
 
@@ -121,14 +121,14 @@ public interface MybatisSqlSupply extends RestOrder {
         /**
          * <code>supply</code>
          * <p>The supply method.</p>
-         * @param tableName       {@link java.lang.String} <p>The tableName parameter is <code>String</code> type.</p>
+         * @param tableName       {@link java.lang.String} <p>The table name parameter is <code>String</code> type.</p>
          * @param mybatisTable    {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>The mybatis table parameter is <code>MybatisTable</code> type.</p>
          * @param sqlBuilder      {@link io.github.nichetoolkit.mybatis.builder.SqlBuilder} <p>The sql builder parameter is <code>SqlBuilder</code> type.</p>
          * @param statusParameter {@link java.lang.Object} <p>The status parameter parameter is <code>Object</code> type.</p>
          * @return {@link java.lang.String} <p>The supply return object is <code>String</code> type.</p>
          * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
          * @see java.lang.String
-         * @see org.springframework.lang.Nullable
+         * @see org.jspecify.annotations.Nullable
          * @see io.github.nichetoolkit.mybatis.MybatisTable
          * @see io.github.nichetoolkit.mybatis.builder.SqlBuilder
          * @see java.lang.Object
@@ -142,7 +142,7 @@ public interface MybatisSqlSupply extends RestOrder {
      * <p>The key sql supply interface.</p>
      * @author Cyan (snow22314@outlook.com)
      * @see io.github.nichetoolkit.mybatis.MybatisSqlSupply.ParameterSqlSupply
-     * @since Jdk1.8
+     * @since Jdk17
      */
     interface KeySqlSupply extends ParameterSqlSupply {
 
@@ -154,14 +154,14 @@ public interface MybatisSqlSupply extends RestOrder {
         /**
          * <code>supply</code>
          * <p>The supply method.</p>
-         * @param tableName       {@link java.lang.String} <p>The tableName parameter is <code>String</code> type.</p>
+         * @param tableName       {@link java.lang.String} <p>The table name parameter is <code>String</code> type.</p>
          * @param mybatisTable    {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>The mybatis table parameter is <code>MybatisTable</code> type.</p>
          * @param sqlBuilder      {@link io.github.nichetoolkit.mybatis.builder.SqlBuilder} <p>The sql builder parameter is <code>SqlBuilder</code> type.</p>
          * @param statusParameter {@link java.lang.Object} <p>The status parameter parameter is <code>Object</code> type.</p>
          * @return {@link java.lang.String} <p>The supply return object is <code>String</code> type.</p>
          * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
          * @see java.lang.String
-         * @see org.springframework.lang.Nullable
+         * @see org.jspecify.annotations.Nullable
          * @see io.github.nichetoolkit.mybatis.MybatisTable
          * @see io.github.nichetoolkit.mybatis.builder.SqlBuilder
          * @see java.lang.Object
@@ -175,7 +175,7 @@ public interface MybatisSqlSupply extends RestOrder {
      * <p>The alert sql supply interface.</p>
      * @author Cyan (snow22314@outlook.com)
      * @see io.github.nichetoolkit.mybatis.MybatisSqlSupply.ValueSqlSupply
-     * @since Jdk1.8
+     * @since Jdk17
      */
     interface AlertSqlSupply extends ValueSqlSupply {
 
@@ -187,14 +187,14 @@ public interface MybatisSqlSupply extends RestOrder {
         /**
          * <code>supply</code>
          * <p>The supply method.</p>
-         * @param tableName       {@link java.lang.String} <p>The tableName parameter is <code>String</code> type.</p>
+         * @param tableName       {@link java.lang.String} <p>The table name parameter is <code>String</code> type.</p>
          * @param mybatisTable    {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>The mybatis table parameter is <code>MybatisTable</code> type.</p>
          * @param sqlBuilder      {@link io.github.nichetoolkit.mybatis.builder.SqlBuilder} <p>The sql builder parameter is <code>SqlBuilder</code> type.</p>
          * @param statusParameter {@link java.lang.Object} <p>The status parameter parameter is <code>Object</code> type.</p>
          * @return {@link java.lang.String} <p>The supply return object is <code>String</code> type.</p>
          * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
          * @see java.lang.String
-         * @see org.springframework.lang.Nullable
+         * @see org.jspecify.annotations.Nullable
          * @see io.github.nichetoolkit.mybatis.MybatisTable
          * @see io.github.nichetoolkit.mybatis.builder.SqlBuilder
          * @see java.lang.Object
@@ -208,7 +208,7 @@ public interface MybatisSqlSupply extends RestOrder {
      * <p>The simple sql supply interface.</p>
      * @author Cyan (snow22314@outlook.com)
      * @see io.github.nichetoolkit.mybatis.MybatisSqlSupply.ValueSqlSupply
-     * @since Jdk1.8
+     * @since Jdk17
      */
     interface SimpleSqlSupply extends ValueSqlSupply {
 
@@ -220,13 +220,13 @@ public interface MybatisSqlSupply extends RestOrder {
         /**
          * <code>supply</code>
          * <p>The supply method.</p>
-         * @param tableName    {@link java.lang.String} <p>The tableName parameter is <code>String</code> type.</p>
+         * @param tableName    {@link java.lang.String} <p>The table name parameter is <code>String</code> type.</p>
          * @param mybatisTable {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>The mybatis table parameter is <code>MybatisTable</code> type.</p>
          * @param sqlBuilder   {@link io.github.nichetoolkit.mybatis.builder.SqlBuilder} <p>The sql builder parameter is <code>SqlBuilder</code> type.</p>
          * @return {@link java.lang.String} <p>The supply return object is <code>String</code> type.</p>
          * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
          * @see java.lang.String
-         * @see org.springframework.lang.Nullable
+         * @see org.jspecify.annotations.Nullable
          * @see io.github.nichetoolkit.mybatis.MybatisTable
          * @see io.github.nichetoolkit.mybatis.builder.SqlBuilder
          * @see io.github.nichetoolkit.rest.RestException
@@ -239,7 +239,7 @@ public interface MybatisSqlSupply extends RestOrder {
      * <p>The entry sql supply interface.</p>
      * @author Cyan (snow22314@outlook.com)
      * @see io.github.nichetoolkit.mybatis.MybatisSqlSupply.ParameterSqlSupply
-     * @since Jdk1.8
+     * @since Jdk17
      */
     interface EntrySqlSupply extends ParameterSqlSupply {
 
@@ -251,14 +251,14 @@ public interface MybatisSqlSupply extends RestOrder {
         /**
          * <code>supply</code>
          * <p>The supply method.</p>
-         * @param tableName       {@link java.lang.String} <p>The tableName parameter is <code>String</code> type.</p>
+         * @param tableName       {@link java.lang.String} <p>The table name parameter is <code>String</code> type.</p>
          * @param mybatisTable    {@link io.github.nichetoolkit.mybatis.MybatisTable} <p>The mybatis table parameter is <code>MybatisTable</code> type.</p>
          * @param keySqlBuilder   {@link io.github.nichetoolkit.mybatis.builder.SqlBuilder} <p>The key sql builder parameter is <code>SqlBuilder</code> type.</p>
          * @param valueSqlBuilder {@link io.github.nichetoolkit.mybatis.builder.SqlBuilder} <p>The value sql builder parameter is <code>SqlBuilder</code> type.</p>
          * @return {@link java.lang.String} <p>The supply return object is <code>String</code> type.</p>
          * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
          * @see java.lang.String
-         * @see org.springframework.lang.Nullable
+         * @see org.jspecify.annotations.Nullable
          * @see io.github.nichetoolkit.mybatis.MybatisTable
          * @see io.github.nichetoolkit.mybatis.builder.SqlBuilder
          * @see io.github.nichetoolkit.rest.RestException

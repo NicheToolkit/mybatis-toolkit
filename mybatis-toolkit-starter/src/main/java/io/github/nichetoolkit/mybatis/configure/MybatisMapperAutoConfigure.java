@@ -5,7 +5,6 @@ import io.github.nichetoolkit.mybatis.MybatisMapperFactory;
 import lombok.extern.slf4j.Slf4j;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -22,7 +21,7 @@ import org.springframework.context.annotation.ComponentScan;
  * @see org.springframework.boot.autoconfigure.AutoConfiguration
  * @see org.springframework.context.annotation.ComponentScan
  * @see org.springframework.boot.context.properties.EnableConfigurationProperties
- * @since Jdk1.8
+ * @since Jdk17
  */
 @Slf4j
 @AutoConfiguration
@@ -46,12 +45,10 @@ public class MybatisMapperAutoConfigure {
      * @see org.mybatis.spring.SqlSessionTemplate
      * @see io.github.nichetoolkit.mybatis.MybatisMapperFactory
      * @see org.springframework.context.annotation.Bean
-     * @see org.springframework.beans.factory.annotation.Autowired
      * @see org.springframework.boot.autoconfigure.condition.ConditionalOnClass
      * @see org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
      */
     @Bean
-    @Autowired
     @ConditionalOnClass(SqlSessionTemplate.class)
     @ConditionalOnMissingBean(MybatisMapperFactory.class)
     public MybatisMapperFactory<?,?,?> mapperFactory(SqlSessionTemplate sqlSessionTemplate) {
@@ -67,7 +64,7 @@ public class MybatisMapperAutoConfigure {
      * @see org.springframework.beans.factory.InitializingBean
      * @see org.springframework.boot.autoconfigure.AutoConfiguration
      * @see org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
-     * @since Jdk1.8
+     * @since Jdk17
      */
     @AutoConfiguration
     @ConditionalOnProperty(prefix = "nichetoolkit.mybatis.record", name="enabled", havingValue = "true")
@@ -84,9 +81,7 @@ public class MybatisMapperAutoConfigure {
          * <p>Instantiates a new mybatis record auto register.</p>
          * @param mapperFactory {@link io.github.nichetoolkit.mybatis.MybatisMapperFactory} <p>The mapper factory parameter is <code>MybatisMapperFactory</code> type.</p>
          * @see io.github.nichetoolkit.mybatis.MybatisMapperFactory
-         * @see org.springframework.beans.factory.annotation.Autowired
          */
-        @Autowired
         public MybatisRecordAutoRegister(MybatisMapperFactory<?,?,?> mapperFactory) {
             this.mapperFactory = mapperFactory;
         }

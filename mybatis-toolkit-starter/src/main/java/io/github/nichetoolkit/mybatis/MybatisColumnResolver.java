@@ -9,7 +9,7 @@ import io.github.nichetoolkit.rice.DefaultColumnResolver;
  * <p>The mybatis column resolver class.</p>
  * @author Cyan (snow22314@outlook.com)
  * @see io.github.nichetoolkit.rice.DefaultColumnResolver
- * @since Jdk1.8
+ * @since Jdk17
  */
 public class MybatisColumnResolver extends DefaultColumnResolver {
 

@@ -1,6 +1,6 @@
 package io.github.nichetoolkit.mybatis;
 
-import com.fasterxml.jackson.databind.JavaType;
+import tools.jackson.databind.JavaType;
 import io.github.nichetoolkit.mybatis.builder.SqlBuilder;
 import io.github.nichetoolkit.mybatis.consts.EntityConstants;
 import io.github.nichetoolkit.mybatis.consts.SQLConstants;
@@ -14,7 +14,7 @@ import lombok.Setter;
 import org.apache.ibatis.type.JdbcType;
 import org.apache.ibatis.type.TypeHandler;
 import org.apache.ibatis.type.UnknownTypeHandler;
-import org.springframework.lang.NonNull;
+import org.jspecify.annotations.NonNull;
 
 import java.util.*;
 import java.util.regex.Matcher;
@@ -26,7 +26,7 @@ import java.util.regex.Matcher;
  * @see io.github.nichetoolkit.mybatis.MybatisProperty
  * @see lombok.Setter
  * @see lombok.Getter
- * @since Jdk1.8
+ * @since Jdk17
  */
 @Setter
 @Getter
@@ -203,8 +203,8 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
 
     /**
      * <code>fickleType</code>
-     * {@link com.fasterxml.jackson.databind.JavaType} <p>The <code>fickleType</code> field.</p>
-     * @see com.fasterxml.jackson.databind.JavaType
+     * {@link tools.jackson.databind.JavaType} <p>The <code>fickleType</code> field.</p>
+     * @see tools.jackson.databind.JavaType
      */
     protected JavaType fickleType;
 
@@ -772,22 +772,16 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
      * @return {@link java.lang.String} <p>The excluded return object is <code>String</code> type.</p>
      * @see io.github.nichetoolkit.mybatis.enums.ExcludedType
      * @see java.lang.String
-     * @see org.springframework.lang.NonNull
+     * @see org.jspecify.annotations.NonNull
      */
     public String excluded(ExcludedType excludedType, @NonNull String tableName) {
         if (this.forceUpdate) {
             return this.columnName() + SQLConstants.BLANK + SQLConstants.CONTRAST_EQ
                     + SQLConstants.BLANK + this.forceUpdateValue;
         } else {
-            String excludedColumn;
-            switch (excludedType) {
-                case VALUES:
-                    excludedColumn = excludedType.getKey() + SQLConstants.BRACE_LT + this.columnName() + SQLConstants.BRACE_GT;
-                    break;
-                case EXCLUDED:
-                default:
-                    excludedColumn = excludedType.getKey() + SQLConstants.PERIOD + this.columnName();
-                    break;
+            String excludedColumn = excludedType.getKey() + SQLConstants.PERIOD + this.columnName();
+            if (excludedType == ExcludedType.VALUES) {
+                excludedColumn = excludedType.getKey() + SQLConstants.BRACE_LT + this.columnName() + SQLConstants.BRACE_GT;
             }
             return this.columnName() + SQLConstants.BLANK + SQLConstants.CONTRAST_EQ + SQLConstants.BLANK + SQLConstants.CASE
                     + SQLConstants.BLANK + SQLConstants.WHEN + SQLConstants.BLANK + excludedColumn + SQLConstants.BLANK
@@ -1258,8 +1252,7 @@ public class MybatisColumn extends MybatisProperty<MybatisColumn> {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof MybatisColumn)) return false;
-        MybatisColumn that = (MybatisColumn) o;
+        if (!(o instanceof MybatisColumn that)) return false;
         return this.columnName().equals(that.columnName());
     }
 

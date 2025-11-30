@@ -10,7 +10,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * <p>The mybatis mapper interface.</p>
  * @param <E> {@link java.lang.Object} <p>The parameter can be of any type.</p>
  * @author Cyan (snow22314@outlook.com)
- * @since Jdk1.8
+ * @since Jdk17
  */
 public interface MybatisMapper<E> {
 
@@ -42,7 +42,7 @@ public interface MybatisMapper<E> {
      * <code>Instance</code>
      * <p>The instance class.</p>
      * @author Cyan (snow22314@outlook.com)
-     * @since Jdk1.8
+     * @since Jdk17
      */
     class Instance {
 

@@ -8,21 +8,21 @@ import io.github.nichetoolkit.rest.RestValue;
 import java.util.Optional;
 
 /**
- * <code>TemplateStatus1</code>
- * <p>The template status 1 enumeration.</p>
+ * <code>TemplateState1</code>
+ * <p>The template state 1 enumeration.</p>
  * @author Cyan (snow22314@outlook.com)
  * @see io.github.nichetoolkit.rest.RestValue
- * @since Jdk1.8
+ * @since Jdk17
  */
 public enum TemplateState1 implements RestValue<Integer,String> {
     /**
      * <code>NONE</code>
-     * <p>The none template status 1 field.</p>
+     * <p>The none template state 1 field.</p>
      */
     NONE(1,"无"),
     /**
      * <code>TEST</code>
-     * <p>The test template status 1 field.</p>
+     * <p>The test template state 1 field.</p>
      */
     TEST(2,"测试"),
     ;
@@ -41,8 +41,8 @@ public enum TemplateState1 implements RestValue<Integer,String> {
     private final String value;
 
     /**
-     * <code>TemplateStatus1</code>
-     * <p>Instantiates a new template status 1.</p>
+     * <code>TemplateState1</code>
+     * <p>Instantiates a new template state 1.</p>
      * @param key   {@link java.lang.Integer} <p>The key parameter is <code>Integer</code> type.</p>
      * @param value {@link java.lang.String} <p>The value parameter is <code>String</code> type.</p>
      * @see java.lang.Integer
@@ -68,7 +68,7 @@ public enum TemplateState1 implements RestValue<Integer,String> {
      * <code>parseKey</code>
      * <p>The parse key method.</p>
      * @param key {@link java.lang.Integer} <p>The key parameter is <code>Integer</code> type.</p>
-     * @return {@link TemplateState1} <p>The parse key return object is <code>TemplateStatus1</code> type.</p>
+     * @return {@link io.github.nichetoolkit.mybatis.test.template.TemplateState1} <p>The parse key return object is <code>TemplateState1</code> type.</p>
      * @see java.lang.Integer
      * @see com.fasterxml.jackson.annotation.JsonCreator
      */
@@ -82,7 +82,7 @@ public enum TemplateState1 implements RestValue<Integer,String> {
      * <code>parseValue</code>
      * <p>The parse value method.</p>
      * @param value {@link java.lang.String} <p>The value parameter is <code>String</code> type.</p>
-     * @return {@link TemplateState1} <p>The parse value return object is <code>TemplateStatus1</code> type.</p>
+     * @return {@link io.github.nichetoolkit.mybatis.test.template.TemplateState1} <p>The parse value return object is <code>TemplateState1</code> type.</p>
      * @see java.lang.String
      */
     public static TemplateState1 parseValue(String value) {

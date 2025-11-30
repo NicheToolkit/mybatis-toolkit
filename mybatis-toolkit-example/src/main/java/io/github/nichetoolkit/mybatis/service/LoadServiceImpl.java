@@ -6,7 +6,7 @@ import io.github.nichetoolkit.mybatis.test.load.LoadIdentity;
 import io.github.nichetoolkit.mybatis.test.load.LoadModel;
 import io.github.nichetoolkit.rest.RestException;
 import io.github.nichetoolkit.rice.DefaultInfoService;
-import org.springframework.lang.NonNull;
+import org.jspecify.annotations.NonNull;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -18,7 +18,7 @@ import java.util.Optional;
  * @author Cyan (snow22314@outlook.com)
  * @see io.github.nichetoolkit.rice.DefaultInfoService
  * @see org.springframework.stereotype.Service
- * @since Jdk1.8
+ * @since Jdk17
  */
 @Service
 public class LoadServiceImpl extends DefaultInfoService<LoadModel, LoadEntity, LoadFilter, LoadIdentity, String> implements LoadService {

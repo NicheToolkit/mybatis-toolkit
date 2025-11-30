@@ -17,7 +17,7 @@ import java.util.Collection;
  * @see io.github.nichetoolkit.rice.RestId
  * @see io.github.nichetoolkit.mybatis.MybatisMapper
  * @see io.github.nichetoolkit.rice.mapper.DeleteMapper
- * @since Jdk1.8
+ * @since Jdk17
  */
 public interface MybatisDeleteMapper<E extends RestId<I>, I> extends MybatisMapper<E>, DeleteMapper<I> {
 

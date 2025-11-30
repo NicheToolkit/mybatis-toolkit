@@ -5,7 +5,7 @@ import io.github.nichetoolkit.mybatis.MybatisTableStyle;
 import io.github.nichetoolkit.mybatis.enums.StyleType;
 import io.github.nichetoolkit.mybatis.fickle.RestFickle;
 import io.github.nichetoolkit.rest.util.GeneralUtils;
-import org.springframework.lang.NonNull;
+import org.jspecify.annotations.NonNull;
 
 import java.lang.reflect.Field;
 
@@ -14,7 +14,7 @@ import java.lang.reflect.Field;
  * <p>The default upper style class.</p>
  * @author Cyan (snow22314@outlook.com)
  * @see io.github.nichetoolkit.mybatis.MybatisTableStyle
- * @since Jdk1.8
+ * @since Jdk17
  */
 public class DefaultUpperStyle implements MybatisTableStyle {
     @Override

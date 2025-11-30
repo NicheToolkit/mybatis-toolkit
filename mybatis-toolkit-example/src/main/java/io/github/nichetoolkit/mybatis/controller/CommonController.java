@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.*;
  * @see io.github.nichetoolkit.rest.userlog.stereotype.RestNotelog
  * @see org.springframework.web.bind.annotation.RestController
  * @see org.springframework.web.bind.annotation.RequestMapping
- * @since Jdk1.8
+ * @since Jdk17
  */
 @RestSkip
 @CrossOrigin

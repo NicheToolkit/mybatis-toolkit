@@ -15,7 +15,7 @@ import org.apache.ibatis.builder.annotation.ProviderContext;
  * <p>The mybatis sql script interface.</p>
  * @author Cyan (snow22314@outlook.com)
  * @see io.github.nichetoolkit.rest.RestOrder
- * @since Jdk1.8
+ * @since Jdk17
  */
 public interface MybatisSqlScript extends RestOrder {
 
@@ -410,7 +410,7 @@ public interface MybatisSqlScript extends RestOrder {
      * <p>The linefeed supplier interface.</p>
      * @author Cyan (snow22314@outlook.com)
      * @see io.github.nichetoolkit.rest.actuator.SupplierActuator
-     * @since Jdk1.8
+     * @since Jdk17
      */
     interface LinefeedSupplier extends SupplierActuator<String> {
 
@@ -436,7 +436,7 @@ public interface MybatisSqlScript extends RestOrder {
      * <code>SimpleSqlScript</code>
      * <p>The simple sql script interface.</p>
      * @author Cyan (snow22314@outlook.com)
-     * @since Jdk1.8
+     * @since Jdk17
      */
     interface SimpleSqlScript extends MybatisSqlScript {
 

@@ -16,8 +16,9 @@ import java.util.Objects;
  * @see java.io.Serializable
  * @see lombok.Setter
  * @see lombok.Getter
+ * @see lombok.experimental.SuperBuilder
  * @see io.github.nichetoolkit.mybatis.table.RestLinkage
- * @since Jdk1.8
+ * @since Jdk17
  */
 @Setter
 @Getter

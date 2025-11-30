@@ -20,7 +20,7 @@ import java.util.List;
  * @see io.github.nichetoolkit.mybatis.MybatisMapper
  * @see io.github.nichetoolkit.mybatis.MybatisFindMapper
  * @see io.github.nichetoolkit.rice.mapper.FindLinkMapper
- * @since Jdk1.8
+ * @since Jdk17
  */
 public interface MybatisFindLinkMapper<E extends RestId<I>, L, I> extends MybatisMapper<E>, MybatisFindMapper<E, I>, FindLinkMapper<E, L, I> {
     @Override

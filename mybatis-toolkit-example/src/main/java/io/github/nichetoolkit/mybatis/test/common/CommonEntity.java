@@ -18,10 +18,11 @@ import java.util.Date;
  * @see io.github.nichetoolkit.rice.RestInfoEntity
  * @see lombok.Setter
  * @see lombok.Getter
+ * @see lombok.experimental.SuperBuilder
  * @see io.github.nichetoolkit.mybatis.table.RestEntity
  * @see io.github.nichetoolkit.mybatis.table.RestExcludes
  * @see io.github.nichetoolkit.mybatis.table.RestUpdateIgnores
- * @since Jdk1.8
+ * @since Jdk17
  */
 @Setter
 @Getter

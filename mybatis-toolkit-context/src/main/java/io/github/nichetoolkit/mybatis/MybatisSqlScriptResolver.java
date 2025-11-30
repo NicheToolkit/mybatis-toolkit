@@ -11,7 +11,7 @@ import java.util.List;
  * <p>The mybatis sql script resolver interface.</p>
  * @author Cyan (snow22314@outlook.com)
  * @see io.github.nichetoolkit.rest.RestOrder
- * @since Jdk1.8
+ * @since Jdk17
  */
 public interface MybatisSqlScriptResolver extends RestOrder {
 
@@ -48,7 +48,7 @@ public interface MybatisSqlScriptResolver extends RestOrder {
      * <code>Instance</code>
      * <p>The instance class.</p>
      * @author Cyan (snow22314@outlook.com)
-     * @since Jdk1.8
+     * @since Jdk17
      */
     class Instance {
         /**

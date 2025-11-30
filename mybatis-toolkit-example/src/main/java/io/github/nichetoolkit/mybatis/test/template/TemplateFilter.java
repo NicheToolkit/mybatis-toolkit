@@ -8,7 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
-import org.springframework.lang.NonNull;
+import org.jspecify.annotations.NonNull;
 
 import java.util.*;
 
@@ -22,7 +22,7 @@ import java.util.*;
  * @see lombok.Setter
  * @see lombok.experimental.SuperBuilder
  * @see lombok.NoArgsConstructor
- * @since Jdk1.8
+ * @since Jdk17
  */
 @Getter
 @Setter
@@ -62,7 +62,7 @@ public class TemplateFilter extends DefaultFilter<TemplateIdentity,String> imple
      * <p>The set states setter method.</p>
      * @param states {@link io.github.nichetoolkit.mybatis.test.template.TemplateAlertness} <p>The states parameter is <code>TemplateAlertness</code> type.</p>
      * @see io.github.nichetoolkit.mybatis.test.template.TemplateAlertness
-     * @see org.springframework.lang.NonNull
+     * @see org.jspecify.annotations.NonNull
      */
     public void setStates(@NonNull TemplateAlertness... states) {
         this.states = new HashSet<>(Arrays.asList(states));
@@ -73,7 +73,7 @@ public class TemplateFilter extends DefaultFilter<TemplateIdentity,String> imple
      * <p>The add states method.</p>
      * @param states {@link io.github.nichetoolkit.mybatis.test.template.TemplateAlertness} <p>The states parameter is <code>TemplateAlertness</code> type.</p>
      * @see io.github.nichetoolkit.mybatis.test.template.TemplateAlertness
-     * @see org.springframework.lang.NonNull
+     * @see org.jspecify.annotations.NonNull
      */
     public void addStates(@NonNull TemplateAlertness... states) {
         if (GeneralUtils.isEmpty(this.states)) {
@@ -88,7 +88,7 @@ public class TemplateFilter extends DefaultFilter<TemplateIdentity,String> imple
      * <p>The add states method.</p>
      * @param states {@link java.util.Collection} <p>The states parameter is <code>Collection</code> type.</p>
      * @see java.util.Collection
-     * @see org.springframework.lang.NonNull
+     * @see org.jspecify.annotations.NonNull
      */
     public void addStates(@NonNull Collection<TemplateAlertness> states) {
         if (GeneralUtils.isEmpty(this.states)) {

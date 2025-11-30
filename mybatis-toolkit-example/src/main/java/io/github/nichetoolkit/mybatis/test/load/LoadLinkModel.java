@@ -21,9 +21,10 @@ import java.util.Date;
  * @see io.github.nichetoolkit.rice.RestInfoModel
  * @see lombok.Setter
  * @see lombok.Getter
+ * @see lombok.experimental.SuperBuilder
  * @see com.fasterxml.jackson.annotation.JsonInclude
  * @see com.fasterxml.jackson.annotation.JsonIgnoreProperties
- * @since Jdk1.8
+ * @since Jdk17
  */
 @Setter
 @Getter

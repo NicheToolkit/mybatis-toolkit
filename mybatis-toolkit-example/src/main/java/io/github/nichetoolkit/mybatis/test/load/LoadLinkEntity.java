@@ -19,7 +19,8 @@ import java.util.Date;
  * @see io.github.nichetoolkit.rice.RestInfoEntity
  * @see lombok.Setter
  * @see lombok.Getter
- * @since Jdk1.8
+ * @see lombok.experimental.SuperBuilder
+ * @since Jdk17
  */
 @Setter
 @Getter

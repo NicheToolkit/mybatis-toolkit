@@ -19,7 +19,7 @@ import java.util.Collection;
  * @see io.github.nichetoolkit.mybatis.MybatisMapper
  * @see io.github.nichetoolkit.mybatis.MybatisOperateMapper
  * @see io.github.nichetoolkit.rice.mapper.OperateLinkMapper
- * @since Jdk1.8
+ * @since Jdk17
  */
 public interface MybatisOperateLinkMapper<E extends RestId<I>, L, I> extends MybatisMapper<E>, MybatisOperateMapper<E, I>, OperateLinkMapper<L, I> {
 

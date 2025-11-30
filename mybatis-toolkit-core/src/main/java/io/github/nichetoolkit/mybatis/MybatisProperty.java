@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
  * <p>The mybatis property class.</p>
  * @param <P> {@link io.github.nichetoolkit.mybatis.MybatisProperty} <p>The generic parameter is <code>MybatisProperty</code> type.</p>
  * @author Cyan (snow22314@outlook.com)
- * @since Jdk1.8
+ * @since Jdk17
  */
 public class MybatisProperty<P extends MybatisProperty<P>> {
     /**

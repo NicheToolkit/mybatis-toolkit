@@ -7,7 +7,7 @@ import io.github.nichetoolkit.mybatis.consts.EntityConstants;
 import io.github.nichetoolkit.mybatis.load.RestLoad;
 import io.github.nichetoolkit.mybatis.load.RestParam;
 import io.github.nichetoolkit.rest.util.GeneralUtils;
-import io.github.nichetoolkit.rest.util.JsonPurityUtils;
+import io.github.nichetoolkit.rest.util.JacksonUtils;
 import io.github.nichetoolkit.rice.mapper.FindParamMapper;
 import io.github.nichetoolkit.rice.mapper.SuperMapper;
 import org.apache.ibatis.type.BaseTypeHandler;
@@ -23,7 +23,7 @@ import java.util.regex.Pattern;
  * <p>The load result type handler class.</p>
  * @author Cyan (snow22314@outlook.com)
  * @see org.apache.ibatis.type.BaseTypeHandler
- * @since Jdk1.8
+ * @since Jdk17
  */
 public abstract class LoadResultTypeHandler extends BaseTypeHandler<Object> {
     /**
@@ -99,7 +99,7 @@ public abstract class LoadResultTypeHandler extends BaseTypeHandler<Object> {
         } catch (SQLException ignored) {
             return null;
         }
-        List<String> loadKeys = JsonPurityUtils.parseList(loadsJson, String.class);
+        List<String> loadKeys = JacksonUtils.parseList(loadsJson, String.class);
         Map<Class<?>, MybatisColumn> loadColumns = superTable.getLoadColumns();
         List<MybatisColumn> mybatisColumns = superTable.loadKeyColumns();
         Map.Entry<Class<?>, MybatisColumn> loadEntry = destineLoadEntry(columnName, loadKeys, loadColumns);
@@ -186,10 +186,10 @@ public abstract class LoadResultTypeHandler extends BaseTypeHandler<Object> {
 
     /**
      * <code>destineTableName</code>
-     * <p>The destine tableName method.</p>
+     * <p>The destine table name method.</p>
      * @param resultSet {@link java.sql.ResultSet} <p>The result set parameter is <code>ResultSet</code> type.</p>
      * @param loadTable {@link java.lang.String} <p>The load table parameter is <code>String</code> type.</p>
-     * @return {@link java.lang.String} <p>The destine tableName return object is <code>String</code> type.</p>
+     * @return {@link java.lang.String} <p>The destine table name return object is <code>String</code> type.</p>
      * @throws SQLException {@link java.sql.SQLException} <p>The sql exception is <code>SQLException</code> type.</p>
      * @see java.sql.ResultSet
      * @see java.lang.String

@@ -18,7 +18,7 @@ import java.util.List;
  * @see io.github.nichetoolkit.rice.RestId
  * @see io.github.nichetoolkit.mybatis.MybatisMapper
  * @see io.github.nichetoolkit.rice.mapper.ColumnMapper
- * @since Jdk1.8
+ * @since Jdk17
  */
 public interface MybatisColumnMapper<E extends RestId<I>, I> extends MybatisMapper<E>, ColumnMapper {
 

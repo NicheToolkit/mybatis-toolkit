@@ -18,9 +18,9 @@
 
 ## Dependent & Environment
 
-> [Spring Boot](https://spring.io/projects/spring-boot) 2.7.18.RELEASE\
+> [Spring Boot](https://spring.io/projects/spring-boot) 4.0.0.RELEASE\
 > [Maven](https://maven.apache.org/) 3.6.3+\
-> [JDK](https://www.oracle.com/java/technologies/downloads/#java8) 1.8
+> [JDK](https://www.oracle.com/java/technologies/downloads/#java8) 17
 
 ## Wiki Reference
 
@@ -42,22 +42,19 @@
 ```xml
 
 <dependencies>
-    <!-- use rice super/info service -->
     <dependency>
         <groupId>io.github.nichetoolkit</groupId>
         <artifactId>rice-toolkit-starter</artifactId>
     </dependency>
 
-    <!-- use mybatis super/info mapper -->
+    <dependency>
+        <groupId>io.github.nichetoolkit</groupId>
+        <artifactId>rice-toolkit-pagehelper</artifactId>
+    </dependency>
+
     <dependency>
         <groupId>io.github.nichetoolkit</groupId>
         <artifactId>mybatis-toolkit-starter</artifactId>
-    </dependency>
-
-    <!-- set mybatis default configuration -->
-    <dependency>
-        <groupId>org.mybatis.spring.boot</groupId>
-        <artifactId>mybatis-spring-boot-starter</artifactId>
     </dependency>
 </dependencies>
 ```
@@ -73,7 +70,7 @@
 <dependency>
     <groupId>io.github.nichetoolkit</groupId>
     <artifactId>mybatis-toolkit-core</artifactId>
-    <version>1.1.1</version>
+    <version>4.1.2-SNAPSHOT</version>
 </dependency>
 ```
 
@@ -86,7 +83,7 @@
 <dependency>
     <groupId>io.github.nichetoolkit</groupId>
     <artifactId>mybatis-toolkit-context</artifactId>
-    <version>1.1.1</version>
+    <version>4.1.2-SNAPSHOT</version>
 </dependency>
 ```
 
@@ -99,7 +96,7 @@
 <dependency>
     <groupId>io.github.nichetoolkit</groupId>
     <artifactId>mybatis-toolkit-starter</artifactId>
-    <version>1.1.1</version>
+    <version>4.1.2-SNAPSHOT</version>
 </dependency>
 ```
 

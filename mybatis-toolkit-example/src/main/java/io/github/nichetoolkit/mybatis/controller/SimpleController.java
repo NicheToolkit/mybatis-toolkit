@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.*;
  * @see io.github.nichetoolkit.rest.userlog.stereotype.RestNotelog
  * @see org.springframework.web.bind.annotation.RestController
  * @see org.springframework.web.bind.annotation.RequestMapping
- * @since Jdk1.8
+ * @since Jdk17
  */
 @RestSkip
 @CrossOrigin
@@ -87,7 +87,7 @@ public class SimpleController {
      * <code>queryById</code>
      * <p>The query by id method.</p>
      * @param id       {@link java.lang.String} <p>The id parameter is <code>String</code> type.</p>
-     * @param tableKey {@link java.lang.String} <p>The tableKey parameter is <code>String</code> type.</p>
+     * @param tableKey {@link java.lang.String} <p>The table key parameter is <code>String</code> type.</p>
      * @return {@link io.github.nichetoolkit.rest.RestResult} <p>The query by id return object is <code>RestResult</code> type.</p>
      * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
      * @see java.lang.String
@@ -125,7 +125,7 @@ public class SimpleController {
      * <code>deleteById</code>
      * <p>The delete by id method.</p>
      * @param id       {@link java.lang.String} <p>The id parameter is <code>String</code> type.</p>
-     * @param tableKey {@link java.lang.String} <p>The tableKey parameter is <code>String</code> type.</p>
+     * @param tableKey {@link java.lang.String} <p>The table key parameter is <code>String</code> type.</p>
      * @return {@link io.github.nichetoolkit.rest.RestResult} <p>The delete by id return object is <code>RestResult</code> type.</p>
      * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
      * @see java.lang.String

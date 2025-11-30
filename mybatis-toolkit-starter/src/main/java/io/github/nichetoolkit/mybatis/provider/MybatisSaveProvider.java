@@ -23,7 +23,7 @@ import java.util.List;
  * @see io.github.nichetoolkit.mybatis.MybatisSqlProvider
  * @see lombok.extern.slf4j.Slf4j
  * @see org.springframework.stereotype.Component
- * @since Jdk1.8
+ * @since Jdk17
  */
 @Slf4j
 @Component
@@ -39,7 +39,7 @@ public class MybatisSaveProvider implements MybatisSqlProvider {
      * <p>The save dynamic method.</p>
      * @param <E>             {@link java.lang.Object} <p>The parameter can be of any type.</p>
      * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>The provider context parameter is <code>ProviderContext</code> type.</p>
-     * @param tableName       {@link java.lang.String} <p>The tableName parameter is <code>String</code> type.</p>
+     * @param tableName       {@link java.lang.String} <p>The table name parameter is <code>String</code> type.</p>
      * @param entity          E <p>The entity parameter is <code>E</code> type.</p>
      * @return {@link java.lang.String} <p>The save dynamic return object is <code>String</code> type.</p>
      * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>
@@ -60,7 +60,7 @@ public class MybatisSaveProvider implements MybatisSqlProvider {
      * <p>The save dynamic all method.</p>
      * @param <E>             {@link java.lang.Object} <p>The parameter can be of any type.</p>
      * @param providerContext {@link org.apache.ibatis.builder.annotation.ProviderContext} <p>The provider context parameter is <code>ProviderContext</code> type.</p>
-     * @param tableName       {@link java.lang.String} <p>The tableName parameter is <code>String</code> type.</p>
+     * @param tableName       {@link java.lang.String} <p>The table name parameter is <code>String</code> type.</p>
      * @param entityList      {@link java.util.Collection} <p>The entity list parameter is <code>Collection</code> type.</p>
      * @return {@link java.lang.String} <p>The save dynamic all return object is <code>String</code> type.</p>
      * @throws RestException {@link io.github.nichetoolkit.rest.RestException} <p>The rest exception is <code>RestException</code> type.</p>

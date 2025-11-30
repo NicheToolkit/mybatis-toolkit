@@ -21,9 +21,10 @@ import java.util.Date;
  * @see io.github.nichetoolkit.rice.RestTableKey
  * @see lombok.Setter
  * @see lombok.Getter
+ * @see lombok.experimental.SuperBuilder
  * @see com.fasterxml.jackson.annotation.JsonInclude
  * @see com.fasterxml.jackson.annotation.JsonIgnoreProperties
- * @since Jdk1.8
+ * @since Jdk17
  */
 @Setter
 @Getter
@@ -56,15 +57,15 @@ public class TemplateModel extends DefaultInfoModel<TemplateModel, TemplateEntit
 
     /**
      * <code>status1</code>
-     * {@link TemplateState1} <p>The <code>status1</code> field.</p>
-     * @see TemplateState1
+     * {@link io.github.nichetoolkit.mybatis.test.template.TemplateState1} <p>The <code>status1</code> field.</p>
+     * @see io.github.nichetoolkit.mybatis.test.template.TemplateState1
      */
     private TemplateState1 status1;
 
     /**
      * <code>status2</code>
-     * {@link TemplateState2} <p>The <code>status2</code> field.</p>
-     * @see TemplateState2
+     * {@link io.github.nichetoolkit.mybatis.test.template.TemplateState2} <p>The <code>status2</code> field.</p>
+     * @see io.github.nichetoolkit.mybatis.test.template.TemplateState2
      */
     private TemplateState2 status2;
 

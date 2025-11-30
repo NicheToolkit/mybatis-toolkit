@@ -16,7 +16,7 @@ import io.github.nichetoolkit.rice.service.*;
  * @see io.github.nichetoolkit.rice.service.DeleteLinkService
  * @see io.github.nichetoolkit.rice.service.RemoveLinkService
  * @see io.github.nichetoolkit.rice.service.OperateLinkService
- * @since Jdk1.8
+ * @since Jdk17
  */
 public interface TemplateService extends FilterService<TemplateModel, TemplateFilter, TemplateIdentity, String>,
         SingleService<TemplateModel, TemplateIdentity, String>,

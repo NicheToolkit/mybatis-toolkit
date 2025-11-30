@@ -10,7 +10,7 @@ import io.github.nichetoolkit.rice.RestId;
  * @author Cyan (snow22314@outlook.com)
  * @see io.github.nichetoolkit.rice.RestId
  * @see io.github.nichetoolkit.mybatis.MybatisSuperMapper
- * @since Jdk1.8
+ * @since Jdk17
  */
 public interface MybatisIdMapper<E extends RestId<I>, I> extends MybatisSuperMapper<E, I> {
 }

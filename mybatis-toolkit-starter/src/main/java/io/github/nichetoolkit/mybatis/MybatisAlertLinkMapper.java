@@ -20,7 +20,7 @@ import java.util.Collection;
  * @see io.github.nichetoolkit.mybatis.MybatisMapper
  * @see io.github.nichetoolkit.mybatis.MybatisAlertMapper
  * @see io.github.nichetoolkit.rice.mapper.AlertLinkMapper
- * @since Jdk1.8
+ * @since Jdk17
  */
 public interface MybatisAlertLinkMapper<E extends RestId<I>, L, S, I> extends MybatisMapper<E>, MybatisAlertMapper<E, S, I>, AlertLinkMapper<L, S, I> {
 

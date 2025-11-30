@@ -21,7 +21,7 @@ import java.util.List;
  * @see io.github.nichetoolkit.rice.RestId
  * @see io.github.nichetoolkit.mybatis.MybatisMapper
  * @see io.github.nichetoolkit.rice.mapper.natives.FilterFickleMapper
- * @since Jdk1.8
+ * @since Jdk17
  */
 public interface MybatisFilterFickleMapper<E extends RestId<I>, I> extends MybatisMapper<E>, FilterFickleMapper<E, I> {
 
