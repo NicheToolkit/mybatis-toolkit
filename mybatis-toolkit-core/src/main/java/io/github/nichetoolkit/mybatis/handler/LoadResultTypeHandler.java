@@ -7,7 +7,7 @@ import io.github.nichetoolkit.mybatis.consts.EntityConstants;
 import io.github.nichetoolkit.mybatis.load.RestLoad;
 import io.github.nichetoolkit.mybatis.load.RestParam;
 import io.github.nichetoolkit.rest.util.GeneralUtils;
-import io.github.nichetoolkit.rest.util.JsonPurityUtils;
+import io.github.nichetoolkit.rest.util.JacksonUtils;
 import io.github.nichetoolkit.rice.mapper.FindParamMapper;
 import io.github.nichetoolkit.rice.mapper.SuperMapper;
 import org.apache.ibatis.type.BaseTypeHandler;
@@ -99,7 +99,7 @@ public abstract class LoadResultTypeHandler extends BaseTypeHandler<Object> {
         } catch (SQLException ignored) {
             return null;
         }
-        List<String> loadKeys = JsonPurityUtils.parseList(loadsJson, String.class);
+        List<String> loadKeys = JacksonUtils.parseList(loadsJson, String.class);
         Map<Class<?>, MybatisColumn> loadColumns = superTable.getLoadColumns();
         List<MybatisColumn> mybatisColumns = superTable.loadKeyColumns();
         Map.Entry<Class<?>, MybatisColumn> loadEntry = destineLoadEntry(columnName, loadKeys, loadColumns);

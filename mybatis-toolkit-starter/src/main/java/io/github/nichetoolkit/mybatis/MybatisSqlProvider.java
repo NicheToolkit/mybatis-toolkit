@@ -21,7 +21,7 @@ import io.github.nichetoolkit.rest.holder.ApplicationContextHolder;
 import io.github.nichetoolkit.rest.stream.RestCollectors;
 import io.github.nichetoolkit.rest.stream.RestStream;
 import io.github.nichetoolkit.rest.util.GeneralUtils;
-import io.github.nichetoolkit.rest.util.JsonPurityUtils;
+import io.github.nichetoolkit.rest.util.JacksonUtils;
 import io.github.nichetoolkit.rest.util.OptionalUtils;
 import io.github.nichetoolkit.rice.enums.OperateType;
 import org.apache.ibatis.builder.annotation.ProviderContext;
@@ -2023,7 +2023,7 @@ public interface MybatisSqlProvider {
         RestOptional.ofEmptyable(loadParams).isNotEmpty(params -> {
             List<String> keys = RestStream.stream(params).filter(RestLoad::getValue).map(RestLoad::getKey).distinct().collect(RestCollectors.toList());
             if (GeneralUtils.isNotEmpty(keys)) {
-                String keysJson = JsonPurityUtils.parseJson(keys);
+                String keysJson = JacksonUtils.parseJson(keys);
                 keyBuilder.comma().value(keysJson).as(EntityConstants.LOADS);
             }
         });
